@@ -1,0 +1,70 @@
+@model IEnumerable<QOS.Models.FaultCode>
+@{
+    ViewData["Title"] = "Manage Fault";
+    Layout = "_MenuFunction";
+}
+<form asp-action="Index" method="get" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="searchString" value="@Context.Request.Query["searchString"]" class="form-control"
+            placeholder="Tìm theo Mã lỗi hoặc Tên Tiếng Việt..." />
+        <button type="submit" class="btn btn-primary me-2">Tìm kiếm</button>
+        <a asp-action="Index" class="btn btn-secondary me-2">Reset</a>
+    </div>
+</form>
+<h2 class="text-center">QUẢN LÝ DANH SÁCH LỖI</h2>
+<a asp-action="Create" asp-controller="ManageFault" class="btn btn-primary">+ Thêm lỗi</a>
+<table class="table table-bordered mt-3 table-striped">
+    <thead class="table-light">
+        <tr>
+            <th>ID</th>
+            <th>Nhà Máy</th>
+            <th>Mã Lỗi</th>
+            <th>Loại Lỗi</th>
+            <th>Tên Tiếng Việt</th>
+            <th>Tên Tiếng Anh</th>
+            <th>Báo Cáo Đi Chuyền</th>
+            <th>Báo Cáo Cuối Chuyền</th>
+            <th>Người Tạo</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model != null && Model.Any())
+        {
+            var i = 1;
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@i</td>
+                    <td>@item.Factory</td>
+                    <td>@item.Fault_Code</td>
+                    <td>@item.Fault_Type</td>
+                    <td>@item.Fault_Name_VN</td>
+                    <td>@item.Fault_Name_EN</td>
+                    <td>@(item.Form4_Active == true ? "Có" : "Không")</td>
+                    <td>@(item.Form6_Active == true ? "Có" : "Không")</td>
+                    <td>@item.UserUpdate</td>
+                    <td>
+                        <div class="btn-group">
+                            <a asp-action="Edit" asp-controller="ManageFault" asp-route-id="@item.Fault_Code"
+                                class="btn btn-sm btn-warning me-4">Sửa</a>
+                            @* <a asp-action="Delete" asp-controller="FaultCode" asp-route-id="@item.Fault_Code" class="btn btn-sm btn-danger">Xóa</a> *@
+                            <form asp-action="DeleteAjax" method="post">
+                                <input type="hidden" name="faultCode" value="@item.Fault_Code" />
+                                <button type="submit" class="btn btn-danger btn-sm me-1">Xóa</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                i++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="10" class="text-center text-muted">Không có dữ liệu</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,19 @@
+@{
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-2 bg-light">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <a asp-controller="Setting" asp-action="FactoryList">1-Danh sách nhà máy</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Setting" asp-action="DepartmentList">2-Danh sách phòng ban</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-10">
+        @RenderBody()
+    </div>
+</div>

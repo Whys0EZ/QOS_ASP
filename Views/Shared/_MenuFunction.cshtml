@@ -1,0 +1,49 @@
+@* @inject QOS.Services.IUserPermissionService _permissionService *@
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-2 bg-light">
+        <h3 class="mt-2">CÁC TÍNH NĂNG</h3>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <a asp-controller="Function" asp-action="F_ManageOperation">1- Quản Lý Công Đoạn</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Function" asp-action="F_ManageFault">2- Quản Lý DS Lỗi</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Function" asp-action="F_ThongSoBTP">3- Điểm Đo Thông Số BTP</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Function" asp-action="F_ThongSoTP">4- Điểm Đo Thông Số TP</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Function" asp-action="F_ThongSoDo">5- Điểm Đo Thông Số Đo</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Function" asp-action="F_MOStyleSize">6- ETS: MO-Style-Size</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Function" asp-action="F_TrackingContact">7- TRACKING - Group Contact List</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Function" asp-action="F_TrackingSetup">8- TRACKING - Infor Setup</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Function" asp-action="F_TrackingUpload">9- TRACKING - Upload Data</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Function" asp-action="F_OnlineFiles">10- Online Files</a>
+            </li>
+        </ul>
+        <hr/>
+    </div>
+    <div class="col-10">
+        
+        @RenderBody()
+        
+    </div>
+</div>

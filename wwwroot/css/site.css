@@ -1,0 +1,58 @@
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+/* font-size: 14px; */
+}
+
+body {
+  font-family: Arial, Verdana, Helvetica, Tahoma, 'Times New Roman';
+  background: white;
+  /* margin-bottom: 60px; */
+  padding-bottom: 40px;
+
+}
+label {
+  font-weight: bold;
+}
+
+.container-fluid main {
+    min-height: 60vh
+}
+.logo {
+    max-height: 40px;
+    
+}
+a {
+    text-decoration: none;
+}
+
+.nav-appmvc {
+  background: rgba(0, 0, 0, 0.8);
+}
+.nav-appmvc .text-dark {
+  color: white !important;
+}
+.nav-appmvc .text-dark:hover {
+  color: #258cfb !important;
+}
+.nav-appmvc .navbar-brand {
+  color: rgb(217, 58, 223) !important;
+}
+.nav-appmvc .navbar-brand:hover {
+  color: #258cfb !important;
+}
+.nav-appmvc .dropdown-toggle {
+  border-color: white !important;
+}
+.nav-appmvc .dropdown-toggle:hover {
+  color: #ffffff !important;
+}

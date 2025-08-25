@@ -1,0 +1,15 @@
+@model QOS.Models.FaultCode
+@{
+    ViewData["Title"] = "Xóa Lỗi";
+    Layout = "_MenuFunction";
+}
+
+<h2>Xóa Lỗi</h2>
+<p>Bạn có chắc muốn xóa lỗi: <strong>@Model.Fault_Code - @Model.Fault_Name_VN</strong> ?</p>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Fault_Code" />
+    <button type="submit" class="btn btn-danger">Xóa</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>
+<p class="text-muted mt-3">Lưu ý: Việc xóa sẽ không thể hoàn tác.</p>

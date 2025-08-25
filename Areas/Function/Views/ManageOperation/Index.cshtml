@@ -1,0 +1,64 @@
+
+@* @model IEnumerable<QOS.Areas.Function.Models.ManageOperation> *@
+@model QOS.Areas.Function.Models.SearchOperationViewModel
+
+@{
+    ViewData["Title"] = "Quản lý công đoạn";
+    Layout = "_MenuFunction";
+}
+
+<partial name="_AlertMessage" />
+<h2>Import dữ liệu từ Excel</h2>
+<div class="d-flex align-items-center gap-2">
+    <form asp-area="Function" asp-action="Search" asp-controller="ManageOperation" method="post" class="d-flex align-items-center gap-2 mb-0">
+        <label>MO</label>
+        <input type="text" id="mo" name="mo"   class="form-control" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <form asp-area="Function" asp-action="Upload" asp-controller="ManageOperation" enctype="multipart/form-data"
+        method="post" class="d-flex align-items-center gap-2 mb-0">
+        <input type="file" name="file" class="form-control" />
+        <button type="submit" class="btn btn-success">Upload</button>
+    </form>
+    <form asp-area="Function" asp-controller="ManageOperation" asp-action="Download" method="post" class="mb-0">
+        <button type="submit" class="btn btn-primary">ExportExcel</button>
+    </form>
+</div>
+
+<div class="mt-4">
+    @if (Model != null && Model.Results.Any())
+        {
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>MO</th>
+                        <th>Operation Code</th>
+                        <th>Operation VN</th>
+                        <th>Operation EN</th>
+                        <th>User Update</th>
+                        <th>Factory</th>
+                        <th>Last Update</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.Results)
+                {
+                    <tr>
+                        <td>@item.MO</td>
+                        <td>@item.Operation_Code</td>
+                        <td>@item.Operation_Name_VN</td>
+                        <td>@item.Operation_Name_EN</td>
+                        <td>@item.UserUpdate</td>
+                        <td>@item.CMD</td>
+                        <td>@item.LastUpdate?.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    else
+    {
+        <div class="mt-3 text-muted">Không có dữ liệu.</div>
+    }
+</div>

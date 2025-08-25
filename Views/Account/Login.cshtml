@@ -1,0 +1,25 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+<partial name="_AlertMessage" />
+<div class="row justify-content-center mt-5">
+    <div class="col-12 col-md-4">
+        <h2 class="mb-3 text-center">Đăng nhập</h2>
+        <form method="post" class="vstack gap-3">
+            <div>
+                <label asp-for="Username" class="form-label"></label>
+                <input asp-for="Username" class="form-control" placeholder="Username" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+            <div class="text-danger">@ViewBag.Error</div>
+            <div>Chưa có tài khoản? <a asp-controller="Account" asp-action="Register">Đăng ký</a></div>
+        </form>
+    </div>
+</div>

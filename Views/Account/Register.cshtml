@@ -1,0 +1,62 @@
+@model QOS.Models.UserEditViewModel
+@{
+    ViewData["Title"] = "Register";
+    var Factory =  new Dictionary<string, string>
+    {
+        { "1", "REG1" },
+        { "2", "REG2" },
+        { "3", "REG3" }
+    };
+
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-12 col-md-5">
+        <h2 class="mb-3 text-center">Đăng ký</h2>
+        <form method="post" class="vstack gap-3">
+            <div>
+                <label asp-for="FactoryID" class="form-label"></label>
+                <select asp-for="FactoryID" asp-items="Model.FactoryOptions" class="form-control">
+                    <option value="">-- Chọn Factory --</option>
+                </select>
+                <span asp-validation-for="FactoryID" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="TeamID" class="form-label"></label>
+                <select asp-for="TeamID" asp-items="Model.TeamOptions" class="form-control">
+                    <option value="">-- Chọn Team --</option>
+                </select>
+                <span asp-validation-for="TeamID" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Username" class="form-label"></label>
+                <input asp-for="Username" class="form-control" placeholder="Username" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Pass" class="form-label"></label>
+                <input asp-for="Pass" type="password" class="form-control" placeholder="Password" />
+                <span asp-validation-for="Pass" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="ConfirmPassword" class="form-label"></label>
+                <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm Password" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="FullName" class="form-label"></label>
+                <input asp-for="FullName" class="form-control" placeholder="Họ tên" />
+            </div>
+            <div>
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" placeholder="Email(Tùy chọn)" />
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success">Register</button>
+                <button type="button" class="btn btn-secondary" onclick="window.location='@Url.Action("Index", "Home")'">Cancel</button>
+            </div>
+            <div class="text-danger">@ViewBag.Error</div>
+            <div>Đã có tài khoản? <a asp-controller="Account" asp-action="Login">Đăng nhập</a></div>
+        </form>
+    </div>
+</div>

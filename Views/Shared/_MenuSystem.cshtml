@@ -1,0 +1,21 @@
+@{
+    Layout = "_Layout";
+}
+
+<div class="row">
+    
+    <div class="col-2 bg-light">
+        <h1>@ViewData["Title"]</h1>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <a asp-area="System" asp-controller="System" asp-action="Index">1-Quản lý người dùng</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-area="System" asp-controller="System" asp-action="ChangePassword">2-Thay đổi mật khẩu</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-10">
+        @RenderBody()
+    </div>
+</div>

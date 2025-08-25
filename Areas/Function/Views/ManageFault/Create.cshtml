@@ -1,0 +1,47 @@
+@model QOS.Models.FaultCode
+@{
+    ViewData["Title"] = "Thêm Lỗi";
+    Layout = "_MenuFunction";
+}
+
+<h2>Thêm Lỗi</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label>Nhà Máy</label>
+        <input asp-for="Factory" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label>Mã Lỗi</label>
+        <input asp-for="Fault_Code" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label>Loại Lỗi</label>
+        <input asp-for="Fault_Type" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label>Tên Tiếng Việt</label>
+        <input asp-for="Fault_Name_VN" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label>Tên Tiếng Anh</label>
+        <input asp-for="Fault_Name_EN" class="form-control" />
+    </div>
+    <div class="form-check">
+        <input type="checkbox" name="Form4_Active" value="true" class="form-check-input" @(Model?.Form4_Active == true ? "checked" : "") />
+        <input type="hidden" name="Form4_Active" value="false" />
+        <label class="form-check-label">Báo Cáo Đi Chuyền</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" name="Form6_Active" value="true" class="form-check-input" @(Model?.Form6_Active == true ? "checked" : "") />
+        <input type="hidden" name="Form6_Active" value="false" />
+        <label class="form-check-label">Báo Cáo Cuối Chuyền</label>
+    </div>
+    <div class="mb-3">
+        <label>Người Tạo</label>
+        <input type="text" class="form-control" value="@User.Identity?.Name" readonly />
+        <input type="hidden" asp-for="UserUpdate" value="@User.Identity?.Name" />
+    </div>
+    <button type="submit" class="btn btn-success">Lưu</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>
