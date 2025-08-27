@@ -5,6 +5,26 @@
       "PackagePath": "staticwebassets\\QOS.bundle.scp.css"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\QOS_Form_ThongSoThanhPham.xlsx",
+      "PackagePath": "staticwebassets\\Report\\QOS_Form_ThongSoThanhPham.xlsx"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\QOS_Form_ThongSoThanhPham_NIKE.xlsx",
+      "PackagePath": "staticwebassets\\Report\\QOS_Form_ThongSoThanhPham_NIKE.xlsx"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\QOS_Form_ThongSoThanhPham_SPL.xlsx",
+      "PackagePath": "staticwebassets\\Report\\QOS_Form_ThongSoThanhPham_SPL.xlsx"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\QOS_Form_ThongSoThanhPham_UQ.xlsx",
+      "PackagePath": "staticwebassets\\Report\\QOS_Form_ThongSoThanhPham_UQ.xlsx"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\QOS_Form_ThongSoThanhPham_US.xlsx",
+      "PackagePath": "staticwebassets\\Report\\QOS_Form_ThongSoThanhPham_US.xlsx"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

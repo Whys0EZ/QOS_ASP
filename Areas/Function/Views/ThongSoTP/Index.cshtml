@@ -1,0 +1,93 @@
+
+@* @model IEnumerable<QOS.Areas.Function.Models.ManageOperation> *@
+@* @model QOS.Areas.Function.Models.SearchOperationViewModel *@
+@model string
+
+@{
+    ViewData["Title"] = "Thông Số Đo";
+    Layout = "_MenuFunction";
+}
+
+<partial name="_AlertMessage" />
+<div class="continer my-3">
+    <h3 class="text-primary fw-bold">Thông Số Thành Phẩm</h3>
+
+    <div class="row align-items-center mb-3">
+        <!-- Bên trái -->
+        
+        <div class="col-md-6 d-flex flex-wrap gap-2">
+            <form asp-area="Function" asp-action="Upload" asp-controller="ThongSoTP" enctype="multipart/form-data" method="post" class="d-flex align-items-center gap-2 mb-0">
+                <select class="form-select w-auto" id="FormType" name="FormType">
+                    <option>SPL</option>
+                    <option>NIKE</option>
+                    <option>UQ</option>
+                    <option>US</option>
+                </select>
+
+                <a href="" id="downloadForm" class="text-decoration-none pt-2">(Tải mẫu Form)</a>
+
+                <input type="file" class="form-control w-auto" />
+
+                <button class="btn btn-success" >
+                    <i class="bi bi-upload"></i> Upload
+                </button>
+            </form>
+        </div>
+        
+        <!-- Bên phải -->
+        <div class="col-md-6 d-flex justify-content-end flex-wrap gap-2">
+            <form asp-area="Function" asp-action="Search" asp-controller="ThongSoTP" method="post" class="d-flex align-items-center gap-2 mb-0">
+                <select class="form-select w-auto" id="FactoryID" name="FactoryID">
+                    <option>REG2</option>
+                    <option>REG1</option>
+                    <option>REG3</option>
+                </select>
+
+                <select class="form-select w-auto" id="TypeName" name="TypeName">
+                    <option>ÁO</option>
+                    <option>QUẦN</option>
+                    <option>VÁY</option>
+                    <option>JACKETS</option>
+                </select>
+
+                <input type="text" class="form-control w-auto" placeholder="MO; Style" id="Search_V" name="Search_V" />
+
+                <button class="btn btn-warning">
+                    <i class="bi bi-search"></i> Check
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive">
+    @Html.Raw(Model)
+</div>
+<script>
+    document.getElementById("downloadForm").addEventListener("click", function (e) {
+        e.preventDefault(); // ngăn link # reload trang
+        const formType = document.getElementById("FormType").value;
+        let fileName = "";
+
+        switch (formType) {
+            case "SPL":
+                fileName = "QOS_Form_ThongSoThanhPham_SPL.xlsx";
+                break;
+            case "NIKE":
+                fileName = "QOS_Form_ThongSoThanhPham_NIKE.xlsx";
+                break;
+            case "UQ":
+                fileName = "QOS_Form_ThongSoThanhPham_UQ.xlsx";
+                break;
+            case "US":
+                fileName = "QOS_Form_ThongSoThanhPham_US.xlsx";
+                break;
+            default:
+                alert("Chưa có form cho loại này!");
+                return;
+        }
+
+        // Tải file từ thư mục wwwroot/Report/
+        window.location.href = "/Report/" + fileName;
+    });
+</script>

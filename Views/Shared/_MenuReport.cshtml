@@ -2,8 +2,43 @@
     Layout = "_Layout";
 }
 
-<div class="row">
-    <div class="col-2 bg-light">
+<div class="container-fluid">
+    <div class="row">
+        <!-- Nút bấm mở menu -->
+        <div class="col-12 d-md-none mb-2">
+            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuSidebar">
+                ☰ Menu
+            </button>
+        </div>
+
+        <!-- Sidebar cho desktop (luôn hiện) -->
+        <div class="col-md-2 bg-light d-none d-md-block">
+            <h3 class="mt-2">BÁO CÁO</h3>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <a asp-controller="Report" asp-action="ManageOperation">1-Báo Cáo công đoạn</a>
+                </li>
+                <li class="list-group-item">
+                    <a asp-controller="Report" asp-action="ManageFeature">2-Báo Cáo tính năng</a>
+                </li>
+            </ul>
+        </div>
+
+
+        <!-- Nội dung chính -->
+        <div class="col-md-10">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+<!-- Offcanvas cho mobile -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="menuSidebar">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">BÁO CÁO</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
                 <a asp-controller="Report" asp-action="ManageOperation">1-Báo Cáo công đoạn</a>
@@ -12,8 +47,5 @@
                 <a asp-controller="Report" asp-action="ManageFeature">2-Báo Cáo tính năng</a>
             </li>
         </ul>
-    </div>
-    <div class="col-10">
-        @RenderBody()
     </div>
 </div>

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using QOS.Services; // namespace chứa IUserPermissionService
 
-namespace QOS.Areas.System.Filters
+namespace QOS.Areas.SystemAdmin.Filters
 {
     public class PermissionAttribute : Attribute, IAuthorizationFilter
     {

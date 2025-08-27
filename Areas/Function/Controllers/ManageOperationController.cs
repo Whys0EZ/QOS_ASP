@@ -1,5 +1,7 @@
+using System.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using OfficeOpenXml;
 using QOS.Areas.Function.Models;
 using QOS.Data;
@@ -14,12 +16,14 @@ namespace QOS.Areas.Function.Controllers
         private readonly ILogger<ManageOperationController> _logger;
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _env;
+        private readonly IConfiguration _configuration;
 
-        public ManageOperationController(ILogger<ManageOperationController> logger, AppDbContext context, IWebHostEnvironment env)
+        public ManageOperationController(ILogger<ManageOperationController> logger, AppDbContext context, IWebHostEnvironment env, IConfiguration configuration)
         {
             _logger = logger;
             _context = context;
             _env = env;
+            _configuration = configuration;
         }
         [TempData]
         public string? MessageStatus { get; set; } = "";
@@ -166,6 +170,48 @@ namespace QOS.Areas.Function.Controllers
             return RedirectToAction("Index", new { mo = vm.Results.FirstOrDefault()?.MO });
         }
 
+        public IActionResult Download()
+        {
+            // 1. Kết nối DB
+            string? connString = _configuration.GetConnectionString("DefaultConnection");
+            if (string.IsNullOrEmpty(connString))
+            {
+                throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
+            }
+            using var conn = new SqlConnection(connString);
+            using var cmd = new SqlCommand("exec Json_Get_User_Information '226317','REG'", conn); // gọi procedure
+            using var da = new SqlDataAdapter(cmd);
+            var dt = new DataTable();
+            da.Fill(dt);
 
+            // 2. Tạo Excel bằng EPPlus
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using var package = new ExcelPackage();
+            var ws = package.Workbook.Worksheets.Add("Data");
+
+            // Header
+            for (int col = 0; col < dt.Columns.Count; col++)
+            {
+                ws.Cells[1, col + 1].Value = dt.Columns[col].ColumnName;
+            }
+
+            // Data
+            for (int row = 0; row < dt.Rows.Count; row++)
+            {
+                for (int col = 0; col < dt.Columns.Count; col++)
+                {
+                    ws.Cells[row + 2, col + 1].Value = dt.Rows[row][col];
+                }
+            }
+
+            ws.Cells[ws.Dimension.Address].AutoFitColumns();
+
+            // 3. Xuất file
+            var stream = new MemoryStream(package.GetAsByteArray());
+            string fileName = $"Report_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
     }
+
+
 }

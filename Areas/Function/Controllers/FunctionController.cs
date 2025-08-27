@@ -49,7 +49,7 @@ namespace QOS.Controllers
         [Permission("A_F4")]
         public IActionResult F_ThongSoTP()
         {
-            return View();
+            return RedirectToAction("Index", "ThongSoTP");
         }
         [Permission("A_F4")]
         public IActionResult F_ThongSoDo()

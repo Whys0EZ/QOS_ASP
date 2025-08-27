@@ -1,0 +1,44 @@
+@model IEnumerable<QOS.Models.Factory_List>
+@{
+    Layout = "_MenuSetting";
+    ViewData["Title"] = "DS nhà máy";
+}
+<partial name="_AlertMessage" />
+<div>
+    <h2>Danh sách nhà máy</h2>
+
+    <a asp-action="CreateFactory" class="btn btn-primary">+ Tạo mới</a>
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-bordered table-striped mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>STT</th>
+                    <th>Mã nhà máy</th>
+                    <th>Tên nhà máy</th>
+                    <th>Ghi chú</th>
+                    <th>Người tạo</th>
+                    <th>Ngày tạo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var i = 1;
+                }
+                @foreach (var fac in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@fac.FactoryID</td>
+                        <td>@fac.FactoryName</td>
+                        <td>@fac.Remark</td>
+                        <td>@fac.UserUpdate</td>
+                        <td>@fac.LastUpdate</td>
+                    </tr>
+                    i++;
+                }
+
+            </tbody>
+        </table>
+    }
+</div>

@@ -66,8 +66,8 @@ app.MapAreaControllerRoute(
 );
 app.MapAreaControllerRoute(
     name: "system",
-    areaName: "System",
-    pattern: "System/{controller=System}/{action=Index}/{id?}"
+    areaName: "SystemAdmin",
+    pattern: "SystemAdmin/{controller=SystemAdmin}/{action=Index}/{id?}"
 );
 app.MapControllerRoute(
     name: "default",

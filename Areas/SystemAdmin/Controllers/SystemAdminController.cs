@@ -13,13 +13,13 @@ namespace QOS.Controllers
 {
     [Authorize] // chỉ khi login mới được vào
     // [Authorize(Roles = "Admin")]
-    [Area("System")]
-    public class SystemController : Controller
+    [Area("SystemAdmin")]
+    public class SystemAdminController : Controller
     {
         private readonly AppDbContext _context;
         private readonly IUserPermissionService _permissionService;
 
-        public SystemController(AppDbContext context, IUserPermissionService permissionService)
+        public SystemAdminController(AppDbContext context, IUserPermissionService permissionService)
         {
             _context = context;
             _permissionService = permissionService;

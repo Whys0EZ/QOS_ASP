@@ -11,7 +11,7 @@ namespace QOS.Areas.Function.Models
         public int Id { get; set; }
 
         [MaxLength(100)]
-        public string? MO { get; set; }
+        public required string MO { get; set; }
 
         [MaxLength(100)]
         public string? Operation_Code { get; set; }

@@ -1,0 +1,45 @@
+@model IEnumerable<QOS.Models.Team_List>
+@{
+    Layout = "_MenuSetting";
+    ViewData["Title"] = "DS phòng ban";
+}
+
+<partial name="_AlertMessage" />
+<div>
+    <h2>Danh sách phòng ban</h2>
+
+    <a asp-action="CreateDepartment" class="btn btn-primary">+ Tạo mới</a>
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-bordered table-striped mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>STT</th>
+                    <th>Mã phòng ban</th>
+                    <th>Tên Phòng ban</th>
+                    <th>Ghi chú</th>
+                    <th>Người tạo</th>
+                    <th>Ngày tạo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var i = 1;
+                }
+                @foreach (var dep in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@dep.TeamID</td>
+                        <td>@dep.TeamName</td>
+                        <td>@dep.Remark</td>
+                        <td>@dep.UserUpdate</td>
+                        <td>@dep.LastUpdate</td>
+                    </tr>
+                    i++;
+                }
+
+            </tbody>
+        </table>
+    }
+</div>

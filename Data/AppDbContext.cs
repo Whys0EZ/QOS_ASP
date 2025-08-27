@@ -27,5 +27,7 @@ namespace QOS.Data
         public DbSet<Team_List> Team_List { get; set; }
 
         public DbSet<Factory_List> Factory_List { get; set; }
+
+        public DbSet<Unit_List> Unit_List { get; set; }
     }
 }

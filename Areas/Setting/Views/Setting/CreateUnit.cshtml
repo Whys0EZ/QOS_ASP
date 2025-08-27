@@ -1,0 +1,47 @@
+@model QOS.Models.Unit_List
+@{
+    Layout = "_MenuSetting";
+    ViewData["Title"] = "Thêm Xưởng";
+}
+
+<div class=" me-3 ">
+    <h2>Thêm Xưởng</h2>
+
+    <form asp-action="CreateUnit" method="post" class="mb-3">
+        <div class="form-group mb-2">
+            <label>Factory</label>
+            <input asp-for="Factory" class="form-control" />
+        </div>
+        <div class="form-group mb-2">
+            <label>Zone</label>
+            <input asp-for="Zone" class="form-control" />
+        </div>
+        <div class="form-group mb-2">
+            <label>Block</label>
+            <input asp-for="Block" class="form-control" />
+        </div>
+        <div class="form-group mb-2">
+            <label>Unit</label>
+            <input asp-for="Unit" class="form-control" />
+        </div>
+        <div class="form-group mb-2">
+            <label>Act</label>
+            <input asp-for="Act" class="form-control" />
+        </div>
+        <div class="form-group mb-2">
+            <label>ETS_SUB</label>
+            <input asp-for="ETS_SUB" class="form-control" />
+        </div>
+        @* <div class="form-group">
+            <label>Password</label>
+            <input asp-for="Pass" type="password" class="form-control" />
+        </div>
+         *@
+
+        
+        
+        <button type="submit" class="btn btn-success mt-4">Save</button>
+        <a asp-action="UnitList" class="btn btn-secondary mt-4">Back</a>
+
+    </form>
+</div>

@@ -1,0 +1,49 @@
+@model IEnumerable<QOS.Models.Unit_List>
+@{
+    Layout ="_MenuSetting";
+    ViewData["Title"] ="DS xưởng";
+}
+
+<partial name="_AlertMessage" />
+<div>
+    <h2>Danh sách Xưởng</h2>
+
+    <a asp-action="CreateUnit" class="btn btn-primary">+ Tạo mới</a>
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-bordered table-striped mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>STT</th>
+                    <th>Factory</th>
+                    <th>Zone</th>
+                    <th>Block</th>
+                    <th>Unit</th>
+                    <th>Act</th>
+                    <th>Date_From</th>
+                    <th>ETS_SUB</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var i = 1;
+                }
+                @foreach (var u in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@u.Factory</td>
+                        <td>@u.Zone</td>
+                        <td>@u.Block</td>
+                        <td>@u.Unit</td>
+                        <td>@u.Act</td>
+                        <td>@u.Effect_Date_From</td>
+                        <td>@u.ETS_SUB</td>
+                    </tr>
+                    i++;
+                }
+
+            </tbody>
+        </table>
+    }
+</div>

@@ -20,8 +20,8 @@ public class HomeController : Controller
 
             ViewData["MainMenu"] = string.IsNullOrEmpty(main) ? "" : main;
 
-            Console.WriteLine("IsAuthenticated: " + User.Identity?.IsAuthenticated);
-            Console.WriteLine("Claims: " + string.Join(",", User.Claims.Select(c => $"{c.Type}={c.Value}")));
+            // Console.WriteLine("IsAuthenticated: " + User.Identity?.IsAuthenticated);
+            // Console.WriteLine("Claims: " + string.Join(",", User.Claims.Select(c => $"{c.Type}={c.Value}")));
 
             return View();
         }

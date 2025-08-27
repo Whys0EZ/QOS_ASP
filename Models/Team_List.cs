@@ -1,11 +1,13 @@
 using System.ComponentModel.DataAnnotations;
-
-public class Team_List
+namespace QOS.Models
 {
-    [Key]
-    public required string TeamID { get; set; }
-    public string? Remark { get; set; }
-    public required string TeamName { get; set; }
-    public string? UserUpdate { get; set; }
-    public DateTime LastUpdate { get; set; }
+    public class Team_List
+    {
+        [Key]
+        public required string TeamID { get; set; }
+        public string? Remark { get; set; }
+        public required string TeamName { get; set; }
+        public string? UserUpdate { get; set; }
+        public DateTime? LastUpdate { get; set; }
+    }
 }
