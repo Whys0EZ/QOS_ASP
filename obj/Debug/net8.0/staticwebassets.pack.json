@@ -269,6 +269,14 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\upload\\ThongSoThanhPham\\EXCEL\\20250827140616_admin_2025Jul31130143_272684_5v2509069.xlsx",
+      "PackagePath": "staticwebassets\\upload\\ThongSoThanhPham\\EXCEL\\20250827140616_admin_2025Jul31130143_272684_5v2509069.xlsx"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\upload\\ThongSoThanhPham\\IMG\\5V2509069.png",
+      "PackagePath": "staticwebassets\\upload\\ThongSoThanhPham\\IMG\\5V2509069.png"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.QOS.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

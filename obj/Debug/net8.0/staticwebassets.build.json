@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "jQ5qKRpY9E0FO2OdJWoSZaVLQK3KYYvcLYxCQjq24SU=",
+  "Hash": "cV1mjD9+Y/xC2LWqK0KF3socvdzRF7gNPY1AAZMk+hE=",
   "Source": "QOS",
   "BasePath": "_content/QOS",
   "Mode": "Default",
@@ -2447,6 +2447,44 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Report\\QOS_Form_ThongSoThanhPham.xlsx"
+    },
+    {
+      "Identity": "D:\\C_Sharp\\QOS\\wwwroot\\upload\\ThongSoThanhPham\\EXCEL\\20250827140616_admin_2025Jul31130143_272684_5v2509069.xlsx",
+      "SourceId": "QOS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\C_Sharp\\QOS\\wwwroot\\",
+      "BasePath": "_content/QOS",
+      "RelativePath": "upload/ThongSoThanhPham/EXCEL/20250827140616_admin_2025Jul31130143_272684_5v2509069.xlsx",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\upload\\ThongSoThanhPham\\EXCEL\\20250827140616_admin_2025Jul31130143_272684_5v2509069.xlsx"
+    },
+    {
+      "Identity": "D:\\C_Sharp\\QOS\\wwwroot\\upload\\ThongSoThanhPham\\IMG\\5V2509069.png",
+      "SourceId": "QOS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\C_Sharp\\QOS\\wwwroot\\",
+      "BasePath": "_content/QOS",
+      "RelativePath": "upload/ThongSoThanhPham/IMG/5V2509069.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\upload\\ThongSoThanhPham\\IMG\\5V2509069.png"
     }
   ]
 }

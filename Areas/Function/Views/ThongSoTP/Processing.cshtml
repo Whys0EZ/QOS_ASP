@@ -1,0 +1,12 @@
+<h3>Đang xử lý dữ liệu, vui lòng chờ…</h3>
+<div class="spinner-border text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+
+<script>
+    // Sau khi load xong trang, gọi API để xử lý
+    window.onload = function() {
+        fetch('/Upload/ProcessExcel?tempFile=@ViewBag.TempFile&FactoryID=@ViewBag.FactoryID&Search_V=@ViewBag.Search_V')
+            .then(r => window.location.href = '/Upload/Index?FactoryID=@ViewBag.FactoryID&Search_V=@ViewBag.Search_V');
+    }
+</script>

@@ -8,6 +8,7 @@ using QOS.Areas.Function.Models;
 using QOS.Data;
 using System.IO;
 using System.Drawing;
+using OfficeOpenXml.Drawing;
 
 namespace QOS.Areas.Function.Controllers
 {
@@ -30,11 +31,18 @@ namespace QOS.Areas.Function.Controllers
         [TempData]
         public string? MessageStatus { get; set; } = "";
 
+        // public IActionResult Index()
+        // {
+
+        //     return View();
+        // }
+        [HttpGet,HttpPost]
         public IActionResult Index()
         {
             
             return View();
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Upload(IFormFile Upload_EXCEL, string FormType, string FactoryID, string TypeName)
@@ -45,6 +53,8 @@ namespace QOS.Areas.Function.Controllers
                 return RedirectToAction("Index");
             }
             string UMSS = "NG";
+            FactoryID = "REG2";
+            string Search_V = "";
             // 1. Lưu file Excel tạm
             string uploadsFolder = Path.Combine(_env.WebRootPath, "upload/ThongSoThanhPham/EXCEL");
             if (!Directory.Exists(uploadsFolder)) Directory.CreateDirectory(uploadsFolder);
@@ -55,6 +65,7 @@ namespace QOS.Areas.Function.Controllers
             {
                 await Upload_EXCEL.CopyToAsync(stream);
             }
+            bool success = true;
 
             try
             {
@@ -67,6 +78,7 @@ namespace QOS.Areas.Function.Controllers
                     string Buyer = ws.Cells[2, 2].Text.Trim();
                     string Remark = ws.Cells[2, 3].Text.Trim();
                     string MO = ws.Cells[3, 2].Text.Trim();
+                    Search_V = MO;
                     string StyleName = ws.Cells[4, 2].Text.Trim();
                     string SMPL = ws.Cells[5, 2].Text.Trim();
                     string Unit = ws.Cells[6, 2].Text.Trim();
@@ -80,6 +92,7 @@ namespace QOS.Areas.Function.Controllers
                     string Grade_Rule_Template = ws.Cells[3, 27].Text.Trim();
                     string Sample_color = ws.Cells[4, 27].Text.Trim();
                     string Date_Insert = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    Console.WriteLine("MO" + MO);
 
                     // 1. Kết nối DB
                     string? connString = _configuration.GetConnectionString("DefaultConnection");
@@ -107,7 +120,43 @@ namespace QOS.Areas.Function.Controllers
                         }
 
                         // 4. Insert Title Report
-                        string imgPath = $"/upload/ThongSoThanhPham/IMG/{StyleName}.png"; // TODO: xử lý ảnh nếu có
+                        // string imgPath = $"/upload/ThongSoThanhPham/IMG/{StyleName}.png"; // TODO: xử lý ảnh nếu có
+                        // Folder lưu ảnh
+                        string outputFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "upload", "ThongSoThanhPham", "IMG");
+                        if (!Directory.Exists(outputFolder))
+                        {
+                            Directory.CreateDirectory(outputFolder);
+                        }
+
+                        string img_name = "";
+
+                        foreach (var drawing in ws.Drawings)
+                        {
+                            if (drawing is ExcelPicture pic)
+                            {
+                                // Lấy dữ liệu ảnh dạng byte[]
+                                byte[] imageBytes = pic.Image.ImageBytes;    // ảnh dưới dạng byte[]
+                                var pictureType = pic.Image.Type;           // ePictureType? (ví dụ Png, Jpeg)
+
+                                // Mapping extension
+                                string extension = pictureType switch
+                                {
+                                    OfficeOpenXml.Drawing.ePictureType.Jpg => ".jpg",
+                                    OfficeOpenXml.Drawing.ePictureType.Png => ".png",
+                                    OfficeOpenXml.Drawing.ePictureType.Gif => ".gif",
+                                    _ => ".png"
+                                };
+
+                                // Ghi file
+                                string filePath_Img = Path.Combine(outputFolder, $"{StyleName}{extension}");
+                                // File.WriteAllBytes(filePath_Img, imageBytes);
+                                System.IO.File.WriteAllBytes(filePath_Img, imageBytes);
+
+                                img_name = $"../upload/ThongSoThanhPham/IMG/{StyleName}{extension}";
+                                // Ở đây bạn có thể gọi procedure insert DB giống như PHP
+                            }
+                        }
+
                         string sqlInsert = @"INSERT INTO Form8_ThongSo_TP_Title_Report
                                             (Style_No, Customer, Sample_Type, Sample_color, Season, Board, Dev_Style_Name, Category, Development_Size_Range, Fit_Intent, Grade_Rule_Template, Img, UserUpdate, LastUpdate)
                                             VALUES (@Style_No,@Customer,@Sample_Type,@Sample_color,@Season,@Board,@Dev_Style_Name,@Category,@Development_Size_Range,@Fit_Intent,@Grade_Rule_Template,@Img,@UserUpdate,@LastUpdate)";
@@ -124,7 +173,7 @@ namespace QOS.Areas.Function.Controllers
                             cmd2.Parameters.AddWithValue("@Development_Size_Range", Development_Size_Range);
                             cmd2.Parameters.AddWithValue("@Fit_Intent", Fit_Intent);
                             cmd2.Parameters.AddWithValue("@Grade_Rule_Template", Grade_Rule_Template);
-                            cmd2.Parameters.AddWithValue("@Img", imgPath);
+                            cmd2.Parameters.AddWithValue("@Img", img_name);
                             cmd2.Parameters.AddWithValue("@UserUpdate", User.Identity?.Name ?? "system");
                             cmd2.Parameters.AddWithValue("@LastUpdate", DateTime.Now);
 
@@ -199,8 +248,8 @@ namespace QOS.Areas.Function.Controllers
                                         string tolSize = "Tol.";
                                         string tolValue = "0"; // mặc định
 
-                                        string col3 = ws.Cells[row, 3].Text.Trim(); // cột C
-                                        string col4 = ws.Cells[row, 4].Text.Trim(); // cột D
+                                        string col3 = ws.Cells[row, 4].Text.Trim(); // cột D
+                                        string col4 = ws.Cells[row, 5].Text.Trim(); // cột E
 
                                         if (!string.IsNullOrEmpty(col3))
                                         {
@@ -270,9 +319,10 @@ namespace QOS.Areas.Function.Controllers
                                     query_MO.Parameters.AddWithValue("@MO", MO);
                                     query_MO.Parameters.AddWithValue("@StyleName", StyleName);
                                     query_MO.Parameters.AddWithValue("@Color", SMPL);
-
+                                    Console.WriteLine("MO" + query_MO);
                                     await query_MO.ExecuteNonQueryAsync();
                                 }
+
                             }
                             UMSS = "OK";
                             MessageStatus = "Upload success!";
@@ -285,12 +335,15 @@ namespace QOS.Areas.Function.Controllers
 
                     }
                 }
+                UMSS = "OK";
+                MessageStatus = "Upload success!";
+                success = true;
 
-                
             }
             catch (Exception ex)
             {
                 MessageStatus = "Upload False! " + ex.Message;
+                success = false;
             }
             finally
             {
@@ -299,7 +352,9 @@ namespace QOS.Areas.Function.Controllers
                     System.IO.File.Delete(filePath);
             }
 
-            return RedirectToAction("Index");
+            Console.WriteLine("Factory :" + FactoryID + " Search: " + Search_V);
+            // return RedirectToAction("Search" ,new {FactoryID =FactoryID, Search_V = Search_V});
+            return Json(new { success , message = MessageStatus , mo = Search_V});
         }
 
         public IActionResult Search(string FactoryID, string Search_V, int Page_No = 1, int Rows_Page = 20)
@@ -399,7 +454,8 @@ namespace QOS.Areas.Function.Controllers
             }
 
             tb_string.AppendLine("</tbody></table>");
-            return View("Index", tb_string.ToString());
+            // return View("Index", tb_string.ToString());
+            return PartialView("_ResultTable", tb_string.ToString());
         }
 
 

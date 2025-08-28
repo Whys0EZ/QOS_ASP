@@ -58,6 +58,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRnVuY3Rpb25cVmlld3NcVGhvbmdTb1RQXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/C_Sharp/QOS/Areas/Function/Views/ThongSoTP/Processing.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRnVuY3Rpb25cVmlld3NcVGhvbmdTb1RQXFByb2Nlc3NpbmcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Function/Views/ThongSoTP/_ResultTable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRnVuY3Rpb25cVmlld3NcVGhvbmdTb1RQXF9SZXN1bHRUYWJsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/C_Sharp/QOS/Areas/Function/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRnVuY3Rpb25cVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
