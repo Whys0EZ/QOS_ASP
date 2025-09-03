@@ -37,6 +37,10 @@
       "PackagePath": "staticwebassets\\images\\qos_icon.png"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\jquery-3.6.0.min.js",
+      "PackagePath": "staticwebassets\\js\\jquery-3.6.0.min.js"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

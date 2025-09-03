@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "cV1mjD9+Y/xC2LWqK0KF3socvdzRF7gNPY1AAZMk+hE=",
+  "Hash": "/pPrq7efDJ/LCPXhoz0F+aE0FW7Sq1ot1kBVCC0KxLI=",
   "Source": "QOS",
   "BasePath": "_content/QOS",
   "Mode": "Default",
@@ -1250,6 +1250,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\qos_icon.png"
+    },
+    {
+      "Identity": "D:\\C_Sharp\\QOS\\wwwroot\\js\\jquery-3.6.0.min.js",
+      "SourceId": "QOS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\C_Sharp\\QOS\\wwwroot\\",
+      "BasePath": "_content/QOS",
+      "RelativePath": "js/jquery-3.6.0.min.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\jquery-3.6.0.min.js"
     },
     {
       "Identity": "D:\\C_Sharp\\QOS\\wwwroot\\js\\site.js",

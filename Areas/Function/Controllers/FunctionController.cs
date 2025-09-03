@@ -44,7 +44,7 @@ namespace QOS.Controllers
         [Permission("A_F3")]
         public IActionResult F_ThongSoBTP()
         {
-            return View();
+            return RedirectToAction("Index", "ThongSoBTP");
         }
         [Permission("A_F4")]
         public IActionResult F_ThongSoTP()
@@ -54,32 +54,32 @@ namespace QOS.Controllers
         [Permission("A_F4")]
         public IActionResult F_ThongSoDo()
         {
-            return View();
+            return RedirectToAction("Index", "ThongSoDo");
         }
         [Permission("A_F5")]
         public IActionResult F_MOStyleSize()
         {
-            return View();
+            return RedirectToAction("Index", "ETSMoStyle");
         }
         
         public IActionResult F_OnlineFiles()
         {
-            return View();
+            return RedirectToAction("Index", "OnlineFile");
         }
         [Permission("A_F6")]
         public IActionResult F_TrackingContact()
         {
-            return View();
+            return RedirectToAction("Index", "TrackingContact");
         }
         [Permission("A_F6")]
         public IActionResult F_TrackingSetup()
         {
-            return View();
+            return RedirectToAction("Index", "TrackingSetup");
         }
         [Permission("A_F6")]
         public IActionResult F_TrackingUpload()
         {
-            return View();
+            return RedirectToAction("Index", "TrackingUpload");
         }
 
         public IActionResult AccessDenied()

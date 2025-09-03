@@ -1,0 +1,105 @@
+<div class="modal fade" id="trackingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl"> <!-- modal-xl để rộng -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tracking Module Setup</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="trackingForm">
+
+                    <div class="mb-3">
+                        <label class="form-label">ModuleName</label>
+                        <input type="text" class="form-control" name="ModuleName" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">UpdateForm StartRow</label>
+                        <input type="number" class="form-control" name="UpdateForm_StartRow" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Remark</label>
+                        <textarea class="form-control" name="Remark"></textarea>
+                    </div>
+
+                    <hr />
+
+                    <!-- Table setup -->
+                    <h5 class="bg-info">Setup for Upload Data</h5>
+                    <table class="table table-bordered table-sm" id="tblInfor">
+                        <thead class="table-success">
+                            <tr>
+                                <th>No</th>
+                                <th>SQL Column</th>
+                                <th>Name</th>
+                                <th>Index</th>
+                                <th>DataType</th>
+                                <th>Opt</th>
+                                <th>Column</th>
+                                <th>Remark</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @* @for (int i = 1; i <= 15; i++)
+
+                            {
+                                var index = i.ToString("D2");
+                                <tr>
+                                    <td>@i</td>
+                                    <td><input class="form-control form-control-sm" name="Infor.SqlColumn[@i]"/></td>
+                                    <td><input class="form-control form-control-sm" name="Infor.Name[@i]" /></td>
+                                    <td><input class="form-control form-control-sm" name="Infor.Index[@i]" /></td>
+                                    <td><input class="form-control form-control-sm" name="Infor.DataType[@i]" /></td>
+                                    <td><input class="form-control form-control-sm" name="Infor.Opt[@i]" /></td>
+                                    <td><input class="form-control form-control-sm" name="Infor.Column[@i]" /></td>
+                                    <td><input class="form-control form-control-sm" name="Infor.Remark[@i]" /></td>
+                                </tr>
+                            } *@
+                        </tbody>
+                    </table>
+
+                    <!-- Table Result  -->
+                    <h5 class="bg-info">Setup for Result Data</h5>
+                    <table class="table table-bordered table-sm" id="tblResult">
+                        <thead class="table-success">
+                            <tr>
+                                <th>No</th>
+                                <th>SQL Column</th>
+                                <th>Name</th>
+                                <th>Index</th>
+                                <th>DataType</th>
+                                <th>Selection Data</th>
+
+                                <th>Remark</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @* @for (int i = 1; i <= 5; i++)
+                            {
+                                var index = i.ToString("D2");
+                                <tr>
+                                    <td>@i</td>
+                                    <td><input class="form-control form-control-sm" name="Result.SqlColumn[@i]" value="Infor_@index" /></td>
+                                    <td><input class="form-control form-control-sm" name="Result.Name[@i]" /></td>
+                                    <td><input class="form-control form-control-sm" name="Result.Index[@i]" /></td>
+                                    <td><input class="form-control form-control-sm" name="Result.DataType[@i]" /></td>
+                                    <td><input class="form-control form-control-sm" name="Result.Selection[@i]" /></td>
+                                    <td><input class="form-control form-control-sm" name="Result.Remark[@i]" /></td>
+                                </tr>
+                            } *@
+                        </tbody>
+                    </table>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="btnSave" class="btn btn-success">Save</button>
+                <button type="button" id="btnDelete" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

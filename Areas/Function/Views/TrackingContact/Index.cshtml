@@ -1,0 +1,162 @@
+@model IEnumerable<QOS.Areas.Function.Models.GroupContactList>
+@{
+    ViewData["Title"] = "Tracking Contact";
+    Layout = "_MenuFunction";
+}
+
+<partial name="_AlertMessage" />
+<div class="continer my-3">
+    
+
+<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#groupModal">Thêm Group</button>
+<div>
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-bordered table-striped mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>STT</th>
+                    <th>ModuleName</th>
+                    <th>GroupID</th>
+                    <th>GroupName</th>
+                    <th>ContactList</th>
+                    <th>UserUpdate</th>
+                    <th>Remark</th>
+                    <th>LastUpdate</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var i = 1;
+                }
+                @foreach (var u in Model)
+                {
+                    <tr class="row-click" 
+                    data-stt="@u.STT"
+                    data-modulename="@u.ModuleName"
+                    data-groupid="@u.GroupID"
+                    data-groupname="@u.GroupName"
+                    data-contactlist="@u.ContactList"
+                    data-userupdate="@u.UserUpdate"
+                    data-remark="@u.Remark"
+                    data-lastupdate="@u.LastUpdate">
+                    <td>@u.STT</td>
+                    <td>@u.ModuleName</td>
+                    <td>@u.GroupID</td>
+                    <td>@u.GroupName</td>
+                    <td>@u.ContactList</td>
+                    <td>@u.UserUpdate</td>
+                    <td>@u.Remark</td>
+                    <td>@u.LastUpdate</td>
+                    </tr>
+                    i++;
+                }
+
+            </tbody>
+        </table>
+    }
+</div>
+
+<!-- Popup Modal -->
+<div class="modal fade" id="groupModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Sửa Group Contact</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="groupForm">
+          <input type="hidden" name="GroupID_old" id="GroupID_old" />
+
+          <div class="mb-3">
+            <label>STT</label>
+            <input type="text" class="form-control" name="STT" id="STT" />
+          </div>
+          <div class="mb-3">
+            <label>ModuleName</label>
+            <input type="text" class="form-control" name="ModuleName" id="ModuleName" />
+          </div>
+          <div class="mb-3">
+            <label>GroupID</label>
+            <input type="text" class="form-control" name="GroupID" id="GroupID" />
+          </div>
+          <div class="mb-3">
+            <label>GroupName</label>
+            <input type="text" class="form-control" name="GroupName" id="GroupName" />
+          </div>
+          <div class="mb-3">
+            <label>ContactList</label>
+            <textarea class="form-control" name="ContactList" id="ContactList"></textarea>
+          </div>
+          <div class="mb-3">
+            <label>Remark</label>
+            <textarea class="form-control" name="Remark" id="Remark"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btnSave" class="btn btn-success">Save</button>
+        <button type="button" id="btnDelete" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+@* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script>
+
+$(document).ready(function () {
+        // Reset form khi nhấn nút Thêm Group
+    $("button[data-bs-target='#groupModal']").click(function () {
+        $("#groupForm")[0].reset();  // reset form
+        $("#GroupID_old").val("");   // clear hidden key để biết là đang thêm mới
+        $("#btnDelete").hide();      // ẩn nút Delete khi thêm
+        $(".modal-title").text("Thêm Group Contact");
+    });
+    // Khi click vào dòng
+    $(".row-click").click(function () {
+        var row = $(this);
+
+        $("#STT").val(row.data("stt"));
+        $("#ModuleName").val(row.data("modulename"));
+        $("#GroupID").val(row.data("groupid"));
+        $("#GroupName").val(row.data("groupname"));
+        $("#ContactList").val(row.data("contactlist"));
+        $("#Remark").val(row.data("remark"));
+
+        $("#GroupID_old").val(row.data("groupid")); // lưu lại để update
+        $("#btnDelete").show();   // 👈 hiện nút Delete khi edit
+        $(".modal-title").text("Sửa Group Contact"); // đổi title luôn cho rõ
+        $("#groupModal").modal("show");
+    });
+
+    // Save
+    $("#btnSave").click(function () {
+        $.post('@Url.Action("Save","TrackingContact",new {area="Function"})',
+            $("#groupForm").serialize(),
+            function (res) {
+                alert(res.message);
+                if (res.success) {
+                    $("#groupModal").modal("hide");
+                    location.reload();
+                }
+            });
+    });
+
+    // Delete
+    $("#btnDelete").click(function () {
+        if (!confirm("Bạn có chắc muốn xóa?")) return;
+        $.post('@Url.Action("Delete","TrackingContact",new {area="Function"})',
+            { GroupID_old: $("#GroupID_old").val() },
+            function (res) {
+                alert(res.message);
+                if (res.success) {
+                    $("#groupModal").modal("hide");
+                    location.reload();
+                }
+            });
+    });
+});
+
+</script>

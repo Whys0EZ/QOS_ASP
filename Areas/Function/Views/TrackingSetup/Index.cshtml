@@ -1,0 +1,211 @@
+@model IEnumerable<QOS.Areas.Function.Models.TrackingSetup>
+@{
+  ViewData["Title"] = "Tracking Setup";
+  Layout = "_MenuFunction";
+}
+
+<partial name="_AlertMessage" />
+<div class="continer my-3">
+
+
+  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trackingModal">Thêm mới</button>
+  <div>
+    @if (Model != null && Model.Any())
+    {
+      <table class="table table-bordered table-striped mt-3">
+        <thead class="table-dark">
+          <tr>
+            <th>STT</th>
+            <th>ModuleName</th>
+            <th>Remark</th>
+            <th>UpdateForm_StartRow</th>
+            <th>UserUpdate</th>
+            <th>LastUpdate</th>
+          </tr>
+        </thead>
+        <tbody>
+          @{
+            var i = 1;
+          }
+          @foreach (var u in Model)
+          {
+            @* var jsonInfor = Newtonsoft.Json.JsonConvert.SerializeObject(u.InforSetups);
+            var jsonResult = Newtonsoft.Json.JsonConvert.SerializeObject(u.ResultSetups); *@
+            <tr class="row-click" data-modulename="@u.ModuleName">
+              <td>@i</td>
+              <td>@u.ModuleName</td>
+              <td>@u.Remark</td>
+              <td>@u.UpdateForm_StartRow</td>
+              <td>@u.UserUpdate</td>
+              <td>@u.LastUpdate</td>
+            </tr>
+            i++;
+          }
+
+        </tbody>
+      </table>
+    }
+  </div>
+
+
+  <partial name="_TrackingSetupModal" />
+
+  <script src="~/js/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+
+      // 👉 Thêm mới
+      $("button[data-bs-target='#trackingModal']").click(function () {
+        // reset form
+        $("#trackingForm")[0].reset();
+        $("input[name='ModuleName']").val("");
+        $("#tblInfor tbody").empty();
+        $("#tblResult tbody").empty();
+
+        // ẩn nút Delete
+        $("#btnDelete").hide();
+        $(".modal-title").text("Thêm Tracking Setup");
+
+        // gọi Create để lấy dữ liệu mặc định
+        $.get('@Url.Action("Create", "TrackingSetup", new { area = "Function" })', function (data) {
+          if (data) {
+            fillFormData(data);
+          }
+        });
+      });
+
+      // 👉 Sửa (click vào row)
+      $(document).on("click", ".row-click", function () {
+        var moduleName = $(this).data("modulename");
+
+        $.get('@Url.Action("GetSetup", "TrackingSetup", new { area = "Function" })',
+          { moduleName: moduleName },
+          function (data) {
+            if (data) {
+              fillFormData(data);
+
+              $("#btnDelete").show();
+              $(".modal-title").text("Sửa Tracking Setup");
+              $("#trackingModal").modal("show");
+            }
+          }
+        );
+      });
+
+      // 👉 Save
+      $("#btnSave").click(function () {
+        var model = {
+          ModuleName: $("#trackingForm input[name='ModuleName']").val(),
+          UpdateForm_StartRow: $("#trackingForm input[name='UpdateForm_StartRow']").val(),
+          Remark: $("#trackingForm textarea[name='Remark']").val(),
+          InforSetups: [],
+          ResultSetups: []
+        };
+
+        // Lấy Infor table
+        $("#tblInfor tbody tr").each(function () {
+          var row = $(this);
+          model.InforSetups.push({
+            SqlColumn: row.find("input").eq(1).val(),
+            Name: row.find("input").eq(2).val(),
+            Index: row.find("input").eq(3).val(),
+            DataType: row.find("input").eq(4).val(),
+            Opt: row.find("input").eq(5).val(),
+            Column: row.find("input").eq(6).val(),
+            Remark: row.find("input").eq(7).val()
+          });
+        });
+
+        // Lấy Result table
+        $("#tblResult tbody tr").each(function () {
+          var row = $(this);
+          model.ResultSetups.push({
+            SqlColumn: row.find("input").eq(1).val(),
+            Name: row.find("input").eq(2).val(),
+            Index: row.find("input").eq(3).val(),
+            DataType: row.find("input").eq(4).val(),
+            SelectionData: row.find("input").eq(5).val(),
+            Remark: row.find("input").eq(6).val()
+          });
+        });
+
+        $.ajax({
+          url: '@Url.Action("SaveAction", "TrackingSetup", new { area = "Function" })',
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify(model),
+          success: function (res) {
+            alert(res.message);
+            if (res.success) {
+              $("#trackingModal").modal("hide");
+              location.reload();
+            }
+          }
+        });
+      });
+
+
+
+      // 👉 Delete
+      $("#btnDelete").click(function () {
+        if (!confirm("Bạn có chắc muốn xóa?")) return;
+        $.post('@Url.Action("Delete", "TrackingSetup", new { area = "Function" })',
+          { moduleName: $("#trackingForm input[name='ModuleName']").val() },
+          function (res) {
+            alert(res.message);
+            if (res.success) {
+              $("#trackingModal").modal("hide");
+              location.reload();
+            }
+          }
+        );
+      });
+
+      // 👉 Hàm fill form dùng chung cho Thêm/Sửa
+      function fillFormData(data) {
+        // Fill input chính
+        $("#trackingForm input[name='ModuleName']").val(data.moduleName || "");
+        $("#trackingForm input[name='UpdateForm_StartRow']").val(data.updateForm_StartRow || "");
+        $("#trackingForm textarea[name='Remark']").val(data.remark || "");
+
+        // Infor table
+        var tbodyInfor = $("#tblInfor tbody");
+        tbodyInfor.empty();
+        if (data.inforSetups) {
+          data.inforSetups.forEach(function (row, idx) {
+            tbodyInfor.append(`
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td><input class="form-control form-control-sm" value="${row.sqlColumn || ''}" /></td>
+                        <td><input class="form-control" name="Infor.Name[${idx}]" value="${row.name || ''}" /></td>
+                        <td><input class="form-control" name="Infor.Index[${idx}]" value="${row.index || ''}" /></td>
+                        <td><input class="form-control" name="Infor.DataType[${idx}]" value="${row.dataType || ''}" /></td>
+                        <td><input class="form-control" name="Infor.Opt[${idx}]" value="${row.opt || ''}" /></td>
+                        <td><input class="form-control" name="Infor.SqlColumn[${idx}]" value="${row.column || ''}" /></td>
+                        <td><input class="form-control" name="Infor.Remark[${idx}]" value="${row.remark || ''}" /></td>
+                    </tr>
+                `);
+          });
+        }
+
+        // Result table
+        var tbodyResult = $("#tblResult tbody");
+        tbodyResult.empty();
+        if (data.resultSetups) {
+          data.resultSetups.forEach(function (row, id) {
+            tbodyResult.append(`
+                    <tr>
+                        <td>${id + 1}</td>
+                        <td><input class="form-control form-control-sm" value="${row.sqlColumn || ''}" /></td>
+                        <td><input class="form-control form-control-sm" value="${row.name || ''}" /></td>
+                        <td><input class="form-control form-control-sm" value="${row.index || ''}" /></td>
+                        <td><input class="form-control form-control-sm" value="${row.dataType || ''}" /></td>
+                        <td><input class="form-control form-control-sm" value="${row.selectionData || ''}" /></td>
+                        <td><input class="form-control form-control-sm" value="${row.remark || ''}" /></td>
+                    </tr>
+                `);
+          });
+        }
+      }
+    });
+  </script>
