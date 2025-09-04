@@ -89,15 +89,17 @@
 
                 if (result.success) {
                     $("#Search_V").val(result.mo);
+                    // Hiển thị bảng kết quả upload ngay
+                    $("#resultArea").html(result.html);
 
                     // Gọi search ngay sau khi upload thành công
                     // Gọi lại Ajax search thay vì submit form
-                    $.post($("#SearchForm").attr("action"),
+                    @* $.post($("#SearchForm").attr("action"),
                         $("#SearchForm").serialize(),
                         function (html) {
                             $("#resultArea").html(html);
                         }
-                    );
+                    ); *@
                 } else {
                     alert(result.message);
                 }
@@ -155,7 +157,7 @@
                 console.log(result); // debug xem server trả về gì
                 if (result.success) {
                     alert("Đã xóa thành công!");
-                    
+
                     $.post($("#SearchForm").attr("action"),
                         $("#SearchForm").serialize(),
                         function (html) {

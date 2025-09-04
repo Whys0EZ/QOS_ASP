@@ -79,7 +79,8 @@ namespace QOS.Areas.Function.Controllers
             try
             {
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-                string lastUpdate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                // string lastUpdate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                var lastUpdate = DateTime.Now;
                 string ses_username = User.Identity?.Name ?? "SYSTEM";
 
                 // Lấy cấu hình cột từ procedure
@@ -103,8 +104,8 @@ namespace QOS.Areas.Function.Controllers
                                     DisplayName = reader["Inf_Name"].ToString(), // VD: SO
                                     DataType = reader["Inf_DataType"].ToString(),
                                     Opt = reader["Inf_Opt"].ToString(),
-                                    ExcelColumn = Convert.ToInt32(reader["Inf_Column"]),
-                                    StartRow = Convert.ToInt32(reader["UpdateForm_StartRow"])
+                                    ExcelColumn = int.TryParse(reader["Inf_Column"]?.ToString(), out int ec) ? ec : (int?)null,
+                                    StartRow = int.TryParse(reader["UpdateForm_StartRow"]?.ToString(), out int sr) ? sr : (int?)null,
                                 });
                             }
                         }
@@ -122,10 +123,11 @@ namespace QOS.Areas.Function.Controllers
 
                 // ✅ ĐỌC FILE EXCEL & INSERT
                 var tableHtml = new StringBuilder();
-                tableHtml.Append("<table class='table-fixed'><thead><tr>");
+                tableHtml.Append("<table class='table-fixed table table-striped table-striped-columns table-bordered table-hover'><thead class='table-info fw-bolder'><tr>");
                 tableHtml.Append("<td>No</td>");
                 foreach (var col in columnConfigs)
                 {
+                    if (string.IsNullOrEmpty(col.DisplayName)) continue;
                     tableHtml.Append($"<td>{col.DisplayName}</td>");
                 }
                 tableHtml.Append("<td>Status</td></tr></thead><tbody>");
@@ -133,10 +135,10 @@ namespace QOS.Areas.Function.Controllers
                 using (var package = new ExcelPackage(new FileInfo(filePath)))
                 {
                     var sheet = package.Workbook.Worksheets[0];
-                    int row = columnConfigs.First().StartRow;
+                    int? row = columnConfigs.First().StartRow;
                     int no = 1;
 
-                    while (!string.IsNullOrWhiteSpace(sheet.Cells[row, 1].Text))
+                    while (row.HasValue && !string.IsNullOrWhiteSpace(sheet.Cells[row.Value, 1].Text))
                     {
                         tableHtml.Append($"<tr><td>{no}</td>");
 
@@ -149,7 +151,21 @@ namespace QOS.Areas.Function.Controllers
 
                         foreach (var col in columnConfigs)
                         {
-                            var cell = sheet.Cells[row, col.ExcelColumn];
+
+                            // _logger.LogInformation("Cấu hình cột: {configs}", string.Join(", ", columnConfigs.Select(c => $"{c.DbColumn}:{c.ExcelColumn}")));
+
+                            if (!col.ExcelColumn.HasValue)
+                            {
+                                // Không có mapping cột → bỏ qua hoặc báo lỗi
+                                continue;
+                            }
+
+                            if (col.ExcelColumn.Value > sheet.Dimension.End.Column)
+                            {
+                                throw new Exception($"Cấu hình cột {col.DbColumn} = {col.ExcelColumn.Value} vượt quá số cột thực tế trong Excel ({sheet.Dimension.End.Column})");
+                            }
+
+                            var cell = sheet.Cells[row.Value, col.ExcelColumn.Value];
                             string? value = cell.Text?.Trim();
 
                             if (col.DataType == "date" && double.TryParse(cell.Value?.ToString(), out double oaDate))
@@ -182,16 +198,23 @@ namespace QOS.Areas.Function.Controllers
                             await cmd.ExecuteNonQueryAsync();
                         }
 
-                        tableHtml.Append("<td>PASS</td></tr>");
+                        tableHtml.Append("<td class='text-success'>OK</td></tr>");
                         row++;
                         no++;
                     }
                 }
 
                 tableHtml.Append("</tbody></table>");
-                ViewBag.ResultTable = tableHtml.ToString();
-                TempData["Message"] = "Upload thành công!";
-                return View("Index");
+                // ViewBag.ResultTable = tableHtml.ToString();
+                MessageStatus = "Upload thành công!";
+                // return View("Index");
+                return Json(new
+                {
+                    success = true,
+                    message = "Upload thành công!",
+                    mo = ModuleName,
+                    html = tableHtml.ToString()
+                });
             }
             catch (Exception ex)
             {
@@ -368,7 +391,7 @@ namespace QOS.Areas.Function.Controllers
                     await conn.OpenAsync();
                     int rows = await cmd.ExecuteNonQueryAsync();
 
-                    return Json(new { success = rows > 0, message ="OK" });
+                    return Json(new { success = rows > 0, message = "OK" });
                 }
             }
             catch (Exception ex)
@@ -383,9 +406,9 @@ namespace QOS.Areas.Function.Controllers
     {
         public string? DisplayName { get; set; } // Tên hiển thị (Inf_Name)
         public string? DbColumn { get; set; }    // InforName (Infor_01, Infor_02...)
-        public int ExcelColumn { get; set; }     // Inf_Column (cột trong Excel)
+        public int? ExcelColumn { get; set; }     // Inf_Column (cột trong Excel)
         public string? DataType { get; set; }    // Inf_DataType
         public string? Opt { get; set; }         // Inf_Opt
-        public int StartRow { get; set; }        // UpdateForm_StartRow
+        public int? StartRow { get; set; }        // UpdateForm_StartRow
     }
 }
