@@ -1,0 +1,36 @@
+@using QOS.Areas.Function.Models
+@model IEnumerable<OnlineFile>
+<table border="0" width="100%" class="table">
+    <thead class="table-success text-black">
+        <tr>
+            <th>No</th>
+            <th>DataName</th>
+            <th>DataRemark</th>
+            <th>DataLink</th>
+            <th>LastUpdate</th>
+            <th>Checked Status</th>
+            <th>Checked Time</th>
+            <th>Checked Remark</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            var index = 1;
+            foreach (var file in Model)
+            {
+                <tr>
+                    <td>@index</td>
+                    <td class="Link_txt" onclick="Detail_Click('@file.GroupID','@file.ID')">@file.DataName</td>
+                    <td>@file.DataRemark</td>
+                    <td class="Link_txt" onclick="Link_Click('@file.DataLink')">Online Link</td>
+                    <td>@file.UserUpdate / @file.LastUpdate</td>
+                    <td>@file.CheckResult</td>
+                    <td>@file.CheckDate</td>
+                    <td>@file.CheckRemark</td>
+                </tr>
+                index++;
+            }
+        }
+    </tbody>
+</table>

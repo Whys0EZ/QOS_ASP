@@ -47,5 +47,8 @@ namespace QOS.Data
         public DbSet<TRACKING_ResultSetup_Name> TRACKING_ResultSetup_Name { get; set; }
         public DbSet<TRACKING_ResultSetup_Remark> TRACKING_ResultSetup_Remark { get; set; }
         public DbSet<TRACKING_ResultSetup_SelectionData> TRACKING_ResultSetup_SelectionData { get; set; }
+
+        public DbSet<OnlineFile> OnlineFiles { get; set; }
+        public DbSet<OnlineFileGroup> OnlineFileGroups { get; set; }
     }
 }

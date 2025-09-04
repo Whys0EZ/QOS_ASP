@@ -1,0 +1,163 @@
+@model QOS.Areas.Function.Models.OnlineFileViewModel
+
+@{
+    ViewData["Title"] = "Online File";
+    Layout = "_MenuFunction";
+}
+
+<partial name="_AlertMessage" />
+<div class="continer my-3">
+    <div class="row align-items-center mb-3">
+        <!-- Bên trái -->
+
+        <div class="col-md-4 d-flex flex-wrap gap-2">
+            <h3 class="text-primary fw-bold">Online Files</h3>
+        </div>
+
+        <!-- Bên phải -->
+        <div class="col-md-8 d-flex justify-content-end flex-wrap gap-2">
+            <form id="SearchForm" asp-area="Function" asp-action="Index" asp-controller="OnlineFile" method="get"
+                class="d-flex align-items-center gap-2 mb-0">
+                <select class="form-select w-auto" id="GroupID" name="GroupID">
+                    @if (Model.OnlineFileGroups != null && Model.OnlineFileGroups.Any())
+                    {
+                        foreach (var group in Model.OnlineFileGroups)
+                        {
+                            <option value="@group.GroupID" selected="@(group.GroupID == Context.Request.Query["GroupID"])">
+                                @group.GroupID</option>
+                        }
+                    }
+                </select>
+
+                <input type="date" id="dateFrom" name="dateFrom" class="form-control"
+                    value="@(string.IsNullOrEmpty(Context.Request.Query["dateFrom"])? DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd"): Context.Request.Query["dateFrom"].ToString())">
+                <input type="date" id="dateEnd" name="dateEnd" class="form-control"
+                    value="@(string.IsNullOrEmpty(Context.Request.Query["dateEnd"])? DateTime.Now.ToString("yyyy-MM-dd"): Context.Request.Query["dateEnd"].ToString())">
+
+                <input type="text" class="form-control w-auto" placeholder="Tìm kiếm" id="Search_V" name="Search_V"
+                    value="@Context.Request.Query["Search_V"]" />
+
+                <button type="button" class="btn btn-primary" id="Create" name="Create">Tạo&nbsp;mới</button>
+
+                <button class="btn btn-warning" type="submit">
+                    <i class="bi bi-search"></i> Check
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="loadingMsg" class="alert alert-info d-none">
+    Đang upload và xử lý dữ liệu...
+</div>
+
+<div id="resultArea">
+    @Html.Partial("_OnlineFileTable", Model.OnlineFiles)
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="OnlineFileModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Online Files Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="OnlineFileForm">
+                    <input type="hidden" name="ID" />
+                    <input type="hidden" id="ModalGroupID" name="GroupID" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" name="DataName" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Remark</label>
+                        <input type="text" class="form-control" name="DataRemark" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Data Link</label>
+                        <input type="text" class="form-control" name="DataLink" />
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="btnSave" class="btn btn-success">Save</button>
+                <button type="button" id="btnDelete" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+
+    $("#Create").click(function () {
+        $("#OnlineFileForm")[0].reset();
+        $("#btnDelete").hide();
+        $(".modal-title").text(" Create Online Files Detail");
+        $("#OnlineFileModal").modal("show");
+    });
+
+    function Link_Click(link) {
+        window.open(link, '_blank');
+    }
+
+    function Detail_Click(groupId, id) {
+        if (groupId == '') {
+            alert("Chưa chọn GroupID");
+            $("#GroupID").focus();
+            return false;
+        }
+        else {
+            $.get('@Url.Action("GetOnlineFile", "OnlineFile", new { area = "Function" })',
+                { groupId: groupId, id: id },
+                function (data) {
+                    if (data) {
+                        // điền dữ liệu vào form
+                        $("#OnlineFileForm input[name='ID']").val(data.id);
+                        $("#OnlineFileForm input[name='GroupID']").val(data.groupID);
+                        $("#OnlineFileForm input[name='DataName']").val(data.dataName);
+                        $("#OnlineFileForm input[name='DataRemark']").val(data.dataRemark);
+                        $("#OnlineFileForm input[name='DataLink']").val(data.dataLink);
+
+                        $("#btnDelete").show();
+                        $(".modal-title").text(" Edit Online Files Detail");
+                        $("#OnlineFileModal").modal("show");
+                    }
+                    else {
+                        alert("Không tìm thấy dữ liệu!")
+                    }
+                }
+            );
+        }
+    }
+
+    // 👉 Delete
+    $("#btnDelete").click(function () {
+        if (!confirm("Bạn có chắc muốn xóa?")) return;
+        $.post('@Url.Action("DeleteOnlineFile", "OnlineFile", new { area = "Function" })',
+            { id: $("#OnlineFileForm input[name='ID']").val() },
+            function (res) {
+                alert(res.message);
+                if (res.success) {
+                    $("#OnlineFileModal").modal("hide");
+                    location.reload();
+                }
+            }
+        );
+    });
+
+    // Focus khi modal show
+    $('#OnlineFileModal').on('shown.bs.modal', function () {
+        $('#OnlineFileForm input[name="DataName"]').trigger('focus');
+    });
+</script>

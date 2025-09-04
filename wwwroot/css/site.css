@@ -56,3 +56,11 @@ a {
 .nav-appmvc .dropdown-toggle:hover {
   color: #ffffff !important;
 }
+
+.Link_txt {
+  color: #258cfb;
+  cursor: pointer;
+}
+.Link_txt:hover {
+  text-decoration: underline;
+}
