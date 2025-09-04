@@ -1,2 +1,10 @@
 @model string
-@Html.Raw(Model)
+
+@if (!string.IsNullOrEmpty(Model))
+{
+    @Html.Raw(Model)
+}
+else
+{
+    <p>Chưa có dữ liệu.</p>
+}

@@ -1,4 +1,5 @@
 using System.Data;
+using System.Data.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -353,92 +354,202 @@ namespace QOS.Areas.Function.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> SaveAction(TrackingSetup dto)
+        public async Task<IActionResult> SaveAction([FromBody] TrackingSetupSaveDto dto)
         {
-            if (dto == null || string.IsNullOrWhiteSpace(dto.ModuleName))
-                return Json(new { success = false, message = "ModuleName không hợp lệ" });
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Dữ liệu không hợp lệ" });
+            }
 
-            using var transaction = await _context.Database.BeginTransactionAsync();
+            using var conn = _context.Database.GetDbConnection();
+            await conn.OpenAsync();
+
+            using var tran = conn.BeginTransaction();
+
             try
             {
-                var moduleName = dto.ModuleName;
+                var now = DateTime.Now;
+                var user = User.Identity?.Name ??"system"; // TODO: thay bằng User.Identity.Name
 
-                // 🔹 Kiểm tra tồn tại trong TRACKING_Module
-                var exists = await _context.TrackingSetup
-                    .AnyAsync(x => x.ModuleName == moduleName);
+                // 1. Insert/Update TRACKING_Module
+                var cmd = conn.CreateCommand();
+                cmd.Transaction = tran;
 
-                if (!exists)
+                // Kiểm tra tồn tại
+                cmd.CommandText = "SELECT COUNT(*) FROM TRACKING_Module WHERE ModuleName=@ModuleName";
+                var pModule = cmd.CreateParameter();
+                pModule.ParameterName = "@ModuleName";
+                pModule.Value = dto.ModuleName;
+                cmd.Parameters.Add(pModule);
+
+                var exists = (int)(await cmd.ExecuteScalarAsync() ?? 0);
+
+                if (exists > 0)
                 {
-                    // INSERT vào bảng chính
-                    dto.LastUpdate = DateTime.Now;
-                    dto.UserUpdate = User.Identity?.Name ?? "System";
-
-                    _context.TrackingSetup.Add(dto);
-                    await _context.SaveChangesAsync();
+                    cmd.Parameters.Clear();
+                    cmd.CommandText = @"UPDATE TRACKING_Module 
+                                SET Remark=@Remark, UpdateForm_StartRow=@StartRow,
+                                    UserUpdate=@UserUpdate, LastUpdate=@LastUpdate
+                                WHERE ModuleName=@ModuleName";
+                    cmd.Parameters.Add(new SqlParameter("@Remark", dto.Remark ?? (object)DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@StartRow", (object?)dto.UpdateForm_StartRow ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@UserUpdate", user));
+                    cmd.Parameters.Add(new SqlParameter("@LastUpdate", now));
+                    cmd.Parameters.Add(new SqlParameter("@ModuleName", dto.ModuleName));
+                    await cmd.ExecuteNonQueryAsync();
                 }
                 else
                 {
-                    // UPDATE bảng chính
-                    var sqlUpdate = @"
-                UPDATE TRACKING_Module
-                SET Remark = @p0, UpdateForm_StartRow = @p1, 
-                    UserUpdate = @p2, LastUpdate = GETDATE()
-                WHERE ModuleName = @p3";
-
-                    await _context.Database.ExecuteSqlRawAsync(sqlUpdate,
-                        dto.Remark ?? "",
-                        dto.UpdateForm_StartRow,
-                        User.Identity?.Name ?? "System",
-                        moduleName);
+                    cmd.Parameters.Clear();
+                    cmd.CommandText = @"INSERT INTO TRACKING_Module(ModuleName, Remark, UpdateForm_StartRow, UserUpdate, LastUpdate)
+                                VALUES(@ModuleName, @Remark, @StartRow, @UserUpdate, @LastUpdate)";
+                    cmd.Parameters.Add(new SqlParameter("@ModuleName", dto.ModuleName));
+                    cmd.Parameters.Add(new SqlParameter("@Remark", dto.Remark ?? (object)DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@StartRow", (object?)dto.UpdateForm_StartRow ?? DBNull.Value));
+                    cmd.Parameters.Add(new SqlParameter("@UserUpdate", user));
+                    cmd.Parameters.Add(new SqlParameter("@LastUpdate", now));
+                    await cmd.ExecuteNonQueryAsync();
                 }
 
-                // 🔹 Lưu bảng InforSetup
-                if (dto.InforSetups != null)
-                {
-                    foreach (var info in dto.InforSetups)
-                    {
-                        var colName = $"Infor_{info.Index:D2}";
-                        var sql = $@"
-                    UPDATE TRACKING_InforSetup_Name 
-                    SET {colName} = @p0 
-                    WHERE ModuleName = @p1;
+                // 2. Lưu InforSetups vào 6 bảng
+                await SaveInforTables(conn, tran, dto.ModuleName, dto.InforSetups);
 
-                    IF @@ROWCOUNT = 0
-                        INSERT INTO TRACKING_InforSetup_Name(ModuleName, {colName}) 
-                        VALUES(@p1, @p0);";
+                // 3. Lưu ResultSetups vào 5 bảng
+                await SaveResultTables(conn, tran, dto.ModuleName, dto.ResultSetups);
 
-                        await _context.Database.ExecuteSqlRawAsync(sql, info.Name ?? "", moduleName);
-                    }
-                }
-
-                // 🔹 Lưu bảng ResultSetup
-                if (dto.ResultSetups != null)
-                {
-                    foreach (var result in dto.ResultSetups)
-                    {
-                        var colName = $"Result_{result.Index:D2}";
-                        var sql = $@"
-                    UPDATE TRACKING_ResultSetup_Name 
-                    SET {colName} = @p0 
-                    WHERE ModuleName = @p1;
-
-                    IF @@ROWCOUNT = 0
-                        INSERT INTO TRACKING_ResultSetup_Name(ModuleName, {colName}) 
-                        VALUES(@p1, @p0);";
-
-                        await _context.Database.ExecuteSqlRawAsync(sql, result.Name ?? "", moduleName);
-                    }
-                }
-
-                await transaction.CommitAsync();
-                return Json(new { success = true, message = "Lưu thành công" });
+                tran.Commit();
+                return Json(new { success = true, message = "Lưu thành công!" });
             }
             catch (Exception ex)
             {
-                await transaction.RollbackAsync();
-                return Json(new { success = false, message = ex.Message });
+                tran.Rollback();
+                return Json(new { success = false, message = "Lỗi khi lưu: " + ex.Message });
             }
         }
+        private async Task SaveInforTables(DbConnection conn, DbTransaction tran, string moduleName, List<InforSetupDto> list)
+        {
+            string[] tables = {
+                            "TRACKING_InforSetup_Name",
+                            "TRACKING_InforSetup_Index",
+                            "TRACKING_InforSetup_DataType",
+                            "TRACKING_InforSetup_Remark",
+                            "TRACKING_InforSetup_Opt",
+                            "TRACKING_InforSetup_Column"
+                            };
+
+            foreach (var tbl in tables)
+            {
+                var cmd = conn.CreateCommand();
+                cmd.Transaction = tran;
+
+                // Kiểm tra đã có chưa
+                cmd.CommandText = $"SELECT COUNT(*) FROM {tbl} WHERE ModuleName=@ModuleName";
+                cmd.Parameters.Add(new SqlParameter("@ModuleName", moduleName));
+                var exists = (int)(await cmd.ExecuteScalarAsync() ?? 0);
+
+                // Build SQL động
+                var cols = new List<string>();
+                var vals = new List<string>();
+                var sets = new List<string>();
+
+                for (int i = 0; i < list.Count; i++)
+                {
+                    string colName = $"Infor_{(i + 1).ToString("D2")}";
+                    string paramName = $"@p{i}";
+
+                    cols.Add(colName);
+                    vals.Add(paramName);
+                    sets.Add($"{colName}={paramName}");
+
+                    #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+                    string value = tbl switch
+                    {
+                        "TRACKING_InforSetup_Name" => list[i].Name,
+                        "TRACKING_InforSetup_Index" => list[i].Index,
+                        "TRACKING_InforSetup_DataType" => list[i].DataType,
+                        "TRACKING_InforSetup_Remark" => list[i].Remark,
+                        "TRACKING_InforSetup_Opt" => list[i].Opt,
+                        "TRACKING_InforSetup_Column" => list[i].Column,
+                        _ => ""
+                    };
+                    #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+
+                    cmd.Parameters.Add(new SqlParameter(paramName, (object?)value ?? DBNull.Value));
+                }
+
+                if (exists > 0)
+                {
+                    cmd.CommandText = $"UPDATE {tbl} SET {string.Join(",", sets)} WHERE ModuleName=@ModuleName";
+                }
+                else
+                {
+                    cmd.CommandText = $"INSERT INTO {tbl}(ModuleName,{string.Join(",", cols)}) VALUES(@ModuleName,{string.Join(",", vals)})";
+                }
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+        private async Task SaveResultTables(DbConnection conn, DbTransaction tran, string moduleName, List<ResultSetupDto> list)
+        {
+            string[] tables = {
+                                "TRACKINIG_ResultSetup_Name",
+                                "TRACKINIG_ResultSetup_Index",
+                                "TRACKINIG_ResultSetup_DataType",
+                                "TRACKINIG_ResultSetup_SelectionData",
+                                "TRACKINIG_ResultSetup_Remark"
+                            };
+
+            foreach (var tbl in tables)
+            {
+                var cmd = conn.CreateCommand();
+                cmd.Transaction = tran;
+
+                cmd.CommandText = $"SELECT COUNT(*) FROM {tbl} WHERE ModuleName=@ModuleName";
+                cmd.Parameters.Add(new SqlParameter("@ModuleName", moduleName));
+                var exists = (int)(await cmd.ExecuteScalarAsync() ?? 0);
+
+                var cols = new List<string>();
+                var vals = new List<string>();
+                var sets = new List<string>();
+
+                for (int i = 0; i < list.Count; i++)
+                {
+                    string colName = $"Infor_{(i + 1).ToString("D2")}";
+                    string paramName = $"@p{i}";
+
+                    cols.Add(colName);
+                    vals.Add(paramName);
+                    sets.Add($"{colName}={paramName}");
+
+                    #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+                    string value = tbl switch
+                    {
+                        "TRACKINIG_ResultSetup_Name" => list[i].Name,
+                        "TRACKINIG_ResultSetup_Index" => list[i].Index,
+                        "TRACKINIG_ResultSetup_DataType" => list[i].DataType,
+                        "TRACKINIG_ResultSetup_SelectionData" => list[i].SelectionData,
+                        "TRACKINIG_ResultSetup_Remark" => list[i].Remark,
+                        _ => ""
+                    };
+                    #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+
+                    cmd.Parameters.Add(new SqlParameter(paramName, (object?)value ?? DBNull.Value));
+                }
+
+                if (exists > 0)
+                {
+                    cmd.CommandText = $"UPDATE {tbl} SET {string.Join(",", sets)} WHERE ModuleName=@ModuleName";
+                }
+                else
+                {
+                    cmd.CommandText = $"INSERT INTO {tbl}(ModuleName,{string.Join(",", cols)}) VALUES(@ModuleName,{string.Join(",", vals)})";
+                }
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
+
 
 
 

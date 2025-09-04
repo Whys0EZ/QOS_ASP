@@ -47,7 +47,6 @@
     }
   </div>
 
-
   <partial name="_TrackingSetupModal" />
 
   <script src="~/js/jquery-3.6.0.min.js"></script>
@@ -103,29 +102,30 @@
         };
 
         // Lấy Infor table
+        // Lấy Infor table (7 input / dòng: 0..6)
         $("#tblInfor tbody tr").each(function () {
-          var row = $(this);
+          const inputs = $(this).find("input"); // 0-based!
           model.InforSetups.push({
-            SqlColumn: row.find("input").eq(1).val(),
-            Name: row.find("input").eq(2).val(),
-            Index: row.find("input").eq(3).val(),
-            DataType: row.find("input").eq(4).val(),
-            Opt: row.find("input").eq(5).val(),
-            Column: row.find("input").eq(6).val(),
-            Remark: row.find("input").eq(7).val()
+            SqlColumn: inputs.eq(0).val(),
+            Name:      inputs.eq(1).val(),
+            Index:     inputs.eq(2).val(),
+            DataType:  inputs.eq(3).val(),
+            Opt:       inputs.eq(4).val(),
+            Column:    inputs.eq(5).val(),
+            Remark:    inputs.eq(6).val()
           });
         });
 
-        // Lấy Result table
+        // Lấy Result table (6 input / dòng: 0..5)
         $("#tblResult tbody tr").each(function () {
-          var row = $(this);
+          const inputs = $(this).find("input"); // 0-based!
           model.ResultSetups.push({
-            SqlColumn: row.find("input").eq(1).val(),
-            Name: row.find("input").eq(2).val(),
-            Index: row.find("input").eq(3).val(),
-            DataType: row.find("input").eq(4).val(),
-            SelectionData: row.find("input").eq(5).val(),
-            Remark: row.find("input").eq(6).val()
+            SqlColumn:     inputs.eq(0).val(),
+            Name:          inputs.eq(1).val(),
+            Index:         inputs.eq(2).val(),
+            DataType:      inputs.eq(3).val(),
+            SelectionData: inputs.eq(4).val(),
+            Remark:        inputs.eq(5).val()
           });
         });
 
@@ -174,17 +174,23 @@
         if (data.inforSetups) {
           data.inforSetups.forEach(function (row, idx) {
             tbodyInfor.append(`
-                    <tr>
-                        <td>${idx + 1}</td>
-                        <td><input class="form-control form-control-sm" value="${row.sqlColumn || ''}" /></td>
-                        <td><input class="form-control" name="Infor.Name[${idx}]" value="${row.name || ''}" /></td>
-                        <td><input class="form-control" name="Infor.Index[${idx}]" value="${row.index || ''}" /></td>
-                        <td><input class="form-control" name="Infor.DataType[${idx}]" value="${row.dataType || ''}" /></td>
-                        <td><input class="form-control" name="Infor.Opt[${idx}]" value="${row.opt || ''}" /></td>
-                        <td><input class="form-control" name="Infor.SqlColumn[${idx}]" value="${row.column || ''}" /></td>
-                        <td><input class="form-control" name="Infor.Remark[${idx}]" value="${row.remark || ''}" /></td>
-                    </tr>
-                `);
+                <tr>
+                    <td>${idx + 1}</td>
+                    <td><input class="form-control form-control-sm" name="InforSetups[${idx}].SqlColumn" value="${row.sqlColumn || ''}" /></td>
+                    <td><input class="form-control form-control-sm" name="InforSetups[${idx}].Name" value="${row.name || ''}" /></td>
+                    <td><input class="form-control form-control-sm" name="InforSetups[${idx}].Index" value="${row.index || ''}" /></td>
+                    @* <td><input class="form-control form-control-sm" name="InforSetups[${idx}].DataType" value="${row.dataType || ''}" /></td> *@
+                    <td>
+                        <input class="form-control form-control-sm" 
+                              name="InforSetups[${idx}].DataType" 
+                              value="${row.dataType || ''}" 
+                              list="datatypeOptions" />
+                    </td>
+                    <td><input class="form-control form-control-sm" name="InforSetups[${idx}].Opt" value="${row.opt || ''}" list="opt_Options" /></td>
+                    <td><input class="form-control form-control-sm" name="InforSetups[${idx}].Column" value="${row.column || ''}" /></td>
+                    <td><input class="form-control form-control-sm" name="InforSetups[${idx}].Remark" value="${row.remark || ''}" /></td>
+                </tr>
+            `);
           });
         }
 
@@ -192,20 +198,26 @@
         var tbodyResult = $("#tblResult tbody");
         tbodyResult.empty();
         if (data.resultSetups) {
-          data.resultSetups.forEach(function (row, id) {
+          data.resultSetups.forEach(function (row, idx) {
             tbodyResult.append(`
-                    <tr>
-                        <td>${id + 1}</td>
-                        <td><input class="form-control form-control-sm" value="${row.sqlColumn || ''}" /></td>
-                        <td><input class="form-control form-control-sm" value="${row.name || ''}" /></td>
-                        <td><input class="form-control form-control-sm" value="${row.index || ''}" /></td>
-                        <td><input class="form-control form-control-sm" value="${row.dataType || ''}" /></td>
-                        <td><input class="form-control form-control-sm" value="${row.selectionData || ''}" /></td>
-                        <td><input class="form-control form-control-sm" value="${row.remark || ''}" /></td>
-                    </tr>
-                `);
+                <tr>
+                    <td>${idx + 1}</td>
+                    <td><input class="form-control form-control-sm" name="ResultSetups[${idx}].SqlColumn" value="${row.sqlColumn || ''}" /></td>
+                    <td><input class="form-control form-control-sm" name="ResultSetups[${idx}].Name" value="${row.name || ''}" /></td>
+                    <td><input class="form-control form-control-sm" name="ResultSetups[${idx}].Index" value="${row.index || ''}" /></td>
+                    <td>
+                        <input class="form-control form-control-sm" 
+                              name="ResultSetups[${idx}].DataType" 
+                              value="${row.dataType || ''}" 
+                              list="datatypeOptions" />
+                    </td>
+                    <td><input class="form-control form-control-sm" name="ResultSetups[${idx}].SelectionData" value="${row.selectionData || ''}" /></td>
+                    <td><input class="form-control form-control-sm" name="ResultSetups[${idx}].Remark" value="${row.remark || ''}" /></td>
+                </tr>
+            `);
           });
         }
       }
+
     });
   </script>

@@ -385,7 +385,7 @@ namespace QOS.Areas.Function.Controllers
                     using (var reader = cmd.ExecuteReader())
                     {
                         int i = 1, tr = 1;
-                        string[] clmList = null;
+                        string[]? clmList = null;
 
                         while (reader.Read())
                         {
@@ -401,7 +401,7 @@ namespace QOS.Areas.Function.Controllers
 
                                 if (i == 1)
                                 {
-                                    clmList = reader["CL"].ToString()
+                                    clmList = (reader["CL"]?.ToString() ?? "")
                                         .Replace("[", "")
                                         .Replace("]", "")
                                         .Split(',');

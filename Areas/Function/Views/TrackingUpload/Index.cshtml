@@ -1,0 +1,176 @@
+@using static QOS.Areas.Function.Controllers.TrackingUploadController
+@* @model IEnumerable<QOS.Areas.Function.Models.ManageOperation> *@
+@* @model QOS.Areas.Function.Models.SearchOperationViewModel *@
+@model string
+
+@{
+    ViewData["Title"] = "Tracking Upload";
+    Layout = "_MenuFunction";
+}
+
+<partial name="_AlertMessage" />
+<div class="continer my-3">
+    <div class="row align-items-center mb-3">
+        <!-- Bên trái -->
+
+        <div class="col-md-4 d-flex flex-wrap gap-2">
+            <h3 class="text-primary fw-bold">Tracking Upload Data</h3>
+        </div>
+
+        <!-- Bên phải -->
+        <div class="col-md-8 d-flex justify-content-end flex-wrap gap-2">
+            <form id="UploadForm" asp-area="Function" asp-action="Upload" asp-controller="TrackingUpload"
+                enctype="multipart/form-data" method="post" class="d-flex align-items-center gap-2 mb-0">
+                @* <select class="form-select w-auto" id="ModuleName" name="ModuleName">
+                    <option>Chọn Module</option>
+                    <option>FCA</option>
+                    <option>FCA_PUMA</option>
+                    <option>FCA_NIKE</option>
+                    <option>FQC_UQ</option>
+                </select> *@
+                <select class="form-select w-auto" id="ModuleName" name="ModuleName">
+                    <option value="">-- Chọn Module --</option>
+                    @foreach (var m in (List<TrackingModule>)ViewBag.Modules)
+                    {
+                        <option value="@m.ModuleName">@m.ModuleName</option>
+                    }
+                </select>
+
+                <a href="" id="downloadForm" class="text-decoration-none pt-2">(Tải mẫu Form)</a>
+
+                <input type="file" name="Upload_EXCEL" class="form-control w-auto" />
+
+                <button class="btn btn-success">
+                    <i class="bi bi-upload"></i> Upload
+                </button>
+            </form>
+            <!-- Form Search -->
+            <form id="SearchForm" asp-area="Function" asp-action="Search" asp-controller="TrackingUpload" method="post"
+                class="d-flex align-items-center gap-2 mb-0">
+                <input type="text" class="form-control w-auto" placeholder="MO; Style" id="Search_V" name="Search_V" />
+                <input type="hidden" id="Search_ModuleName" name="ModuleName" value="" />
+                <button class="btn btn-warning">
+                    <i class="bi bi-search"></i> Check
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="loadingMsg" class="alert alert-info d-none">
+    Đang upload và xử lý dữ liệu...
+</div>
+
+<div class="table-responsive">
+    <div id="resultArea">
+        @* @Html.Raw(Model) *@
+        <partial name="_ResultTable" model="Model" />
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $("#ModuleName").change(function () {
+        $("#Search_ModuleName").val($(this).val());
+    });
+    // Upload Excel bằng AJAX
+    $("#UploadForm").submit(function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $("#loadingMsg").removeClass("d-none");
+
+        $.ajax({
+            url: $(this).attr("action"),
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                $("#loadingMsg").addClass("d-none");
+
+                if (result.success) {
+                    $("#Search_V").val(result.mo);
+
+                    // Gọi search ngay sau khi upload thành công
+                    // Gọi lại Ajax search thay vì submit form
+                    $.post($("#SearchForm").attr("action"),
+                        $("#SearchForm").serialize(),
+                        function (html) {
+                            $("#resultArea").html(html);
+                        }
+                    );
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function () {
+                $("#loadingMsg").addClass("d-none");
+                alert("Có lỗi khi upload!");
+            }
+        });
+    });
+
+    // Search
+    $("#SearchForm").submit(function (e) {
+        e.preventDefault();
+        $.post($(this).attr("action"), $(this).serialize(), function (html) {
+            $("#resultArea").html(html);
+        });
+    });
+
+    document.getElementById("downloadForm").addEventListener("click", function (e) {
+        e.preventDefault(); // ngăn link # reload trang
+        const moduleName = document.getElementById("ModuleName").value;
+        let fileName = "";
+
+        switch (moduleName) {
+            case "FCA":
+                fileName = "QOS_Form_ThongSoThanhPham_SPL.xlsx";
+                break;
+            case "FCA_PUMA":
+                fileName = "QOS_Form_ThongSoThanhPham_NIKE.xlsx";
+                break;
+            case "FCA_NIKE":
+                fileName = "QOS_Form_ThongSoThanhPham_UQ.xlsx";
+                break;
+            case "FQC_UQ":
+                fileName = "QOS_Form_ThongSoThanhPham_US.xlsx";
+                break;
+            default:
+                alert("Chưa có form cho loại này!");
+                return;
+        }
+
+        // Tải file từ thư mục wwwroot/Report/
+        window.location.href = "/Report/" + fileName;
+    });
+
+    function deleteRow(id) {
+        if (!confirm("Bạn có chắc muốn xóa dòng này?")) return;
+
+        $.ajax({
+            url: '@Url.Action("DeleteRow", "TrackingUpload", new { area = "Function" })',
+            type: "POST",
+            data: { id: id },
+            success: function (result) {
+                console.log(result); // debug xem server trả về gì
+                if (result.success) {
+                    alert("Đã xóa thành công!");
+                    
+                    $.post($("#SearchForm").attr("action"),
+                        $("#SearchForm").serialize(),
+                        function (html) {
+                            $("#resultArea").html(html);
+                        }
+                    );
+                    
+                } else {
+                    alert("Lỗi: " + result.message);
+                }
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+                alert("Có lỗi khi xóa!");
+            }
+        });
+    }
+</script>
