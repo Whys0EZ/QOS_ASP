@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "/pPrq7efDJ/LCPXhoz0F+aE0FW7Sq1ot1kBVCC0KxLI=",
+  "Hash": "LhzzubeJz0bhMEi077eKohtyanP1fb6qL/toroFyrgA=",
   "Source": "QOS",
   "BasePath": "_content/QOS",
   "Mode": "Default",
@@ -1193,6 +1193,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "D:\\C_Sharp\\QOS\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\QOS.bundle.scp.css"
+    },
+    {
+      "Identity": "D:\\C_Sharp\\QOS\\wwwroot\\css\\all.min.css",
+      "SourceId": "QOS",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\C_Sharp\\QOS\\wwwroot\\",
+      "BasePath": "_content/QOS",
+      "RelativePath": "css/all.min.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\all.min.css"
     },
     {
       "Identity": "D:\\C_Sharp\\QOS\\wwwroot\\css\\site.css",

@@ -23,25 +23,23 @@
                     {
                         foreach (var group in Model.OnlineFileGroups)
                         {
-                            <option value="@group.GroupID" selected="@(group.GroupID == Context.Request.Query["GroupID"])">
+                            <option value="@group.GroupID" selected="@(group.GroupID == Model.GroupID)">
                                 @group.GroupID</option>
                         }
                     }
                 </select>
 
                 <input type="date" id="dateFrom" name="dateFrom" class="form-control"
-                    value="@(string.IsNullOrEmpty(Context.Request.Query["dateFrom"])? DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd"): Context.Request.Query["dateFrom"].ToString())">
+                    value="@Model.DateFrom.ToString("yyyy-MM-dd")" />
                 <input type="date" id="dateEnd" name="dateEnd" class="form-control"
-                    value="@(string.IsNullOrEmpty(Context.Request.Query["dateEnd"])? DateTime.Now.ToString("yyyy-MM-dd"): Context.Request.Query["dateEnd"].ToString())">
-
+                    value="@Model.DateEnd.ToString("yyyy-MM-dd")" />
                 <input type="text" class="form-control w-auto" placeholder="Tìm kiếm" id="Search_V" name="Search_V"
-                    value="@Context.Request.Query["Search_V"]" />
-
-                <button type="button" class="btn btn-primary" id="Create" name="Create">Tạo&nbsp;mới</button>
+                    value="@Model.Search_V" />
 
                 <button class="btn btn-warning" type="submit">
                     <i class="bi bi-search"></i> Check
                 </button>
+                <button type="button" class="btn btn-primary" id="Create" name="Create">Tạo&nbsp;mới</button>
             </form>
         </div>
     </div>
@@ -52,7 +50,7 @@
 </div>
 
 <div id="resultArea">
-    @Html.Partial("_OnlineFileTable", Model.OnlineFiles)
+    <partial name="_OnlineFileTable" model="Model.OnlineFiles" />
 </div>
 
 <!-- Modal -->
@@ -60,7 +58,7 @@
     <div class="modal-dialog modal-xl modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Online Files Detail</h5>
+                <h5 class="modal-title text-primary text-uppercase fs-2 fw-semibold">Online Files Detail</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
@@ -70,12 +68,12 @@
                     <input type="hidden" id="ModalGroupID" name="GroupID" />
 
                     <div class="mb-3">
-                        <label class="form-label">Name</label>
+                        <label class="form-label">Data Name</label>
                         <input type="text" class="form-control" name="DataName" />
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Remark</label>
+                        <label class="form-label">Data Remark</label>
                         <input type="text" class="form-control" name="DataRemark" />
                     </div>
 
@@ -140,6 +138,19 @@
             );
         }
     }
+
+    $("#btnSave").click(function () {
+        $.post('@Url.Action("SaveOnlineFile", "OnlineFile", new { area = "Function" })',
+            $("#OnlineFileForm").serialize(),
+            function (res) {
+                alert(res.message);
+                if (res.success) {
+                    $("#OnlineFileModal").modal("hide");
+                    location.reload();
+                }
+            }
+        );
+    });
 
     // 👉 Delete
     $("#btnDelete").click(function () {

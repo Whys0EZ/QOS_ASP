@@ -3,14 +3,19 @@
     font-size: 16px;
   }
 }
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
   position: relative;
   min-height: 100%;
-/* font-size: 14px; */
+  /* font-size: 14px; */
 }
 
 body {
@@ -20,39 +25,48 @@ body {
   padding-bottom: 40px;
 
 }
+
 label {
   font-weight: bold;
 }
 
 .container-fluid main {
-    min-height: 60vh
+  min-height: 60vh
 }
+
 .logo {
-    max-height: 40px;
-    
+  max-height: 40px;
+
 }
+
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .nav-appmvc {
   background: rgba(0, 0, 0, 0.8);
 }
+
 .nav-appmvc .text-dark {
   color: white !important;
 }
+
 .nav-appmvc .text-dark:hover {
   color: #258cfb !important;
 }
+
 .nav-appmvc .navbar-brand {
   color: rgb(217, 58, 223) !important;
 }
+
 .nav-appmvc .navbar-brand:hover {
   color: #258cfb !important;
 }
+
 .nav-appmvc .dropdown-toggle {
   border-color: white !important;
 }
+
 .nav-appmvc .dropdown-toggle:hover {
   color: #ffffff !important;
 }
@@ -61,6 +75,33 @@ a {
   color: #258cfb;
   cursor: pointer;
 }
+
 .Link_txt:hover {
   text-decoration: underline;
+}
+
+.resizable {
+  width: 250px;
+  /* mặc định */
+  min-width: 150px;
+  max-width: 500px;
+  position: relative;
+  border-right: 1px solid #ddd;
+  transition: width 0.3s ease;
+}
+
+.resizable.collapsed {
+  width: 0 !important;
+  min-width: 0 !important;
+  overflow: hidden;
+}
+
+#drag-handle {
+  width: 5px;
+  cursor: ew-resize;
+  background: #ccc;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
 }

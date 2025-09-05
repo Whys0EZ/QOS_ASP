@@ -25,6 +25,10 @@
       "PackagePath": "staticwebassets\\Report\\QOS_Form_ThongSoThanhPham_US.xlsx"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\all.min.css",
+      "PackagePath": "staticwebassets\\css\\all.min.css"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

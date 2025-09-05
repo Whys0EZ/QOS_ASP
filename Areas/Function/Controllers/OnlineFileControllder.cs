@@ -30,8 +30,12 @@ namespace QOS.Areas.Function.Controllers
 
         public IActionResult Index(string? GroupID, DateTime? dateFrom, DateTime? dateEnd, string? Search_V)
         {
+            // Nếu user chưa chọn -> set mặc định
+            GroupID ??= "2LA3";
+            dateFrom ??= DateTime.Now.AddDays(-7);
+            dateEnd ??= DateTime.Now.Date.AddDays(1).AddTicks(-1);
             var query = _context.OnlineFiles.AsQueryable();
-
+            Console.WriteLine("GroupID: " + GroupID + " DateFrom: " + dateFrom + " DateEnd: " + dateEnd + " Search : " + Search_V);
             // Lọc theo GroupID
             if (!string.IsNullOrEmpty(GroupID))
             {
@@ -45,7 +49,8 @@ namespace QOS.Areas.Function.Controllers
             }
             if (dateEnd.HasValue)
             {
-                query = query.Where(f => f.LastUpdate <= dateEnd.Value);
+                var endDate = dateEnd.Value.Date.AddDays(1).AddTicks(-1);
+                query = query.Where(f => f.LastUpdate <= endDate);
             }
 
             // Lọc theo chuỗi tìm kiếm
@@ -61,6 +66,11 @@ namespace QOS.Areas.Function.Controllers
 
             var model = new OnlineFileViewModel
             {
+                GroupID = GroupID,
+                DateFrom = dateFrom.Value,
+                DateEnd = dateEnd.Value,
+                Search_V = Search_V,
+
                 OnlineFiles = query
                                 .OrderByDescending(f => f.LastUpdate)
                                 .Take(50)
@@ -73,46 +83,28 @@ namespace QOS.Areas.Function.Controllers
             return View(model);
         }
         [HttpPost]
-        public IActionResult SaveOnlineFile()
+        public IActionResult SaveOnlineFile(SaveOnlineFileDto dto)
         {
             try
             {
-                var form = Request.Form;
-                string? idStr = form["ID"];
-                long id = 0;
-                if (!string.IsNullOrEmpty(idStr))
-                {
-                    long.TryParse(idStr, out id);
-                }
-
-                string? groupId = form["GroupID"];
-                string? dataName = form["DataName"];
-                string? dataRemark = form["DataRemark"];
-                string? dataLink = form["DataLink"];
-                string? checker = "";
-                DateTime? checkDate = null;
-                string? checkResult = "";
-                string? checkRemark = "";
                 string? userUpdate = User.Identity?.Name;
                 DateTime lastUpdate = DateTime.Now;
 
                 OnlineFile onlineFile;
-                if (id > 0)
+
+                if (dto.ID > 0)
                 {
-                    // Cập nhật bản ghi hiện có
-                    onlineFile = _context.OnlineFiles.FirstOrDefault(f => f.ID == id);
-                    if (onlineFile == null)
+                    // Cập nhật
+                    var existingFile = _context.OnlineFiles.FirstOrDefault(f => f.ID == dto.ID);
+                    if (existingFile == null)
                     {
-                        return NotFound();
+                        return Json(new { success = false, message = "File not found!" });
                     }
-                    onlineFile.GroupID = groupId;
-                    onlineFile.DataName = dataName;
-                    onlineFile.DataRemark = dataRemark;
-                    onlineFile.DataLink = dataLink;
-                    onlineFile.Checker = checker;
-                    onlineFile.CheckDate = checkDate;
-                    onlineFile.CheckResult = checkResult;
-                    onlineFile.CheckRemark = checkRemark;
+                    onlineFile = existingFile;
+                    onlineFile.GroupID = dto.GroupID;
+                    onlineFile.DataName = dto.DataName;
+                    onlineFile.DataRemark = dto.DataRemark;
+                    onlineFile.DataLink = dto.DataLink;
                     onlineFile.UserUpdate = userUpdate;
                     onlineFile.LastUpdate = lastUpdate;
 
@@ -120,20 +112,17 @@ namespace QOS.Areas.Function.Controllers
                 }
                 else
                 {
-                    // Tạo bản ghi mới
+                    // Thêm mới
                     onlineFile = new OnlineFile
                     {
-                        GroupID = groupId,
-                        DataName = dataName,
-                        DataRemark = dataRemark,
-                        DataLink = dataLink,
-                        Checker = checker,
-                        CheckDate = checkDate,
-                        CheckResult = checkResult,
-                        CheckRemark = checkRemark,
+                        GroupID = dto.GroupID,
+                        DataName = dto.DataName,
+                        DataRemark = dto.DataRemark,
+                        DataLink = dto.DataLink,
                         UserUpdate = userUpdate,
                         LastUpdate = lastUpdate
                     };
+
                     _context.OnlineFiles.Add(onlineFile);
                 }
 
@@ -145,6 +134,7 @@ namespace QOS.Areas.Function.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
 
         [HttpGet]
         public IActionResult GetOnlineFile(string groupId, int id)
