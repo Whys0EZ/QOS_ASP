@@ -1,6 +1,6 @@
 @using QOS.Areas.Function.Models
 @model IEnumerable<OnlineFile>
-<table border="0" width="100%" class="table">
+<table border="0" width="100%" class="table table-bordered border-warning-subtle">
     <thead class="table-success text-black">
         <tr>
             <th>No</th>
@@ -13,7 +13,7 @@
             <th>Checked Remark</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="table-group-divider">
         @if (Model != null && Model.Any())
         {
             var index = 1;
