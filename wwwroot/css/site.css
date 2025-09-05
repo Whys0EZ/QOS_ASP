@@ -23,6 +23,7 @@ body {
   background: white;
   /* margin-bottom: 60px; */
   padding-bottom: 40px;
+  padding-top: 70px;
 
 }
 
@@ -69,6 +70,20 @@ a {
 
 .nav-appmvc .dropdown-toggle:hover {
   color: #ffffff !important;
+}
+
+.navbar .nav-link.active {
+    color: #1ef903 !important;
+    /* background-color: #42a5f5; */
+    border-radius: 6px;
+    padding: 6px 12px;
+}
+
+
+.nav-link.active {
+    font-weight: bold;
+    color: #fd290d !important; /* xanh Bootstrap */
+    border-bottom: 2px solid #0d6efd;
 }
 
 .Link_txt {

@@ -59,10 +59,10 @@
 
 <!-- Popup Modal -->
 <div class="modal fade" id="groupModal" tabindex="-1">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Sửa Group Contact</h5>
+        <h5 class="modal-title text-primary text-uppercase fs-2 fw-semibold">Sửa Group Contact</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
@@ -87,7 +87,7 @@
           </div>
           <div class="mb-3">
             <label>ContactList</label>
-            <textarea class="form-control" name="ContactList" id="ContactList"></textarea>
+            <textarea style="height: 120px" class="form-control" name="ContactList" id="ContactList"></textarea>
           </div>
           <div class="mb-3">
             <label>Remark</label>
@@ -98,6 +98,7 @@
       <div class="modal-footer">
         <button type="button" id="btnSave" class="btn btn-success">Save</button>
         <button type="button" id="btnDelete" class="btn btn-danger">Delete</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

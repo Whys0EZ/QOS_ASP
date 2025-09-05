@@ -1,5 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using QOS.Helpers
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,11 +9,28 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/QOS.styles.css" asp-append-version="true" />
-    
+
 </head>
+@* @using Microsoft.AspNetCore.Mvc.Rendering
+@functions {
+    string IsActive(string ctrl, string? act = null)
+    {
+        var routeData = ViewContext.RouteData.Values;
+        var currentCtrl = routeData["controller"]?.ToString();
+        var currentAct = routeData["action"]?.ToString();
+
+        if (!string.Equals(ctrl, currentCtrl, StringComparison.OrdinalIgnoreCase))
+            return "";
+
+        if (act == null) return "active";
+
+        return string.Equals(act, currentAct, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+    }
+} *@
+
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light border-bottom box-shadow mb-3 nav-appmvc">
+        <nav class="navbar navbar-expand-sm navbar-dark fixed-top nav-appmvc">
             <div class="container-fluid">
                 <a class="navbar-brand me-5" asp-area="" asp-controller="Home" asp-action="Index">
                     <img class="logo" alt="MyWebApp" src="~/images/qos_icon.png" />
@@ -19,47 +38,60 @@
 
                 <!-- Nút bấm menu khi màn hình nhỏ -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
-                        aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                    aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <!-- Menu chính -->
                 <div class="collapse navbar-collapse" id="mainNavbar">
-                    <ul class="navbar-nav me-auto">
+                    <ul class="navbar-nav mx-auto">
                         <li class="nav-item me-3">
-                            <a class="nav-link text-dark" asp-area="Function" asp-controller="Function" asp-action="Index">CHỨC NĂNG</a>
+                            <a class="nav-link text-dark @Html.IsActive(new[] { "Function","ManageOperation","ManageFault", "ThongSoBTP", "ThongSoTP", "ThongSoDo","ETSMoStyle","TrackingContact" ,"TrackingSetup" ,"TrackingUpload","OnlineFile"  })" asp-area="Function"
+                                asp-controller="Function" asp-action="Index">CHỨC NĂNG</a>
                         </li>
                         <li class="nav-item me-3">
-                            <a class="nav-link text-dark" asp-area="Report" asp-controller="Report" asp-action="Index">Báo Cáo</a>
+                            <a class="nav-link text-dark @(Html.IsActive(new[] {"Report"}))" asp-area="Report" asp-controller="Report" asp-action="Index">BÁO CÁO</a>
                         </li>
                         <li class="nav-item me-3">
-                            <a class="nav-link text-dark" asp-area="Setting" asp-controller="Setting" asp-action="FactoryList">Thiết Lập</a>
+                            <a class="nav-link text-dark @(Html.IsActive(new[] {"Setting"}))" asp-area="Setting" asp-controller="Setting"
+                                asp-action="FactoryList">THIẾT LẬP</a>
                         </li>
                         <li class="nav-item me-3">
-                            <a class="nav-link text-dark" asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="Index">Hệ Thống</a>
+                            <a class="nav-link text-dark @(Html.IsActive(new[] {"SystemAdmin"}))" asp-area="SystemAdmin" asp-controller="SystemAdmin"
+                                asp-action="Index">HỆ THỐNG</a>
                         </li>
                     </ul>
 
-                    <ul class="navbar-nav">
+                    <!-- Menu tài khoản -->
+                    <ul class="navbar-nav ms-auto">
                         @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item me-3 pt-2">
                                 <span class="navbar-text text-dark me-2">Xin chào, @User.Identity.Name</span>
                             </li>
                             <li class="nav-item me-3">
-                                <a class="btn btn-outline-light" asp-area="" asp-controller="Account" asp-action="Logout">Đăng xuất</a>
+                                <a class="btn btn-outline-primary" asp-area="" asp-controller="Account"
+                                    asp-action="Logout">Đăng xuất</a>
                             </li>
                         }
                         else
                         {
-                            <li class="nav-item me-3"><a class="btn btn-outline-light" asp-area="" asp-controller="Account" asp-action="Login">Đăng nhập</a></li>
-                            <li class="nav-item me-3"><a class="btn btn-outline-light" asp-area="" asp-controller="Account" asp-action="Register">Đăng ký</a></li>
+                            <li class="nav-item me-3">
+                                <a class="btn btn-outline-primary" asp-area="" asp-controller="Account"
+                                    asp-action="Login">Đăng nhập</a>
+                            </li>
+                            <li class="nav-item me-3">
+                                <a class="btn btn-outline-primary" asp-area="" asp-controller="Account"
+                                    asp-action="Register">Đăng ký</a>
+                            </li>
                         }
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
+
+
     <div class="wrapper">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -77,4 +109,5 @@
     <script src="~/js/jquery-3.6.0.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

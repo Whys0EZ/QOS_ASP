@@ -1,0 +1,39 @@
+
+@{
+    ViewData["Title"] = "Report Page";
+    Layout = "_MenuReport";
+}
+
+<partial name="_AlertMessage" />
+<div class="continer my-3">
+    <div class="row align-items-center mb-3">
+        <!-- Bên trái -->
+
+        <div class="col-md-4 d-flex flex-wrap gap-2">
+            <h3 class="text-primary fw-bold">BÁO CÁO CHẤT LƯỢNG BÀN CẮT</h3>
+        </div>
+
+        <!-- Bên phải -->
+        <div class="col-md-8 d-flex justify-content-end flex-wrap gap-2">
+            <form id="SearchForm" asp-area="Function" asp-action="Index" asp-controller="OnlineFile" method="get"
+                class="d-flex align-items-center gap-2 mb-0">
+                
+                <select  class="form-control"
+                        asp-items="@(new SelectList(Model.Unit_List, "Unit", "Unit"))">
+                    <option value="">-- Chọn Unit --</option>
+                </select>
+
+                <input type="date" id="dateFrom" name="dateFrom" class="form-control"
+                    value="@Model.DateFrom.ToString("yyyy-MM-dd")" />
+                <input type="date" id="dateEnd" name="dateEnd" class="form-control"
+                    value="@Model.DateEnd.ToString("yyyy-MM-dd")" />
+                
+
+                <button class="btn btn-warning" type="submit">
+                    <i class="bi bi-search"></i> Check
+                </button>
+                <button type="button" class="btn btn-primary" id="Create" name="Create">Tạo&nbsp;mới</button>
+            </form>
+        </div>
+    </div>
+</div>
