@@ -25,6 +25,7 @@ namespace QOS.Controllers
         {
             var factorylist = _context.Factory_List.OrderBy(fac => fac.FactoryID).ToList();
             return RedirectToAction("FactoryList", factorylist);
+            // return View();
         }
         // Factory List
         public IActionResult FactoryList()

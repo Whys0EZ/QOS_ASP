@@ -1,4 +1,4 @@
-
+@model QOS.Areas.Report.Models.RP_Form1ViewModel
 @{
     ViewData["Title"] = "Report Page";
     Layout = "_MenuReport";
@@ -15,12 +15,12 @@
 
         <!-- Bên phải -->
         <div class="col-md-8 d-flex justify-content-end flex-wrap gap-2">
-            <form id="SearchForm" asp-area="Function" asp-action="Index" asp-controller="OnlineFile" method="get"
+            <form id="SearchForm" asp-area="Report" asp-action="RP_Form1" asp-controller="Report" method="get"
                 class="d-flex align-items-center gap-2 mb-0">
                 
-                <select  class="form-control"
-                        asp-items="@(new SelectList(Model.Unit_List, "Unit", "Unit"))">
-                    <option value="">-- Chọn Unit --</option>
+                <select  class="form-control" id="Unit" name="Unit" asp-for="Unit"
+                        asp-items="@(new SelectList(Model.Unit_List, "Unit", "Unit", Model.Unit))">
+                    <option value="ALL">-- Chọn Unit --</option>
                 </select>
 
                 <input type="date" id="dateFrom" name="dateFrom" class="form-control"
@@ -29,11 +29,75 @@
                     value="@Model.DateEnd.ToString("yyyy-MM-dd")" />
                 
 
-                <button class="btn btn-warning" type="submit">
-                    <i class="bi bi-search"></i> Check
-                </button>
-                <button type="button" class="btn btn-primary" id="Create" name="Create">Tạo&nbsp;mới</button>
+                <button class="btn btn-warning" id="Check" name="Check" type="submit"> Check</button>
+                <button class="btn btn-warning" id="Reset" name="Reset" type="reset"> Nhập&nbsp;Lại</button>
+                <button type="button" class="btn btn-primary" id="ExportExcel" name="ExportExcel">Tải&nbsp;Excel</button>
             </form>
         </div>
     </div>
 </div>
+<div id="TableContainer">
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <th>STT</th>
+            <th>ID</th>
+            <th>Xưởng</th>
+            <th>MO</th>
+            <th>Bàn Cắt</th>
+            <th>Kiểm Lại</th>
+            <th>Trạng Thái</th>
+            <th>Lần Kiểm</th>
+            <th>Ghi Chú</th>
+            <th>Người Tạo</th>
+            <th>Thời Gian Kiểm</th>
+        </thead>
+        <tbody>
+            @if(Model.History != null){
+                var i =1;
+                
+                foreach(var item in Model.History){
+                    string bgColor, fontColor, result;
+                    if(item.Re_Audit==true){
+                        bgColor = "background-color: yellow;";
+                        fontColor = "color: red;";
+                        result = "Có";
+                    }
+                    else{
+                        bgColor = "";
+                        fontColor = "color: green;";
+                        result = "Không";
+                    }
+                    <tr style="@bgColor @fontColor">
+                        <td>@i</td>
+                        <td>@item.ID</td>
+                        <td>@item.Unit</td>
+                        <td>@item.MO - @item.Color</td>
+                        <td>@item.CutTableName</td>
+                        <td>@result</td>
+                        <td>img</td>
+                        <td>@item.Audit_Time</td>
+                        <td>@item.Remark</td>
+                        <td>@item.UserUpdate - @item.FullName</td>
+                        <td>@item.LastUpdate</td>
+                    </tr>
+                    i++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script>
+    $("#Check").click(function () {
+        var Unit = $("#Unit").val();
+        var dateFrom = $("#dateFrom").val();
+        var dateEnd = $("#dateEnd").val();
+
+        $.get("@Url.Action("RP_Form1", "Report", new { area = "Report" })",
+            { Unit: Unit, dateFrom: dateFrom, dateEnd: dateEnd },
+            function (data) {
+                // render lại phần bảng thôi
+                $("#TableContainer").html($(data).find("#TableContainer").html());
+            });
+    });
+</script>

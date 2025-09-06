@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "VITctcnlf/mQWWZQD9Rkq4AradKYQTDsSnVNiyMQBUPOtVJmvFEn+lrf8d5ZXwl6fH7c8zleEEvxmKTZCIe6LA==",
+  "dgSpecHash": "3rmRxibBMEhEc62md5em5wT+m7h55FReQqh/E/j7Mu8M5jbPYe2jWjES1cYoMx2s5ZemVcAEuPhV9bycsHdpgg==",
   "success": true,
   "projectFilePath": "D:\\C_Sharp\\QOS\\QOS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\rglvchuong\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\rglvchuong\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
     "C:\\Users\\rglvchuong\\.nuget\\packages\\bouncycastle.cryptography\\2.5.1\\bouncycastle.cryptography.2.5.1.nupkg.sha512",
+    "C:\\Users\\rglvchuong\\.nuget\\packages\\dapper\\2.1.66\\dapper.2.1.66.nupkg.sha512",
     "C:\\Users\\rglvchuong\\.nuget\\packages\\epplus\\7.7.3\\epplus.7.7.3.nupkg.sha512",
     "C:\\Users\\rglvchuong\\.nuget\\packages\\epplus.interfaces\\7.7.0\\epplus.interfaces.7.7.0.nupkg.sha512",
     "C:\\Users\\rglvchuong\\.nuget\\packages\\epplus.system.drawing\\7.7.0\\epplus.system.drawing.7.7.0.nupkg.sha512",
