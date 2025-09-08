@@ -71,6 +71,26 @@ namespace QOS.Controllers
             return View(model);
         }
 
+        public IActionResult DetailForm1(int id)
+        {
+            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            string sql = @"
+                SELECT t1.*, t4.FullName 
+                FROM Form1_BCCLC t1
+                LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
+                WHERE t1.ID = @ID
+                ORDER BY t1.LastUpdate DESC";
+
+            var detail = conn.QueryFirstOrDefault<Form1_BCCLC>(sql, new { ID = id });
+
+            if (detail == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("_tableRP_Form1", detail);
+        }
+
         public IActionResult Feature2()
         {
             return View();

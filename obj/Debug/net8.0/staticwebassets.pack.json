@@ -37,8 +37,20 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\delete.png",
+      "PackagePath": "staticwebassets\\images\\delete.png"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\green_On.png",
+      "PackagePath": "staticwebassets\\images\\green_On.png"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\qos_icon.png",
       "PackagePath": "staticwebassets\\images\\qos_icon.png"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\red_On.png",
+      "PackagePath": "staticwebassets\\images\\red_On.png"
     },
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\jquery-3.6.0.min.js",

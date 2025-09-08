@@ -46,19 +46,20 @@
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav mx-auto">
                         <li class="nav-item me-3">
-                            <a class="nav-link text-dark @Html.IsActive(new[] { "Function","ManageOperation","ManageFault", "ThongSoBTP", "ThongSoTP", "ThongSoDo","ETSMoStyle","TrackingContact" ,"TrackingSetup" ,"TrackingUpload","OnlineFile"  })" asp-area="Function"
-                                asp-controller="Function" asp-action="Index">CHỨC NĂNG</a>
+                            <a class="nav-link text-dark @Html.IsActive(new[] { "Function", "ManageOperation", "ManageFault", "ThongSoBTP", "ThongSoTP", "ThongSoDo", "ETSMoStyle", "TrackingContact", "TrackingSetup", "TrackingUpload", "OnlineFile" })"
+                                asp-area="Function" asp-controller="Function" asp-action="Index">CHỨC NĂNG</a>
                         </li>
                         <li class="nav-item me-3">
-                            <a class="nav-link text-dark @(Html.IsActive(new[] {"Report"}))" asp-area="Report" asp-controller="Report" asp-action="Index">BÁO CÁO</a>
+                            <a class="nav-link text-dark @(Html.IsActive(new[] { "Report" }))" asp-area="Report"
+                                asp-controller="Report" asp-action="Index">BÁO CÁO</a>
                         </li>
                         <li class="nav-item me-3">
-                            <a class="nav-link text-dark @(Html.IsActive(new[] {"Setting"}))" asp-area="Setting" asp-controller="Setting"
-                                asp-action="FactoryList">THIẾT LẬP</a>
+                            <a class="nav-link text-dark @(Html.IsActive(new[] { "Setting" }))" asp-area="Setting"
+                                asp-controller="Setting" asp-action="FactoryList">THIẾT LẬP</a>
                         </li>
                         <li class="nav-item me-3">
-                            <a class="nav-link text-dark @(Html.IsActive(new[] {"SystemAdmin"}))" asp-area="SystemAdmin" asp-controller="SystemAdmin"
-                                asp-action="Index">HỆ THỐNG</a>
+                            <a class="nav-link text-dark @(Html.IsActive(new[] { "SystemAdmin" }))" asp-area="SystemAdmin"
+                                asp-controller="SystemAdmin" asp-action="Index">HỆ THỐNG</a>
                         </li>
                     </ul>
 
@@ -97,6 +98,7 @@
             @RenderBody()
         </main>
     </div>
+    <button onclick="topFunction()" id="btnTop" title="Lên đầu trang">↑</button>
 
     <footer class="border-top footer text-muted">
         <div class="container">
@@ -107,6 +109,25 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/jquery-3.6.0.min.js"></script>
+    <script>
+        // Lấy nút
+        let mybutton = document.getElementById("btnTop");
+
+        // Khi user scroll xuống 200px thì hiện nút
+        window.onscroll = function () {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        };
+
+        // Khi click → cuộn lên đầu
+        function topFunction() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 
