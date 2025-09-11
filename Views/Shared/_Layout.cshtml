@@ -50,8 +50,8 @@
                                 asp-area="Function" asp-controller="Function" asp-action="Index">CHỨC NĂNG</a>
                         </li>
                         <li class="nav-item me-3">
-                            <a class="nav-link text-dark @(Html.IsActive(new[] { "Report" }))" asp-area="Report"
-                                asp-controller="Report" asp-action="Index">BÁO CÁO</a>
+                            <a class="nav-link text-dark @Html.IsActive(new[] { "Report", "Form1BCCLC","Form2BCCPI" })"
+                            asp-area="Report" asp-controller="Report" asp-action="Index">BÁO CÁO</a>
                         </li>
                         <li class="nav-item me-3">
                             <a class="nav-link text-dark @(Html.IsActive(new[] { "Setting" }))" asp-area="Setting"

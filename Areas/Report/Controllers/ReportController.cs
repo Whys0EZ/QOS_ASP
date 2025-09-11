@@ -6,6 +6,7 @@ using QOS.Areas.Report.Models;
 using QOS.Data;
 using QOS.Models;
 using Dapper;
+using QOS.Areas.Function.Filters;
 
 
 namespace QOS.Controllers
@@ -30,66 +31,41 @@ namespace QOS.Controllers
         {
             return View();
         }
-
-        public IActionResult RP_Form1(string? Unit, DateTime? dateFrom, DateTime? dateEnd)
+        
+        [Permission("B_F1")]
+        public IActionResult RP_Form1()
         {
-            var model = new RP_Form1ViewModel
-            {
-                Unit_List = _context.Set<Unit_List>().Where(u => u.Factory == "REG2").OrderBy(u => u.Unit).ToList(),
-                Unit = Unit,
-                DateFrom = dateFrom ?? DateTime.Now.AddDays(-7),
-                DateEnd = dateEnd ?? DateTime.Now.Date.AddDays(1).AddTicks(-1)
-
-            };
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-            string sql;
-
-            if (!string.IsNullOrEmpty(Unit) && Unit != "ALL")
-            {
-                sql = @"
-                SELECT t1.*, t4.FullName 
-                FROM Form1_BCCLC t1
-                LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
-                WHERE t1.Unit = @Unit
-                AND t1.LastUpdate BETWEEN @dateF AND @dateT
-                ORDER BY t1.LastUpdate DESC";
-            }
-            else
-            {
-                sql = @"
-                SELECT t1.*, t4.FullName 
-                FROM Form1_BCCLC t1
-                LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
-                WHERE t1.LastUpdate BETWEEN @dateF AND @dateT
-                ORDER BY t1.LastUpdate DESC";
-                    };
-            // Console.WriteLine("SQL: " + sql + " Unit: " + Unit);
-            var history = conn.Query<Form1_BCCLC>(sql, new { Unit, dateF = model.DateFrom, dateT = model.DateEnd }).ToList();
-
-            model.History = history; // đưa thẳng vào Model
-
-            return View(model);
+            // return View("ManageOperation/F_ManageOperation");
+            return RedirectToAction("RP_Form1", "Form1BCCLC", new { area = "Report" });
         }
 
-        public IActionResult DetailForm1(int id)
+        [Permission("B_F2")]
+        public IActionResult RP_Form2()
         {
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-            string sql = @"
-                SELECT t1.*, t4.FullName 
-                FROM Form1_BCCLC t1
-                LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
-                WHERE t1.ID = @ID
-                ORDER BY t1.LastUpdate DESC";
-
-            var detail = conn.QueryFirstOrDefault<Form1_BCCLC>(sql, new { ID = id });
-
-            if (detail == null)
-            {
-                return NotFound();
-            }
-
-            return PartialView("_tableRP_Form1", detail);
+            // return View("ManageOperation/F_ManageOperation");
+            return RedirectToAction("RP_Form2", "Form2BCCPI", new { area = "Report" });
         }
+
+        [Permission("B_F3")]
+        public IActionResult RP_Form3()
+        {
+            // return View("ManageOperation/F_ManageOperation");
+            return RedirectToAction("RP_Form3", "Form3BCDT", new { area = "Report" });
+        }
+
+        [Permission("B_F4")]
+        public IActionResult RP_Form4()
+        {
+            // return View("ManageOperation/F_ManageOperation");
+            return RedirectToAction("RP_Form4", "Form4BCCLM", new { area = "Report" });
+        }
+        [Permission("B_F6")]
+        public IActionResult RP_Form6()
+        {
+            // return View("ManageOperation/F_ManageOperation");
+            return RedirectToAction("RP_Form6", "Form6BCCC", new { area = "Report" });
+        }
+    
 
         public IActionResult Feature2()
         {

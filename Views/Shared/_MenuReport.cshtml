@@ -1,3 +1,4 @@
+@using QOS.Helpers
 @{
     Layout = "_Layout";
 }
@@ -22,85 +23,85 @@
             <h3 class="mt-2">BÁO CÁO</h3>
             <ul class="list-group list-group-flush" style="max-height: 80vh; overflow-y: auto;">
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="RP_Form1">1-Báo Cáo Chất Lượng Bàn Cắt</a>
+                    <a class="nav-link @Html.IsActive(new[] { "Form1BCCLC" }, new[] { "RP_Form1" })" asp-controller="Report" asp-action="RP_Form1">1-Báo Cáo Chất Lượng Bàn Cắt</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageFeature">2-Báo Cáo Chất Lượng CPI</a>
+                    <a class="nav-link @Html.IsActive(new[] { "Form2BCCPI" }, new[] { "RP_Form2" })" asp-controller="Report" asp-action="RP_Form2">2-Báo Cáo Chất Lượng CPI</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageOperation">3-Báo Cáo Bàn Cắt Đầu Tiên</a>
+                    <a class="nav-link @Html.IsActive(new[] { "Form3BCDT" }, new[] { "RP_Form3" })" asp-controller="Report" asp-action="RP_Form3">3-Báo Cáo Bàn Cắt Đầu Tiên</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageFeature">4-Báo Cáo Chất Lượng Chuyền May</a>
+                    <a class="nav-link @Html.IsActive(new[] { "Form4BCCLM" }, new[] { "RP_Form4" })" asp-controller="Report" asp-action="RP_Form4">4-Báo Cáo Chất Lượng Chuyền May</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageOperation">5-Báo Cáo Chất Lượng Cuối Chuyền</a>
+                    <a class="nav-link @Html.IsActive(new[] { "Form6BCCC" }, new[] { "RP_Form6" })" asp-controller="Report" asp-action="RP_Form6">5-Báo Cáo Chất Lượng Cuối Chuyền</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageFeature">6-Tổng Hợp Lỗi Cuối Chuyền</a>
+                    <a class="nav-link @Html.IsActive(new[] { "SummaryKCC" }, new[] { "RP_Summary_Defects_KCC" })" asp-controller="Report" asp-action="RP_Summary_Defects_KCC">6-Tổng Hợp Lỗi Cuối Chuyền</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageOperation">7-Hình Ảnh Lỗi</a>
+                    <a class="nav-link @Html.IsActive(new[] { "PhotoDefect" }, new[] { "Index" })" asp-controller="Report" asp-action="RP_PhotoDefect">7-Hình Ảnh Lỗi</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageFeature">8-Daily OQL End Line</a>
+                    <a class="nav-link @Html.IsActive(new[] { "OQLEndline" }, new[] { "RP_OQLEndline" })" asp-controller="Report" asp-action="RP_OQLEndline">8-Daily OQL End Line</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageOperation">9-Tổng Hợp Lỗi Chuyền May</a>
+                    <a class="nav-link @Html.IsActive(new[] { "SummaryKCM" }, new[] { "RP_Summary_Defects_KCM" })" asp-controller="Report" asp-action="RP_Summary_Defects_KCM">9-Tổng Hợp Lỗi Chuyền May</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageOperation">9.1-Lỗi Chuyền May</a>
+                    <a class="nav-link @Html.IsActive(new[] { "Form4BCCLMSUM" }, new[] { "RP_Form4_BCCLM_SUM" })" asp-controller="Report" asp-action="RP_Form4_BCCLM_SUM">9.1-Lỗi Chuyền May</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageFeature">10-Thông Số BTP</a>
+                    <a class="nav-link @Html.IsActive(new[] { "Form7BTP" }, new[] { "RP_Form7" })" asp-controller="Report" asp-action="RP_Form7">10-Thông Số BTP</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageOperation">11-Thông Số TP</a>
+                    <a class="nav-link @Html.IsActive(new[] { "Form8TP" }, new[] { "RP_Form8" })" asp-controller="Report" asp-action="RP_Form8">11-Thông Số TP</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageFeature">12-End-Line Summary Report</a>
+                    <a class="nav-link @Html.IsActive(new[] { "SummaryEndline" }, new[] { "Index" })" asp-controller="Report" asp-action="Index">12-End-Line Summary Report</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageOperation">13-FCA Tracking Report</a>
+                    <a class="nav-link @Html.IsActive(new[] { "FCATracking" }, new[] { "FCATracking" })" asp-controller="Report" asp-action="FCATracking">13-FCA Tracking Report</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageFeature">14-FCA Tracking Report AC-Date</a>
+                    <a class="nav-link @Html.IsActive(new[] { "FCATrackingACDate" }, new[] { "FCATrackingACDate" })" asp-controller="Report" asp-action="FCATrackingACDate">14-FCA Tracking Report AC-Date</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageOperation">15-Báo Cáo Chất Lượng Hoàn Thiện84</a>
+                    <a class="nav-link @Html.IsActive(new[] { "Form10BCHT" }, new[] { "RP_Form10" })" asp-controller="Report" asp-action="RP_Form10">15-Báo Cáo Chất Lượng Hoàn Thiện84</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageFeature">16-Tổng Hợp Lỗi Hoàn Thiện 84</a>
+                    <a class="nav-link @Html.IsActive(new[] { "SummaryBCHT" }, new[] { "Index" })" asp-controller="Report" asp-action="SummaryBCHT">16-Tổng Hợp Lỗi Hoàn Thiện 84</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageOperation">17-Checker 84 Summary Report</a>
+                    <a class="nav-link @Html.IsActive(new[] { "SummaryChecker" }, new[] { "Index" })" asp-controller="Report" asp-action="SummaryChecker">17-Checker 84 Summary Report</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageFeature">18-Checker 84 Daily OQL</a>
+                    <a class="nav-link @Html.IsActive(new[] { "Form10OQL" }, new[] { "Index" })" asp-controller="Report" asp-action="RP_Form10OQL">18-Checker 84 Daily OQL</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageOperation">19-FQC Tracking Report</a>
+                    <a class="nav-link @Html.IsActive(new[] { "FQCTracking" }, new[] { "Index" })" asp-controller="Report" asp-action="FQCTracking">19-FQC Tracking Report</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageFeature">20-Tổng Hợp Lỗi FQC</a>
+                    <a class="nav-link @Html.IsActive(new[] { "SummaryFQC" }, new[] { "Index" })" asp-controller="Report" asp-action="SummaryFQC">20-Tổng Hợp Lỗi FQC</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageOperation">21-InLine Quality Report Summary</a>
+                    <a class="nav-link @Html.IsActive(new[] { "Form4Quality" }, new[] { "Index" })" asp-controller="Report" asp-action="Form4_Quality">21-InLine Quality Report Summary</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageFeature">22-TOP InLine Quality Report</a>
+                    <a class="nav-link @Html.IsActive(new[] { "TopForm4Quality" }, new[] { "Index" })" asp-controller="Report" asp-action="TopForm4Quality">22-TOP InLine Quality Report</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageOperation">23-TOP EndLine Quality Report</a>
+                    <a class="nav-link @Html.IsActive(new[] { "TopForm6Quality" }, new[] { "Index" })" asp-controller="Report" asp-action="TopForm6Quality">23-TOP EndLine Quality Report</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageFeature">24-EndLine Detail Report</a>
+                    <a class="nav-link @Html.IsActive(new[] { "EndlineReport" }, new[] { "Index" })" asp-controller="Report" asp-action="EndlineReport">24-EndLine Detail Report</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageOperation">25-Báo Cáo Cuối Chuyền Theo Unit</a>
+                    <a class="nav-link @Html.IsActive(new[] { "EndlineUnit" }, new[] { "Index" })" asp-controller="Report" asp-action="EndlineUnit">25-Báo Cáo Cuối Chuyền Theo Unit</a>
                 </li>
                 <li class="list-group-item">
-                    <a class="nav-link" asp-active="true" asp-controller="Report" asp-action="ManageFeature">26-Report EndLine By Unit</a>
+                    <a class="nav-link @Html.IsActive(new[] { "EndlineUnitEN" }, new[] { "Index" })" asp-controller="Report" asp-action="EndlineUnitEN">26-Report EndLine By Unit</a>
                 </li>
             </ul>
         </div>

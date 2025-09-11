@@ -106,16 +106,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRnVuY3Rpb25cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/C_Sharp/QOS/Areas/Report/Views/Form1BCCLC/RP_Form1.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZvcm0xQkNDTENcUlBfRm9ybTEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Report/Views/Form1BCCLC/_tableRP_Form1.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZvcm0xQkNDTENcX3RhYmxlUlBfRm9ybTEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Report/Views/Form2BCCPI/RP_Form2.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZvcm0yQkNDUElcUlBfRm9ybTIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Report/Views/Form2BCCPI/_tableRP_Form2.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZvcm0yQkNDUElcX3RhYmxlUlBfRm9ybTIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/C_Sharp/QOS/Areas/Report/Views/Report/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXFJlcG9ydFxJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/C_Sharp/QOS/Areas/Report/Views/Report/RP_Form1.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXFJlcG9ydFxSUF9Gb3JtMS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/C_Sharp/QOS/Areas/Report/Views/Report/_tableRP_Form1.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXFJlcG9ydFxfdGFibGVSUF9Gb3JtMS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/C_Sharp/QOS/Areas/Report/Views/_ViewImports.cshtml]

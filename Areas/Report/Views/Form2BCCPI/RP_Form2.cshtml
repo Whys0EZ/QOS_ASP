@@ -1,4 +1,4 @@
-@model QOS.Areas.Report.Models.RP_Form1ViewModel
+@model QOS.Areas.Report.Models.RP_Form2ViewModel
 @{
     ViewData["Title"] = "Report Page";
     Layout = "_MenuReport";
@@ -10,16 +10,16 @@
         <!-- Bên trái -->
 
         <div class="col-md-4 d-flex flex-wrap gap-2">
-            <h3 class="text-primary fw-bold">BÁO CÁO CHẤT LƯỢNG BÀN CẮT</h3>
+            <h3 class="text-primary fw-bold">QOS - BÁO CÁO CHẤT LƯỢNG CPI</h3>
         </div>
 
         <!-- Bên phải -->
         <div class="col-md-8 d-flex justify-content-end flex-wrap gap-2">
-            <form id="SearchForm" asp-area="Report" asp-action="RP_Form1" asp-controller="Report" method="get"
+            <form id="SearchForm" asp-area="Report" asp-action="RP_Form2" asp-controller="Form2BCCPI" method="get"
                 class="d-flex align-items-center gap-2 mb-0">
-                
-                <select  class="form-control" id="Unit" name="Unit" asp-for="Unit"
-                        asp-items="@(new SelectList(Model.Unit_List, "Unit", "Unit", Model.Unit))">
+
+                <select class="form-control" id="Unit" name="Unit" asp-for="Unit"
+                    asp-items="@(new SelectList(Model.Unit_List, "Unit", "Unit", Model.Unit))">
                     <option value="ALL">-- Chọn Unit --</option>
                 </select>
 
@@ -27,11 +27,12 @@
                     value="@Model.DateFrom.ToString("yyyy-MM-dd")" />
                 <input type="date" id="dateEnd" name="dateEnd" class="form-control"
                     value="@Model.DateEnd.ToString("yyyy-MM-dd")" />
-                
+
 
                 <button class="btn btn-warning" id="Check" name="Check" type="submit"> Check</button>
                 <button class="btn btn-warning" id="Reset" name="Reset" type="reset"> Nhập&nbsp;Lại</button>
-                <button type="button" class="btn btn-primary" id="ExportExcel" name="ExportExcel">Tải&nbsp;Excel</button>
+                <button type="button" class="btn btn-primary" id="ExportExcel"
+                    name="ExportExcel">Tải&nbsp;Excel</button>
             </form>
         </div>
     </div>
@@ -40,31 +41,36 @@
     <table class="table table-bordered table-hover table-striped">
         <thead class="table-light">
             <th>STT</th>
-            <th>ID</th>
             <th>Xưởng</th>
+            <th>CPI</th>
             <th>MO</th>
             <th>Bàn Cắt</th>
-            <th>Kiểm Lại</th>
+            <th>Tổng SL</th>
+            <th>SL Lỗi/SL Kiểm</th>
             <th>Trạng Thái</th>
             <th>Lần Kiểm</th>
-            <th>Ghi Chú</th>
+            <th>Kiểm Lại</th>
             <th>Người Tạo</th>
             <th>Thời Gian Kiểm</th>
         </thead>
         <tbody>
-            @if(Model.History != null){
-                var i =1;
-                
-                foreach(var item in Model.History){
+            @if (Model.History != null)
+            {
+                var i = 1;
+
+                foreach (var item in Model.History)
+                {
                     string bgColor, fontColor, result, img;
-                    if(item.Re_Audit==true){
+                    if (item.Re_Audit == true)
+                    {
                         bgColor = "background-color: yellow;";
                         fontColor = "color: red;";
                         result = "Có";
                         img = "/images/red_On.png";
 
                     }
-                    else{
+                    else
+                    {
                         bgColor = "";
                         fontColor = "color: green;";
                         result = "Không";
@@ -72,14 +78,19 @@
                     }
                     <tr style="@bgColor @fontColor">
                         <td>@i</td>
-                        <td>@item.ID</td>
+                        
                         <td>@item.Unit</td>
-                        <td><span style="text-decoration: underline; cursor: pointer; color:blue;" onclick="showDetails('@item.ID')">@item.MO - @item.Color</span></td>
+                        <td>@item.CPI</td>
+                        <td><span style="text-decoration: underline; cursor: pointer; color:blue;"
+                                onclick="showDetails('@item.ID')">@item.MO - @item.Color</span></td>
                         <td>@item.CutTableName</td>
-                        <td>@result</td>
-                        <td><img style="width: 30px; height:30px; text-align:center;"  src="@img" alt="@result"></td>
+                        <td>@item.QTY</td>
+                        <td>@item.Fault_QTY / @item.Check_QTY</td>
+                        
+                        <td><img style="width: 30px; height:30px; text-align:center;" src="@img" alt="@result"></td>
                         <td>@item.Audit_Time</td>
-                        <td>@item.Remark</td>
+                        <td>@result</td>
+                        
                         <td>@item.UserUpdate - @item.FullName</td>
                         <td>@item.LastUpdate</td>
                     </tr>
@@ -89,14 +100,14 @@
         </tbody>
     </table>
 </div>
-<div class="modal fade" id="Form1Modal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="Form2Modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header bg-info text-white text-center text-uppercase">
                 <h5 class="modal-title">Chi tiết báo cáo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body" id="ModalRP_Form1">
+            <div class="modal-body" id="ModalRP_Form2">
                 <!-- Nội dung chi tiết sẽ load vào đây -->
             </div>
         </div>
@@ -108,9 +119,8 @@
     $("#Check").click(function () {
         var Unit = $("#Unit").val();
         var dateFrom = $("#dateFrom").val();
-        var dateEnd = $("#dateEnd").val();
 
-        $.get("@Url.Action("RP_Form1", "Report", new { area = "Report" })",
+        $.get("@Url.Action("RP_Form2", "Form2BCCPI", new { area = "Report" })",
             { Unit: Unit, dateFrom: dateFrom, dateEnd: dateEnd },
             function (data) {
                 // render lại phần bảng thôi
@@ -118,19 +128,32 @@
             });
     });
 
-    function showDetails(id){
-        $.get('@Url.Action("DetailForm1","Report", new {area="Report"})',
-        {id:id},
-        function(data){
-            if(data){
-                // inset info
-                $("#ModalRP_Form1").html(data);
-                var modal = new bootstrap.Modal(document.getElementById('Form1Modal'));
-                var unit = $("#ModalRP_Form1").find("#UnitField").text(); 
-                $(".modal-title").text("Chi tiết báo cáo - Xưởng: " + unit);
-                
-                modal.show();
-            }
-        });
+    function showDetails(id) {
+        $.get('@Url.Action("DetailForm2", "Form2BCCPI", new { area = "Report" })',
+            { id: id },
+            function (data) {
+                if (data) {
+                    // inset info
+                    $("#ModalRP_Form2").html(data);
+                    var modal = new bootstrap.Modal(document.getElementById('Form2Modal'));
+                    var unit = $("#ModalRP_Form2").find("#UnitField").val();
+                    $(".modal-title").text("Chi tiết báo cáo - Xưởng: " + unit);
+
+                    modal.show();
+                }
+            });
     }
+
+    $("#ExportExcel").click(function () {
+        var Unit = $("#Unit").val();
+        var dateFrom = $("#dateFrom").val();
+        var dateEnd = $("#dateEnd").val();
+
+        var url = '@Url.Action("ExportExcel", "Form2BCCPI", new { area = "Report" })'
+        + "?Unit=" + encodeURIComponent(Unit)
+        + "&dateFrom=" + encodeURIComponent(dateFrom)
+        + "&dateEnd=" + encodeURIComponent(dateEnd);
+
+        window.location.href = url; // tự động download file
+    });
 </script>

@@ -1,0 +1,391 @@
+@model QOS.Areas.Report.Models.Form2_BCCPI
+@{
+    
+    var Size_Parameter = Model.Size_Parameter;
+    decimal DS_L_Min = ConvertToDecimal(Model.DS_L_Min), DS_L_Max = ConvertToDecimal(Model.DS_L_Max);
+    decimal DS_W_Min = ConvertToDecimal(Model.DS_W_Min), DS_W_Max = ConvertToDecimal(Model.DS_W_Max);
+    decimal DS_L_Min_2 = 10, DS_L_Max_2 = 90;
+    decimal DS_W_Min_2 = 10, DS_W_Max_2 = 90;
+    
+}
+<style>
+    input {
+        width: 100%;
+    }
+</style>
+<form id="Form2Report" method="post" asp-action="CreateReport_Form2" asp-controller="Report" asp-area="Report">
+    <input type="hidden" id="ReportID" name="ReportID" value="@Model.Report_ID"/>
+    <input type="hidden" id="Audit_Time" name="Audit_Time" value="@Model.Audit_Time"/>
+<table class="table">
+    <tr>
+        <td><label>Unit</label></td>
+        <td><label>AQL</label></td>
+        <td><label>CPI</label></td>
+        <td><label>Quản lý cắt</label></td>
+        <td><label>CPI Leader</label></td>     
+    </tr>
+    <tr>
+        <td><input id="UnitField" value="@Model.Unit"/></td>
+        <td><input value="@Model.AQL"/></td>
+        <td><input value="@Model.CPI"/></td>
+        <td><input value="@Model.Cut_Leader"/></td>
+        <td><input value="@Model.CPI_Leader"/></td>
+
+    </tr>
+    <tr>
+        <td colspan="2"><label>Rập</label></td>
+        <td><label>Bàn cắt</label></td>
+        <td><label>Lot</label></td>
+        <td><label>Mo</label></td>     
+    </tr>
+    <tr>
+        <td colspan="2"><input value="@Model.Rap" /></td>
+        <td><input value="@Model.CutTableName" /></td>
+        <td><input value="@Model.Batch" /></td>
+        <td><input value="@Model.MO" /></td>
+
+    </tr>
+    <tr>
+        <td><label>Số lượng: </label></td>
+        <td><label>Số lượng kiểm: </label></td>
+        <td><label>Số lượng lỗi: </label></td>
+        <td><label></label></td>     
+    </tr>
+    <tr>
+        <td><input value="@Model.QTY"/></td>
+        <td><input value="@Model.Check_QTY"/></td>
+        <td><input value="@Model.Fault_AQL_QTY"/></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="4"><label>Chất lượng vải: </label><i style="color: red;">(Tích chọn nếu có lỗi)</i></td>
+    </tr>
+    <tr>
+        <td style="padding: 3px; text-align:center;">
+                <div>Thủng</div>
+                <input type="checkbox" name="F1_chk_loang_mau" value="true" @(Model.Hole == true ? "checked" : "") id="F1_chk_loang_mau"  value="1" style="zoom:3.0;"  autocomplete="on" />
+        </td>
+        <td style="padding: 3px; text-align:center;">
+                <div>Loang màu </div>
+                <input type="checkbox" name="F1_chk_song_vai"  value="true" @(Model.Shading == true ? "checked" : "") id="F1_chk_song_vai"  value="1" style="zoom:3.0;"  autocomplete="on" />
+        </td>
+        <td style="padding: 3px; text-align:center;">
+                <div>Lẫn sợi </div>
+                <input type="checkbox" name="F1_chk_hep_kho"   value="true" @(Model.Yarn == true ? "checked" : "") id="F1_chk_hep_kho"  value="1" style="zoom:3.0;"  autocomplete="on" />
+        </td>
+        <td style="padding: 3px; text-align:center;">
+                <div>Cục </div>
+                <input type="checkbox" name="F1_chk_trai_vai"  value="true" @(Model.Slub == true ? "checked" : "") id="F1_chk_trai_vai"  value="1" style="zoom:3.0;"  autocomplete="on" />
+        </td>
+        <td style="padding: 3px; text-align:center;">
+                <div>Bẩn </div>
+                <input type="checkbox" name="F1_chk_Dirty"  value="true" @(Model.Dirty == true ? "checked" : "") id="F1_chk_Dirty"  value="1" style="zoom:3.0;"  autocomplete="on" />
+        </td>
+    </tr>
+</table>
+
+<p style="font-weight: bold;"><span style="color: red;">*</span> Chất lượng cắt:</p>
+<TABLE style="width: 100%; font-size: 0.8em!important; border: 1px solid gray; ">
+    <tr style="text-align: left;">
+        <td>
+                Dấu bấm: <br>
+                <input type="text" name="Notch" id="Notch" value="@(string.IsNullOrEmpty(Model.Notch) ? "" : Model.Notch)" style=" font-size:1em; color:rgb(255, 0, 0); width: 90%;"  autocomplete="on" placeholder="vd: XS;S" />
+        </td>
+        <td>
+                Cắt cong: <br>
+                <input type="text" name="Straigh" id="Straigh" value="@(string.IsNullOrEmpty(Model.Straigh) ? "" : Model.Straigh)"  style=" font-size:1em; color:rgb(255, 0, 0); width: 90%;"  autocomplete="on" placeholder="vd: XS;S" />
+        </td>
+        <td>
+                Mất dáng: <br>
+                <input type="text" name="Shape" id="Shape" value="@(string.IsNullOrEmpty(Model.Shape) ? "" : Model.Shape)"   style=" font-size:1em; color:rgb(255, 0, 0); width: 90%;"  autocomplete="on" placeholder="vd: XS;S" />
+        </td>
+    </tr>
+    <tr style="text-align: left;">
+        <td>
+                Dính biên: <br>
+                <input type="text" name="Edge" id="Edge" value="@(string.IsNullOrEmpty(Model.Edge) ? "" : Model.Edge)"   style=" font-size:1em; color:rgb(255, 0, 0); width: 90%;"  autocomplete="on" placeholder="vd: XS;S" />
+        </td>
+        <td>
+                Không đối kẻ: <br>
+                <input type="text" name="Stripe" id="Stripe" value="@(string.IsNullOrEmpty(Model.Stripe) ? "" : Model.Stripe)"  style=" font-size:1em; color:rgb(255, 0, 0); width: 90%;"  autocomplete="on" placeholder="vd: XS;S" />
+        </td>
+
+    </tr>
+</TABLE>
+<br>
+<p style="font-weight: bold;"><span style="color: red;">*</span> Lỗi khác:</p>
+
+<table style="width: 100%; padding: 0px; ">
+    <tr style="height: 0px;"></tr>
+			<td style="width: 20%;"></td>
+			<td style="width: 20%;"></td>
+			<td style="width: 20%;"></td>
+			<td style="width: 20%;"></td>
+			<td style="width: 20%;"></td>
+		</tr>
+    <tr>
+        
+        <td style="padding: 3px; text-align:center;">
+                <div>Phối sai</div>
+                <input type="checkbox" name="F1_chk_match" value="true" @(Model.Match == true ? "checked" : "") id="F1_chk_match"  value="1" style="zoom:3.0;"  autocomplete="on" />
+        </td>
+        <td style="padding: 3px; text-align:center;">
+                <div>Mác, phụ liệu </div>
+                <input type="checkbox" name="F1_chk_label"  value="true" @(Model.Label == true ? "checked" : "") id="F1_chk_label"  value="1" style="zoom:3.0;"  autocomplete="on" />
+        </td>
+    </tr>
+</table>
+
+<table class="table">
+    <tr>
+        <td width="50%">
+            <i style="color: red;">*</i> <label>Dung sai 1:</label>
+        </td>
+        <td width="50%">
+            <i style="color: red;">*</i> <label>Dung sai 2:</label>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>
+                Dài từ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="text" name="DS_L_Min" id="DS_L_Min" value="@(string.IsNullOrEmpty(Model.DS_L_Min) ? "0" : Model.DS_L_Min)" />  đến <input type="text" name="DS_L_Max" id="DS_L_Max" value="@(string.IsNullOrEmpty(Model.DS_L_Max) ? "0" : Model.DS_L_Max)" />
+            </p>
+        </td>
+        <td>
+            <p>
+                Dài từ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="text" name="DS_L_Min_2" id="DS_L_Min_2" value="@(string.IsNullOrEmpty(Model.DS_L_Min) ? "0" : Model.DS_L_Min)" />  đến <input type="text" name="DS_L_Max_2" id="DS_L_Max_2" />
+            </p>
+        </td>
+    </tr>
+    <tr></tr>
+        <td>
+            <p>
+                Rộng từ &nbsp;&nbsp;&nbsp;
+                <input type="text" name="DS_W_Min" id="DS_W_Min" value="@(string.IsNullOrEmpty(Model.DS_W_Min) ? "0" : Model.DS_W_Min)" />  đến <input type="text" name="DS_W_Max" id="DS_W_Max" value="@(string.IsNullOrEmpty(Model.DS_W_Max) ? "0" : Model.DS_W_Max)" />
+            </p>
+        </td>
+        <td>
+            <p>
+                Rộng từ &nbsp;&nbsp;&nbsp;
+                <input type="text" name="DS_W_Min_2" id="DS_W_Min_2" />  đến <input type="text" name="DS_W_Max_2" id="DS_W_Max_2" />
+            </p>
+        </td>
+    </tr>
+</table>
+
+<p style="font-weight: bold;"><span style="color: red;">*</span> Thông số Dài - Rộng:</p>
+<TABLE style="width: 100%; border: 1px solid gray !important; padding: 0px; display: inherit; " cell-padding="0px" cell-spacing="5px"  >
+    <tr style="text-align: center;">
+        <th style="width: 40%;">Size</th>
+        <th style=""></th>
+        <th colspan="2">Lá đầu</th>
+        <th colspan="2">Lá giữa</th>
+        <th colspan="2">Lá cuối</th>
+    </tr>
+
+@functions {
+    private decimal ConvertToDecimal(string? val)
+    {
+        if (decimal.TryParse(val, out var num))
+            return num;
+        return 0;
+    }
+
+    public string Show_DS(string dsmin, string dsmax, string x)
+    {
+        // default màu xanh
+        string dscolor = "#360";
+
+        if (!decimal.TryParse(dsmin, out var min)) min = 0;
+        if (!decimal.TryParse(dsmax, out var max)) max = 0;
+        if (!decimal.TryParse(x, out var value)) value = 0;
+
+        if (value < min || value > max)
+        {
+            dscolor = "#F00"; // đỏ nếu nằm ngoài khoảng
+        }
+
+        return dscolor;
+    }
+}
+
+@if(!string.IsNullOrEmpty(Size_Parameter))
+{
+    Size_Parameter = Size_Parameter.Trim('*');
+    var arrSizePara = Size_Parameter.Split('*');
+    @for (int i =0; i< arrSizePara.Length; i++){
+        var SizePara = arrSizePara[i];
+        var arrPara = SizePara.Split('@');
+
+        <tr id="@(i == 0 ? "Fault_R1" : null)" style="width:100%;">
+            @* Duyệt các phần tử trong arrPara *@
+            <td>
+                <input type="text" value="@arrPara.ElementAtOrDefault(0)" style="color:#360; width:95%;" autocomplete="on" />
+            </td>
+            <td>
+                <input type="text" value="@(string.IsNullOrEmpty(arrPara.ElementAtOrDefault(7)) ? "Tol 1" : arrPara[7])"
+                       style="color:#360; width:100px;" autocomplete="on" />
+            </td>
+            <td>
+                <input type="text" value="@arrPara.ElementAtOrDefault(1)"
+                       style="color:@(arrPara.ElementAtOrDefault(7) == "Tol 2" 
+                                    ? Show_DS(DS_L_Min_2.ToString(), DS_L_Max_2.ToString(), arrPara.ElementAtOrDefault(1) ?? "0") 
+                                    : Show_DS(DS_L_Min.ToString(), DS_L_Max.ToString(), arrPara.ElementAtOrDefault(1) ?? "0")); width:100px;"
+                       autocomplete="on" />
+            </td>
+            <td>
+                <input type="text" value="@arrPara.ElementAtOrDefault(2)"
+                       style="color:@(arrPara.ElementAtOrDefault(7) == "Tol 2" 
+                                    ? Show_DS(DS_W_Min_2.ToString(), DS_W_Max_2.ToString(), arrPara.ElementAtOrDefault(2) ?? "0") 
+                                    : Show_DS(DS_W_Min.ToString(), DS_W_Max.ToString(), arrPara.ElementAtOrDefault(2) ?? "0")); width:100px;"
+                       autocomplete="on" />
+            </td>
+            <td>
+                <input type="text" value="@arrPara.ElementAtOrDefault(3)"
+                       style="color:@(arrPara.ElementAtOrDefault(7) == "Tol 2" 
+                                    ? Show_DS(DS_L_Min_2.ToString(), DS_L_Max_2.ToString(), arrPara.ElementAtOrDefault(3) ?? "0") 
+                                    : Show_DS(DS_L_Min.ToString(), DS_L_Max.ToString(), arrPara.ElementAtOrDefault(3) ?? "0")); width:100px;"
+                       autocomplete="on" />
+            </td>
+            <td>
+                <input type="text" value="@arrPara.ElementAtOrDefault(4)"
+                       style="color:@(arrPara.ElementAtOrDefault(7) == "Tol 2" 
+                                    ? Show_DS(DS_W_Min_2.ToString(), DS_W_Max_2.ToString(), arrPara.ElementAtOrDefault(4) ?? "0") 
+                                    : Show_DS(DS_W_Min.ToString(), DS_W_Max.ToString(), arrPara.ElementAtOrDefault(4) ?? "0")); width:100px;"
+                       autocomplete="on" />
+            </td>
+            <td>
+                <input type="text" value="@arrPara.ElementAtOrDefault(5)"
+                       style="color:@(arrPara.ElementAtOrDefault(7) == "Tol 2" 
+                                    ? Show_DS(DS_L_Min_2.ToString(), DS_L_Max_2.ToString(), arrPara.ElementAtOrDefault(5) ?? "0") 
+                                    : Show_DS(DS_L_Min.ToString(), DS_L_Max.ToString(), arrPara.ElementAtOrDefault(5) ?? "0")); width:100px;"
+                       autocomplete="on" />
+            </td>
+            <td>
+                <input type="text" value="@arrPara.ElementAtOrDefault(6)"
+                       style="color:@(arrPara.ElementAtOrDefault(7) == "Tol 2" 
+                                    ? Show_DS(DS_W_Min_2.ToString(), DS_W_Max_2.ToString(), arrPara.ElementAtOrDefault(6) ?? "0") 
+                                    : Show_DS(DS_W_Min.ToString(), DS_W_Max.ToString(), arrPara.ElementAtOrDefault(6) ?? "0")); width:100px;"
+                       autocomplete="on" />
+            </td>
+            
+        </tr>
+    }  
+}
+else
+{
+    <tr id="Fault_R1">
+        <td><input type="text" value="" style="color:#360; width:95%;" autocomplete="on" /></td>
+        <td><input type="text" value="Tol" style="color:#360;" autocomplete="on" /></td>
+        <td><input type="text" value="0" style="color:#360;" autocomplete="on" /></td>
+        <td><input type="text" value="0" style="color:#360;" autocomplete="on" /></td>
+        <td><input type="text" value="0" style="color:#360;" autocomplete="on" /></td>
+        <td><input type="text" value="0" style="color:#360;" autocomplete="on" /></td>
+        <td><input type="text" value="0" style="color:#360;" autocomplete="on" /></td>
+    </tr>
+}
+<tr><td colspan="7"></td></tr>  
+</TABLE>
+
+
+<p style="font-weight: bold; text-align: left;"><span style="color: red;">*</span> Ghi chú:</p>
+<textarea rows="4" cols="100" name="Remark" id="Remark" onClick="this.select();" > @(string.IsNullOrEmpty(Model.Remark) ? "" : Model.Remark)</textarea>
+
+<p style="font-weight: bold;"><span style="color: red;">*</span>Hình ảnh lỗi:</p>
+@if(!string.IsNullOrEmpty(Model.Photo_URL))
+{
+    var photos = Model.Photo_URL.Split(";");
+    foreach(var photo in photos)
+    {
+        if(!string.IsNullOrEmpty(photo))
+        {
+            <img src="upload/Photos/Form2_BCCLC/@photo" style='width:100px;' onclick='Show_Photo("@photo")'/>
+        }
+    }
+}
+
+<p style="font-weight: bold;">
+    <span style="color: red;">*</span> Kiểm lại: &nbsp;
+    <input type="checkbox" name="Re_Audit" id="Re_Audit"  value="true" @(Model.Re_Audit == true ? "checked" : "") value="0" style="  color:#360; font-size:20px; zoom:3.0;"  autocomplete="on" />   
+</p>
+
+
+<br>
+    <p style="text-align: center; display: block;">
+        <img src="~/images/delete.png" style="width: 95px; margin-right:20px; " align="center" onClick="Delete_Click1();" title="Delete this report" >
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    </p>
+    
+<br>
+</form>
+
+<!-- Modal Show anh loi -->
+	<div id="Modal_Photo" class="modal" style="height: 100%;"> 
+        <!-- Modal content -->
+          <div class="modal-content">
+            <div class="modal-header bg-success text-center">
+              <span class="close" id="close_Modal_Photo">&times;</span>
+              <h2 style="text-align: center; text-transform: uppercase;"> Hình ảnh lỗi </h2> 
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <img src="" style="width: 90%"  id="Fault_Photo" align="center">
+            </div>
+          </div>
+    </div>
+
+<script>
+    function Delete_Click1() {
+        var reportId = $("#ReportID").val();
+        var audit_Time = $("#Audit_Time").val();
+        if (reportId == "" || reportId == null) {
+            alert("Report ID is missing!");
+            return false;
+        }
+
+        if (confirm("Are you sure you want to delete this report?")) {
+            $.post('@Url.Action("DeleteReport", "Form2BCCPI", new { area = "Report" })',
+                { reportId: reportId, audit_Time: audit_Time },
+                function (data) {
+                    if (data.success) {
+                        alert("Report deleted successfully.");
+                        // Redirect to another page or refresh
+                        var Unit = $("#Unit").val();
+                        var dateFrom = $("#dateFrom").val();
+                        var dateEnd = $("#dateEnd").val();
+
+                        window.location.href = '@Url.Action("RP_Form2", "Form2BCCPI", new { area = "Report" })' + '?Unit=' + Unit + '&dateFrom=' + dateFrom + '&dateEnd=' + dateEnd;
+                    } else {
+                        alert("Error deleting report: " + data.message);
+                    }
+                }
+            );
+        }
+    }
+
+
+function Show_Photo(img)
+{
+	// Get the modal
+    var modal = document.getElementById('Modal_Photo');
+    // Get the <span> element that closes the modal
+    var span = document.getElementById('close_Modal_Photo');
+    
+     modal.style.display = "block";
+     document.getElementById("Fault_Photo").src= 'upload/Photos/Form2_BCCLC/'+img;
+     
+     // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+}
+
+</script>

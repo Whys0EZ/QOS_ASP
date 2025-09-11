@@ -5,6 +5,14 @@
       "PackagePath": "staticwebassets\\QOS.bundle.scp.css"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\BCCLBC.xlsx",
+      "PackagePath": "staticwebassets\\Report\\BCCLBC.xlsx"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\Form2_BCCPI.xlsx",
+      "PackagePath": "staticwebassets\\Report\\Form2_BCCPI.xlsx"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\QOS_Form_ThongSoThanhPham.xlsx",
       "PackagePath": "staticwebassets\\Report\\QOS_Form_ThongSoThanhPham.xlsx"
     },
@@ -23,6 +31,10 @@
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\QOS_Form_ThongSoThanhPham_US.xlsx",
       "PackagePath": "staticwebassets\\Report\\QOS_Form_ThongSoThanhPham_US.xlsx"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\~$Form2_BCCPI.xlsx",
+      "PackagePath": "staticwebassets\\Report\\~$Form2_BCCPI.xlsx"
     },
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\all.min.css",
