@@ -9,6 +9,7 @@
     <partial name="_AlertMessage" />
 <h2>Quản lý người dùng</h2>
 <a asp-action="Create" class="btn btn-primary">+ Thêm user</a>
+<div class="table-container" id="tableContainer">
 <table class="table table-bordered table-striped mt-3">
     <thead class="table-dark">
         <tr>
@@ -48,6 +49,7 @@
         }
     </tbody>
 </table>
+</div>
 }
 else {
     <partial name="_AccessDenied" />

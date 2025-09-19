@@ -8,82 +8,152 @@
     <title>@ViewData["Title"] - QOS</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layout_custom.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/QOS.styles.css" asp-append-version="true" />
+    
+    <!-- Modern Icons -->
+    <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css" />
+    <!-- Google Fonts -->
 
+    @* <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"> *@
+    
+    
 </head>
-@* @using Microsoft.AspNetCore.Mvc.Rendering
-@functions {
-    string IsActive(string ctrl, string? act = null)
-    {
-        var routeData = ViewContext.RouteData.Values;
-        var currentCtrl = routeData["controller"]?.ToString();
-        var currentAct = routeData["action"]?.ToString();
-
-        if (!string.Equals(ctrl, currentCtrl, StringComparison.OrdinalIgnoreCase))
-            return "";
-
-        if (act == null) return "active";
-
-        return string.Equals(act, currentAct, StringComparison.OrdinalIgnoreCase) ? "active" : "";
-    }
-} *@
 
 <body>
+    <!-- Loading Bar -->
+    <div class="loading-bar" id="loadingBar"></div>
+
     <header>
-        <nav class="navbar navbar-expand-sm navbar-dark fixed-top nav-appmvc">
-            <div class="container-fluid">
-                <a class="navbar-brand me-5" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img class="logo" alt="MyWebApp" src="~/images/qos_icon.png" />
+        <nav class="navbar navbar-expand-lg navbar-modern fixed-top" id="mainNav">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand fade-in-up" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img class="logo" alt="QOS Logo" src="~/images/qos_icon.png" />
+                    
                 </a>
 
-                <!-- Nút bấm menu khi màn hình nhỏ -->
+                <!-- Mobile Menu Toggle -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
                     aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <!-- Menu chính -->
+                <!-- Main Navigation -->
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav mx-auto">
-                        <li class="nav-item me-3">
-                            <a class="nav-link text-dark @Html.IsActive(new[] { "Function", "ManageOperation", "ManageFault", "ThongSoBTP", "ThongSoTP", "ThongSoDo", "ETSMoStyle", "TrackingContact", "TrackingSetup", "TrackingUpload", "OnlineFile" })"
-                                asp-area="Function" asp-controller="Function" asp-action="Index">CHỨC NĂNG</a>
+                        <li class="nav-item fade-in-up" style="animation-delay: 0.1s">
+                            <a class="nav-link @Html.IsActive(new[] { "Function", "ManageOperation", "ManageFault", "ThongSoBTP", "ThongSoTP", "ThongSoDo", "ETSMoStyle", "TrackingContact", "TrackingSetup", "TrackingUpload", "OnlineFile" })"
+                                asp-area="Function" asp-controller="Function" asp-action="Index">
+                                <i class="fas fa-cogs me-2"></i>CHỨC NĂNG
+                            </a>
                         </li>
-                        <li class="nav-item me-3">
-                            <a class="nav-link text-dark @Html.IsActive(new[] { "Report", "Form1BCCLC","Form2BCCPI" })"
-                            asp-area="Report" asp-controller="Report" asp-action="Index">BÁO CÁO</a>
+                        <li class="nav-item fade-in-up" style="animation-delay: 0.2s">
+                            <a class="nav-link @Html.IsActive(new[] { "Report", "Form1BCCLC","Form2BCCPI","Form3BCDT","Form4BCCLM","Form6BCCC","SummaryKCC" })"
+                            asp-area="Report" asp-controller="Report" asp-action="Index">
+                                <i class="fas fa-chart-line me-2"></i>BÁO CÁO
+                            </a>
                         </li>
-                        <li class="nav-item me-3">
-                            <a class="nav-link text-dark @(Html.IsActive(new[] { "Setting" }))" asp-area="Setting"
-                                asp-controller="Setting" asp-action="FactoryList">THIẾT LẬP</a>
+                        <li class="nav-item fade-in-up" style="animation-delay: 0.3s">
+                            <a class="nav-link @(Html.IsActive(new[] { "Setting" }))" asp-area="Setting"
+                                asp-controller="Setting" asp-action="FactoryList">
+                                <i class="fas fa-sliders-h me-2"></i>THIẾT LẬP
+                            </a>
                         </li>
-                        <li class="nav-item me-3">
-                            <a class="nav-link text-dark @(Html.IsActive(new[] { "SystemAdmin" }))" asp-area="SystemAdmin"
-                                asp-controller="SystemAdmin" asp-action="Index">HỆ THỐNG</a>
+                        <li class="nav-item fade-in-up" style="animation-delay: 0.4s">
+                            <a class="nav-link @(Html.IsActive(new[] { "SystemAdmin" }))" asp-area="SystemAdmin"
+                                asp-controller="SystemAdmin" asp-action="Index">
+                                <i class="fas fa-shield-alt me-2"></i>HỆ THỐNG
+                            </a>
                         </li>
                     </ul>
 
-                    <!-- Menu tài khoản -->
+                    <!-- User Menu -->
                     <ul class="navbar-nav ms-auto">
                         @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item me-3 pt-2">
-                                <span class="navbar-text text-dark me-2">Xin chào, @User.Identity.Name</span>
+                            @* <li class="nav-item fade-in-up" style="animation-delay: 0.5s">
+                                <span class="user-welcome">
+                                    <i class="fas fa-user me-2"></i>Xin chào, @User.Identity.Name
+                                </span>
                             </li>
-                            <li class="nav-item me-3">
-                                <a class="btn btn-outline-primary" asp-area="" asp-controller="Account"
-                                    asp-action="Logout">Đăng xuất</a>
+                            <li class="nav-item fade-in-up" style="animation-delay: 0.6s">
+                                <a class="btn btn-modern btn-modern-outline" asp-area="" asp-controller="Account"
+                                    asp-action="Logout">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Đăng xuất
+                                </a>
+                            </li> *@
+
+                            <li class="nav-item dropdown fade-in-up" style="animation-delay: 0.5s">
+                                <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userDropdown" role="button" 
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="user-avatar-wrapper">
+                                        <div class="user-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="user-info">
+                                            <span class="user-name">@User.Identity.Name</span>
+                                            @* <small class="user-role">@User.IsInRole("Admin") ? "Admin" : "User"</small> *@
+                                        </div>
+                                        <i class="fas fa-chevron-down dropdown-arrow"></i>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu" aria-labelledby="userDropdown">
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">
+                                            <i class="fas fa-user-circle me-3"></i>
+                                            <div>
+                                                <div class="dropdown-item-title">Thông tin cá nhân</div>
+                                                <small class="dropdown-item-desc">Xem và chỉnh sửa profile</small>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="ChangePassword">
+                                            <i class="fas fa-key me-3"></i>
+                                            <div>
+                                                <div class="dropdown-item-title">Đổi mật khẩu</div>
+                                                <small class="dropdown-item-desc">Thay đổi mật khẩu bảo mật</small>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Settings">
+                                            <i class="fas fa-cog me-3"></i>
+                                            <div>
+                                                <div class="dropdown-item-title">Cài đặt</div>
+                                                <small class="dropdown-item-desc">Tùy chỉnh giao diện</small>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item logout-item" asp-area="" asp-controller="Account" asp-action="Logout">
+                                            <i class="fas fa-sign-out-alt me-3"></i>
+                                            <div>
+                                                <div class="dropdown-item-title">Đăng xuất</div>
+                                                <small class="dropdown-item-desc">Thoát khỏi tài khoản</small>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         }
                         else
                         {
-                            <li class="nav-item me-3">
-                                <a class="btn btn-outline-primary" asp-area="" asp-controller="Account"
-                                    asp-action="Login">Đăng nhập</a>
+                            <li class="nav-item me-2 fade-in-up" style="animation-delay: 0.5s">
+                                <a class="btn btn-modern btn-modern-outline" asp-area="" asp-controller="Account"
+                                    asp-action="Login">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                    Đăng nhập
+                                </a>
                             </li>
-                            <li class="nav-item me-3">
-                                <a class="btn btn-outline-primary" asp-area="" asp-controller="Account"
-                                    asp-action="Register">Đăng ký</a>
+                            <li class="nav-item fade-in-up" style="animation-delay: 0.6s">
+                                <a class="btn btn-modern btn-modern-primary" asp-area="" asp-controller="Account"
+                                    asp-action="Register">
+                                    <i class="fas fa-user-plus"></i>
+                                    Đăng ký
+                                </a>
                             </li>
                         }
                     </ul>
@@ -92,40 +162,147 @@
         </nav>
     </header>
 
-
-    <div class="wrapper">
-        <main role="main" class="pb-3">
+    <div class="wrappers">
+        <main role="main" class="pb-3 fade-in-up">
             @RenderBody()
         </main>
     </div>
-    <button onclick="topFunction()" id="btnTop" title="Lên đầu trang">↑</button>
 
-    <footer class="border-top footer text-muted">
+    <!-- Modern Back to Top Button -->
+    <button onclick="topFunction()" id="btnTop" title="Lên đầu trang">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <footer class="footer text-center">
         <div class="container">
-            ISD TEAM &copy; 2025 - QOS - <a asp-area="" asp-controller="Home" asp-action="Contact">Liên hệ</a>
+            <div class="row">
+                <div class="col-md-12">
+                 
+                        <strong>ISD TEAM</strong> &copy; 2025 - 
+                        <span style="background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 600;">QOS</span>
+                    
+                        <a asp-area="" asp-controller="Home" asp-action="Contact">
+                            <i class="fas fa-envelope me-2"></i>Liên hệ
+                        </a>
+                    
+                </div>
+            </div>
         </div>
     </footer>
+
+    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/jquery-3.6.0.min.js"></script>
+    
     <script>
-        // Lấy nút
+        // Enhanced scroll effects
         let mybutton = document.getElementById("btnTop");
+        let navbar = document.getElementById("mainNav");
+        let loadingBar = document.getElementById("loadingBar");
 
-        // Khi user scroll xuống 200px thì hiện nút
+        // Show/hide back to top button with smooth animation
         window.onscroll = function () {
+            // Back to top button
             if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
                 mybutton.style.display = "block";
+                setTimeout(() => mybutton.style.opacity = "1", 10);
             } else {
-                mybutton.style.display = "none";
+                mybutton.style.opacity = "0";
+                setTimeout(() => mybutton.style.display = "none", 300);
+            }
+
+            // Navbar scroll effect
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
             }
         };
 
-        // Khi click → cuộn lên đầu
+        // Smooth scroll to top
         function topFunction() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ 
+                top: 0, 
+                behavior: 'smooth' 
+            });
         }
+
+        // Loading animation for page transitions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show loading bar on page load
+            loadingBar.classList.add('active');
+            
+            setTimeout(() => {
+                loadingBar.classList.remove('active');
+            }, 1000);
+
+            // Add loading animation only to actual navigation links (not dropdown toggles)
+            const navLinks = document.querySelectorAll('.nav-link:not(.dropdown-toggle)');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Only show loading if it's an actual navigation link with href
+                    if (this.getAttribute('href') && this.getAttribute('href') !== '#') {
+                        showLoadingBar();
+                    }
+                });
+            });
+
+            // Add loading animation to dropdown menu items
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Only show loading if it's a real link (not javascript:void)
+                    const href = this.getAttribute('href');
+                    if (href && href !== '#' && !href.startsWith('javascript:')) {
+                        showLoadingBar();
+                    }
+                });
+            });
+        });
+
+        // Enhanced mobile menu animation
+        const navbarToggler = document.querySelector('.navbar-toggler');
+        const navbarCollapse = document.querySelector('.navbar-collapse');
+
+        navbarToggler.addEventListener('click', function() {
+            setTimeout(() => {
+                if (navbarCollapse.classList.contains('show')) {
+                    navbarCollapse.style.animation = 'fadeInUp 0.3s ease-out';
+                }
+            }, 10);
+        });
+
+        // Auto-hide loading bar if no page transition occurs
+        let loadingTimeout;
+        function showLoadingBar() {
+            loadingBar.classList.add('active');
+            
+            // Auto-hide after 3 seconds if still showing (probably no page navigation occurred)
+            clearTimeout(loadingTimeout);
+            loadingTimeout = setTimeout(() => {
+                loadingBar.classList.remove('active');
+            }, 3000);
+        }
+
+        // Hide loading bar immediately when page is about to unload
+        window.addEventListener('beforeunload', function() {
+            clearTimeout(loadingTimeout);
+            loadingBar.classList.remove('active');
+        });
+
+        // Add hover effects
+        const buttons = document.querySelectorAll('.btn-modern, .nav-link');
+        buttons.forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)

@@ -1,0 +1,158 @@
+@model QOS.Areas.Report.Models.RP_Form3ViewModel
+@{
+    ViewData["Title"] = "Report Page";
+    Layout = "_MenuReport";
+}
+
+<partial name="_AlertMessage" />
+<div class="continer my-3">
+    <div class="row align-items-center mb-3">
+        <!-- Bên trái -->
+
+        <div class="col-md-4 d-flex flex-wrap gap-2">
+            <h3 class="text-primary fw-bold">QOS - BÁO CÁO CHẤT LƯỢNG CPI</h3>
+        </div>
+
+        <!-- Bên phải -->
+        <div class="col-md-8 d-flex justify-content-end flex-wrap gap-2">
+            <form id="SearchForm" asp-area="Report" asp-action="RP_Form3" asp-controller="Form3BCDT" method="get"
+                class="d-flex align-items-center gap-2 mb-0">
+
+                <select class="form-control" id="Unit" name="Unit" asp-for="Unit"
+                    asp-items="@(new SelectList(Model.Unit_List, "Unit", "Unit", Model.Unit))">
+                    <option value="ALL">-- Chọn Unit --</option>
+                </select>
+
+                <input type="date" id="dateFrom" name="dateFrom" class="form-control"
+                    value="@Model.DateFrom.ToString("yyyy-MM-dd")" />
+                <input type="date" id="dateEnd" name="dateEnd" class="form-control"
+                    value="@Model.DateEnd.ToString("yyyy-MM-dd")" />
+
+
+                <button class="btn btn-warning" id="Check" name="Check" type="submit"> Check</button>
+                <button class="btn btn-warning" id="Reset" name="Reset" type="reset"> Nhập&nbsp;Lại</button>
+                <button type="button" class="btn btn-primary" id="ExportExcel"
+                    name="ExportExcel">Tải&nbsp;Excel</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="TableContainer">
+    <table class="table table-bordered table-hover table-striped">
+        <thead class="table-light">
+            <th>STT</th>
+            <th>Xưởng</th>
+            <th>Cut_Leader</th>
+            <th>MO</th>
+            <th>Lot</th>
+            <th>Tổng SL</th>
+        
+            <th>Trạng Thái</th>
+            <th>Lần Kiểm</th>
+            <th>Người Tạo</th>
+            <th>Thời Gian Kiểm</th>
+        </thead>
+        <tbody>
+            @if (Model.History != null)
+            {
+                var i = 1;
+
+                foreach (var item in Model.History)
+                {
+                    string bgColor, fontColor, result, img;
+                    if (item.Re_Audit == true)
+                    {
+                        bgColor = "background-color: yellow;";
+                        fontColor = "color: red;";
+                        result = "Có";
+                        img = "/images/red_On.png";
+
+                    }
+                    else
+                    {
+                        bgColor = "";
+                        fontColor = "color: green;";
+                        result = "Không";
+                        img = "/images/green_On.png";
+                    }
+                    <tr style="@bgColor @fontColor">
+                        <td>@i</td>
+                        
+                        <td>@item.Unit</td>
+                        <td>@item.Cut_Leader</td>
+                        <td><span style="text-decoration: underline; cursor: pointer; color:blue;"
+                                onclick="showDetails('@item.ID')">@item.MO - @item.Color</span></td>
+                        <td>@item.Lot</td>
+                        <td>@item.QTY</td>
+                       
+                        
+                        <td><img style="width: 30px; height:30px; text-align:center;" src="@img" alt="@result"></td>
+                        <td>@item.Audit_Time</td>
+                        <td>@result</td>
+                        
+                        <td>@item.UserUpdate - @item.FullName</td>
+                        <td>@item.LastUpdate</td>
+                    </tr>
+                    i++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="Form3Modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white text-center text-uppercase">
+                <h5 class="modal-title">Chi tiết báo cáo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="ModalRP_Form3">
+                <!-- Nội dung chi tiết sẽ load vào đây -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script>
+    $("#Check").click(function () {
+        var Unit = $("#Unit").val();
+        var dateFrom = $("#dateFrom").val();
+
+        $.get("@Url.Action("RP_Form3", "Form3BCDT", new { area = "Report" })",
+            { Unit: Unit, dateFrom: dateFrom, dateEnd: dateEnd },
+            function (data) {
+                // render lại phần bảng thôi
+                $("#TableContainer").html($(data).find("#TableContainer").html());
+            });
+    });
+
+    function showDetails(id) {
+        $.get('@Url.Action("DetailForm3", "Form3BCDT", new { area = "Report" })',
+            { id: id },
+            function (data) {
+                if (data) {
+                    // inset info
+                    $("#ModalRP_Form3").html(data);
+                    var modal = new bootstrap.Modal(document.getElementById('Form3Modal'));
+                    var unit = $("#ModalRP_Form3").find("#UnitField").val();
+                    $(".modal-title").text("Chi tiết báo cáo - Xưởng: " + unit);
+
+                    modal.show();
+                }
+            });
+    }
+
+    $("#ExportExcel").click(function () {
+        var Unit = $("#Unit").val();
+        var dateFrom = $("#dateFrom").val();
+        var dateEnd = $("#dateEnd").val();
+
+        var url = '@Url.Action("ExportExcel", "Form3BCDT", new { area = "Report" })'
+        + "?Unit=" + encodeURIComponent(Unit)
+        + "&dateFrom=" + encodeURIComponent(dateFrom)
+        + "&dateEnd=" + encodeURIComponent(dateEnd);
+
+        window.location.href = url; // tự động download file
+    });
+</script>
