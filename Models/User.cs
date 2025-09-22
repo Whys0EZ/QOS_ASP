@@ -29,6 +29,8 @@ namespace QOS.Models
 
         public string Fac_per { get; set; } = "";
         public int LoginLevel { get; set; } = 0;
+        public string? TEL_Num { get; set;} ="";
+        public string? Phone_Num { get; set;} ="";
 
         public string? UserUpdate { get; set; } = "";
 

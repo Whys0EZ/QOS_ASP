@@ -309,3 +309,4 @@ D:\C_Sharp\QOS\obj\Debug\net8.0\refint\QOS.dll
 D:\C_Sharp\QOS\obj\Debug\net8.0\QOS.pdb
 D:\C_Sharp\QOS\obj\Debug\net8.0\QOS.genruntimeconfig.cache
 D:\C_Sharp\QOS\obj\Debug\net8.0\ref\QOS.dll
+D:\C_Sharp\QOS\bin\Debug\net8.0\SixLabors.ImageSharp.dll

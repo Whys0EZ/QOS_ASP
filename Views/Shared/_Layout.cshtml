@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/layout_custom.css" asp-append-version="true" />
+    
     <link rel="stylesheet" href="~/QOS.styles.css" asp-append-version="true" />
     
     <!-- Modern Icons -->
@@ -89,10 +90,13 @@
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="user-avatar-wrapper">
                                         <div class="user-avatar">
-                                            <i class="fas fa-user"></i>
+                                            @* <i class="fas fa-user"></i> *@
+                                            <img src="@Url.Content("~/images/avatars/" + User.Identity?.Name + ".png")" alt="Avatar" 
+                             class="rounded-circle border border-3" 
+                             style="width: 30px; height: 30px; object-fit: cover;">
                                         </div>
                                         <div class="user-info">
-                                            <span class="user-name">@User.Identity.Name</span>
+                                            <span class="user-name">@User.Identity?.Name</span>
                                             @* <small class="user-role">@User.IsInRole("Admin") ? "Admin" : "User"</small> *@
                                         </div>
                                         <i class="fas fa-chevron-down dropdown-arrow"></i>
@@ -143,14 +147,14 @@
                         {
                             <li class="nav-item me-2 fade-in-up" style="animation-delay: 0.5s">
                                 <a class="btn btn-modern btn-modern-outline" asp-area="" asp-controller="Account"
-                                    asp-action="Login">
+                                    asp-action="Auth">
                                     <i class="fas fa-sign-in-alt"></i>
                                     Đăng nhập
                                 </a>
                             </li>
                             <li class="nav-item fade-in-up" style="animation-delay: 0.6s">
                                 <a class="btn btn-modern btn-modern-primary" asp-area="" asp-controller="Account"
-                                    asp-action="Register">
+                                    asp-action="Auth">
                                     <i class="fas fa-user-plus"></i>
                                     Đăng ký
                                 </a>
@@ -176,7 +180,7 @@
     <footer class="footer text-center">
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-10">
                  
                         <strong>ISD TEAM</strong> &copy; 2025 - 
                         <span style="background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 600;">QOS</span>
@@ -186,8 +190,11 @@
                         </a>
                     
                 </div>
+                <div class="float col-md-2" id="clock"></div>
             </div>
+            
         </div>
+        
     </footer>
 
     <!-- Scripts -->
@@ -195,8 +202,13 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/jquery-3.6.0.min.js"></script>
-    
     <script>
+        setInterval (() => {
+            clock.innerText = new Date().toLocaleTimeString();
+        },100)
+    </script>
+    <script>
+        
         // Enhanced scroll effects
         let mybutton = document.getElementById("btnTop");
         let navbar = document.getElementById("mainNav");

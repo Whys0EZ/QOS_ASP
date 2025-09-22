@@ -1,0 +1,133 @@
+@model QOS.Models.AuthViewModel
+
+@{
+    ViewData["Title"] = "Đăng nhập / Đăng ký";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+<partial name="_AlertMessage" />
+
+<!-- Mặc định hiển thị form Login -->
+<div class="container" id="container">
+    <!-- Sign In Form (Login) - Hiển thị đầu tiên -->
+    <div class="form-container sign-in">
+        <form class="form" asp-controller="Account" asp-action="Auth" method="post">
+            <h1>Chào mừng trở lại!</h1>
+            <div class="social-container">
+                <a href="#" class="social" title="Google">
+                    <i class="fab fa-google-plus-g"></i>
+                </a>
+                <a href="#" class="social" title="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" class="social" title="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
+            <span>hoặc sử dụng tài khoản của bạn</span>
+            
+            <div class="input-group">
+                <input asp-for="Login.Username" class="form-control-custom" placeholder="Tên đăng nhập" />
+                <span asp-validation-for="Login.Username" class="text-danger"></span>
+            </div>
+            
+            <div class="input-group">
+                <input asp-for="Login.Password" type="password" class="form-control-custom" placeholder="Mật khẩu" />
+                <span asp-validation-for="Login.Password" class="text-danger"></span>
+            </div>
+            
+            <div class="form-check">
+                <input type="checkbox" name="RememberMe" class="form-check-input" id="rememberMe" />
+                <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
+            </div>
+            
+            <a href="#" class="forgot-password">Quên mật khẩu?</a>
+            <input type="hidden" name="actionType" value="login" />
+            <button class="btnLogin" type="submit" style="background: linear-gradient(135deg, #dcdde4, #0a63e9) !important;">Đăng nhập</button>
+            
+            @if (ViewBag.Error != null)
+            {
+                <div class="text-danger mt-2">@ViewBag.Error</div>
+            }
+            
+            @Html.AntiForgeryToken()
+        </form>
+    </div>
+
+    <!-- Sign Up Form (Register) -->
+    <div class="form-container sign-up">
+        <form class="form" asp-controller="Account" asp-action="Auth" method="post">
+            <h1>Tạo tài khoản</h1>
+            <div class="social-container">
+                <a href="#" class="social" title="Google">
+                    <i class="fab fa-google-plus-g"></i>
+                </a>
+                <a href="#" class="social" title="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" class="social" title="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
+            <span>hoặc sử dụng email để đăng ký</span>
+            
+            <select asp-for="Register.FactoryID" asp-items="Model.Register.FactoryOptions" class="form-control">
+                <option value="">-- Chọn Factory --</option>
+            </select>
+            <span asp-validation-for="Register.FactoryID" class="text-danger"></span>
+            
+            <select asp-for="Register.TeamID" asp-items="Model.Register.TeamOptions" class="form-control">
+                    <option value="">-- Chọn Team --</option>
+                </select>
+                <span asp-validation-for="Register.TeamID" class="text-danger"></span>
+            
+            <input asp-for="Register.FullName" name="FullName" type="text" placeholder="Họ và tên" required />
+   
+            <input asp-for="Register.Email" name="Email" type="email" placeholder="Email(Tùy chọn)" required />
+
+            <input asp-for="Register.Username" name="Username" type="text" placeholder="Tên đăng nhập" required />
+
+            <input asp-for="Register.Pass" name="Password" type="password" placeholder="Mật khẩu" required />
+
+            <input asp-for="Register.ConfirmPassword" name="ConfirmPassword" type="password" placeholder="Xác nhận mật khẩu" required />
+            <input type="hidden" name="actionType" value="register" />
+            <button type="submit">Đăng ký</button>
+            @Html.AntiForgeryToken()
+        </form>
+    </div>
+    
+    <!-- Overlay -->
+    <div class="overlay-container">
+        <div class="overlay">
+            <!-- Panel bên trái: hiển thị khi ở chế độ register, nút để quay về login -->
+            <div class="overlay-panel overlay-left">
+                <h1>Chào mừng trở lại!</h1>
+                <p>Để kết nối với chúng tôi, vui lòng đăng nhập bằng thông tin cá nhân của bạn</p>
+                <button class="ghost" id="signIn">Đăng nhập</button>
+            </div>
+            <!-- Panel bên phải: hiển thị mặc định, nút để chuyển sang register -->
+            <div class="overlay-panel overlay-right">
+                <h1>Xin chào!</h1>
+                <p>Nhập thông tin cá nhân của bạn và bắt đầu hành trình cùng chúng tôi</p>
+                <button class="ghost" id="signUp">Đăng ký</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/login.js"></script>
+    <script>
+        // Auto-hide alert messages
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('.alert').fadeOut('slow');
+            }, 5000);
+        });
+    </script>
+}

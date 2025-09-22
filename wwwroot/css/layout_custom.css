@@ -189,11 +189,11 @@ body {
     animation: dropdownSlideIn 0.2s ease-out;
     z-index: 1050;
 }
-.navbar {
-    padding-top: 0.25rem !important;  /* giảm padding trên */
-    padding-bottom: 0.25rem !important; /* giảm padding dưới */
-    min-height: 48px; /* đặt chiều cao tối thiểu */
-}
+/* .navbar {
+    padding-top: 0.25rem !important;  
+    padding-bottom: 0.25rem !important;
+    min-height: 48px; 
+} */
 
 /* Thu nhỏ brand (logo + chữ) */
 .navbar-brand {
@@ -247,6 +247,9 @@ body {
     color: var(--primary-color);
 }
 
+#userDropdown::after {
+    display: none !important;
+}
 .dropdown-item-title {
     font-weight: 500;
     font-size: 0.85rem;
@@ -378,7 +381,7 @@ main {
     font-size: 0.9rem;
     color: #555;
 }
-.footer {
+#mainNav, .footer {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
 }
@@ -390,7 +393,7 @@ main {
     text-decoration: underline;
 }
 .footer {
-    padding: 15px 0;
+    /* padding: 15px 0; */
     font-size: 0.85rem;
 }
 
@@ -418,7 +421,7 @@ main {
     100% { transform: translateX(100%); }
 }
 
-@keyframes dropdownSlideIn {
+ @keyframes dropdownSlideIn {
     from {
         opacity: 0;
         transform: translateY(-10px) scale(0.95);
@@ -439,15 +442,12 @@ main {
         opacity: 1;
         transform: translateY(0);
     }
-} */
+}  */
 
 .fade-in-up {
     animation: fadeInUp 0.6s ease-out;
 }
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
+
 
 /* Responsive Design */
 @media (max-width: 991px) {

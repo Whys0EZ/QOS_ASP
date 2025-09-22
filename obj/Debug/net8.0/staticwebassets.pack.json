@@ -41,12 +41,20 @@
       "PackagePath": "staticwebassets\\css\\layout_custom.css"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\login.css",
+      "PackagePath": "staticwebassets\\css\\login.css"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\avatars\\406860.png",
+      "PackagePath": "staticwebassets\\images\\avatars\\406860.png"
     },
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\delete.png",
@@ -67,6 +75,10 @@
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\jquery-3.6.0.min.js",
       "PackagePath": "staticwebassets\\js\\jquery-3.6.0.min.js"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\login.js",
+      "PackagePath": "staticwebassets\\js\\login.js"
     },
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\site.js",

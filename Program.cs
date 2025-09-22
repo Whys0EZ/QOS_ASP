@@ -28,7 +28,7 @@ builder.Services.AddSession(options =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie( options =>
     {
-        options.LoginPath = "/Account/Login";  // Nếu chưa login → chuyển về trang login
+        options.LoginPath = "/Account/Auth";  // Nếu chưa login → chuyển về trang login
         options.LogoutPath = "/Account/Logout"; // Đường dẫn logout
         options.AccessDeniedPath = "/Account/AccessDenied";
         options.ExpireTimeSpan = TimeSpan.FromDays(1);   // Cookie sống 1 ngày
@@ -38,7 +38,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // ✅ Đặt license cho EPPlus 1 lần toàn app
 // ExcelPackage.License = new LicenseContext(LicenseType.NonCommercial);
 // ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-builder.WebHost.UseUrls("http://0.0.0.0:80");
+builder.WebHost.UseUrls("http://192.168.145.36:8080");
 
 var app = builder.Build();
 

@@ -1,0 +1,85 @@
+@model QOS.Models.User
+@{
+    ViewData["Title"] = "Thông tin cá nhân";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <!-- Card Profile -->
+            <div class="card shadow-lg rounded-3">
+                <div class="card-body text-center p-5">
+
+                    <!-- Avatar -->
+                    <div class="profile-avatar mb-3">
+                        <img src="@Url.Content("~/images/avatars/" + User.Identity?.Name + ".png")" alt="Avatar" 
+                             class="rounded-circle border border-3" 
+                             style="width: 120px; height: 120px; object-fit: cover;">
+                    </div>
+
+                    <!-- Name & Role -->
+                    <h4 class="mb-1">@User.Identity?.Name</h4>
+                    <span class="badge bg-primary">Admin</span>
+
+                    <hr class="my-4">
+
+                    <!-- Tabs -->
+                    <ul class="nav nav-tabs justify-content-center" id="profileTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info"
+                                    type="button" role="tab">Thông tin cá nhân</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security"
+                                    type="button" role="tab">Bảo mật</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings"
+                                    type="button" role="tab">Cài đặt</button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab content -->
+                    <div class="tab-content mt-4" id="profileTabsContent">
+                        
+                        <!-- Tab 1: Info -->
+                        <div class="tab-pane fade show active" id="info" role="tabpanel">
+                            <div class="text-start">
+                            <p><i class="fas fa-user me-2 text-secondary"></i> user: <strong>@Model.Username</strong></p>
+                                <p><i class="fas fa-user me-2 text-secondary"></i> Họ tên: <strong>@Model.FullName</strong></p>
+                                <p><i class="fas fa-envelope me-2 text-secondary"></i> Email: <strong>@Model.Email</strong></p>
+                                <p><i class="fas fa-users-cog me-2 text-secondary"></i> Team: <strong>@Model.TeamID</strong></p>
+                                <p><i class="fas fa-calendar-alt me-2 text-secondary"></i> Ngày chỉnh sửa: <strong>@Model.LastUpdate</strong></p>
+                                <p><i class="fas fa-check-circle me-2 text-success"></i> Trạng thái: <strong>Hoạt động</strong></p>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <a asp-area="" asp-controller="Account" asp-action="EditProfile" class="btn btn-outline-primary mt-3">
+                                    <i class="fas fa-edit me-2"></i> Chỉnh sửa
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Tab 2: Security -->
+                        <div class="tab-pane fade" id="security" role="tabpanel">
+                            <p class="text-muted">Bạn có thể thay đổi mật khẩu để bảo vệ tài khoản.</p>
+                            <a asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="ChangePassword" class="btn btn-warning">
+                                <i class="fas fa-key me-2"></i> Đổi mật khẩu
+                            </a>
+                        </div>
+
+                        <!-- Tab 3: Settings -->
+                        <div class="tab-pane fade" id="settings" role="tabpanel">
+                            <p class="text-muted">Tùy chỉnh giao diện và thông báo.</p>
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-cog me-2"></i> Cài đặt chung
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- End Card -->
+        </div>
+    </div>
+</div>
