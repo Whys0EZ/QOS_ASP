@@ -38,7 +38,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // ✅ Đặt license cho EPPlus 1 lần toàn app
 // ExcelPackage.License = new LicenseContext(LicenseType.NonCommercial);
 // ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-builder.WebHost.UseUrls("http://192.168.145.36:8080");
+builder.WebHost.UseUrls("http://0.0.0.0:8080");
 
 var app = builder.Build();
 

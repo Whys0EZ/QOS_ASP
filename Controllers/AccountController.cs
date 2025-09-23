@@ -64,14 +64,33 @@ namespace QOS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Auth(AuthViewModel vm, string actionType)
         {
+            // Nạp dữ liệu cho phần Register
+            vm.Register.FactoryOptions = _context.Factory_List
+                .Select(f => new SelectListItem
+                {
+                    Value = f.FactoryID,
+                    Text = f.FactoryID
+                })
+                .ToList();
+
+            vm.Register.TeamOptions = _context.Team_List
+                .Select(t => new SelectListItem
+                {
+                    Value = t.TeamID,
+                    Text = t.TeamName
+                })
+                .ToList();
+            // Console.WriteLine("login");
             if (actionType == "login")
             {
                 // Xử lý Login
-                if (!ModelState.IsValid || vm.Login == null)
+                if (string.IsNullOrWhiteSpace(vm.Login.Username) || string.IsNullOrWhiteSpace(vm.Login.Password))
                 {
+                   
                     ViewBag.Error = "Vui lòng nhập Username và Password!";
                     return View(vm);
                 }
+                Console.WriteLine(vm.Login.Password);
 
                 var hash = HashPassword(vm.Login.Password);
                 var user = _context.Users
