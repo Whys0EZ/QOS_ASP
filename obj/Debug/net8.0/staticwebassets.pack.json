@@ -57,6 +57,10 @@
       "PackagePath": "staticwebassets\\images\\avatars\\406860.png"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\avatars\\avatar_default.png",
+      "PackagePath": "staticwebassets\\images\\avatars\\avatar_default.png"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\delete.png",
       "PackagePath": "staticwebassets\\images\\delete.png"
     },

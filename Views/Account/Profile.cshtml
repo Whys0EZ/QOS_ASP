@@ -3,6 +3,7 @@
     ViewData["Title"] = "Thông tin cá nhân";
 }
 
+
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
@@ -10,12 +11,14 @@
             <!-- Card Profile -->
             <div class="card shadow-lg rounded-3">
                 <div class="card-body text-center p-5">
-
+                    @* avatar_default *@
                     <!-- Avatar -->
                     <div class="profile-avatar mb-3">
-                        <img src="@Url.Content("~/images/avatars/" + User.Identity?.Name + ".png")" alt="Avatar" 
-                             class="rounded-circle border border-3" 
-                             style="width: 120px; height: 120px; object-fit: cover;">
+                        <img src="@Url.Content("~/images/avatars/" + User.Identity?.Name + ".png")"
+                            alt="Avatar"
+                            class="rounded-circle border border-3"
+                            style="width: 120px; height: 120px; object-fit: cover;"
+                            onerror="this.onerror=null;this.src='@Url.Content("~/images/avatars/avatar_default.png")';">
                     </div>
 
                     <!-- Name & Role -->

@@ -1,1 +1,38 @@
 dotnet add package SixLabors.ImageSharp
+
+dotnet add package System.Data.SqlClient
+dotnet add package Microsoft.EntityFrameworkCore
+
+dotnet tool install --global dotnet-ef
+dotnet tool install --global dotnet-aspnet-codegenerator
+
+
+dotnet add package Microsoft.Extensions.DependencyInjection
+dotnet add package Microsoft.Extensions.Logging.Console
+
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 8.0.*
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 8.0.*
+dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore --version 8.0.*
+dotnet add package Microsoft.AspNetCore.Identity.UI --version 8.0.*
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design --version 8.0.*
+dotnet add package Microsoft.EntityFrameworkCore.Tools --version 8.0.* 
+dotnet add package MySql.EntityFrameworkCore --version 8.*
+
+
+dotnet add package Microsoft.AspNetCore.Authentication
+dotnet add package Microsoft.AspNetCore.Http.Abstractions
+dotnet add package Microsoft.AspNetCore.Authentication.Cookies
+dotnet add package Microsoft.AspNetCore.Authentication.Facebook
+dotnet add package Microsoft.AspNetCore.Authentication.Google
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+dotnet add package Microsoft.AspNetCore.Authentication.MicrosoftAccount
+dotnet add package Microsoft.AspNetCore.Authentication.oAuth
+dotnet add package Microsoft.AspNetCore.Authentication.OpenIDConnect
+dotnet add package Microsoft.AspNetCore.Authentication.Twitter
+
+dotnet add package MailKit
+dotnet add package MimeKit
+
+==========Excel=============
+
+dotnet add package EPPlus

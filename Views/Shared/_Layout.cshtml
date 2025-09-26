@@ -90,10 +90,11 @@
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="user-avatar-wrapper">
                                         <div class="user-avatar">
-                                            @* <i class="fas fa-user"></i> *@
-                                            <img src="@Url.Content("~/images/avatars/" + User.Identity?.Name + ".png")" alt="Avatar" 
-                             class="rounded-circle border border-3" 
-                             style="width: 30px; height: 30px; object-fit: cover;">
+                                            <img src="@Url.Content("~/images/avatars/" + User.Identity?.Name + ".png")"
+                                                alt="Avatar"
+                                                class="rounded-circle border border-3"
+                                                style="width: 30px; height: 30px; object-fit: cover;"
+                                                onerror="this.onerror=null;this.src='@Url.Content("~/images/avatars/avatar_default.png")';">
                                         </div>
                                         <div class="user-info">
                                             <span class="user-name">@User.Identity?.Name</span>

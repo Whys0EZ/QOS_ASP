@@ -54,7 +54,7 @@ a {
 
 .nav-appmvc .text-dark {
   color: white !important;
-  font-weight:  700;
+  font-weight: 700;
 }
 
 .nav-appmvc .text-dark:hover {
@@ -174,8 +174,46 @@ a {
 
 /* Profile */
 .profile-avatar img {
-    transition: transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
+
 .profile-avatar img:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
+}
+
+/* Face smile */
+.Circles_Red,
+.Circles_Green,
+.Circles_Yellow,
+.Circles_None {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.Circles_Red {
+
+  background-image: url('/images/red_On.png');
+  background-size: cover; /* hoặc contain */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.Circles_Green {
+  background-image: url('/images/green_On.png');
+  background-size: cover; /* hoặc contain */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.Circles_Yellow {
+  background-image: url('/images/yellow_On.png');
+  background-size: cover; /* hoặc contain */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.Circles_None {
+  background-color: gray;
 }

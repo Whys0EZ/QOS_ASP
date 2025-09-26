@@ -15,6 +15,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // đang ki service UserPermission
 builder.Services.AddScoped<IUserPermissionService, UserPermissionService>();
 
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = null; // giữ nguyên tên property
+    });
+    
 // builder.Services.AddSession();
 
 // Thêm Session

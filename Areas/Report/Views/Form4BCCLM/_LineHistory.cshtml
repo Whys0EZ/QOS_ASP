@@ -1,0 +1,48 @@
+@model IEnumerable<QOS.Areas.Report.Models.LineHistoryData>
+
+<div class="alert">
+    <table class="table table-striped table-sm table-bordered mt-2">
+        <thead class="table-dark">
+            <tr>
+                <th >STT</th>
+                <th >Báo Cáo</th>
+                <th >Công đoạn</th>
+                <th >Sewer</th>
+                <th >SL Lỗi/SL Kiểm</th>
+                <th >Trạng thái</th>
+                <th >Lần kiểm</th>
+                <th >Người tạo</th>
+                <th>Thời gian kiểm</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model != null && Model.Any())
+        {
+            var idx = 1;
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@idx</td>
+                    <td>@item.Report_ID</td>
+                    <td>@item.Operation_Name_VN</td>
+                    <td>@item.Sewer</td>
+                    <td>@item.Total_Fault_QTY/@item.QTY</td>
+                    <td>@item.Status</td>
+                    <td>@item.Audit_Time</td>
+                    <td>@item.UserUpdate - @item.FullName</td>
+                    <td>@item.LastUpdate</td>
+                </tr>
+                idx++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="9" class="text-center text-warning">
+                    Không có dữ liệu cho line này.
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

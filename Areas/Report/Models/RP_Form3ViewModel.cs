@@ -7,7 +7,7 @@ namespace QOS.Areas.Report.Models
         public string? Unit { get; set; }
         public List<QOS.Models.Unit_List>? Unit_List { get; set; }
 
-        // thêm property này để chứa dữ liệu từ Form2_BCCLC
+        // thêm property này để chứa dữ liệu từ Form3_BCDT
         public List<Form3_BCDT>? History { get; set; }
 
     }
