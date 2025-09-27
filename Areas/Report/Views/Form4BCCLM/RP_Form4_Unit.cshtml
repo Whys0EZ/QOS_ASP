@@ -76,10 +76,10 @@
 
     <!-- Kết quả -->
     <div class="row">
-        <div class="col-12" id="TableContainer">
+        <div class="col-12 table-responsive" id="TableContainer">
             @if (Model.LineDetails.Any())
             {
-                <table class="table table-bordered table-hover align-middle">
+                <table class="table table-bordered table-hover align-middle ">
                     <thead>
                         <tr>
                             <th style="width:50px;">LINE</th>
@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Create export form
         var exportForm = document.createElement('form');
         exportForm.method = 'POST';
-        exportForm.action = '@Url.Action("ExportExcel", "Form4BCCLM", null, "Report")';
+        exportForm.action = '@Url.Action("ExportExcel_Unit", "Form4BCCLM", null)';
         exportForm.style.display = 'none';
         
         // Add form data

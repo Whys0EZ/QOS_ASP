@@ -21,7 +21,7 @@
                   class="row g-2 justify-content-end align-items-center">
 
                 <!-- Unit -->
-                <div class="col-12 col-sm-6 col-md-2">
+                <div class="col-12 col-sm-6 col-md-2 visually-hidden">
                     <select class="form-select" id="Unit" name="Unit" asp-for="Unit"
                         asp-items="@(new SelectList(Model.Unit_List, "Unit", "Unit", Model.Unit))">
                         <option value="ALL">Chọn Unit</option>
@@ -43,7 +43,7 @@
                 <!-- Buttons -->
                 <div class="col-12 col-md-6 d-flex flex-wrap gap-2">
                     <button class="btn btn-warning flex-fill" type="submit">Check</button>
-                    <button class="btn btn-secondary flex-fill" type="reset">Nhập&nbsp;Lại</button>
+                    <button class="btn btn-secondary flex-fill" onclick="resetForm()" type="reset">Nhập&nbsp;Lại</button>
                     <button type="button" class="btn btn-primary flex-fill" id="ExportExcel">Tải&nbsp;Excel</button>
                 </div>
             </form>
@@ -163,7 +163,7 @@
         </div>
     </div>
 </div>
-
+<script src="~/js/jquery-3.6.0.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize tooltips
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Create export form
         var exportForm = document.createElement('form');
         exportForm.method = 'POST';
-        exportForm.action = '@Url.Action("ExportExcel", "Form4BCCLM", null, "Report")';
+        exportForm.action = '@Url.Action("ExportExcel", "Form4BCCLM", null)';
         exportForm.style.display = 'none';
         
         // Add form data
@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function resetForm() {
     document.getElementById('Unit').value = 'ALL';
-    document.getElementById('dateFrom').value = '@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")';
+    document.getElementById('dateFrom').value = '@DateTime.Now.ToString("yyyy-MM-dd")';
     document.getElementById('dateEnd').value = '@DateTime.Now.ToString("yyyy-MM-dd")';
 }
 

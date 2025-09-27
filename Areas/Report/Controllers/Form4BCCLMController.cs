@@ -30,13 +30,13 @@ namespace QOS.Areas.Report.Controllers
             _connectionString = configuration.GetConnectionString("DefaultConnection");
             _context = context;
         }
-        // public IActionResult Index()
-        // {
-        //     // return View();
-        //     return RedirectToAction("RP_Form4", "Form4BCCLM");
-        // }
+        public IActionResult Index()
+        {
+            // return View();
+            return RedirectToAction("RP_Form4", "Form4BCCLM");
+        }
         [TempData]
-        public string MessageStatus { get; set;}
+        public string? MessageStatus { get; set;}
         [HttpGet]
         public IActionResult RP_Form4(string? Unit, DateTime? dateFrom, DateTime? dateEnd)
         {
@@ -49,19 +49,19 @@ namespace QOS.Areas.Report.Controllers
                 {
                     Unit_List = GetUnitList(),
                     Unit = Unit ?? "ALL",
-                    DateFrom = dateFrom ?? DateTime.Now.AddDays(-7),
+                    DateFrom = dateFrom ?? DateTime.Now,
                     DateEnd = dateEnd ?? DateTime.Now.Date.AddDays(1).AddTicks(-1)
                 };
 
                 _logger.LogInformation($"Model created - Units available: {model.Unit_List.Count}");
-
+                LoadReportData(model);
                 // Load data if parameters provided
-                if (HasSearchParameters(Unit, dateFrom, dateEnd))
-                {
-                    LoadReportData(model);
-                    ViewData["Searched"] = true;
-                    _logger.LogInformation($"Data loaded - Found {model.ReportUnits.Count} units");
-                }
+                // if (HasSearchParameters(Unit, dateFrom, dateEnd))
+                // {
+                //     LoadReportData(model);
+                //     // ViewData["Searched"] = true;
+                //     _logger.LogInformation($"Data loaded - Found {model.ReportUnits.Count} units");
+                // }
 
                 return View(model);
             }
@@ -111,7 +111,7 @@ namespace QOS.Areas.Report.Controllers
                 {
                     Unit_List = GetUnitList(),
                     Unit = Unit,
-                    DateFrom = dateFrom ?? DateTime.Now.AddDays(-7),
+                    DateFrom = dateFrom ?? DateTime.Now.AddDays(-1),
                     DateEnd = dateEnd ?? DateTime.Now.Date.AddDays(1).AddTicks(-1),
                     ColumnHeaders = new List<string>(), // Initialize to prevent null
                     LineDetails = new List<LineDetailRow>() // Initialize to prevent null
@@ -183,6 +183,39 @@ namespace QOS.Areas.Report.Controllers
                 return RedirectToAction("RP_Form4");
             }
         }
+        // [HttpPost]
+        // public IActionResult ExportExcel_Unit(string? unit, DateTime dateFrom, DateTime dateEnd)
+        // {
+        //     _logger.LogInformation($"=== Export Excel - Unit: '{unit}', From: {dateFrom:yyyy-MM-dd}, To: {dateEnd:yyyy-MM-dd} ===");
+
+        //     try
+        //     {
+        //         var model = new RP_Form4_UnitViewModel
+        //         {
+        //             Unit_List = GetUnitList(),
+        //             Unit = unit,
+        //             DateFrom = dateFrom ,
+        //             DateEnd = dateEnd ,
+        //             ColumnHeaders = new List<string>(), // Initialize to prevent null
+        //             LineDetails = new List<LineDetailRow>() // Initialize to prevent null
+        //         };
+
+        //         LoadUnitDetailData(model);
+
+        //         var excelData = GenerateExcelData_Unit(model);
+        //         var fileName = $"BCCLM_{dateFrom:yyyyMMdd}_{dateEnd:yyyyMMdd}.csv";
+                
+        //         _logger.LogInformation($"Excel exported successfully - {model.ReportUnits.Count} units, {model.ReportUnits.Sum(u => u.Lines.Count)} lines");
+                
+        //         return File(excelData, "text/csv", fileName);
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         _logger.LogError(ex, "Error exporting Excel");
+        //         TempData["ErrorMessage"] = $"Lỗi xuất Excel: {ex.Message}";
+        //         return RedirectToAction("RP_Form4");
+        //     }
+        // }
 
         [HttpGet]
         public IActionResult GetLineHistory(string lineCode, DateTime dateFrom, DateTime dateEnd)
@@ -299,6 +332,7 @@ namespace QOS.Areas.Report.Controllers
 
         private bool HasSearchParameters(string? unit, DateTime? dateFrom, DateTime? dateEnd)
         {
+            _logger.LogInformation($"HasSearchParameters - Unit: '{unit}', DateFrom: {dateFrom}, DateEnd: {dateEnd}");
             return !string.IsNullOrEmpty(unit) || dateFrom.HasValue || dateEnd.HasValue;
         }
 
@@ -661,6 +695,53 @@ namespace QOS.Areas.Report.Controllers
                 .Concat(System.Text.Encoding.UTF8.GetBytes(csv.ToString()))
                 .ToArray();
         }
+        // private byte[] GenerateExcelData_Unit(RP_Form4_UnitViewModel model)
+        // {
+        //     var csv = new System.Text.StringBuilder();
+        //     csv.AppendLine("Unit,Line Code,Status,Status Text,Date From,Date To");
+        //     string unitName = string.IsNullOrEmpty(model.Unit) ? "" : model.Unit;
+        //     string dateFrom = model.DateFrom.ToString("yyyy-MM-dd");
+        //     string dateTo = model.DateEnd.ToString("yyyy-MM-dd");
+        //     foreach (var line in model.LineDetails)
+        //     {
+        //         var lineCode = line?.Line ?? "";
+
+        //         // Nếu StatusByStep null thì skip
+        //         if (line?.StatusByStep == null || !line.StatusByStep.Any())
+        //         {
+        //             // ghi 1 dòng trắng/không có step nếu bạn muốn:
+        //             // sb.AppendLine($"\"{EscapeCsv(unitName)}\",\"{EscapeCsv(lineCode)}\",\"\",\"\",\"{dateFrom}\",\"{dateTo}\"");
+        //             continue;
+        //         }
+
+        //         foreach (var kv in line.StatusByStep)
+        //         {
+        //             var step = kv.Key ?? "";
+        //             var status = kv.Value ?? "";
+
+        //             csv.AppendLine($"\"{EscapeCsv(unitName)}\",\"{EscapeCsv(lineCode)}\",\"{EscapeCsv(step)}\",\"{EscapeCsv(status)}\",\"{dateFrom}\",\"{dateTo}\"");
+        //         }
+        //     }
+
+        //     return System.Text.Encoding.UTF8.GetPreamble()
+        //         .Concat(System.Text.Encoding.UTF8.GetBytes(csv.ToString()))
+        //         .ToArray();
+        // }
+        // private string EscapeCsv(string value)
+        // {
+        //     if (string.IsNullOrEmpty(value))
+        //         return "";
+
+        //     // Nếu có dấu phẩy, ngoặc kép hoặc xuống dòng thì phải bao quanh bằng dấu "
+        //     if (value.Contains(",") || value.Contains("\"") || value.Contains("\n") || value.Contains("\r"))
+        //     {
+        //         // Escape dấu " thành ""
+        //         value = value.Replace("\"", "\"\"");
+        //         return $"\"{value}\"";
+        //     }
+
+        //     return value;
+        // }
 
         private object TestConnection()
         {

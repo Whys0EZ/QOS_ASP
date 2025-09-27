@@ -355,3 +355,12 @@ D:\C_Sharp\QOS\obj\Debug\net8.0\refint\QOS.dll
 D:\C_Sharp\QOS\obj\Debug\net8.0\QOS.pdb
 D:\C_Sharp\QOS\obj\Debug\net8.0\QOS.genruntimeconfig.cache
 D:\C_Sharp\QOS\obj\Debug\net8.0\ref\QOS.dll
+D:\C_Sharp\QOS\bin\Debug\net8.0\out\out\out\out\out\out\web.config
+D:\C_Sharp\QOS\bin\Debug\net8.0\out\out\out\out\out\out\appsettings.Development.json
+D:\C_Sharp\QOS\bin\Debug\net8.0\out\out\out\out\out\out\appsettings.json
+D:\C_Sharp\QOS\bin\Debug\net8.0\out\out\out\out\out\out\libman.json
+D:\C_Sharp\QOS\bin\Debug\net8.0\out\out\out\out\out\out\QOS.deps.json
+D:\C_Sharp\QOS\bin\Debug\net8.0\out\out\out\out\out\out\QOS.runtimeconfig.json
+D:\C_Sharp\QOS\bin\Debug\net8.0\out\out\out\out\out\out\wwwroot\lib\fontawesome\metadata\icon-families.json
+D:\C_Sharp\QOS\bin\Debug\net8.0\out\out\out\out\out\out\wwwroot\lib\fontawesome\metadata\icons.json
+D:\C_Sharp\QOS\bin\Debug\net8.0\out\out\out\out\out\out\wwwroot\lib\fontawesome\metadata\shims.json

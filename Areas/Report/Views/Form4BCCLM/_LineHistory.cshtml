@@ -1,7 +1,7 @@
 @model IEnumerable<QOS.Areas.Report.Models.LineHistoryData>
 
 <div class="alert">
-    <table class="table table-striped table-sm table-bordered mt-2">
+    <table class="table  table-sm table-bordered mt-2">
         <thead class="table-dark">
             <tr>
                 <th >STT</th>
@@ -21,7 +21,8 @@
             var idx = 1;
             foreach (var item in Model)
             {
-                <tr>
+                
+                <tr class="@(item.Status == "green" ? "table-success" : item.Status == "red" ? "table-danger" : item.Status == "yellow" ? "table-warning" : "")">
                     <td>@idx</td>
                     <td>@item.Report_ID</td>
                     <td>@item.Operation_Name_VN</td>

@@ -30,6 +30,7 @@ namespace QOS.Areas.Report.Models
         public string? Cut_Table_Long { get; set; }
         public bool? vai_ke { get; set; }
         public bool? noi_ke { get; set; }
+        public bool? noi_vai { get; set; }
         public bool? cang_vai { get; set; }
         public bool? sai_mat { get; set; }
         public bool? hep_kho { get; set; }

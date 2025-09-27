@@ -77,6 +77,10 @@
       "PackagePath": "staticwebassets\\images\\red_On.png"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\yellow_On.png",
+      "PackagePath": "staticwebassets\\images\\yellow_On.png"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\jquery-3.6.0.min.js",
       "PackagePath": "staticwebassets\\js\\jquery-3.6.0.min.js"
     },
