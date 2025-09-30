@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QOS.Data;
 using QOS.Models;
+using QOS.Areas.Function.Filters;
 
 namespace QOS.Controllers
 {
@@ -28,11 +29,14 @@ namespace QOS.Controllers
             // return View();
         }
         // Factory List
+        [Permission("C_F1")]
         public IActionResult FactoryList()
         {
             var factorylist = _context.Factory_List.OrderBy(fac => fac.FactoryID).ToList();
             return View(factorylist);
         }
+
+        [Permission("C_F1")]
         public IActionResult CreateFactory()
         {
             return View();
@@ -56,11 +60,13 @@ namespace QOS.Controllers
         }
 
         // DepartmentList
+        [Permission("C_F2")]
         public IActionResult DepartmentList()
         {
             var department = _context.Team_List.OrderBy(dep => dep.TeamID).ToList();
             return View(department);
         }
+        [Permission("C_F2")]
         public IActionResult CreateDepartment()
         {
             return View();
@@ -84,17 +90,18 @@ namespace QOS.Controllers
         }
 
         // Unit List
+        [Permission("C_F3")]
         public IActionResult UnitList()
         {
             var unitlist = _context.Unit_List.OrderBy(unit => unit.Unit).ToList();
             return View(unitlist);
         }
-
+        [Permission("C_F3")]
         public IActionResult CreateUnit()
         {
             return View();
         }
-
+        
         [HttpPost]
         public IActionResult CreateUnit(Unit_List model)
         {
@@ -114,7 +121,10 @@ namespace QOS.Controllers
             }
             return View(model);
         }
-        
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
     }
 }

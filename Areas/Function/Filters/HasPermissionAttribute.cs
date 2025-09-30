@@ -27,11 +27,13 @@ namespace QOS.Areas.Function.Filters
             }
 
             var permissionService = context.HttpContext.RequestServices.GetService<IUserPermissionService>();
+
             if (permissionService == null || !permissionService.HasPermission(username, _functionCode))
             {
                 // Store error message in Items, since TempData is not available here
                 context.HttpContext.Items["ErrorMessage"] = "Bạn không có quyền truy cập chức năng này.";
-                context.Result = new RedirectToActionResult("AccessDenied", "Function", null);
+                var currentController = context.RouteData.Values["controller"]?.ToString() ?? "Home";
+                context.Result = new RedirectToActionResult("AccessDenied", currentController, null);
             }
         }
     }

@@ -17,8 +17,14 @@ namespace QOS.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly ILogger<AccountController> _logger;
         private readonly AppDbContext _context;
-        public AccountController(AppDbContext context) => _context = context;
+
+        public AccountController(ILogger<AccountController> logger, AppDbContext context) 
+        { 
+            _logger = logger;
+            _context = context;
+        }
         [TempData]
         public string? MessageStatus { get; set; }
         private static string HashPassword(string password)
@@ -87,7 +93,9 @@ namespace QOS.Controllers
                 if (string.IsNullOrWhiteSpace(vm.Login.Username) || string.IsNullOrWhiteSpace(vm.Login.Password))
                 {
                    
+                    // ViewBag.Error = "Vui lòng nhập Username và Password!";
                     ViewBag.Error = "Vui lòng nhập Username và Password!";
+                    ViewBag.ActiveForm  = "login";
                     return View(vm);
                 }
                 Console.WriteLine(vm.Login.Password);
@@ -100,7 +108,9 @@ namespace QOS.Controllers
 
                 if (user == null)
                 {
+                    // ViewBag.Error = "Sai tên đăng nhập hoặc mật khẩu!";
                     ViewBag.Error = "Sai tên đăng nhập hoặc mật khẩu!";
+                    ViewBag.ActiveForm  = "login";
                     return View(vm);
                 }
 
@@ -129,15 +139,20 @@ namespace QOS.Controllers
             else if (actionType == "register")
             {
                 // Xử lý Register
-                if (!ModelState.IsValid )
+                if (string.IsNullOrWhiteSpace(vm.Register.FullName) ||string.IsNullOrWhiteSpace(vm.Register.Username) || string.IsNullOrWhiteSpace(vm.Register.Pass))
                 {
-                    ReloadDropdown(vm.Register);
+                   
+                    ViewBag.Error = "Vui lòng nhập FullName, Username và Password!";
+                    ViewBag.ActiveForm  = "register";
                     return View(vm);
                 }
 
                 if (_context.Users.Any(u => u.Username == vm.Register.Username))
                 {
+                    // ModelState.AddModelError("Register.Username", "Username đã tồn tại");
+                    MessageStatus = "Username đã tồn tại";
                     ModelState.AddModelError("Register.Username", "Username đã tồn tại");
+                    ViewBag.ActiveForm  = "register";
                     ReloadDropdown(vm.Register);
                     return View(vm);
                 }

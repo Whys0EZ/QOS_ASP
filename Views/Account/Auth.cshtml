@@ -3,11 +3,12 @@
 @{
     ViewData["Title"] = "Đăng nhập / Đăng ký";
     Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    var activeTab = ViewBag.ActiveTab as string ?? "login"; // mặc định login
 }
 <partial name="_AlertMessage" />
 
 <!-- Mặc định hiển thị form Login -->
-<div class="container" id="container">
+<div class="container @(ViewBag.ActiveForm == "register" ? "right-panel-active" : "")" id="container">
     <!-- Sign In Form (Login) - Hiển thị đầu tiên -->
     <div class="form-container sign-in">
         <form class="form" asp-controller="Account" asp-action="Auth" method="post">
@@ -80,23 +81,41 @@
                 <option value="">-- Chọn Factory --</option>
             </select>
             <span asp-validation-for="Register.FactoryID" class="text-danger"></span>
-            
+
             <select asp-for="Register.TeamID" asp-items="Model.Register.TeamOptions" class="form-control">
-                    <option value="">-- Chọn Team --</option>
-                </select>
-                <span asp-validation-for="Register.TeamID" class="text-danger"></span>
-            
-            <input asp-for="Register.FullName" name="FullName" type="text" placeholder="Họ và tên" required />
-   
-            <input asp-for="Register.Email" name="Email" type="email" placeholder="Email(Tùy chọn)" required />
+                <option value="">-- Chọn Team --</option>
+            </select>
+            <span asp-validation-for="Register.TeamID" class="text-danger"></span>
 
-            <input asp-for="Register.Username" name="Username" type="text" placeholder="Tên đăng nhập" required />
+            <div class="input-group">
+                <input asp-for="Register.FullName" class="form-control" placeholder="Họ và tên" />
+                <span asp-validation-for="Register.FullName" class="text-danger"></span>
+            </div>
 
-            <input asp-for="Register.Pass" name="Password" type="password" placeholder="Mật khẩu" required />
+            <div class="input-group">
+                <input asp-for="Register.Email" class="form-control" placeholder="Email (Tùy chọn)" />
+                <span asp-validation-for="Register.Email" class="text-danger"></span>
+            </div>
 
-            <input asp-for="Register.ConfirmPassword" name="ConfirmPassword" type="password" placeholder="Xác nhận mật khẩu" required />
+            <div class="input-group">
+                <input asp-for="Register.Username" class="form-control" placeholder="Tên đăng nhập" />
+                <span asp-validation-for="Register.Username" class="text-danger"></span>
+            </div>
+
+            <div class="input-group">
+                <input asp-for="Register.Pass" type="password" class="form-control" placeholder="Mật khẩu" />
+                <span asp-validation-for="Register.Pass" class="text-danger"></span>
+            </div>
+
+            <div class="input-group">
+                <input asp-for="Register.ConfirmPassword" type="password" class="form-control" placeholder="Xác nhận mật khẩu" />
+                <span asp-validation-for="Register.ConfirmPassword" class="text-danger"></span>
+            </div>
+
             <input type="hidden" name="actionType" value="register" />
             <button type="submit">Đăng ký</button>
+
+            <div asp-validation-summary="All" class="text-danger mt-2"></div>
             @Html.AntiForgeryToken()
         </form>
     </div>
