@@ -12,8 +12,8 @@
     <!-- Sign In Form (Login) - Hiển thị đầu tiên -->
     <div class="form-container sign-in">
         <form class="form" asp-controller="Account" asp-action="Auth" method="post">
-            <h1>Chào mừng trở lại!</h1>
-            <div class="social-container">
+            <h1 class="mb-3">Chào mừng trở lại!</h1>
+            <div class="social-container mb-3">
                 <a href="#" class="social" title="Google">
                     <i class="fab fa-google-plus-g"></i>
                 </a>
@@ -27,26 +27,26 @@
                     <i class="fab fa-linkedin-in"></i>
                 </a>
             </div>
-            <span>hoặc sử dụng tài khoản của bạn</span>
+            <span class="d-block mb-3">hoặc sử dụng tài khoản của bạn</span>
             
-            <div class="input-group">
+            <div class="input-group mb-3">
                 <input asp-for="Login.Username" class="form-control-custom" placeholder="Tên đăng nhập" />
                 <span asp-validation-for="Login.Username" class="text-danger"></span>
             </div>
             
-            <div class="input-group">
+            <div class="input-group mb-3">
                 <input asp-for="Login.Password" type="password" class="form-control-custom" placeholder="Mật khẩu" />
                 <span asp-validation-for="Login.Password" class="text-danger"></span>
             </div>
             
-            <div class="form-check">
+            <div class="form-check mb-3">
                 <input type="checkbox" name="RememberMe" class="form-check-input" id="rememberMe" />
                 <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
             </div>
             
-            <a href="#" class="forgot-password">Quên mật khẩu?</a>
+            <a href="#" class="forgot-password d-block mb-3">Quên mật khẩu?</a>
             <input type="hidden" name="actionType" value="login" />
-            <button class="btnLogin" type="submit" style="background: linear-gradient(135deg, #dcdde4, #0a63e9) !important;">Đăng nhập</button>
+            <button class="btnLogin btn btn-primary w-100 mb-2" type="submit" style="background: linear-gradient(135deg, #dcdde4, #0a63e9) !important;">Đăng nhập</button>
             
             @if (ViewBag.Error != null)
             {
@@ -60,8 +60,8 @@
     <!-- Sign Up Form (Register) -->
     <div class="form-container sign-up">
         <form class="form" asp-controller="Account" asp-action="Auth" method="post">
-            <h1>Tạo tài khoản</h1>
-            <div class="social-container">
+            <h1 >Tạo tài khoản</h1>
+            <div class="social-container ">
                 <a href="#" class="social" title="Google">
                     <i class="fab fa-google-plus-g"></i>
                 </a>
@@ -75,45 +75,45 @@
                     <i class="fab fa-linkedin-in"></i>
                 </a>
             </div>
-            <span>hoặc sử dụng email để đăng ký</span>
+            <span class="d-block ">hoặc sử dụng email để đăng ký</span>
             
-            <select asp-for="Register.FactoryID" asp-items="Model.Register.FactoryOptions" class="form-control">
+            <select  asp-for="Register.FactoryID" asp-items="Model.Register.FactoryOptions" class="form-control">
                 <option value="">-- Chọn Factory --</option>
             </select>
             <span asp-validation-for="Register.FactoryID" class="text-danger"></span>
 
-            <select asp-for="Register.TeamID" asp-items="Model.Register.TeamOptions" class="form-control">
+            <select  asp-for="Register.TeamID" asp-items="Model.Register.TeamOptions" class="form-control">
                 <option value="">-- Chọn Team --</option>
             </select>
             <span asp-validation-for="Register.TeamID" class="text-danger"></span>
 
-            <div class="input-group">
+            <div class="input-group ">
                 <input asp-for="Register.FullName" class="form-control" placeholder="Họ và tên" />
                 <span asp-validation-for="Register.FullName" class="text-danger"></span>
             </div>
 
-            <div class="input-group">
+            <div class="input-group ">
                 <input asp-for="Register.Email" class="form-control" placeholder="Email (Tùy chọn)" />
                 <span asp-validation-for="Register.Email" class="text-danger"></span>
             </div>
 
-            <div class="input-group">
+            <div class="input-group ">
                 <input asp-for="Register.Username" class="form-control" placeholder="Tên đăng nhập" />
                 <span asp-validation-for="Register.Username" class="text-danger"></span>
             </div>
 
-            <div class="input-group">
+            <div class="input-group ">
                 <input asp-for="Register.Pass" type="password" class="form-control" placeholder="Mật khẩu" />
                 <span asp-validation-for="Register.Pass" class="text-danger"></span>
             </div>
 
-            <div class="input-group">
+            <div class="input-group ">
                 <input asp-for="Register.ConfirmPassword" type="password" class="form-control" placeholder="Xác nhận mật khẩu" />
                 <span asp-validation-for="Register.ConfirmPassword" class="text-danger"></span>
             </div>
 
             <input type="hidden" name="actionType" value="register" />
-            <button type="submit">Đăng ký</button>
+            <button class="btn btn-success w-100" type="submit">Đăng ký</button>
 
             <div asp-validation-summary="All" class="text-danger mt-2"></div>
             @Html.AntiForgeryToken()
@@ -150,3 +150,43 @@
         });
     </script>
 }
+
+    <style>
+
+
+        /* Responsive Tablet */
+        @@media (max-width: 1024px) {
+            .auth-container {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            .form-container {
+                width: 100%;
+                max-width: 500px;
+                margin-bottom: 1rem;
+            }
+            .overlay-container {
+                display: none; /* Ẩn overlay */
+            }
+        }
+
+        /* Responsive Mobile */
+        @@media (max-width: 576px) {
+            .form-container {
+                padding: 1rem;
+            }
+            .form-container h1 {
+                font-size: 1.5rem;
+            }
+            .form-container input,
+            .form-container select,
+            .form-container button {
+                font-size: 0.9rem;
+                padding: 0.75rem;
+            }
+            .social-container a {
+                margin: 0 5px;
+                font-size: 1rem;
+            }
+        }
+    </style>

@@ -1,0 +1,88 @@
+@model IEnumerable<QOS.Areas.Report.Models.LineHistoryDataForm6>
+
+<div class="alert">
+    <table class="table  table-sm table-bordered mt-2">
+        <thead class="table-dark">
+            <tr>
+                <th >STT</th>
+                <th >ID Báo Cáo</th>
+                <th >MO</th>
+                <th >Màu</th>
+                <th>AQL</th>
+                <th>Tổng SL</th>
+                <th >SL Lỗi/SL Kiểm</th>
+                <th >Lần kiểm</th>
+                <th >OQL</th>
+                <th >Người tạo</th>
+                <th>Thời gian kiểm</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model != null && Model.Any())
+        {
+
+            var idx = 1;
+            foreach (var item in Model)
+            {
+                
+                <tr class="@(item.Status == "green" ? "table-success" : item.Status == "red" ? "table-danger" : item.Status == "yellow" ? "table-warning" : "")">
+                    <td>@idx</td>
+                    <td> <span style="text-decoration: underline; cursor: pointer; color:blue;"
+                                onclick="showDetails('@item.ID')">@item.ID</span></td>
+                    <td>@item.MO</td>
+                    <td>@item.Color</td>
+                    <td>@item.AQL</td>
+                    <td>@item.Check_QTY</td>
+                    <td>@item.Total_Fault_QTY/ @item.QTY</td>
+                    <td>@item.Audit_Time</td>
+                    <td>@item.OQL %</td>
+                    <td>@item.UserUpdate - @item.FullName</td>
+                    <td>@item.LastUpdate</td>
+                </tr>
+                idx++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="9" class="text-center text-warning">
+                    Không có dữ liệu cho line này.
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="Form6Modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white text-center text-uppercase">
+                <h5 class="modal-title">Chi tiết báo cáo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="ModalRP_Form6">
+                <!-- Nội dung chi tiết sẽ load vào đây -->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script>
+function showDetails(id) {
+    $.get('@Url.Action("DetailForm6", "Form6BCCC", new { area = "Report" })',
+        { id: id },
+        function (data) {
+            if (data) {
+                // inset info
+                $("#ModalRP_Form6").html(data);
+                var modal = new bootstrap.Modal(document.getElementById('Form6Modal'));
+                var unit = $("#ModalRP_Form6").find("#UnitField").val();
+                $(".modal-title").text("Chi tiết báo cáo - Chuyền : " + unit);
+
+                modal.show();
+            }
+        });
+}
+
+</script>

@@ -55,6 +55,7 @@ namespace QOS.Areas.Report.Models
 
     public class LineHistoryData
     {
+        public int? ID {get; set;} =0;
         public string? Report_ID { get; set; } = "";
         public string? Operation_Name_VN { get; set; } = "";
         public string? Sewer { get; set; } = "";
@@ -67,4 +68,56 @@ namespace QOS.Areas.Report.Models
         public DateTime LastUpdate { get; set; } = DateTime.Now;
         public int? RowNum { get; set; } = 0;
     }
+    public class Form4DetailViewModel
+    {
+        public Form4_Detail Detail { get; set; } = new Form4_Detail();
+        public List<FaultViewModel> Faults { get; set; } = new();
+        public List<SelectedFault> SelectedFaults { get; set; } = new();
+        public List<OperationCode> Operations { get; set;} = new();
+    }
+
+    public class Form4_Detail
+    {
+        public int ID { get; set;}
+        public string? Report_ID { get; set;}
+        public string? Unit { get; set;}
+        public string? Line { get; set;}
+        public string? Sewer { get; set;}
+        public string? Sup {get; set;}
+        public string? Ast_Sup { get; set;}
+        public string? MO { get; set;}
+        public string? Color { get; set;}
+        public string? Size {get; set;}
+        public int? QTY { get; set;}
+        public int? Total_Fault_QTY { get; set;}
+        public string? Operation {get; set;}
+        public string? Fault_Detail {get; set;}
+        public string? Remark {get; set;}
+        public string? Led {get; set;}
+        public bool? Re_Audit {get; set;}
+        public int? Audit_Time {get; set;}
+        public DateTime? LastUpdate {get; set;}
+        public string? Sewer_Workstation {get; set;}
+        public string? Photo_URL {get; set;}
+        public string? UserUpdate {get; set;}
+        
+        
+    }
+    public class FaultViewModel
+    {
+        public string FaultCode { get; set; } = "";
+        public string FaultNameVN { get; set; } = "";
+        public int FaultLevel { get; set; }
+    }
+    public class SelectedFault
+    {
+        public string FaultCode { get; set; } = "";
+        public int FaultQty { get; set; }   // nếu trong chuỗi Fault_Detail có số lượng
+    }
+    public class OperationCode 
+    {
+        public string Operation_Code { get; set;} ="";
+        public string Operation_Name_VN { get; set;} ="";
+    }
+    
 }

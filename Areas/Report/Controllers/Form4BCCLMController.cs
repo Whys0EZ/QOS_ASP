@@ -19,7 +19,7 @@ namespace QOS.Areas.Report.Controllers
     {
         private readonly ILogger<Form4BCCLMController> _logger;
         private readonly IWebHostEnvironment _env;
-        // private readonly IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
         private readonly string _connectionString;
         private readonly AppDbContext _context;
 
@@ -28,6 +28,7 @@ namespace QOS.Areas.Report.Controllers
             _logger = logger;
             _env = env;
             _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _configuration =configuration;
             _context = context;
         }
         public IActionResult Index()
@@ -600,6 +601,7 @@ namespace QOS.Areas.Report.Controllers
                 {
                     historyList.Add(new LineHistoryData
                     {
+                        ID = reader["ID"]  != DBNull.Value ? Convert.ToInt32(reader["ID"]) : 0,
                         Report_ID = reader["Report_ID"]?.ToString(),
                         Operation_Name_VN = reader["Operation_Name_VN"]?.ToString(),
                         Sewer = reader["Sewer"]?.ToString(),
@@ -655,6 +657,7 @@ namespace QOS.Areas.Report.Controllers
                 {
                     historyList.Add(new LineHistoryData
                     {
+                        ID = reader["ID"]  != DBNull.Value ? Convert.ToInt32(reader["ID"]) : 0,
                         Report_ID = reader["Report_ID"]?.ToString(),
                         Operation_Name_VN = reader["Operation_Name_VN"]?.ToString(),
                         Sewer = reader["Sewer"]?.ToString(),
@@ -805,6 +808,75 @@ namespace QOS.Areas.Report.Controllers
                 _logger.LogError(ex, "Stored procedure test failed");
                 return new { Success = false, Error = ex.Message };
             }
+        }
+
+        public IActionResult DetailForm4(string id) 
+        {
+            using var conn = new SqlConnection(_connectionString);
+            string sql = @"
+                SELECT t1.*, t4.FullName 
+                FROM Form4_BCCLM t1
+                LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
+                WHERE t1.ID = @ID
+                ORDER BY t1.LastUpdate DESC";
+
+            var detail = conn.QueryFirstOrDefault<Form4_Detail>(sql, new { ID = id });
+
+            if (detail == null)
+            {
+                return NotFound();
+            }
+            // Lấy danh sách lỗi
+            string sqlFault = @"SELECT Fault_Code AS FaultCode,
+                                    Fault_Name_VN AS FaultNameVN,
+                                    Fault_Level AS FaultLevel
+                                FROM Fault_Code
+                                WHERE Form4_Active = 1
+                                ORDER BY Fault_Level ASC, Fault_Name_VN ASC";
+
+            var faults = conn.Query<FaultViewModel>(sqlFault).ToList();
+
+            // Tách lỗi từ trường Fault_Detail (giống PHP explode)
+            List<SelectedFault> selectedFaults = new();
+            if (!string.IsNullOrEmpty(detail.Fault_Detail))
+            {
+                var arrFault = detail.Fault_Detail.Split(';', StringSplitOptions.RemoveEmptyEntries);
+                foreach (var f in arrFault)
+                {
+                    var parts = f.Split('-');
+                    if (parts.Length >= 3)
+                    {
+                        selectedFaults.Add(new SelectedFault
+                        {
+                            FaultCode = parts[0],
+                            FaultQty = int.TryParse(parts[2], out var q) ? q : 0
+                        });
+                    }
+                }
+            }
+
+            // Lấy công đoạn
+            string Operation_Code = detail.Operation;
+            
+            string sqlOperation = @"SELECT Operation_Code AS Operation_Code,
+                        Operation_Name_VN AS Operation_Name_VN
+                    FROM Operation_Code
+                    WHERE Operation_Code = @Operation_Code
+                    ";
+
+            var operations = conn.Query<OperationCode>(sqlOperation, new { Operation_Code }).ToList();
+
+
+            // Gom vào ViewModel
+            var vm = new Form4DetailViewModel
+            {
+                Detail = detail,
+                Faults = faults,
+                SelectedFaults = selectedFaults,
+                Operations = operations
+            };
+
+            return PartialView("_tableRP_Form4", vm);
         }
     
     }

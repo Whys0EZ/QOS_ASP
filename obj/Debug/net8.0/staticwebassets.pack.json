@@ -65,6 +65,10 @@
       "PackagePath": "staticwebassets\\images\\delete.png"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\green_Off.png",
+      "PackagePath": "staticwebassets\\images\\green_Off.png"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\green_On.png",
       "PackagePath": "staticwebassets\\images\\green_On.png"
     },
@@ -73,12 +77,28 @@
       "PackagePath": "staticwebassets\\images\\qos_icon.png"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\red_Off.png",
+      "PackagePath": "staticwebassets\\images\\red_Off.png"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\red_On.png",
       "PackagePath": "staticwebassets\\images\\red_On.png"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\yellow_Off.png",
+      "PackagePath": "staticwebassets\\images\\yellow_Off.png"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\yellow_On.png",
       "PackagePath": "staticwebassets\\images\\yellow_On.png"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\chart.js",
+      "PackagePath": "staticwebassets\\js\\chart.js"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\chartjs-plugin-datalabels.js",
+      "PackagePath": "staticwebassets\\js\\chartjs-plugin-datalabels.js"
     },
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\jquery-3.6.0.min.js",
