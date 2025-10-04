@@ -162,6 +162,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXFJlcG9ydFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/C_Sharp/QOS/Areas/Report/Views/SummaryKCC/RP_Summary_Defects_KCC.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXFN1bW1hcnlLQ0NcUlBfU3VtbWFyeV9EZWZlY3RzX0tDQy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/C_Sharp/QOS/Areas/Report/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXF9WaWV3SW1wb3J0cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

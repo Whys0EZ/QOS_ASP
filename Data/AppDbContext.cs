@@ -30,6 +30,7 @@ namespace QOS.Data
         public DbSet<Factory_List> Factory_List { get; set; }
 
         public DbSet<Unit_List> Unit_List { get; set; }
+        public DbSet<Line_List> Line_List { get; set; }
 
         public DbSet<GroupContactList> GroupContactList { get; set; }
 

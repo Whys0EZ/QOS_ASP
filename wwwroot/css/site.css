@@ -20,12 +20,67 @@ html {
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: white;
+  /* background: white; */
   /* margin-bottom: 60px; */
   padding-bottom: 40px;
   padding-top: 50px;
   width: 99%;
 
+}
+
+/* Light mode */
+/* [data-bs-theme="light"] body {
+    background-color: #f8f9fa !important;
+    color: #212529 !important;
+} */
+
+/* Dark mode */
+/* [data-bs-theme="dark"]  body {
+    background: #212529 !important;
+    color: #f8f9fa !important;
+} */
+
+/* Navbar */
+[data-bs-theme="light"] .navbar {
+    background-color: #ffffff !important;
+}
+[data-bs-theme="dark"] .navbar {
+    background-color: #1e1e2f !important;
+}
+
+/* Footer */
+.footer {
+    padding: 1rem 0;
+    margin-top: 2rem;
+}
+[data-bs-theme="light"]  .footer {
+    background: #d4e5f5 !important;
+    color: #000 !important;
+}
+[data-bs-theme="dark"]  .footer {
+    background: #121212 !important;
+    color: #fff !important;
+}
+
+/* Back to top button */
+#btnTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    border: none;
+    outline: none;
+    background: #0d6efd;
+    color: white;
+    cursor: pointer;
+    padding: 12px 16px;
+    border-radius: 50%;
+    font-size: 18px;
+    display: none; /* mặc định ẩn */
+}
+[data-bs-theme="dark"] #btnTop {
+    background: #ffc107;
+    color: black;
 }
 
 label {
@@ -216,4 +271,30 @@ a {
 
 .Circles_None {
   background-color: gray;
+}
+
+#TableContainer {
+  overflow-x: auto;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+#TableContainer table {
+  width: 100%;
+  margin-bottom: 0;
+  border-collapse: collapse;
+}
+
+#TableContainer::-webkit-scrollbar {
+  height: 8px;
+}
+
+#TableContainer::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+#TableContainer::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
 }

@@ -1,0 +1,481 @@
+@model QOS.Areas.Report.Models.RP_Form6ViewModel
+@using System.Text.Json
+@{
+    ViewData["Title"] = "Báo Cáo Cuối Chuyền";
+    Layout = "_MenuReport";
+}
+
+<partial name="_AlertMessage" />
+<style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .dashboard-container {
+            padding: 30px 20px;
+        }
+
+        .header-card {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            border-radius: 20px;
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .header-title {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .filter-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-item {
+            flex: 0 0 auto;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .form-select, .form-control {
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            padding: 8px 15px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus, .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .chart-title {
+            color: var(--primary-color);
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .stat-card-1 { border-top: 4px solid #6366f1; }
+        .stat-card-1 .stat-value { color: #6366f1; }
+
+        .stat-card-2 { border-top: 4px solid #10b981; }
+        .stat-card-2 .stat-value { color: #10b981; }
+
+        .stat-card-3 { border-top: 4px solid #ef4444; }
+        .stat-card-3 .stat-value { color: #ef4444; }
+
+        .stat-card-4 { border-top: 4px solid #14b8a6; }
+        .stat-card-4 .stat-value { color: #14b8a6; }
+
+        .stat-card-5 { border-top: 4px solid #a855f7; }
+        .stat-card-5 .stat-value { color: #a855f7; }
+
+        @@media (max-width: 768px) {
+            .filter-group {
+                flex-direction: column;
+            }
+            
+            .filter-item {
+                width: 100%;
+            }
+
+            .chart-container {
+                height: 300px;
+            }
+        }
+    </style>
+
+    <div class="dashboard-container">
+        <div class="container-fluid">
+            <!-- Header -->
+            <div class="header-card">
+                <marquee><h1 class="header-title ma">
+                    <i class="bi bi-clipboard-data me-2"></i>
+                    QOS - TỔNG HỢP LỖI CUỐI CHUYỀN
+                </h1></marquee>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-card">
+                <form method="post">
+                    <div class="filter-group">
+                        <div class="filter-item">
+                            <label class="filter-label">Top Defected:</label>
+                            <select class="form-select" name="topDefected" style="width: 100px;">
+                                <option value="5" selected>5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="ALL">ALL</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-item">
+                            <label class="filter-label">Type:</label>
+                            <select class="form-select" name="type" style="width: 120px;">
+                                <option value="ALL" selected>ALL</option>
+                                <option value="1">Lỗi Nhẹ</option>
+                                <option value="2">Lỗi Nặng</option>
+                                <option value="3">Lỗi Nghiêm Trọng</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-item">
+                            <label class="filter-label">Unit:</label>
+                            <select class="form-select" name="unit" style="width: 120px;">
+                                <option value="" selected>--Unit--</option>
+                                <option value="Unit1">Unit 1</option>
+                                <option value="Unit2">Unit 2</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-item">
+                            <label class="filter-label">Line:</label>
+                            <select class="form-select" name="line" style="width: 120px;">
+                                <option value="" selected>--Line--</option>
+                                <option value="Line1">Line 1</option>
+                                <option value="Line2">Line 2</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-item">
+                            <label class="filter-label">StyleCode:</label>
+                            <input type="text" class="form-control" name="styleCode" style="width: 150px;">
+                        </div>
+
+                        <div class="filter-item">
+                            <label class="filter-label">MO:</label>
+                            <input type="text" class="form-control" name="mo" style="width: 150px;">
+                        </div>
+
+                        <div class="filter-item">
+                            <label class="filter-label">Ngày:</label>
+                            <input type="date" class="form-control" name="startDate" value="2025-09-27" style="width: 160px;">
+                        </div>
+
+                        <div class="filter-item" style="margin-top: 20px;">
+                            <span>-</span>
+                        </div>
+
+                        <div class="filter-item">
+                            <label class="filter-label">&nbsp;</label>
+                            <input type="date" class="form-control" name="endDate" value="2025-10-04" style="width: 160px;">
+                        </div>
+
+                        <div class="filter-item">
+                            <label class="filter-label">&nbsp;</label>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-search me-1"></i> Tìm kiếm
+                            </button>
+                        </div>
+
+                        <div class="filter-item">
+                            <label class="filter-label">&nbsp;</label>
+                            <button type="button" class="btn btn-success">
+                                <i class="bi bi-file-earmark-excel me-1"></i> Tải excel
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card stat-card-1">
+                    <div class="stat-label">Lỗi chỉ/Đầu chỉ/chỉ đính</div>
+                    <div class="stat-value">9,263</div>
+                    <div class="stat-label">42.4%</div>
+                </div>
+                <div class="stat-card stat-card-2">
+                    <div class="stat-label">Đài-ngấn/đối xứng</div>
+                    <div class="stat-value">5,650</div>
+                    <div class="stat-label">25.86%</div>
+                </div>
+                <div class="stat-card stat-card-3">
+                    <div class="stat-label">Nhăn/Vấn/Sóng</div>
+                    <div class="stat-value">3,488</div>
+                    <div class="stat-label">15.97%</div>
+                </div>
+                <div class="stat-card stat-card-4">
+                    <div class="stat-label">Mất Dáng</div>
+                    <div class="stat-value">1,816</div>
+                    <div class="stat-label">8.31%</div>
+                </div>
+                <div class="stat-card stat-card-5">
+                    <div class="stat-label">Lỗi Năng Khác</div>
+                    <div class="stat-value">1,629</div>
+                    <div class="stat-label">7.46%</div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="row">
+                <div class="col-lg-8 mb-4">
+                    <div class="chart-card">
+                        <h2 class="chart-title">TOP DEFECTS: ALL</h2>
+                        <div class="chart-container">
+                            <canvas id="barChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mb-4">
+                    <div class="chart-card">
+                        <h2 class="chart-title">DEFECTS RATIO: ALL</h2>
+                        <div class="chart-container">
+                            <canvas id="pieChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Bar Chart
+        const barCtx = document.getElementById('barChart').getContext('2d');
+        const barChart = new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    'Lỗi chỉ/Đầu chỉ/chỉ đính',
+                    'Đài-ngấn/đối xứng',
+                    'Nhăn/Vấn/Sóng',
+                    'Mất Dáng',
+                    'Lỗi Năng Khác'
+                ],
+                datasets: [{
+                    label: 'Số lượng lỗi (pcs)',
+                    data: [9263, 5650, 3488, 1816, 1629],
+                    backgroundColor: [
+                        'rgba(99, 102, 241, 0.8)',
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(239, 68, 68, 0.8)',
+                        'rgba(20, 184, 166, 0.8)',
+                        'rgba(168, 85, 247, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgb(99, 102, 241)',
+                        'rgb(16, 185, 129)',
+                        'rgb(239, 68, 68)',
+                        'rgb(20, 184, 166)',
+                        'rgb(168, 85, 247)'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 13 },
+                        borderColor: 'rgba(255, 255, 255, 0.2)',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y.toLocaleString() + ' pcs';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString() + ' pcs';
+                            },
+                            font: { size: 12 }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: { size: 11 }
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Pie Chart
+        const pieCtx = document.getElementById('pieChart').getContext('2d');
+        const pieChart = new Chart(pieCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    'Lỗi chỉ/Đầu chỉ/chỉ đính',
+                    'Đài-ngấn/đối xứng',
+                    'Nhăn/Vấn/Sóng',
+                    'Mất Dáng',
+                    'Lỗi Năng Khác'
+                ],
+                datasets: [{
+                    data: [42.4, 25.86, 15.97, 8.31, 7.46],
+                    backgroundColor: [
+                        'rgba(99, 102, 241, 0.8)',
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(239, 68, 68, 0.8)',
+                        'rgba(20, 184, 166, 0.8)',
+                        'rgba(168, 85, 247, 0.8)'
+                    ],
+                    borderColor: 'white',
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            font: { size: 11 },
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        titleFont: { size: 13, weight: 'bold' },
+                        bodyFont: { size: 12 },
+                        borderColor: 'rgba(255, 255, 255, 0.2)',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                },
+                cutout: '60%'
+            }
+        });
+    </script>

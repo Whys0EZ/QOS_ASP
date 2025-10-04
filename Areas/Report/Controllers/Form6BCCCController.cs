@@ -9,6 +9,7 @@ using Dapper;
 using OfficeOpenXml;
 using System.Data;
 using System.Text.Json;
+using QOS.Areas.Function.Filters;
 
 
 namespace QOS.Areas.Report.Controllers
@@ -302,6 +303,212 @@ namespace QOS.Areas.Report.Controllers
             };
 
             return PartialView("_tableRP_Form6", model);
+        }
+        [Permission("B_F4")]
+        public IActionResult DeleteReport(int reportId)
+        {
+            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            string sql_Tranfer = @" INSERT INTO Form6_BCKCC_Delete SELECT * , @UserName,GETDATE() FROM Form6_BCKCC WHERE ID = @ID ";
+            string sql_Delete = @" DELETE FROM Form6_BCKCC WHERE ID = @ID";
+            var userName = User.Identity?.Name;
+            Console.WriteLine("report ID: " + reportId + "User : " + userName);
+            int result = conn.Execute(sql_Tranfer, new { ID = reportId, UserName = userName });
+            if (result > 0)
+            {
+                int result2 = conn.Execute(sql_Delete, new { ID = reportId });
+                if (result2 > 0)
+                {
+                    return Json(new { success = true, message = "Xóa báo cáo thành công!" });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Không thể xóa báo cáo." });
+                }
+            }
+            else
+            {
+                return Json(new { success = false, message = "Không tìm thấy báo cáo để xóa." });
+            }
+        }
+
+        public IActionResult ExportExcel ( string? Unit, DateTime? dateFrom, DateTime? dateEnd)
+        {
+            // Tạo Excel file (ví dụ với ClosedXML hoặc EPPlus)
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            // Đường dẫn tới file template
+            var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Report", "RP_Form6_BCKCC.xlsx");
+            
+            if (!System.IO.File.Exists(templatePath))
+            {
+                MessageStatus = "Không tìm thấy file mẫu báo cáo.";
+                return RedirectToAction("RP_Form6");
+            }
+
+            using var package = new ExcelPackage(new FileInfo(templatePath));
+            var worksheet = package.Workbook.Worksheets[0];
+
+            // Ghi tiêu đề báo cáo
+            worksheet.Cells["A1"].Value = "BÁO CÁO KIỂM TRA CHẤT LƯỢNG CUỐI CHUYỀN - " + (Unit ?? "ALL");
+            worksheet.Cells["A2"].Value = $"Từ ngày: {(dateFrom ?? DateTime.Now):dd/MM/yyyy}  Đến ngày: {(dateEnd ?? DateTime.Now):dd/MM/yyyy}";
+            worksheet.Cells["A1"].Style.Font.Bold = true;
+            worksheet.Cells["A1"].Style.Font.Size = 16;
+            worksheet.Cells["A2"].Style.Font.Bold = true;
+            worksheet.Cells["A2"].Style.Font.Size = 12;
+
+            // Lấy dữ liệu báo cáo
+            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var cmd = new SqlCommand("Form6_BCKCC_SUM_Report", conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            
+            cmd.Parameters.AddWithValue("@Date_F", dateFrom);
+            cmd.Parameters.AddWithValue("@Date_T", dateEnd);
+            cmd.Parameters.AddWithValue("@Unit", Unit);
+            cmd.Parameters.AddWithValue("@Factory", "REG2");
+
+            conn.Open();
+            using (var reader = cmd.ExecuteReader())
+            {
+                int row = 4;
+                int col;
+
+                string[] nameList = null;
+
+                while (reader.Read())
+                {
+                    worksheet.Cells[row, 1].Value = row - 3; // STT
+                    worksheet.Cells[row, 2].Value = reader["Unit"].ToString();
+
+                    // Dòng tiêu đề CL (chỉ chạy 1 lần ở row=4)
+                    if (row == 4)
+                    {
+                        nameList = reader["CL"].ToString().Split(',');
+                        col = 2;
+                        foreach (var cl in nameList)
+                        {
+                            if (!string.IsNullOrWhiteSpace(cl))
+                            {
+                                col++;
+                                worksheet.Cells[3, col].Value = cl;
+                                
+                            }
+                        }
+                    }
+
+                    // Ghi dữ liệu theo Name_List
+                    col = 2;
+                    foreach (var cl in nameList)
+                    {
+                        if (!string.IsNullOrWhiteSpace(cl))
+                        {
+                            col++;
+                            var val = reader[cl]?.ToString();
+                            if (!string.IsNullOrEmpty(val))
+                            {
+                                var tmp = val.Split('_');
+                                if (tmp.Length > 1)
+                                    if (double.TryParse(tmp[1], out double numVal))
+                                    {
+                                        worksheet.Cells[row, col].Value = numVal;          // giữ số gốc
+                                        worksheet.Cells[row, col].Style.Numberformat.Format = "0.00%"; 
+                                    }
+                                    else
+                                    {
+                                        worksheet.Cells[row, col].Value = tmp[1]; // fallback nếu không parse được
+                                    } 
+                            }
+                        }
+                    }
+
+                    // Cột OQL_TT
+                    worksheet.Cells[row, col + 1].Value = reader["OQL_TT"];
+                    worksheet.Cells[row, col + 1].Style.Numberformat.Format = "0.00%";
+                    row++;
+                }
+            }
+            // --- PHẦN 2: Detail ---
+            var worksheet2 = package.Workbook.Worksheets["Detail"];
+
+            worksheet2.Cells["A2"].Value = (dateFrom ?? DateTime.Now).ToString("dd-MMM-yyyy");
+            worksheet2.Cells["B2"].Value = (dateEnd ?? DateTime.Now).ToString("dd-MMM-yyyy");
+
+            string sqlDetail;
+            if (string.IsNullOrEmpty(Unit) || Unit == "ALL")
+            {
+                sqlDetail = @"
+                SELECT t1.*, t4.FullName,
+                        ROW_NUMBER() OVER(PARTITION BY t1.Report_ID, t1.Line
+                                            ORDER BY t1.Line ASC, t1.LastUpdate DESC) AS rk
+                FROM Form6_BCKCC t1
+                LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
+                WHERE CAST(t1.LastUpdate as DATE) >= @DateF
+                    AND CAST(t1.LastUpdate as DATE) <= @DateT
+                    
+                ORDER BY t1.LastUpdate DESC";
+            }
+            else
+            {
+                sqlDetail = @"
+                SELECT t1.*, t4.FullName,
+                        ROW_NUMBER() OVER(PARTITION BY t1.Report_ID, t1.Line
+                                            ORDER BY t1.Line ASC, t1.LastUpdate DESC) AS rk
+                FROM Form6_BCKCC t1
+                LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
+                WHERE CAST(t1.LastUpdate as DATE) >= @DateF
+                    AND CAST(t1.LastUpdate as DATE) <= @DateT
+                    AND t1.Unit = @Unit
+                ORDER BY t1.LastUpdate DESC";
+            }
+
+            using (var cmd2 = new SqlCommand(sqlDetail, conn))
+            {
+                cmd2.Parameters.AddWithValue("@DateF", dateFrom);
+                cmd2.Parameters.AddWithValue("@DateT", dateEnd);
+                cmd2.Parameters.AddWithValue("@Unit", Unit);
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (var reader = cmd2.ExecuteReader())
+                {
+                    int row = 4;
+                    while (reader.Read())
+                    {
+                        worksheet2.Cells[row, 1].Value = row - 3; // STT
+                        worksheet2.Cells[row, 2].Value = reader["Unit"].ToString();
+                        worksheet2.Cells[row, 3].Value = reader["Line"].ToString();
+                        worksheet2.Cells[row, 4].Value = reader["Report_ID"].ToString();
+                        worksheet2.Cells[row, 5].Value = reader["MO"].ToString();
+                        worksheet2.Cells[row, 6].Value = reader["Color"].ToString();
+                        worksheet2.Cells[row, 7].Value = reader["AQL"].ToString();
+                        worksheet2.Cells[row, 8].Value = reader["QTY"].ToString();
+                        worksheet2.Cells[row, 9].Value = reader["Total_Fault_QTY"] + " / " + reader["Check_QTY"];
+                        worksheet2.Cells[row, 10].Value = reader["Audit_Time"].ToString();
+
+                        if (Convert.ToInt32(reader["Check_QTY"]) != 0)
+                        {
+                            double faultRate = Convert.ToDouble(reader["Total_Fault_QTY"]) /
+                                                Convert.ToDouble(reader["Check_QTY"]);
+                            worksheet2.Cells[row, 11].Value = Math.Round(faultRate, 3);
+                        }
+
+                        worksheet2.Cells[row, 12].Value = reader["UserUpdate"] + " - " + reader["FullName"];
+                        worksheet2.Cells[row, 13].Value = reader["LastUpdate"].ToString();
+
+                        row++;
+                    }
+                }
+            }
+            
+        
+
+
+            // Tạo file Excel để tải về
+            var stream = new MemoryStream();
+            package.SaveAs(stream);
+            stream.Position = 0;
+            return File(stream.ToArray(),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"Report_EndLine_{DateTime.Now:yyyyMMddHHmmss}.xlsx");
         }
 
        

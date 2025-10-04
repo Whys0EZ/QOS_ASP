@@ -878,6 +878,36 @@ namespace QOS.Areas.Report.Controllers
 
             return PartialView("_tableRP_Form4", vm);
         }
+
+        public IActionResult DeleteReport(int reportId)
+        {
+            var userName = User.Identity?.Name;
+            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var command = new SqlCommand("Delet_BC_Form4_BCCLM", conn);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@Report_ID", reportId);
+            command.Parameters.AddWithValue("@UserUpdate", userName);
+            
+            Console.WriteLine("report ID: " + reportId + "User : " + userName);
+            using var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                var result = reader["Result"]?.ToString();
+                if (result == "Success")
+                {
+                    return Json(new { success = true, message = "Xóa báo cáo thành công!" });
+                }
+                else
+                {
+                    var errorMessage = reader["ErrorMessage"]?.ToString() ?? "Không thể xóa báo cáo.";
+                    return Json(new { success = false, message = errorMessage });
+                }
+            }
+            else
+            {
+                return Json(new { success = false, message = "Không tìm thấy báo cáo để xóa." });
+            }
+        }
     
     }
 }

@@ -65,6 +65,12 @@ namespace QOS.Controllers
             // return View("ManageOperation/F_ManageOperation");
             return RedirectToAction("RP_Form6", "Form6BCCC", new { area = "Report" });
         }
+        [Permission("B_F6")]
+        public IActionResult RP_Summary_Defects_KCC()
+        {
+            // return View("ManageOperation/F_ManageOperation");
+            return RedirectToAction("RP_Summary_Defects_KCC", "SummaryKCC", new { area = "Report" });
+        }
     
 
         public IActionResult Feature2()

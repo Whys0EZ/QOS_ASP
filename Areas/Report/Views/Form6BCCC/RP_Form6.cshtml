@@ -77,7 +77,7 @@
 
     <!-- Kết quả -->
     <div class="row">
-        <div class="col-12" id="TableContainer">
+        <div class="col-12 table-responsive" id="TableContainer">
         <!-- Code here -->
         @if (Model.ReportData != null && Model.ReportData.Any())
         {
@@ -320,5 +320,17 @@
             }
         });
     }
+    $("#ExportExcel").click(function () {
+        var Unit = $("#Unit").val();
+        var dateFrom = $("#dateFrom").val();
+        var dateEnd = $("#dateEnd").val();
+
+        var url = '@Url.Action("ExportExcel", "Form6BCCC", new { area = "Report" })'
+        + "?Unit=" + encodeURIComponent(Unit)
+        + "&dateFrom=" + encodeURIComponent(dateFrom)
+        + "&dateEnd=" + encodeURIComponent(dateEnd);
+
+        window.location.href = url; // tự động download file
+    });
 
 </script>

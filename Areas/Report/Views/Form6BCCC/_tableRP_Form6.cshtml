@@ -1,162 +1,187 @@
 @model QOS.Areas.Report.Models.Form6DetailViewModel
 
+@* <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" /> *@
+<style>
+    .form-label { font-weight: 600; }
+    .table-custom th, .table-custom td { vertical-align: middle; }
+    .table-custom input, .table-custom select { width: 100%; }
+    .section-title { font-size: 1.1rem; font-weight: bold; margin-top: 1.5rem; color: #198754; }
+    textarea { border-radius: 8px; border: 1px solid #ced4da; padding: 8px; }
+    .led-img { width: 60px; border-radius: 50%; border: 2px solid #dee2e6; }
+    .modal-content { border-radius: 12px; }
+    .modal-header { border-top-left-radius: 12px; border-top-right-radius: 12px; }
+    .btn-action { margin: 0 10px; }
+    .photo-thumb { width: 90px; margin: 5px; border-radius: 8px; border: 1px solid #dee2e6; cursor: pointer; transition: box-shadow .2s; }
+    .photo-thumb:hover { box-shadow: 0 0 8px #198754; }
+    .form-check-input { zoom: 1.5; }
+    .form-section { background: #f8f9fa; border-radius: 12px; padding: 18px 24px; margin-bottom: 1.5rem; box-shadow: 0 2px 8px #e9ecef; }
+</style>
+
 <form id="Form6Report" method="post" asp-action="CreateReport_Form6" asp-controller="Report" asp-area="Report">
     <input type="hidden" id="ReportID" name="ReportID" value="@Model.Detail.ID"/>
-<table class="table">
-    <tr>
-        <td><label>Unit</label></td>
-        <td><label>Công nhân</label></td>
-        
-        <td><label>Chuyền trưởng</label></td>     
-    </tr>
-    <tr>
-        <td><input value="@Model.Detail.Unit"/> <input id="UnitField" value="@Model.Detail.Line"/></td>
-        <td><input value="@Model.Detail.Sewer"/></td>
-        
-        <td><input value="@Model.Detail.Sup"/></td>
+    <div class="form-section">
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label class="form-label">Unit</label>
+                <div class="input-group">
+                    <input class="form-control me-5" value="@Model.Detail.Unit" placeholder="Unit"/>
+                    <input id="UnitField" class="form-control" value="@Model.Detail.Line" placeholder="Line"/>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Công nhân</label>
+                <input class="form-control" value="@Model.Detail.Sewer"/>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Chuyền trưởng</label>
+                <input class="form-control" value="@Model.Detail.Sup"/>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label class="form-label">MO</label>
+                <input class="form-control" value="@Model.Detail.MO" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Màu</label>
+                <input class="form-control" value="@Model.Detail.Color" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">AQL</label>
+                <input class="form-control" value="@Model.Detail.AQL" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label class="form-label">Số Lượng</label>
+                <input class="form-control" value="@Model.Detail.QTY"/>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Số lượng kiểm</label>
+                <input class="form-control" value="@Model.Detail.Check_QTY"/>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Tổng số lỗi</label>
+                <input class="form-control" value="@Model.Detail.Total_Fault_QTY"/>
+            </div>
+        </div>
+    </div>
 
-    </tr>
-    <tr>
-        <td><label>MO</label></td>
-        <td><label>Màu </label></td>
-        <td><label>AQL </label></td>
-         
-    </tr>
-    <tr>
-        <td><input value="@Model.Detail.MO" /></td>
-        <td><input value="@Model.Detail.Color" /></td>
-        <td><input value="@Model.Detail.AQL" /></td>
-        
+    <div class="form-section">
+        <div class="section-title">Danh sách lỗi</div>
+        <table class="table table-bordered table-custom align-middle" style="margin-bottom: 0;" name="tblFault" id="tblFault">
+            <thead class="table-light">
+                <tr>
+                    <th style="width:60%">Lỗi</th>
+                    <th style="width:40%">Số lượng lỗi</th>
+                </tr>
+            </thead>
+            <tbody>
+            @for (int i = 0; i < Model.SelectedFaults.Count; i++)
+            {
+                var selected = Model.SelectedFaults[i];
+                <tr id="Fault_R@(i+1)">
+                    <td>
+                        <select name="optFault[@i]" id="optFault_@i"
+                                class="form-select"
+                                style="color:red;font-weight:bold;font-size:1em;"
+                                onchange="Turn_Led();">
+                            <option value="loi-0">--Không có lỗi--</option>
+                            <option value="" disabled>--Lỗi Nặng--</option>
+                            @foreach (var fault in Model.Faults.Where(f => f.FaultLevel == 1))
+                            {
+                                bool sel = (fault.FaultCode == selected.FaultCode );
+                                <option value="@fault.FaultCode-@fault.FaultLevel" selected="@(sel)" >@fault.FaultNameVN</option>
+                            }
+                            <option value="" disabled>--Lỗi Nhẹ--</option>
+                            @foreach (var fault in Model.Faults.Where(f => f.FaultLevel == 2))
+                            {
+                                bool sel = (fault.FaultCode == selected.FaultCode );
+                                <option value="@fault.FaultCode-@fault.FaultLevel" selected="@(sel)">@fault.FaultNameVN</option>
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" name="qty[@i]" value="@selected.FaultQty" class="form-control" min="0" />
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
 
-    </tr>
-    <tr>
-        <td><label>Số Lượng </label></td>
-        <td><label>Số lượng kiểm </label></td>
-        <td><label>Tổng số lỗi</label></td>
-          
-    </tr>
-    <tr>
-        <td><input value="@Model.Detail.QTY"/></td>
-        <td><input value="@Model.Detail.Check_QTY"/></td>
-        <td><input value="@Model.Detail.Total_Fault_QTY"/></td>
-       
-    </tr>
+    <div class="form-section">
+        <div class="section-title"><span style="color: red;">*</span> Biện pháp khắc phục:</div>
+        <textarea rows="4" cols="100" name="Remark" id="Remark" class="form-control" onClick="this.select();">@Model.Detail.Remark</textarea>
+    </div>
 
-</table>
-<table style="width: 100%; margin-top: -10PX; " name="tblFault" id="tblFault">
-    <tr style="height: 0px;">
-          <td style="max-width: 30%;">&nbsp;</td>
-          <td style="max-width: 30%;">&nbsp;</td>
-        </tr>
-    <tr style="text-align: left;">
-      <td><label>Lỗi</label></td>
-      <td><label>Số lượng lỗi</label></td>
-    </tr>
-    @for (int i = 0; i < Model.SelectedFaults.Count; i++)
-    {
-        var selected = Model.SelectedFaults[i];
-        <tr id="Fault_R@(i+1)">
-            <td>
-                <select name="optFault[@i]" id="optFault_@i"
-                        class="form-select"
-                        style="color:red;font-weight:bold;font-size:1em;"
-                        onchange="Turn_Led();">
-                    <option value="loi-0">--Không có lỗi--</option>
+    <div class="form-section">
+        <div class="section-title"><span style="color: red;">*</span> Đánh giá chất lượng :</div>
+        <div class="row align-items-center text-center">
+            <div class="col">
+                <img id="Led_Green" src="~/images/green_@(Model.Detail.Led == "green" ? "On" : "Off").png" class="led-img mb-2">
+                <div>
+                    <input type="radio" name="rdLight" id="rdGreen" value="green" @(Model.Detail.Led == "green" ? "checked ='checked'" : "") class="form-check-input" autocomplete="on" />
+                    @* <label for="rdGreen" class="form-check-label ms-2">Đạt</label> *@
+                </div>
+            </div>
+            <div class="col">
+                <img id="Led_Red" src="~/images/red_@(Model.Detail.Led == "red" ? "On" : "Off").png" class="led-img mb-2">
+                <div>
+                    <input type="radio" name="rdLight" id="rdRed" value="red" @(Model.Detail.Led == "red" ? "checked ='checked'" : "") class="form-check-input" autocomplete="on" />
+                    @* <label for="rdRed" class="form-check-label ms-2">Không đạt</label> *@
+                </div>
+            </div>
+        </div>
+    </div>
 
-                    <option value="" disabled>--Lỗi Nặng--</option>
-                    @foreach (var fault in Model.Faults.Where(f => f.FaultLevel == 1))
-                    {
-                         
-                        bool sel = (fault.FaultCode == selected.FaultCode );
-                        <option value="@fault.FaultCode-@fault.FaultLevel" selected="@(sel)" >@fault.FaultNameVN</option>
-                    }
-
-                    <option value="" disabled>--Lỗi Nhẹ--</option>
-                    @foreach (var fault in Model.Faults.Where(f => f.FaultLevel == 2))
-                    {
-                        
-                        bool sel = (fault.FaultCode == selected.FaultCode );
-                        <option value="@fault.FaultCode-@fault.FaultLevel" selected="@(sel)">@fault.FaultNameVN</option>
-                    }
-                </select>
-            </td>
-            <td>
-                <input type="number" name="qty[@i]" value="@selected.FaultQty" class="form-control" min="0" />
-            </td>
-        </tr>
-    }
-</table>
-
-<p style="font-weight: bold; text-align: left;"><span style="color: red;">*</span> Biện pháp khắc phục:</p>
-<textarea rows="4" cols="100" name="Remark" id="Remark" onClick="this.select();" > @(string.IsNullOrEmpty(Model.Detail.Remark) ? "" : Model.Detail.Remark)</textarea>
-
-<p style="font-weight: bold; text-align: left;"><span style="color: red;">*</span> Đánh giá chất lượng :</p>
-<TABLE style="width: 100%; "  >
-    <tr style="height: 0px;">
-          <td style="max-width: 30%;">&nbsp;</td>
-         
-          <td style="max-width: 30%;">&nbsp;</td>
-        </tr>
-    <tr style="text-align: center;">
-      <td><img id="Led_Green" src="~/images/green_@(Model.Detail.Led == "green" ? "On" : "Off").png" style="width: 80px; "></td>
-    
-      <td><img id="Led_Red" src="~/images/red_@(Model.Detail.Led == "red" ? "On" : "Off").png" style="width: 80px; "></td>
-    </tr>
-    <tr style="height: 10px;"></tr>
-    <tr style="text-align: center;">
-      <td>
-        <input type="radio" name="rdLight" id="rdGreen"   value="green" @(Model.Detail.Led == "green" ? "checked ='checked'" : "") style=" color:#360;  zoom:3.0;"  autocomplete="on" />
-      </td>
-      
-      <td>
-        <input type="radio" name="rdLight" id="rdRed"  value="red" @(Model.Detail.Led == "red" ? "checked ='checked'" : "") style=" color:#360;  zoom:3.0;"  autocomplete="on" />
-      </td>
-      
-    </tr>
-  </TABLE>
-
-<p style="font-weight: bold;"><span style="color: red;">*</span>Hình ảnh lỗi:</p>
-@if(!string.IsNullOrEmpty(Model.Detail.Photo_URL))
-{
-    var photos = Model.Detail.Photo_URL.Split(";");
-    foreach(var photo in photos)
-    {
-        if(!string.IsNullOrEmpty(photo))
+    <div class="form-section">
+        <div class="section-title"><span style="color: red;">*</span> Hình ảnh lỗi:</div>
+        @if(!string.IsNullOrEmpty(Model.Detail.Photo_URL))
         {
-            <img src="upload/Photos/Form6_BCCC/@photo" style='width:100px;' onclick='Show_Photo("@photo")'/>
+            var photos = Model.Detail.Photo_URL.Split(";");
+            foreach(var photo in photos)
+            {
+                if(!string.IsNullOrEmpty(photo))
+                {
+                    <img src="upload/Photos/Form6_BCCC/@photo" class="photo-thumb" onclick='Show_Photo("@photo")'/>
+                }
+            }
         }
-    }
-}
+    </div>
 
-<p style="font-weight: bold;">
-    <span style="color: red;">*</span> Kiểm lại: &nbsp;
-    <input type="checkbox" name="Re_Audit" id="Re_Audit"  value="true" @(Model.Detail.Re_Audit == true ? "checked" : "") value="0" style="  color:#360; font-size:20px; zoom:3.0;"  autocomplete="on" />   
-</p>
+    <div class="form-section">
+        
+        <div class="section-title">
+            <span style="color: red;">*</span> Kiểm lại:
+            <input style="margin-top:0" type="checkbox" name="Re_Audit" id="Re_Audit" value="true" @(Model.Detail.Re_Audit == true ? "checked" : "") class="form-check-input ms-2" autocomplete="on" />
+       </div>
+    </div>
 
-
-<br>
-    <p style="text-align: center; display: block;">
-        <img src="~/images/delete.png" style="width: 95px; margin-right:20px; " align="center" onClick="Delete_Click1();" title="Delete this report" >
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-    </p>
-    
-<br>
+    <div class="text-center mb-3">
+        <button type="button" class="btn btn-danger btn-action" onClick="Delete_Click1();" title="Delete this report">
+            <i class="bi bi-trash"></i> Xóa báo cáo
+        </button>
+        <button type="button" class="btn btn-secondary btn-action" data-bs-dismiss="modal">Close</button>
+    </div>
 </form>
 
 <!-- Modal Show anh loi -->
-	<div id="Modal_Photo" class="modal" style="height: 100%;"> 
-        <!-- Modal content -->
-          <div class="modal-content">
+<div id="Modal_Photo" class="modal" style="height: 100%;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
             <div class="modal-header bg-success text-center">
-              <span class="close" id="close_Modal_Photo">&times;</span>
-              <h2 style="text-align: center; text-transform: uppercase;"> Hình ảnh lỗi </h2> 
+                <span class="close" id="close_Modal_Photo" style="font-size:2rem;cursor:pointer;">&times;</span>
+                <h2 class="modal-title w-100" style="text-align: center; text-transform: uppercase;">Hình ảnh lỗi</h2>
             </div>
             <div class="modal-body" style="text-align: center;">
-                <img src="" style="width: 90%"  id="Fault_Photo" align="center">
+                <img src="" style="width: 90%" id="Fault_Photo" align="center">
             </div>
-          </div>
+        </div>
     </div>
+</div>
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
     function Delete_Click1() {
         var reportId = $("#ReportID").val();
@@ -166,17 +191,15 @@
         }
 
         if (confirm("Are you sure you want to delete this report?")) {
-            $.post('@Url.Action("DeleteReport", "Form4BCCLM", new { area = "Report" })',
+            $.post('@Url.Action("DeleteReport", "Form6BCCC", new { area = "Report" })',
                 { reportId: reportId },
                 function (data) {
                     if (data.success) {
                         alert("Report deleted successfully.");
-                        // Redirect to another page or refresh
                         var Unit = $("#Unit").val();
                         var dateFrom = $("#dateFrom").val();
                         var dateEnd = $("#dateEnd").val();
-
-                        window.location.href = '@Url.Action("RP_Form4", "Form4BCCLM", new { area = "Report" })' + '?Unit=' + Unit + '&dateFrom=' + dateFrom + '&dateEnd=' + dateEnd;
+                        window.location.href = '@Url.Action("RP_Form6", "Form6BCCC", new { area = "Report" })' + '?Unit=' + Unit + '&dateFrom=' + dateFrom + '&dateEnd=' + dateEnd;
                     } else {
                         alert("Error deleting report: " + data.message);
                     }
@@ -185,28 +208,18 @@
         }
     }
 
-
-function Show_Photo(img)
-{
-	// Get the modal
-    var modal = document.getElementById('Modal_Photo');
-    // Get the <span> element that closes the modal
-    var span = document.getElementById('close_Modal_Photo');
-    
-     modal.style.display = "block";
-     document.getElementById("Fault_Photo").src= 'upload/Photos/Form4_BCCLM/'+img;
-     
-     // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-    
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
+    function Show_Photo(img) {
+        var modal = document.getElementById('Modal_Photo');
+        var span = document.getElementById('close_Modal_Photo');
+        modal.style.display = "block";
+        document.getElementById("Fault_Photo").src = 'upload/Photos/Form6_BCCC/' + img;
+        span.onclick = function () {
             modal.style.display = "none";
         }
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
     }
-}
-
 </script>

@@ -33,6 +33,10 @@
       "PackagePath": "staticwebassets\\Report\\QOS_Form_ThongSoThanhPham_US.xlsx"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\RP_Form6_BCKCC.xlsx",
+      "PackagePath": "staticwebassets\\Report\\RP_Form6_BCKCC.xlsx"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\all.min.css",
       "PackagePath": "staticwebassets\\css\\all.min.css"
     },
