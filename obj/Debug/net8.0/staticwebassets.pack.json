@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\QOS.bundle.scp.css"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\B7_Summary_Endline_Defects.xlsx",
+      "PackagePath": "staticwebassets\\Report\\B7_Summary_Endline_Defects.xlsx"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\BCCLBC.xlsx",
       "PackagePath": "staticwebassets\\Report\\BCCLBC.xlsx"
     },

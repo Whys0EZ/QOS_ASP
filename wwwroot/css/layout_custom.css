@@ -187,7 +187,7 @@ body {
     max-width: 250px;
     backdrop-filter: blur(20px);
     animation: dropdownSlideIn 0.2s ease-out;
-    z-index: 1050;
+    z-index: 1050 !important;
 }
 /* .navbar {
     padding-top: 0.25rem !important;  

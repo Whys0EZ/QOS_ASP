@@ -1,0 +1,1034 @@
+@using QOS.Helpers
+@{
+    Layout = "_Layout";
+}
+<style>
+/* CSS cho Sidebar */
+.modern-sidebar {
+    position: fixed;
+    left: 0;
+    top: 75px;
+    height: 100vh;
+    width: 350px;
+    background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%);
+    box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Quan trọng: Ẩn overflow của sidebar chính */
+}
+
+.modern-sidebar.collapsed {
+    width: 80px;
+}
+
+/* Toggle Button */
+.sidebar-toggle-btn {
+    position: absolute;
+    right: -18px;
+    top: 25px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 1001;
+}
+
+.sidebar-toggle-btn:hover {
+    transform: scale(1.1);
+    background: #f7fafc;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.sidebar-toggle-btn i {
+    color: #1e3c72;
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+.modern-sidebar.collapsed .sidebar-toggle-btn i {
+    transform: rotate(180deg);
+}
+
+/* Sidebar Header */
+.sidebar-header {
+    padding: 25px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-height: 80px;
+}
+
+.sidebar-logo {
+    font-size: 28px;
+    color: white;
+    min-width: 28px;
+}
+
+.sidebar-title {
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+    transition: opacity 0.3s ease;
+}
+
+.modern-sidebar.collapsed .sidebar-title {
+    opacity: 0;
+    width: 0;
+}
+
+/* Search Box */
+.sidebar-search {
+    padding: 15px 20px;
+    position: relative;
+}
+
+.sidebar-search input {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 10px 35px 10px 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.sidebar-search input::placeholder {
+    color: rgba(255,255,255,0.6);
+}
+
+.sidebar-search input:focus {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.4);
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
+    outline: none;
+}
+
+.sidebar-search .search-icon {
+    position: absolute;
+    right: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255,255,255,0.6);
+}
+
+.modern-sidebar.collapsed .sidebar-search {
+    display: none;
+}
+
+/* Sidebar Content - QUAN TRỌNG ĐỂ SCROLL - Tăng độ ưu tiên */
+.modern-sidebar .sidebar-content {
+    flex: 1;                    
+    overflow-y: auto !important;   /* !important để đảm bảo không bị ghi đè */
+    overflow-x: hidden !important;
+    padding: 10px 0 20px 0;
+    max-height: calc(100vh - 180px);
+}
+
+/* Hoặc tăng specificity bằng cách thêm nhiều class */
+#desktopSidebar .sidebar-content {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+.modern-sidebar .sidebar-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modern-sidebar .sidebar-content::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+    margin: 5px 0;
+}
+
+.modern-sidebar .sidebar-content::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.modern-sidebar .sidebar-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.4);
+    background-clip: padding-box;
+}
+
+/* Menu Items */
+.sidebar-menu {
+    padding: 0 10px;
+}
+
+.menu-item {
+    margin-bottom: 3px;
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.menu-link:hover {
+    background: rgba(255,255,255,0.12);
+    color: white;
+    transform: translateX(3px);
+}
+
+.menu-link.active {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    font-weight: 500;
+}
+
+.menu-link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 60%;
+    width: 4px;
+    background: white;
+    border-radius: 0 2px 2px 0;
+}
+
+.menu-icon {
+    font-size: 18px;
+    min-width: 18px;
+    text-align: center;
+}
+
+.menu-number {
+    background: rgba(255,255,255,0.15);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    min-width: 35px;
+    text-align: center;
+}
+
+.menu-text {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    transition: opacity 0.3s ease;
+}
+
+.modern-sidebar.collapsed .menu-text,
+.modern-sidebar.collapsed .menu-number {
+    opacity: 0;
+    width: 0;
+}
+
+/* Tooltip khi collapsed */
+.menu-tooltip {
+    display: none;
+    position: fixed;
+    left: 90px;
+    background: #2d3748;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    white-space: nowrap;
+    font-size: 14px;
+    z-index: 10000;
+    pointer-events: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    max-width: 350px;
+}
+
+.menu-tooltip::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-right: 8px solid #2d3748;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+}
+
+.tooltip-number {
+    background: rgba(66, 153, 225, 0.3);
+    color: #90cdf4;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-right: 12px;
+    display: inline-block;
+}
+
+.tooltip-text {
+    font-weight: 500;
+}
+
+.modern-sidebar.collapsed .menu-link:hover .menu-tooltip {
+    display: flex;
+    align-items: center;
+    animation: tooltipFadeIn 0.2s ease;
+}
+
+@@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 360px;
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 20px;
+    background: #f8f9fa;
+    min-height: 100vh;
+}
+
+.modern-sidebar.collapsed ~ .main-content {
+    margin-left: 80px;
+}
+
+/* Mobile */
+.mobile-header {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+}
+
+.mobile-menu-btn {
+    background: white;
+    color: #1e3c72;
+    border: none;
+    padding: 12px;
+    font-weight: 600;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.mobile-menu-btn:hover {
+    background: #f8f9fa;
+}
+
+.offcanvas-modern {
+    width: 280px;
+    background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%);
+}
+
+.offcanvas-modern .offcanvas-header {
+    background: rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 20px;
+}
+
+.offcanvas-modern .offcanvas-title {
+    color: white;
+    font-weight: 600;
+}
+
+.offcanvas-modern .btn-close {
+    filter: invert(1);
+}
+
+.mobile-search input {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+}
+
+.mobile-search input::placeholder {
+    color: rgba(255,255,255,0.6);
+}
+
+.mobile-search input:focus {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.4);
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
+    outline: none;
+    color: white;
+}
+
+@@media (max-width: 767px) {
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .sidebar-toggle-btn {
+        display: none;
+    }
+}
+
+/* Thêm padding-bottom cho sidebar content để tránh bị che */
+.sidebar-menu {
+    padding-bottom: 30px;
+}
+
+/* Đảm bảo sidebar luôn có thể scroll */
+.modern-sidebar {
+    overflow: hidden;
+}
+
+/* Hiệu ứng hover cho menu item */
+.menu-item {
+    transition: all 0.2s ease;
+}
+
+.menu-item:hover {
+    transform: translateX(2px);
+}
+</style>
+<div class="container-fluid p-0">
+    <div class="row g-0">
+        <!-- Mobile Menu Button -->
+        <div class="col-12 d-md-none p-3 mobile-header">
+            <button class="btn mobile-menu-btn w-100" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuSidebar">
+                <i class="fas fa-bars me-2"></i>Menu Báo Cáo
+            </button>
+        </div>
+
+        <!-- Desktop Sidebar với nút Toggle -->
+        <div class="col-md-auto d-none d-md-block modern-sidebar" id="desktopSidebar">
+            <!-- Toggle Button -->
+            <button class="sidebar-toggle-btn" id="sidebarToggle" title="Thu gọn menu">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="sidebar-title">BÁO CÁO</h3>
+            </div>
+
+            <div class="sidebar-search">
+                <input type="text" class="form-control" id="menuSearch" placeholder="Tìm kiếm báo cáo...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+
+            <div class="sidebar-content">
+                <ul class="list-unstyled sidebar-menu" id="sidebarMenu">
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "Form1BCCLC" }, new[] { "RP_Form1" })" asp-controller="Report" asp-action="RP_Form1">
+                            <span class="menu-icon"><i class="fas fa-cut"></i></span>
+                            <span class="menu-number">1</span>
+                            <span class="menu-text">Báo Cáo Chất Lượng Bàn Cắt</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">1</span>
+                                <span class="tooltip-text">Báo Cáo Chất Lượng Bàn Cắt</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "Form2BCCPI" }, new[] { "RP_Form2" })" asp-controller="Report" asp-action="RP_Form2">
+                            <span class="menu-icon"><i class="fas fa-clipboard-check"></i></span>
+                            <span class="menu-number">2</span>
+                            <span class="menu-text">Báo Cáo Chất Lượng CPI</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">2</span>
+                                <span class="tooltip-text">Báo Cáo Chất Lượng CPI</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "Form3BCDT" }, new[] { "RP_Form3" })" asp-controller="Report" asp-action="RP_Form3">
+                            <span class="menu-icon"><i class="fas fa-star"></i></span>
+                            <span class="menu-number">3</span>
+                            <span class="menu-text">Báo Cáo Bàn Cắt Đầu Tiên</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">3</span>
+                                <span class="tooltip-text">Báo Cáo Bàn Cắt Đầu Tiên</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "Form4BCCLM" }, new[] { "RP_Form4","RP_Form4_Unit" })" asp-controller="Report" asp-action="RP_Form4">
+                            <span class="menu-icon"><i class="fas fa-industry"></i></span>
+                            <span class="menu-number">4</span>
+                            <span class="menu-text">Báo Cáo Chất Lượng Chuyền May</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">4</span>
+                                <span class="tooltip-text">Báo Cáo Chất Lượng Chuyền May</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "Form6BCCC" }, new[] { "RP_Form6" })" asp-controller="Report" asp-action="RP_Form6">
+                            <span class="menu-icon"><i class="fas fa-check-double"></i></span>
+                            <span class="menu-number">5</span>
+                            <span class="menu-text">Báo Cáo Chất Lượng Cuối Chuyền</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">5</span>
+                                <span class="tooltip-text">Báo Cáo Chất Lượng Cuối Chuyền</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "SummaryKCC" }, new[] { "RP_Summary_Defects_KCC" })" asp-controller="Report" asp-action="RP_Summary_Defects_KCC">
+                            <span class="menu-icon"><i class="fas fa-list-ul"></i></span>
+                            <span class="menu-number">6</span>
+                            <span class="menu-text">Tổng Hợp Lỗi Cuối Chuyền</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">6</span>
+                                <span class="tooltip-text">Tổng Hợp Lỗi Cuối Chuyền</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "PhotoDefect" }, new[] { "Index" })" asp-controller="Report" asp-action="RP_PhotoDefect">
+                            <span class="menu-icon"><i class="fas fa-images"></i></span>
+                            <span class="menu-number">7</span>
+                            <span class="menu-text">Hình Ảnh Lỗi</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">7</span>
+                                <span class="tooltip-text">Hình Ảnh Lỗi</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "OQLEndline" }, new[] { "RP_OQLEndline" })" asp-controller="Report" asp-action="RP_OQLEndline">
+                            <span class="menu-icon"><i class="fas fa-calendar-day"></i></span>
+                            <span class="menu-number">8</span>
+                            <span class="menu-text">Daily OQL End Line</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">8</span>
+                                <span class="tooltip-text">Daily OQL End Line</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "SummaryKCM" }, new[] { "RP_Summary_Defects_KCM" })" asp-controller="Report" asp-action="RP_Summary_Defects_KCM">
+                            <span class="menu-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                            <span class="menu-number">9</span>
+                            <span class="menu-text">Tổng Hợp Lỗi Chuyền May</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">9</span>
+                                <span class="tooltip-text">Tổng Hợp Lỗi Chuyền May</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "Form4BCCLMSUM" }, new[] { "RP_Form4_BCCLM_SUM" })" asp-controller="Report" asp-action="RP_Form4_BCCLM_SUM">
+                            <span class="menu-icon"><i class="fas fa-bug"></i></span>
+                            <span class="menu-number">9.1</span>
+                            <span class="menu-text">Lỗi Chuyền May</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">9.1</span>
+                                <span class="tooltip-text">Lỗi Chuyền May</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "Form7BTP" }, new[] { "RP_Form7" })" asp-controller="Report" asp-action="RP_Form7">
+                            <span class="menu-icon"><i class="fas fa-cogs"></i></span>
+                            <span class="menu-number">10</span>
+                            <span class="menu-text">Thông Số BTP</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">10</span>
+                                <span class="tooltip-text">Thông Số BTP</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "Form8TP" }, new[] { "RP_Form8" })" asp-controller="Report" asp-action="RP_Form8">
+                            <span class="menu-icon"><i class="fas fa-box"></i></span>
+                            <span class="menu-number">11</span>
+                            <span class="menu-text">Thông Số TP</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">11</span>
+                                <span class="tooltip-text">Thông Số TP</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "SummaryEndline" }, new[] { "Index" })" asp-controller="Report" asp-action="Index">
+                            <span class="menu-icon"><i class="fas fa-file-alt"></i></span>
+                            <span class="menu-number">12</span>
+                            <span class="menu-text">End-Line Summary Report</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">12</span>
+                                <span class="tooltip-text">End-Line Summary Report</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "FCATracking" }, new[] { "FCATracking" })" asp-controller="Report" asp-action="FCATracking">
+                            <span class="menu-icon"><i class="fas fa-crosshairs"></i></span>
+                            <span class="menu-number">13</span>
+                            <span class="menu-text">FCA Tracking Report</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">13</span>
+                                <span class="tooltip-text">FCA Tracking Report</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "FCATrackingACDate" }, new[] { "FCATrackingACDate" })" asp-controller="Report" asp-action="FCATrackingACDate">
+                            <span class="menu-icon"><i class="fas fa-calendar-check"></i></span>
+                            <span class="menu-number">14</span>
+                            <span class="menu-text">FCA Tracking Report AC-Date</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">14</span>
+                                <span class="tooltip-text">FCA Tracking Report AC-Date</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "Form10BCHT" }, new[] { "RP_Form10" })" asp-controller="Report" asp-action="RP_Form10">
+                            <span class="menu-icon"><i class="fas fa-check-circle"></i></span>
+                            <span class="menu-number">15</span>
+                            <span class="menu-text">Báo Cáo Chất Lượng Hoàn Thiện 84</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">15</span>
+                                <span class="tooltip-text">Báo Cáo Chất Lượng Hoàn Thiện 84</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "SummaryBCHT" }, new[] { "Index" })" asp-controller="Report" asp-action="SummaryBCHT">
+                            <span class="menu-icon"><i class="fas fa-tasks"></i></span>
+                            <span class="menu-number">16</span>
+                            <span class="menu-text">Tổng Hợp Lỗi Hoàn Thiện 84</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">16</span>
+                                <span class="tooltip-text">Tổng Hợp Lỗi Hoàn Thiện 84</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "SummaryChecker" }, new[] { "Index" })" asp-controller="Report" asp-action="SummaryChecker">
+                            <span class="menu-icon"><i class="fas fa-user-check"></i></span>
+                            <span class="menu-number">17</span>
+                            <span class="menu-text">Checker 84 Summary Report</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">17</span>
+                                <span class="tooltip-text">Checker 84 Summary Report</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "Form10OQL" }, new[] { "Index" })" asp-controller="Report" asp-action="RP_Form10OQL">
+                            <span class="menu-icon"><i class="fas fa-calendar-alt"></i></span>
+                            <span class="menu-number">18</span>
+                            <span class="menu-text">Checker 84 Daily OQL</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">18</span>
+                                <span class="tooltip-text">Checker 84 Daily OQL</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "FQCTracking" }, new[] { "Index" })" asp-controller="Report" asp-action="FQCTracking">
+                            <span class="menu-icon"><i class="fas fa-search-plus"></i></span>
+                            <span class="menu-number">19</span>
+                            <span class="menu-text">FQC Tracking Report</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">19</span>
+                                <span class="tooltip-text">FQC Tracking Report</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "SummaryFQC" }, new[] { "Index" })" asp-controller="Report" asp-action="SummaryFQC">
+                            <span class="menu-icon"><i class="fas fa-clipboard-list"></i></span>
+                            <span class="menu-number">20</span>
+                            <span class="menu-text">Tổng Hợp Lỗi FQC</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">20</span>
+                                <span class="tooltip-text">Tổng Hợp Lỗi FQC</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "Form4Quality" }, new[] { "Index" })" asp-controller="Report" asp-action="Form4_Quality">
+                            <span class="menu-icon"><i class="fas fa-chart-bar"></i></span>
+                            <span class="menu-number">21</span>
+                            <span class="menu-text">InLine Quality Report Summary</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">21</span>
+                                <span class="tooltip-text">InLine Quality Report Summary</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "TopForm4Quality" }, new[] { "Index" })" asp-controller="Report" asp-action="TopForm4Quality">
+                            <span class="menu-icon"><i class="fas fa-trophy"></i></span>
+                            <span class="menu-number">22</span>
+                            <span class="menu-text">TOP InLine Quality Report</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">22</span>
+                                <span class="tooltip-text">TOP InLine Quality Report</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "TopForm6Quality" }, new[] { "Index" })" asp-controller="Report" asp-action="TopForm6Quality">
+                            <span class="menu-icon"><i class="fas fa-medal"></i></span>
+                            <span class="menu-number">23</span>
+                            <span class="menu-text">TOP EndLine Quality Report</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">23</span>
+                                <span class="tooltip-text">TOP EndLine Quality Report</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "EndlineReport" }, new[] { "Index" })" asp-controller="Report" asp-action="EndlineReport">
+                            <span class="menu-icon"><i class="fas fa-file-invoice"></i></span>
+                            <span class="menu-number">24</span>
+                            <span class="menu-text">EndLine Detail Report</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">24</span>
+                                <span class="tooltip-text">EndLine Detail Report</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "EndlineUnit" }, new[] { "Index" })" asp-controller="Report" asp-action="EndlineUnit">
+                            <span class="menu-icon"><i class="fas fa-sitemap"></i></span>
+                            <span class="menu-number">25</span>
+                            <span class="menu-text">Báo Cáo Cuối Chuyền Theo Unit</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">25</span>
+                                <span class="tooltip-text">Báo Cáo Cuối Chuyền Theo Unit</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "EndlineUnitEN" }, new[] { "Index" })" asp-controller="Report" asp-action="EndlineUnitEN">
+                            <span class="menu-icon"><i class="fas fa-network-wired"></i></span>
+                            <span class="menu-number">26</span>
+                            <span class="menu-text">Report EndLine By Unit</span>
+                            <div class="menu-tooltip">
+                                <span class="tooltip-number">26</span>
+                                <span class="tooltip-text">Report EndLine By Unit</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col main-content" id="mainContent">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+<!-- Mobile Offcanvas -->
+<div class="offcanvas offcanvas-start offcanvas-modern" tabindex="-1" id="menuSidebar">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">
+            <i class="fas fa-chart-line me-2"></i>BÁO CÁO
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+        <div class="mobile-search p-3">
+            <input type="text" class="form-control" id="mobileMenuSearch" placeholder="Tìm kiếm báo cáo...">
+        </div>
+        <ul class="list-unstyled sidebar-menu">
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "Form1BCCLC" }, new[] { "RP_Form1" })" asp-controller="Report" asp-action="RP_Form1">
+                    <span class="menu-icon"><i class="fas fa-cut"></i></span>
+                    <span class="menu-number">1</span>
+                    <span class="menu-text">Báo Cáo Chất Lượng Bàn Cắt</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "Form2BCCPI" }, new[] { "RP_Form2" })" asp-controller="Report" asp-action="RP_Form2">
+                    <span class="menu-icon"><i class="fas fa-clipboard-check"></i></span>
+                    <span class="menu-number">2</span>
+                    <span class="menu-text">Báo Cáo Chất Lượng CPI</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "Form3BCDT" }, new[] { "RP_Form3" })" asp-controller="Report" asp-action="RP_Form3">
+                    <span class="menu-icon"><i class="fas fa-star"></i></span>
+                    <span class="menu-number">3</span>
+                    <span class="menu-text">Báo Cáo Bàn Cắt Đầu Tiên</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "Form4BCCLM" }, new[] { "RP_Form4","RP_Form4_Unit" })" asp-controller="Report" asp-action="RP_Form4">
+                    <span class="menu-icon"><i class="fas fa-industry"></i></span>
+                    <span class="menu-number">4</span>
+                    <span class="menu-text">Báo Cáo Chất Lượng Chuyền May</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "Form6BCCC" }, new[] { "RP_Form6" })" asp-controller="Report" asp-action="RP_Form6">
+                    <span class="menu-icon"><i class="fas fa-check-double"></i></span>
+                    <span class="menu-number">5</span>
+                    <span class="menu-text">Báo Cáo Chất Lượng Cuối Chuyền</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "SummaryKCC" }, new[] { "RP_Summary_Defects_KCC" })" asp-controller="Report" asp-action="RP_Summary_Defects_KCC">
+                    <span class="menu-icon"><i class="fas fa-list-ul"></i></span>
+                    <span class="menu-number">6</span>
+                    <span class="menu-text">Tổng Hợp Lỗi Cuối Chuyền</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "PhotoDefect" }, new[] { "Index" })" asp-controller="Report" asp-action="RP_PhotoDefect">
+                    <span class="menu-icon"><i class="fas fa-images"></i></span>
+                    <span class="menu-number">7</span>
+                    <span class="menu-text">Hình Ảnh Lỗi</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "OQLEndline" }, new[] { "RP_OQLEndline" })" asp-controller="Report" asp-action="RP_OQLEndline">
+                    <span class="menu-icon"><i class="fas fa-calendar-day"></i></span>
+                    <span class="menu-number">8</span>
+                    <span class="menu-text">Daily OQL End Line</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "SummaryKCM" }, new[] { "RP_Summary_Defects_KCM" })" asp-controller="Report" asp-action="RP_Summary_Defects_KCM">
+                    <span class="menu-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                    <span class="menu-number">9</span>
+                    <span class="menu-text">Tổng Hợp Lỗi Chuyền May</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "Form4BCCLMSUM" }, new[] { "RP_Form4_BCCLM_SUM" })" asp-controller="Report" asp-action="RP_Form4_BCCLM_SUM">
+                    <span class="menu-icon"><i class="fas fa-bug"></i></span>
+                    <span class="menu-number">9.1</span>
+                    <span class="menu-text">Lỗi Chuyền May</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "Form7BTP" }, new[] { "RP_Form7" })" asp-controller="Report" asp-action="RP_Form7">
+                    <span class="menu-icon"><i class="fas fa-cogs"></i></span>
+                    <span class="menu-number">10</span>
+                    <span class="menu-text">Thông Số BTP</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "Form8TP" }, new[] { "RP_Form8" })" asp-controller="Report" asp-action="RP_Form8">
+                    <span class="menu-icon"><i class="fas fa-box"></i></span>
+                    <span class="menu-number">11</span>
+                    <span class="menu-text">Thông Số TP</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "SummaryEndline" }, new[] { "Index" })" asp-controller="Report" asp-action="Index">
+                    <span class="menu-icon"><i class="fas fa-file-alt"></i></span>
+                    <span class="menu-number">12</span>
+                    <span class="menu-text">End-Line Summary Report</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "FCATracking" }, new[] { "FCATracking" })" asp-controller="Report" asp-action="FCATracking">
+                    <span class="menu-icon"><i class="fas fa-crosshairs"></i></span>
+                    <span class="menu-number">13</span>
+                    <span class="menu-text">FCA Tracking Report</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "FCATrackingACDate" }, new[] { "FCATrackingACDate" })" asp-controller="Report" asp-action="FCATrackingACDate">
+                    <span class="menu-icon"><i class="fas fa-calendar-check"></i></span>
+                    <span class="menu-number">14</span>
+                    <span class="menu-text">FCA Tracking Report AC-Date</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "Form10BCHT" }, new[] { "RP_Form10" })" asp-controller="Report" asp-action="RP_Form10">
+                    <span class="menu-icon"><i class="fas fa-check-circle"></i></span>
+                    <span class="menu-number">15</span>
+                    <span class="menu-text">Báo Cáo Chất Lượng Hoàn Thiện 84</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "SummaryBCHT" }, new[] { "Index" })" asp-controller="Report" asp-action="SummaryBCHT">
+                    <span class="menu-icon"><i class="fas fa-tasks"></i></span>
+                    <span class="menu-number">16</span>
+                    <span class="menu-text">Tổng Hợp Lỗi Hoàn Thiện 84</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "SummaryChecker" }, new[] { "Index" })" asp-controller="Report" asp-action="SummaryChecker">
+                    <span class="menu-icon"><i class="fas fa-user-check"></i></span>
+                    <span class="menu-number">17</span>
+                    <span class="menu-text">Checker 84 Summary Report</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "Form10OQL" }, new[] { "Index" })" asp-controller="Report" asp-action="RP_Form10OQL">
+                    <span class="menu-icon"><i class="fas fa-calendar-alt"></i></span>
+                    <span class="menu-number">18</span>
+                    <span class="menu-text">Checker 84 Daily OQL</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "FQCTracking" }, new[] { "Index" })" asp-controller="Report" asp-action="FQCTracking">
+                    <span class="menu-icon"><i class="fas fa-search-plus"></i></span>
+                    <span class="menu-number">19</span>
+                    <span class="menu-text">FQC Tracking Report</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "SummaryFQC" }, new[] { "Index" })" asp-controller="Report" asp-action="SummaryFQC">
+                    <span class="menu-icon"><i class="fas fa-clipboard-list"></i></span>
+                    <span class="menu-number">20</span>
+                    <span class="menu-text">Tổng Hợp Lỗi FQC</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "Form4Quality" }, new[] { "Index" })" asp-controller="Report" asp-action="Form4_Quality">
+                    <span class="menu-icon"><i class="fas fa-chart-bar"></i></span>
+                    <span class="menu-number">21</span>
+                    <span class="menu-text">InLine Quality Report Summary</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "TopForm4Quality" }, new[] { "Index" })" asp-controller="Report" asp-action="TopForm4Quality">
+                    <span class="menu-icon"><i class="fas fa-trophy"></i></span>
+                    <span class="menu-number">22</span>
+                    <span class="menu-text">TOP InLine Quality Report</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "TopForm6Quality" }, new[] { "Index" })" asp-controller="Report" asp-action="TopForm6Quality">
+                    <span class="menu-icon"><i class="fas fa-medal"></i></span>
+                    <span class="menu-number">23</span>
+                    <span class="menu-text">TOP EndLine Quality Report</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "EndlineReport" }, new[] { "Index" })" asp-controller="Report" asp-action="EndlineReport">
+                    <span class="menu-icon"><i class="fas fa-file-invoice"></i></span>
+                    <span class="menu-number">24</span>
+                    <span class="menu-text">EndLine Detail Report</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "EndlineUnit" }, new[] { "Index" })" asp-controller="Report" asp-action="EndlineUnit">
+                    <span class="menu-icon"><i class="fas fa-sitemap"></i></span>
+                    <span class="menu-number">25</span>
+                    <span class="menu-text">Báo Cáo Cuối Chuyền Theo Unit</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "EndlineUnitEN" }, new[] { "Index" })" asp-controller="Report" asp-action="EndlineUnitEN">
+                    <span class="menu-icon"><i class="fas fa-network-wired"></i></span>
+                    <span class="menu-number">26</span>
+                    <span class="menu-text">Report EndLine By Unit</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Toggle Sidebar
+    const sidebar = document.getElementById('desktopSidebar');
+    const toggleBtn = document.getElementById('sidebarToggle');
+    const mainContent = document.getElementById('mainContent');
+    
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+            
+            // Lưu trạng thái vào localStorage
+            if (sidebar.classList.contains('collapsed')) {
+                localStorage.setItem('sidebarState', 'collapsed');
+            } else {
+                localStorage.setItem('sidebarState', 'expanded');
+            }
+        });
+        
+        // Khôi phục trạng thái từ localStorage
+        const savedState = localStorage.getItem('sidebarState');
+        if (savedState === 'collapsed') {
+            sidebar.classList.add('collapsed');
+        }
+    }
+    
+    // Search functionality
+    const searchInput = document.getElementById('menuSearch');
+    const mobileSearchInput = document.getElementById('mobileMenuSearch');
+    
+    function filterMenu(searchValue, container) {
+        const menuItems = container.querySelectorAll('.menu-item');
+        const searchLower = searchValue.toLowerCase();
+        
+        menuItems.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            if (text.includes(searchLower)) {
+                item.style.display = '';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            filterMenu(this.value, sidebar);
+        });
+    }
+    
+    if (mobileSearchInput) {
+        mobileSearchInput.addEventListener('input', function() {
+            const offcanvas = document.getElementById('menuSidebar');
+            filterMenu(this.value, offcanvas);
+        });
+    }
+    
+    // Tooltip positioning when collapsed
+    const menuLinks = document.querySelectorAll('.modern-sidebar .menu-link');
+    menuLinks.forEach(link => {
+        link.addEventListener('mouseenter', function(e) {
+            if (sidebar.classList.contains('collapsed')) {
+                const tooltip = this.querySelector('.menu-tooltip');
+                if (tooltip) {
+                    const rect = this.getBoundingClientRect();
+                    tooltip.style.top = rect.top + 'px';
+                }
+            }
+        });
+    });
+    
+    // Close mobile menu when link clicked
+    const offcanvas = document.getElementById('menuSidebar');
+    if (offcanvas) {
+        const mobileMenuLinks = offcanvas.querySelectorAll('.menu-link');
+        
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
+                if (bsOffcanvas) {
+                    bsOffcanvas.hide();
+                }
+            });
+        });
+    }
+});
+</script>
