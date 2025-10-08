@@ -6,8 +6,8 @@ namespace QOS.Models
     public class UserEditViewModel
     {
         // Dropdown data
-        public IEnumerable<SelectListItem> FactoryOptions { get; set; }
-        public IEnumerable<SelectListItem> TeamOptions { get; set; }
+        public IEnumerable<SelectListItem> FactoryOptions { get; set; } = new List<SelectListItem>();
+        public IEnumerable<SelectListItem> TeamOptions { get; set; } = new List<SelectListItem>();
         // Thông tin từ User_List
         public int Id { get; set; }
         public string FactoryID { get; set; } = "";

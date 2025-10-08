@@ -7,7 +7,7 @@ namespace QOS.Areas.Report.Models
         public DateTime DateEnd { get; set; } = DateTime.Now;
         public string? Message { get; set; }
         public List<QOS.Models.Unit_List> Unit_List { get; set; } = new();
-        public List<Dictionary<string, object>> ReportData { get; set; }
+        public List<Dictionary<string, object>> ReportData { get; set; } = new();
         // Thêm 2 list để build chart
         public List<ChartPoint> DataPointsREG { get; set; } = new();
         public List<ChartPoint> DataPointsUnitTarget { get; set; } = new();

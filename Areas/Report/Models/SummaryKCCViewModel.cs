@@ -19,7 +19,7 @@ namespace QOS.Areas.Report.Models
 
     public class DefectStat
     {
-        public string Name { get; set; } 
+        public string Name { get; set; } = "";
         public int Count { get; set; }
         public decimal Percentage { get; set; }
     }

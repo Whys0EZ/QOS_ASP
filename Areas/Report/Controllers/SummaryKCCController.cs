@@ -30,7 +30,7 @@ namespace QOS.Areas.Report.Controllers
         {
             _logger = logger;
             _env = env;
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Missing connection string: DefaultConnection");
             _configuration =configuration;
             _context = context;
         }

@@ -27,7 +27,7 @@ namespace QOS.Areas.Report.Controllers
         {
             _logger = logger;
             _env = env;
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Missing connection string: DefaultConnection");
             _configuration =configuration;
             _context = context;
         }
@@ -250,7 +250,7 @@ namespace QOS.Areas.Report.Controllers
         [HttpGet]
         public IActionResult GetSewerLineHistory(string lineCode,string position, DateTime dateFrom, DateTime dateEnd)
         {
-            _logger.LogInformation($"=== Get Line History - Line: '{lineCode}', From: {dateFrom:yyyy-MM-dd}, To: {dateEnd:yyyy-MM-dd} ===");
+            _logger.LogInformation($"=== Get GetSewerLineHistory History - Line: '{lineCode}',position: '{position}', From: {dateFrom:yyyy-MM-dd}, To: {dateEnd:yyyy-MM-dd} ===");
 
             try
             {
@@ -425,7 +425,7 @@ namespace QOS.Areas.Report.Controllers
                 {
                     availableColumns = schemaTable.Rows
                         .Cast<DataRow>()
-                        .Select(r => r["ColumnName"].ToString())
+                        .Select(r => r["ColumnName"]?.ToString() ?? "")
                         .Where(n => !string.IsNullOrEmpty(n))
                         .ToHashSet(StringComparer.OrdinalIgnoreCase);
                 }
@@ -626,6 +626,7 @@ namespace QOS.Areas.Report.Controllers
         }
         private List<LineHistoryData> GetSewerLineHistoryData(string lineCode,string position, DateTime dateFrom, DateTime dateEnd)
         {
+            //  _logger.LogInformation($"=== Get GetSewerLineHistory History - Line: '{lineCode}',position: '{position}', From: {dateFrom}, To: {dateEnd:yyyy-MM-dd} ===");
             var historyList = new List<LineHistoryData>();
 
             try
@@ -639,19 +640,19 @@ namespace QOS.Areas.Report.Controllers
                         ROW_NUMBER() OVER(PARTITION BY t1.Report_ID, t1.PhysicalLine  
                                                 ORDER BY t1.PhysicalLine ASC, t1.LastUpdate DESC) AS rk
                     FROM Form4_BCCLM t1 LEFT JOIN dbo.Operation_Code t3 ON t1.Operation=t3.Operation_Code LEFT JOIN User_List t4 ON t1.UserUpdate=t4.UserName 
-                    WHERE t1.Line = @LineCode 
+                    WHERE t1.PhysicalLine = @LineCode 
                         AND t1.Sewer_Workstation= @Position
                         AND CAST(t1.LastUpdate as DATE) >= CAST(@DateFrom as DATE)
                         AND CAST(t1.LastUpdate as DATE) <= CAST(@DateEnd as DATE)
                     
                     ORDER BY t1.LastUpdate DESC";
-
+                
                 using var command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@LineCode", lineCode);
                 command.Parameters.AddWithValue("@Position", position);
                 command.Parameters.AddWithValue("@DateFrom", dateFrom);
                 command.Parameters.AddWithValue("@DateEnd", dateEnd);
-
+                // _logger.LogInformation("Executing SQL: {Sql}", GetDebugSql(command));
                 using var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -907,6 +908,37 @@ namespace QOS.Areas.Report.Controllers
             {
                 return Json(new { success = false, message = "Không tìm thấy báo cáo để xóa." });
             }
+        }
+
+        public static string GetDebugSql(SqlCommand cmd)
+        {
+            string sql = cmd.CommandText;
+
+            foreach (SqlParameter p in cmd.Parameters)
+            {
+                string value;
+
+                if (p.Value == null || p.Value == DBNull.Value)
+                {
+                    value = "NULL";
+                }
+                else if (p.Value is string s)
+                {
+                    value = $"N'{s.Replace("'", "''")}'";
+                }
+                else if (p.Value is DateTime dt)
+                {
+                    value = $"'{dt:yyyy-MM-dd HH:mm:ss}'";
+                }
+                else
+                {
+                    value = p.Value.ToString() ?? "NULL";
+                }
+
+                sql = sql.Replace(p.ParameterName, value);
+            }
+
+            return sql;
         }
     
     }

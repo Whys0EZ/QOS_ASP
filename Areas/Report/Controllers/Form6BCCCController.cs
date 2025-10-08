@@ -28,7 +28,7 @@ namespace QOS.Areas.Report.Controllers
         {
             _logger = logger;
             _env = env;
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = configuration.GetConnectionString("DefaultConnection") ?? "";
             _configuration =configuration;
             _context = context;
         }
@@ -105,7 +105,7 @@ namespace QOS.Areas.Report.Controllers
                 var dict = new Dictionary<string, object>();
                 for (int i = 0; i < reader.FieldCount; i++)
                 {
-                    dict[reader.GetName(i)] = reader.IsDBNull(i) ? null : reader.GetValue(i);
+                    dict[reader.GetName(i)] = reader.IsDBNull(i) ? DBNull.Value : reader.GetValue(i);
                 }
                 result.Add(dict);
             }
@@ -119,12 +119,12 @@ namespace QOS.Areas.Report.Controllers
                     {
                         var unit_v = row.ContainsKey("Unit") ? row["Unit"]?.ToString() : null;
 
-                        if (row.ContainsKey("OQL_TT") && double.TryParse(row["OQL_TT"]?.ToString(), out var oqlTT))
+                        if (row.ContainsKey("OQL_TT") && row["OQL_TT"] != null &&  double.TryParse(row["OQL_TT"]?.ToString(), out var oqlTT))
                         {
                             model.DataPointsREG.Add(new ChartPoint { Label = unit_v, Y = Math.Round(oqlTT * 100.0, 2) });
                         }
 
-                        if (row.ContainsKey("OQL_Target") && double.TryParse(row["OQL_Target"]?.ToString(), out var oqlTarget))
+                        if (row.ContainsKey("OQL_Target") && row["OQL_Target"] != null &&  double.TryParse(row["OQL_Target"]?.ToString(), out var oqlTarget))
                         {
                             model.DataPointsUnitTarget.Add(new ChartPoint { Label = unit_v,  Y = Math.Round(oqlTarget * 100.0, 2) });
                         }
@@ -374,7 +374,7 @@ namespace QOS.Areas.Report.Controllers
                 int row = 4;
                 int col;
 
-                string[] nameList = null;
+                string[]? nameList = null;
 
                 while (reader.Read())
                 {
@@ -384,7 +384,8 @@ namespace QOS.Areas.Report.Controllers
                     // Dòng tiêu đề CL (chỉ chạy 1 lần ở row=4)
                     if (row == 4)
                     {
-                        nameList = reader["CL"].ToString().Split(',');
+                        // nameList = reader["CL"].ToString().Split(',');
+                        nameList = !reader.IsDBNull(reader.GetOrdinal("CL")) ? reader["CL"].ToString().Split(',') : Array.Empty<string>();
                         col = 2;
                         foreach (var cl in nameList)
                         {

@@ -1,0 +1,230 @@
+@removeTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.OptionTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model QOS.Areas.Report.Models.RP_PhotoDefectViewModel
+@{
+    ViewData["Title"] = "Báo Cáo Cuối Chuyền";
+    Layout = "_MenuReport";
+}
+<link rel="stylesheet" href="~/css/report.css" />
+<partial name="_AlertMessage" />
+<div class="ddashboard-container">
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="header-card ">
+            <marquee direction="down" scrolldelay="500"><h1 class="header-title  text-center">
+                <i class="bi bi-clipboard-data me-2"></i>
+                QOS - TỔNG HỢP HÌNH ẢNH LỖI
+            </h1></marquee>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-card">
+            <form method="get" asp-action="RP_PhotoDefect" id="filterForm">
+                <div class="filter-group">
+                    <div class="filter-item">
+                        <label class="filter-label">Báo Cáo:</label>
+                        <select class="form-select" name="Report_Type" style="width: auto;">
+                            <option value="Form1_BCCLC"   @(Model.Report_Type?.Trim() == "Form1_BCCLC" ? "selected" : "")  >1-Báo Cáo Chất Lượng Cắt</option>
+                            <option value="Form2_BCCPI"   @(Model.Report_Type?.Trim() == "Form2_BCCPI" ? "selected" : "")  >2-Báo Cáo Kiểm CPI</option>
+                            <option value="Form3_BCDT"    @(Model.Report_Type?.Trim() == "Form3_BCDT" ? "selected" : "")   >3-Báo Cáo Bàn Cắt Đầu Tiên</option>
+                            <option value="Form4_BCCLM"   @(Model.Report_Type?.Trim() == "Form4_BCCLM" ? "selected" : "")  >4-Báo Cáo Đi Chuyền</option>
+                            <option value="Form6_BCKCC"   @(Model.Report_Type?.Trim() == "Form6_BCKCC" ? "selected" : "")  >5-Báo Cáo Cuối Chuyền</option>
+                            <option value="FQC_UQ_Result" @(Model.Report_Type?.Trim() == "FQC_UQ_Result" ? "selected" : "")>6-Báo Cáo FQC Tracking</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-item">
+                        <label class="filter-label">Unit:</label>
+                        <select class="form-select" name="unit" id="unitSelect" style="width: 100px;" >
+                            <option value="ALL" selected>--Unit--</option>
+                            @foreach (var unit in Model.Unit_List)
+                                {
+                                    <option value="@unit.Unit" selected="@(unit.Unit == Model.Unit)">
+                                        @unit.Unit
+                                    </option>
+                                }
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label class="filter-label">Công nhân:</label>
+                        <input type="text" value="@(Model.Sewer == "" ? "" : Model.Sewer) " class="form-control" name="sewer" style="width: 150px;">
+                    </div>
+
+                    <div class="filter-item">
+                        <label class="filter-label">MO:</label>
+                        <input type="text" value="@(Model.Mo == "" ? "" : Model.Mo) " class="form-control" name="mo" style="width: 150px;">
+                    </div>
+
+                    <div class="filter-item">
+                        <label class="filter-label">Ngày:</label>
+                        <input type="date" class="form-control" name="dateFrom" 
+                                value="@(Model.DateFrom.ToString("yyyy-MM-dd"))" style="width: 130px;">
+                    </div>
+
+                    <div class="filter-item" style="margin-top: 20px;">
+                        <span>-</span>
+                    </div>
+
+                    <div class="filter-item">
+                        <label class="filter-label">&nbsp;</label>
+                        <input type="date" class="form-control" name="dateEnd" 
+                                value="@(Model.DateEnd.ToString("yyyy-MM-dd"))" style="width: 130px;">
+                    </div>
+
+                    <div class="filter-item mt-auto">
+                        <label class="filter-label">&nbsp;</label>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-search me-1"></i> Tìm kiếm
+                        </button>
+                    </div>
+
+                    <div class="filter-item mt-auto">
+                        <label class="filter-label">&nbsp;</label>
+                        <button type="button" class="btn btn-success" onclick="exportToExcel()">
+                            <i class="bi bi-file-earmark-excel me-1"></i> Tải excel
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        @if (Model.ReportData != null && Model.ReportData.Any())
+        {
+             var reportName = "";
+             var imgPath = "https://qos.crystal-regent.com.vn/upload/Photos/";
+            if (Model.Report_Type?.Trim() == "Form1_BCCLC")
+            {
+                reportName = "BÁO CÁO CHẤT LƯỢNG CẮT";
+                imgPath += "Form1_BCCLC/";
+            } 
+            else if (Model.Report_Type == "Form2_BCCPI")
+            {
+                reportName = "BÁO CÁO KIỂM CPI";
+                imgPath += "Form2_CPI/";
+            } 
+            else if (Model.Report_Type == "Form3_BCDT")
+            {
+                reportName = "BÁO CÁO BÀN CẮT ĐẦU TIÊN";
+                imgPath += "Form3_BCDT/";
+            }
+            else if (Model.Report_Type == "Form4_BCCLM")
+            {
+                reportName = "BÁO CÁO ĐI CHUYỀN";
+                imgPath += "Form4_BCCLM/";
+            }
+            else if (Model.Report_Type == "Form6_BCKCC")
+            {
+                reportName = "BÁO CÁO CUỐI CHUYỀN";
+                imgPath += "Form6_BCKCC/";
+            }
+            else if (Model.Report_Type == "FQC_UQ_Result")
+            {
+                reportName = "BÁO CÁO FQC TRACKING";
+                imgPath += "FQC/";
+            }
+            <div class="chart-card">
+                <h2 class="chart-title">CHI TIẾT HÌNH ẢNH LỖI @reportName</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead class="table-primary">
+                            <th>STT</th>
+                            <th>ID</th>
+                            <th>Unit</th>
+                            <th>MO</th>
+                            <th>Trạng Thái</th>
+                            <th>Lần Kiểm</th>
+                            <th>Ảnh Lỗi</th>
+                            <th>Lỗi</th>
+                            <th>Sewer/Leader_Cut</th>
+                            <th>Người Kiểm</th>
+                            <th>Thời Gian Kiểm</th>
+                        </thead>
+                        <tbody>
+                            @{
+                                var i = 1;
+                                foreach (var row in Model.ReportData)
+                                {
+                                    
+                                    bool reAudit = row["Re_Audit"] != DBNull.Value && Convert.ToBoolean(row["Re_Audit"]);
+                                    string cssClass = reAudit ? "Circles_Red" : "Circles_Green";
+                                    
+                                    <tr>
+                                        <td>@i</td>
+                                        <td><strong>@row["ID"]</strong></td>
+                                        <td>@row["Unit"]</td>
+                                        <td>@row["MO"] - @row["Color"]</td>
+                                        <td style="text-align: center;"><div class="@cssClass"></div></td>
+                                        <td>@row["Audit_Time"]</td>
+
+                                        <td>
+                                            @if (!object.ReferenceEquals(row["Photo_URL"], null))
+                                            {
+                                                var photos = row["Photo_URL"].ToString().Split(';', StringSplitOptions.RemoveEmptyEntries);
+                                                foreach (var photo in photos)
+                                                {
+                                                    <img src="@($"{imgPath}{photo}")" alt="Defect Photo" style="width: 100px; height: auto; margin: 2px; border: 1px solid #ccc;"  onclick='Show_Photo("@($"{imgPath}{photo}")")'/>
+                                                    @* <a href="@Url.Content($"~/{imgPath}{photo}")" target="_blank"> *@
+                                                    @* <a href="@($"{imgPath}{photo}")" target="_blank">
+                                                        <img src="@($"{imgPath}{photo}")" alt="Defect Photo" style="width: 100px; height: auto; margin: 2px; border: 1px solid #ccc;"  onclick='Show_Photo("@($"{imgPath}{photo}")")'/>
+                                                    </a> *@
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span>Không có hình ảnh</span>
+                                            }
+                                        </td>
+                                        <td></td>
+                                        <td>@row["Sewer"]</td>
+                                        <td>@row["UserUpdate"]- @row["FullName"]</td>
+                                        <td>@row["LastUpdate"]</td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        } 
+        else {
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle me-2"></i>
+                Không có dữ liệu trong thời gian để xem báo cáo.
+            </div>
+        }
+
+    </div>
+</div>
+
+<!-- Modal Show anh loi -->
+<div id="Modal_Photo" class="modal" style="height: 100%;">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-center">
+                <span class="close" id="close_Modal_Photo" style="font-size:2rem;cursor:pointer;">&times;</span>
+                <h2 class="modal-title w-100" style="text-align: center; text-transform: uppercase;">Hình ảnh lỗi</h2>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <img src="" style="width: 90%" id="Fault_Photo" align="center">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function Show_Photo(img) {
+        var modal = document.getElementById('Modal_Photo');
+        var span = document.getElementById('close_Modal_Photo');
+        modal.style.display = "block";
+        document.getElementById("Fault_Photo").src = '' + img;
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    }
+</script>
