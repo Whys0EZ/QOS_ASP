@@ -11,7 +11,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="header-card">
-            <marquee><h1 class="header-title ma">
+            <marquee behavior="alternate"><h1 class="header-title ma">
                 <i class="bi bi-clipboard-data me-2"></i>
                 QOS - TỔNG HỢP LỖI CUỐI CHUYỀN
             </h1></marquee>
@@ -157,7 +157,7 @@
                                 int rowNum = 1;
                                 foreach (var row in Model.ReportData)
                                 {
-                                    List<string> faultCode = row["Fault_Code"]?.ToString().Split(',').ToList();
+                                    List<string>? faultCode = row["Fault_Code"]?.ToString().Split(',').ToList();
                                     <tr>
                                         <td>@rowNum</td>
                                         <td><strong>@row["Fault_Code"]</strong></td>
@@ -252,7 +252,7 @@
         const spinner = document.getElementById('lineLoadingSpinner');
         
         // Clear current options
-        
+        lineSelect.innerHTML = ''; // xóa dòng cũ
         
         if (selectedUnit && selectedUnit !== 'ALL') {
             try {

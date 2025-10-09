@@ -1,0 +1,495 @@
+@model QOS.Areas.Report.Models.SummaryKCMViewModel
+@using System.Text.Json
+@{
+    ViewData["Title"] = "Báo Cáo Chuyền May";
+    Layout = "_MenuReport";
+}
+<link rel="stylesheet" href="~/css/report.css" />
+<partial name="_AlertMessage" />
+
+<div class="ddashboard-container">
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="header-card">
+            <marquee behavior="alternate"><h1 class="header-title ma">
+                <i class="bi bi-clipboard-data me-2"></i>
+                QOS - TỔNG HỢP LỖI CHUYỀN MAY
+            </h1></marquee>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-card">
+            <form method="get" asp-action="RP_Summary_Defects_KCM" id="filterForm">
+                <div class="filter-group">
+                    <div class="filter-item">
+                        <label class="filter-label">Top Defected:</label>
+                        <select class="form-select" name="topDefected" style="width: 80px;">
+                            <option value="5" selected="@(Model.TopDefected == "5")">5</option>
+                            <option value="10" selected="@(Model.TopDefected == "10")">10</option>
+                            <option value="15" selected="@(Model.TopDefected == "15")">15</option>
+                            <option value="20" selected="@(Model.TopDefected == "20")">20</option>
+                            <option value="ALL" selected="@(Model.TopDefected == "ALL")">ALL</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-item">
+                        <label class="filter-label">Type:</label>
+                        <select class="form-select" name="typeCode" style="width: 120px;">
+                            <option value="ALL" selected="@(Model.TypeCode == "ALL")">ALL</option>
+                            <option value="1" selected="@(Model.TypeCode == "1")">Lỗi Nhẹ</option>
+                            <option value="2" selected="@(Model.TypeCode == "2")">Lỗi Nặng</option>
+                            <option value="3" selected="@(Model.TypeCode == "3")">Lỗi Nghiêm Trọng</option>
+                            
+                        </select>
+                    </div>
+
+                    <div class="filter-item">
+                        <label class="filter-label">Unit:</label>
+                        <select class="form-select" name="unit" id="unitSelect" style="width: 100px;" >
+                            <option value="ALL" selected>--Unit--</option>
+                            @foreach (var zone in Model.Zone)
+                            {
+                                <option value="@($"Z{zone}")" selected="@($"Z{zone}" == Model.Unit)">
+                                    @($"*{zone}")
+                                </option>
+                            }
+                            @foreach (var unit in Model.Unit_List)
+                                {
+                                    <option value="@unit.Unit" selected="@(unit.Unit == Model.Unit)">
+                                        @unit.Unit
+                                    </option>
+                                }
+                        </select>
+                    </div>
+
+                    <div class="filter-item">
+                        <label class="filter-label">
+                            Line:
+                            <span class="loading-spinner" id="lineLoadingSpinner"></span>
+                        </label>
+                        <select class="form-select" name="line" id="lineSelect" style="width: 120px;" >
+                            <option value="ALL">--Line--</option>
+                        </select>
+                    </div>
+                    <input type="hidden" id="selectedLineHidden" value="@Model.Line" />
+
+                    <div class="filter-item">
+                        <label class="filter-label">StyleCode:</label>
+                        <input type="text" value="@(Model.StyleCode== "" ? "" : Model.StyleCode) " class="form-control" name="styleCode" style="width: 150px;">
+                    </div>
+
+                    <div class="filter-item">
+                        <label class="filter-label">MO:</label>
+                        <input type="text" value="@(Model.Mo== "" ? "" : Model.Mo) " class="form-control" name="mo" style="width: 150px;">
+                    </div>
+
+                    <div class="filter-item">
+                        <label class="filter-label">Ngày:</label>
+                        <input type="date" class="form-control" name="dateFrom" 
+                                value="@Model.DateFrom.ToString("yyyy-MM-dd")" style="width: 130px;">
+                    </div>
+
+                    <div class="filter-item" style="margin-top: 20px;">
+                        <span>-</span>
+                    </div>
+
+                    <div class="filter-item">
+                        <label class="filter-label">&nbsp;</label>
+                        <input type="date" class="form-control" name="dateEnd" 
+                                value="@Model.DateEnd.ToString("yyyy-MM-dd")" style="width: 130px;">
+                    </div>
+
+                    <div class="filter-item mt-auto">
+                        <label class="filter-label">&nbsp;</label>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-search me-1"></i> Tìm kiếm
+                        </button>
+                    </div>
+
+                    <div class="filter-item mt-auto">
+                        <label class="filter-label">&nbsp;</label>
+                        <button type="button" class="btn btn-success" onclick="exportToExcel()">
+                            <i class="bi bi-file-earmark-excel me-1"></i> Tải excel
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Stats Cards -->
+
+        @if (Model.ReportData != null && Model.ReportData.Any())
+        {
+            <div >
+                <div><h2 class="chart-title">TOP LỖI CHUYỀN MAY</h2> </div>
+                <div class="stats-grid">
+                    @{
+                        var colors = new[] { "stat-card-1", "stat-card-2", "stat-card-3", "stat-card-4", "stat-card-5" };
+                        int colorIndex = 0;
+                        // Lấy top 5 lỗi có Count cao nhất
+                        var top5Stats = Model.DefectStatKCMs
+                            .OrderByDescending(s => s.Value.Count)
+                            .Take(5);
+                        foreach (var stat in top5Stats)
+                        {
+                            var colorClass = colors[colorIndex % colors.Length];
+                            <div class="stat-card @colorClass">
+                                <div class="stat-label">@stat.Value.Name</div>
+                                <div class="stat-value">@stat.Value.Count.ToString("N0")</div>
+                                <div class="stat-label">@stat.Value.Percentage%</div>
+                            </div>
+                            colorIndex++;
+                        }
+                    }
+                </div>
+            </div>
+            @* <!-- Detailed Table --> *@
+            <div class="chart-card">
+                <h2 class="chart-title">CHI TIẾT LỖI CHUYỀN MAY</h2>
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã Lỗi</th>
+                                <th>Tên Lỗi (EN)</th>
+                                <th>Tên Lỗi (VN)</th>
+                                <th>Số Lượng</th>
+                                <th>Level</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int rowNum = 1;
+                                foreach (var row in Model.ReportData)
+                                {
+                                    List<string>? faultCode = row["Fault_Code"]?.ToString().Split(',').ToList();
+                                    <tr>
+                                        <td>@rowNum</td>
+                                        <td><strong>@row["Fault_Code"]</strong></td>
+                                        <td>@row["Fault_Name_EN"]</td>
+                                        <td>@row["Fault_Name_VN"]</td>
+                                        <td class="text-left"><strong>@Convert.ToInt32(row["Fault_QTY"]).ToString("N0")</strong></td>
+                                        <td><span class="badge bg-info">@row["Fault_Level"]</span></td>
+                                    </tr>
+                                    rowNum++;
+                                }
+                            }
+                        </tbody>
+                        <tfoot class="table-secondary">
+                            <tr>
+                                <th colspan="4" class="text-end">TỔNG CỘNG:</th>
+                                <th class="text-left">@Model.TotalDefects.ToString("N0")</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            @* <!-- Charts --> *@
+            <div class="row">
+                <div class="col-lg-8 mb-4">
+                    <div class="chart-card">
+                        <h2 class="chart-title">TOP DEFECTS: @Model.Unit</h2>
+                        <div class="chart-container">
+                            <canvas id="barChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mb-4">
+                    <div class="chart-card">
+                        <h2 class="chart-title">DEFECTS RATIO: @Model.Unit</h2>
+                        <div class="chart-container">
+                            <canvas id="pieChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle me-2"></i>
+                Không có dữ liệu trong thời gian để xem báo cáo.
+            </div>
+        }
+    </div>
+</div>
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-body text-center py-4">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="fw-bold">Đang tải dữ liệu...</div>
+                <small class="text-muted">Vui lòng chờ trong giây lát</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+ 
+    function Submit()
+        {
+            // Show loading
+            var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+            loadingModal.show();
+            document.getElementById("filterForm").submit();
+            
+        }
+    // Show loading on form submit
+    document.getElementById('filterForm').addEventListener('submit', function() {
+        var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+        loadingModal.show();
+    });
+
+ // Handle Unit selection change and load Lines
+    document.getElementById('unitSelect').addEventListener('change', async function() {
+        @* var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+        loadingModal.show(); *@
+        const selectedUnit = this.value;
+        const lineSelect = document.getElementById('lineSelect');
+        const spinner = document.getElementById('lineLoadingSpinner');
+        
+        // Clear current options
+        lineSelect.innerHTML = '';
+        
+        if (selectedUnit && selectedUnit !== 'ALL') {
+            try {
+                // Show loading spinner
+                spinner.style.display = 'inline-block';
+                lineSelect.disabled = true;
+                
+                // Fetch lines from server
+                const response = await fetch(`/Report/SummaryKCC/GetLinesByUnit?unitId=${encodeURIComponent(selectedUnit)}`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch lines');
+                }
+                
+                const lines = await response.json();
+                
+                // Populate dropdown
+                if (lines && lines.length > 0) {
+                    lines.forEach(line => {
+                        const option = document.createElement('option');
+                        option.value = line.value;
+                        option.textContent = line.text;
+                        lineSelect.appendChild(option);
+                    });
+                    
+                    lineSelect.disabled = false;
+                    // 🔹 Lấy lại giá trị Line đã chọn từ server (model)
+                    //const selectedLine = document.getElementById('selectedLineHidden').value;
+                   // if (selectedLine) {
+                     //   lineSelect.value = selectedLine; // Tự chọn lại Line trước đó
+                    //}
+                    // Add visual feedback
+                    lineSelect.style.borderColor = '#10b981';
+                    setTimeout(() => {
+                        lineSelect.style.borderColor = '';
+                    }, 500);
+                } else {
+                    lineSelect.innerHTML = '<option value="">--Không có Line--</option>';
+                    lineSelect.disabled = true;
+                }
+            } catch (error) {
+                console.error('Error loading lines:', error);
+                lineSelect.innerHTML = '<option value="">--Lỗi tải dữ liệu--</option>';
+                lineSelect.disabled = true;
+            } finally {
+                // Hide loading spinner
+                spinner.style.display = 'none';
+            }
+        } else {
+            // Disable line select if "ALL" or no unit selected
+            lineSelect.disabled = true;
+        }
+    });
+
+    // Trigger change event on page load if unit is already selected
+    window.addEventListener('DOMContentLoaded', function() {
+        const unitSelect = document.getElementById('unitSelect');
+        const selectedUnit = '@Model.Unit';
+        const selectedLine = '@Model.Line';
+        if (unitSelect.value && unitSelect.value !== 'ALL') {
+            unitSelect.dispatchEvent(new Event('change'));
+            // Set selected line after a short delay to ensure options are loaded
+                if (selectedLine) {
+                    setTimeout(function() {
+                        const lineSelect = document.getElementById('lineSelect');
+                        lineSelect.value = selectedLine;
+                    }, 500);
+                }
+        }
+    });
+
+    // Export to Excel function
+    function exportToExcel() {
+        const faultCodes = @Html.Raw(Json.Serialize(Model.ReportData?.Select(r => r["Fault_Code"])));
+
+        const form = document.getElementById('filterForm');
+        const formData = new FormData(form);
+        const params = new URLSearchParams(formData);
+
+        // Nối thêm danh sách lỗi
+        params.append('faultCodes', faultCodes.join(','));
+        console.log('faultCodes:', faultCodes);
+        console.log('params:', params.toString());
+        // Gọi controller qua GET
+         window.location.href = `/Report/SummaryKCC/ExportToExcel?${params.toString()}`;
+    }
+
+    const defectStats = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+        Model.DefectStatKCMs.Values.Select(d => new { 
+            name = d.Name,      // Tên lỗi từ Fault_Name_VN
+            count = d.Count,    // Số lượng từ Fault_QTY
+            percentage = d.Percentage 
+        })
+    ));
+    const labels = defectStats.map(d => d.name);      // Tên lỗi thực tế
+    const counts = defectStats.map(d => d.count);     // Số lượng thực tế
+    const percentages = defectStats.map(d => d.percentage); // % thực tế
+    // Bar Chart
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    const barChart = new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Số lượng lỗi (pcs)',
+                data: counts,
+                backgroundColor: [
+                    'rgba(99, 102, 241, 0.8)',
+                    'rgba(16, 185, 129, 0.8)',
+                    'rgba(239, 68, 68, 0.8)',
+                    'rgba(20, 184, 166, 0.8)',
+                    'rgba(168, 85, 247, 0.8)'
+                ],
+                borderColor: [
+                    'rgb(99, 102, 241)',
+                    'rgb(16, 185, 129)',
+                    'rgb(239, 68, 68)',
+                    'rgb(20, 184, 166)',
+                    'rgb(168, 85, 247)'
+                ],
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
+                    titleFont: { size: 14, weight: 'bold' },
+                    bodyFont: { size: 13 },
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    borderWidth: 1,
+                    callbacks: {
+                        label: function(context) {
+                            return context.parsed.y.toLocaleString() + ' pcs';
+                        }
+                    }
+                },
+                datalabels: {
+                    color: '#000',
+                    anchor: 'end',     // hiển thị phía trên cột
+                    align: 'top',
+                    font: {
+                        size: 12,
+                        weight: 'bold'
+                    },
+                    formatter: function(value) {
+                        return value.toLocaleString(); // hiển thị giá trị
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value.toLocaleString() + ' pcs';
+                        },
+                        font: { size: 12 }
+                    },
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        font: { size: 11 }
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        },
+        plugins: [ChartDataLabels] // 👈 kích hoạt plugin
+    });
+
+    // Pie Chart
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    const pieChart = new Chart(pieCtx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: percentages,
+                backgroundColor: [
+                    'rgba(99, 102, 241, 0.8)',
+                    'rgba(16, 185, 129, 0.8)',
+                    'rgba(239, 68, 68, 0.8)',
+                    'rgba(20, 184, 166, 0.8)',
+                    'rgba(168, 85, 247, 0.8)'
+                ],
+                borderColor: 'white',
+                borderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 15,
+                        font: { size: 11 },
+                        usePointStyle: true,
+                        pointStyle: 'circle'
+                    }
+                },
+                
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
+                    titleFont: { size: 13, weight: 'bold' },
+                    bodyFont: { size: 12 },
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    borderWidth: 1,
+                    callbacks: {
+                        label: function(context) {
+                            return context.label + ': ' + context.parsed + '%';
+                        }
+                    }
+                }
+            },
+            cutout: '60%'
+        }
+    });
+</script>

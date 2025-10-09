@@ -6,7 +6,7 @@
     .hero-section {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         border-radius: 20px;
-        padding: 4rem 2rem;
+        padding: 2rem 2rem;
         text-align: center;
         color: white;
         margin-bottom: 3rem;
@@ -306,11 +306,11 @@
             <h3>Quản lý quy trình</h3>
             <p>Tối ưu hóa quy trình vận hành với công cụ quản lý tiêu chuẩn hóa và kiểm soát chất lượng hiệu quả.</p>
         </div>
-        <div class="feature-card">
+        @* <div class="feature-card">
             <span class="feature-icon">🔔</span>
             <h3>Cảnh báo tức thì</h3>
             <p>Nhận thông báo ngay lập tức khi có sự cố hoặc chỉ số chất lượng vượt ngưỡng cho phép.</p>
-        </div>
+        </div> *@
         <div class="feature-card">
             <span class="feature-icon">👥</span>
             <h3>Cộng tác nhóm</h3>
@@ -359,19 +359,19 @@
 <div class="modules-section">
     <h2 class="section-title">Các chức năng chính</h2>
     <div class="modules-grid">
-        <div class="module-card">
+        <div class="module-card" onclick="location.href='/Report';" style="cursor: pointer;">
             <h3>📈 Báo cáo</h3>
             <p>Báo cáo chi tiết và phân tích xu hướng</p>
         </div>
-        <div class="module-card">
+        <div class="module-card" onclick="location.href='/Function';" style="cursor: pointer;">
             <h3>📋 Thiết lập</h3>
             <p>Cấu hình hệ thống theo nhu cầu</p>
         </div>
-        <div class="module-card">
+        <div class="module-card" onclick="location.href='/Setting';" style="cursor: pointer;">
             <h3>🎯 Chức năng</h3>
             <p>Công cụ quản lý và vận hành</p>
         </div>
-        <div class="module-card">
+        <div class="module-card" onclick="location.href='/SystemAdmin';" style="cursor: pointer;">
             <h3>⚙️ Hệ thống</h3>
             <p>Quản trị và bảo trì hệ thống</p>
         </div>

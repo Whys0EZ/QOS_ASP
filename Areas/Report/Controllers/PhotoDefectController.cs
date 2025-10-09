@@ -14,6 +14,7 @@ using OfficeOpenXml.Style;
 using System.Drawing;
 
 
+
 namespace QOS.Areas.Report.Controllers
 {
     [Authorize] // chỉ khi login mới được vào
@@ -55,13 +56,31 @@ namespace QOS.Areas.Report.Controllers
                 DateFrom = dateFrom ?? DateTime.Now,
                 DateEnd = dateEnd ?? DateTime.Now.Date.AddDays(1).AddTicks(-1),
                 ReportData = new List<Dictionary<string, object>>(),
+                Unit_FQC_Unit = GetUnitList()
 
             };
 
             LoadReportData(model);
             return View(model);
         }
+        private List<Unit_FQC> GetUnitList()
+        {
+            try
+            {
+                using var connection = new SqlConnection(_connectionString);
+                connection.Open();
+                var units = connection.Query<Unit_FQC>(" SELECT DISTINCT Unit FROM FQC_UQ_Result_SUM_MO order by Unit ").ToList();
 
+
+                _logger.LogInformation($"Loaded {units.Count} units from database");
+                return units;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading unit list");
+                return new List<Unit_FQC>();
+            }
+        }
         private void LoadReportData(RP_PhotoDefectViewModel model)
         {
             try

@@ -14,6 +14,11 @@ namespace QOS.Areas.Report.Models
         public DateTime DateFrom { get; set; } = DateTime.Now.AddDays(-1);
         public DateTime DateEnd { get; set; } = DateTime.Now;
         public List<Dictionary<string, object>> ReportData { get; set; } = new List<Dictionary<string, object>>();
+        public List<Unit_FQC> Unit_FQC_Unit { get; set;} = new List<Unit_FQC>();
         
+    }
+    public class Unit_FQC 
+    {
+        public string? Unit { get; set;} ="";
     }
 }

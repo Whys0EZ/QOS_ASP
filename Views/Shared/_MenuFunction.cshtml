@@ -2,48 +2,51 @@
 @{
     Layout = "_Layout";
 }
-
-<div class="container-fluid">
-    <div class="row">
-        <!-- Nút bấm mở menu -->
-        <div class="col-12 d-md-none mb-2">
-            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuSidebar">
-                ☰ Menu
+<link rel="stylesheet" href="~/css/menu_left.css" />
+<div class="container-fluid p-0">
+    <div class="row g-0">
+        <!-- Mobile Menu Button -->
+        <div class="col-12 d-md-none p-3">
+            <button class="btn mobile-menu-btn w-100" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuSidebar">
+                ☰ Menu 
             </button>
         </div>
 
-        <!-- Sidebar cho desktop (luôn hiện) -->
-        <div class="col-md-2 bg-light d-none d-md-block">
-            <h3 class="mt-2">TÍNH NĂNG</h3>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
+        <!-- Desktop Sidebar -->
+        <div class="col-md-2 d-none d-md-block modern-sidebar">
+            <div class="sidebar-header">
+                <h3><span class="feature-icon">⚙️</span> TÍNH NĂNG</h3>
+            </div>
+
+            <ul class=" list-unstyled list-group list-group-flush">
+                <li class=" menu-item">
                     <a class="nav-link @Html.IsActive(new[] { "ManageOperation" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ManageOperation">1- Quản Lý Công Đoạn</a>
                 </li>
-                <li class="list-group-item">
+                <li class="menu-item">
                     <a class="nav-link @Html.IsActive(new[] { "ManageFault" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ManageFault">2- Quản Lý DS Lỗi</a>
                 </li>
-                <li class="list-group-item">
+                <li class="menu-item">
                     <a class="nav-link @Html.IsActive(new[] { "ThongSoBTP" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoBTP">3- Điểm Đo Thông Số BTP</a>
                 </li>
-                <li class="list-group-item">
+                <li class="menu-item">
                     <a class="nav-link @Html.IsActive(new[] { "ThongSoTP" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoTP">4- Điểm Đo Thông Số TP</a>
                 </li>
-                <li class="list-group-item">
+                <li class="menu-item">
                     <a class="nav-link @Html.IsActive(new[] { "ThongSoDo" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoDo">5- Điểm Đo Thông Số Đo</a>
                 </li>
-                <li class="list-group-item">
+                <li class="menu-item">
                     <a class="nav-link @Html.IsActive(new[] { "ETSMoStyle" }, new[] { "Index" })" asp-controller="Function" asp-action="F_MOStyleSize">6- ETS: MO-Style-Size</a>
                 </li>
-                <li class="list-group-item">
+                <li class="menu-item">
                     <a class="nav-link @Html.IsActive(new[] { "TrackingContact" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingContact">7- TRACKING - Contact List</a>
                 </li>
-                <li class="list-group-item">
+                <li class="menu-item">
                     <a class="nav-link @Html.IsActive(new[] { "TrackingSetup" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingSetup">8- TRACKING - Infor Setup</a>
                 </li>
-                <li class="list-group-item">
+                <li class="menu-item">
                     <a class="nav-link @Html.IsActive(new[] { "TrackingUpload" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingUpload">9- TRACKING - Upload Data</a>
                 </li>
-                <li class="list-group-item">
+                <li class="menu-item">
                     <a class="nav-link @Html.IsActive(new[] { "OnlineFile" }, new[] { "Index" })" asp-controller="Function" asp-action="F_OnlineFiles">10- Online Files</a>
                 </li>
             </ul>
@@ -65,34 +68,34 @@
     </div>
     <div class="offcanvas-body">
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">
+            <li class="menu-item">
                 <a asp-controller="Function" asp-action="F_ManageOperation">1- Quản Lý Công Đoạn</a>
             </li>
-            <li class="list-group-item">
+            <li class="menu-item">
                 <a asp-controller="Function" asp-action="F_ManageFault">2- Quản Lý DS Lỗi</a>
             </li>
-            <li class="list-group-item">
+            <li class="menu-item">
                 <a asp-controller="Function" asp-action="F_ThongSoBTP">3- Điểm Đo Thông Số BTP</a>
             </li>
-            <li class="list-group-item">
+            <li class="menu-item">
                 <a asp-controller="Function" asp-action="F_ThongSoTP">4- Điểm Đo Thông Số TP</a>
             </li>
-            <li class="list-group-item">
+            <li class="menu-item">
                 <a asp-controller="Function" asp-action="F_ThongSoDo">5- Điểm Đo Thông Số Đo</a>
             </li>
-            <li class="list-group-item">
+            <li class="menu-item">
                 <a asp-controller="Function" asp-action="F_MOStyleSize">6- ETS: MO-Style-Size</a>
             </li>
-            <li class="list-group-item">
+            <li class="menu-item">
                 <a asp-controller="Function" asp-action="F_TrackingContact">7- TRACKING - Group Contact List</a>
             </li>
-            <li class="list-group-item">
+            <li class="menu-item">
                 <a asp-controller="Function" asp-action="F_TrackingSetup">8- TRACKING - Infor Setup</a>
             </li>
-            <li class="list-group-item">
+            <li class="menu-item">
                 <a asp-controller="Function" asp-action="F_TrackingUpload">9- TRACKING - Upload Data</a>
             </li>
-            <li class="list-group-item">
+            <li class="menu-item">
                 <a asp-controller="Function" asp-action="F_OnlineFiles">10- Online Files</a>
             </li>
         </ul>

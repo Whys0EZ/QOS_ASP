@@ -29,7 +29,8 @@ namespace QOS.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            // return View();
+            return RedirectToAction("RP_Form1", "Form1BCCLC", new { area = "Report" });
         }
         
         [Permission("B_F1")]
@@ -77,7 +78,13 @@ namespace QOS.Controllers
             // return View("ManageOperation/F_ManageOperation");
             return RedirectToAction("RP_PhotoDefect", "PhotoDefect", new { area = "Report" });
         }
-    
+        
+        [Permission("B_F6")]
+        public IActionResult RP_Summary_Defects_KCM()
+        {
+            // return View("ManageOperation/F_ManageOperation");
+            return RedirectToAction("RP_Summary_Defects_KCM", "SummaryKCM", new { area = "Report" });
+        }
 
         public IActionResult Feature2()
         {

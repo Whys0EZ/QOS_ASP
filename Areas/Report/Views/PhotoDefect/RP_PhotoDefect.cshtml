@@ -11,7 +11,7 @@
     <div class="container-fluid">
         <!-- Header -->
         <div class="header-card ">
-            <marquee direction="down" scrolldelay="500"><h1 class="header-title  text-center">
+            <marquee direction="down" behavior="alternate" scrolldelay="500"><h1 class="header-title  text-center">
                 <i class="bi bi-clipboard-data me-2"></i>
                 QOS - TỔNG HỢP HÌNH ẢNH LỖI
             </h1></marquee>
@@ -37,12 +37,22 @@
                         <label class="filter-label">Unit:</label>
                         <select class="form-select" name="unit" id="unitSelect" style="width: 100px;" >
                             <option value="ALL" selected>--Unit--</option>
-                            @foreach (var unit in Model.Unit_List)
+                            @if(Model.Report_Type == "FQC_UQ_Result")
+                            {
+                                foreach (var unit in Model.Unit_FQC_Unit)
                                 {
                                     <option value="@unit.Unit" selected="@(unit.Unit == Model.Unit)">
                                         @unit.Unit
                                     </option>
                                 }
+                            } else{
+                                foreach (var unit in Model.Unit_List)
+                                    {
+                                        <option value="@unit.Unit" selected="@(unit.Unit == Model.Unit)">
+                                            @unit.Unit
+                                        </option>
+                                    }
+                            }
                         </select>
                     </div>
                     <div class="filter-item">
@@ -80,7 +90,7 @@
 
                     <div class="filter-item mt-auto">
                         <label class="filter-label">&nbsp;</label>
-                        <button type="button" class="btn btn-success" onclick="exportToExcel()">
+                        <button type="button" class="btn btn-success" onClick="Export2Excel_Click();">
                             <i class="bi bi-file-earmark-excel me-1"></i> Tải excel
                         </button>
                     </div>
@@ -124,12 +134,14 @@
             <div class="chart-card">
                 <h2 class="chart-title">CHI TIẾT HÌNH ẢNH LỖI @reportName</h2>
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped">
+                    <table class="table table-bordered table-hover table-striped" id='headerTable'>
                         <thead class="table-primary">
                             <th>STT</th>
                             <th>ID</th>
                             <th>Unit</th>
                             <th>MO</th>
+                            <th>Check_Qty / Qty</th>
+                            <th>Tổng lỗi</th>
                             <th>Trạng Thái</th>
                             <th>Lần Kiểm</th>
                             <th>Ảnh Lỗi</th>
@@ -149,9 +161,11 @@
                                     
                                     <tr>
                                         <td>@i</td>
-                                        <td><strong>@row["ID"]</strong></td>
+                                        <td> <span style="text-decoration: underline; cursor: pointer; color:blue;" onclick="showDetails('@row["ID"]')">@row["ID"]</span></td>
                                         <td>@row["Unit"]</td>
                                         <td>@row["MO"] - @row["Color"]</td>
+                                        <td>@row["Check_Qty"] / @row["Qty"]</td>
+                                        <td>@row["Total_Fault_QTY"]</td>
                                         <td style="text-align: center;"><div class="@cssClass"></div></td>
                                         <td>@row["Audit_Time"]</td>
 
@@ -173,7 +187,7 @@
                                                 <span>Không có hình ảnh</span>
                                             }
                                         </td>
-                                        <td></td>
+                                        <td>@row["Fault_List_VN"]</td>
                                         <td>@row["Sewer"]</td>
                                         <td>@row["UserUpdate"]- @row["FullName"]</td>
                                         <td>@row["LastUpdate"]</td>
@@ -212,6 +226,21 @@
     </div>
 </div>
 
+ @* modal-fullscreen *@
+<div class="modal fade" id="Form6Modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white text-center text-uppercase">
+                <h5 class="modal-title">Chi tiết báo cáo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="ModalRP_Form6">
+                <!-- Nội dung chi tiết sẽ load vào đây -->
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     function Show_Photo(img) {
         var modal = document.getElementById('Modal_Photo');
@@ -227,4 +256,132 @@
             }
         }
     }
+
+    function Export2Excel_Click() {
+
+        var tab_text = "<table border='1px'><tr>";
+        var textRange = '';
+        var j = 0;
+        var tab = document.getElementById('headerTable'); // id of table
+        var row = tab.rows[0];
+
+        // Tiêu đề 
+        tab_text += "<tr>";
+        for (var l = 0; l < row.cells.length; l++) {
+
+            tab_text += "<td bgcolor='#87AFC6'>" + row.cells[l].innerHTML + "</td>";
+
+        }
+        tab_text += "</tr>";
+        j++;
+
+        //dữ liệu bảng
+        for (; j < tab.rows.length; j++) {
+
+            var row = tab.rows[j];
+            tab_text += "<tr>";
+            for (var l = 0; l < row.cells.length; l++) {
+
+                tab_text += "<td >" + row.cells[l].innerHTML + "</td>";
+
+            }
+            tab_text += "</tr>";
+        }
+
+        tab_text = tab_text + "</table>";
+
+        var a = document.createElement('a');
+        var data_type = 'data:application/vnd.ms-excel';
+        a.href = data_type + ', ' + encodeURIComponent(tab_text);
+        //setting the file name
+        a.download = 'Hinh_anh_loi.xls';
+        //triggering the function
+        a.click();
+        //just in case, prevent default behaviour
+        e.preventDefault();
+    }
+
+    function showDetails(id) {
+        var report_type = '@Model.Report_Type';
+        if (report_type == 'Form1_BCCLC')
+        {
+            $.get('@Url.Action("DetailForm1", "Form1BCCLC", new { area = "Report" })',
+                { id: id },
+                function (data) {
+                    if (data) {
+                        // inset info
+                        $("#ModalRP_Form6").html(data);
+                        var modal = new bootstrap.Modal(document.getElementById('Form6Modal'));
+                        var unit = $("#ModalRP_Form6").find("#UnitField").val();
+                        $(".modal-title").text("Chi tiết báo cáo - Chuyền : " + unit);
+
+                        modal.show();
+                    }
+                });
+        }
+        if (report_type == 'Form2_BCCPI')
+        {
+            $.get('@Url.Action("DetailForm2", "Form2BCCPI", new { area = "Report" })',
+                { id: id },
+                function (data) {
+                    if (data) {
+                        // inset info
+                        $("#ModalRP_Form6").html(data);
+                        var modal = new bootstrap.Modal(document.getElementById('Form6Modal'));
+                        var unit = $("#ModalRP_Form6").find("#UnitField").val();
+                        $(".modal-title").text("Chi tiết báo cáo - Chuyền : " + unit);
+
+                        modal.show();
+                    }
+                });
+        }
+        if (report_type == 'Form3_BCDT')
+        {
+            $.get('@Url.Action("DetailForm3", "Form3BCDT", new { area = "Report" })',
+                { id: id },
+                function (data) {
+                    if (data) {
+                        // inset info
+                        $("#ModalRP_Form6").html(data);
+                        var modal = new bootstrap.Modal(document.getElementById('Form6Modal'));
+                        var unit = $("#ModalRP_Form6").find("#UnitField").val();
+                        $(".modal-title").text("Chi tiết báo cáo - Chuyền : " + unit);
+
+                        modal.show();
+                    }
+                });
+        }
+        if (report_type == 'Form6_BCKCC')
+        {
+            $.get('@Url.Action("DetailForm6", "Form6BCCC", new { area = "Report" })',
+                { id: id },
+                function (data) {
+                    if (data) {
+                        // inset info
+                        $("#ModalRP_Form6").html(data);
+                        var modal = new bootstrap.Modal(document.getElementById('Form6Modal'));
+                        var unit = $("#ModalRP_Form6").find("#UnitField").val();
+                        $(".modal-title").text("Chi tiết báo cáo - Chuyền : " + unit);
+
+                        modal.show();
+                    }
+                });
+        }
+        if (report_type == 'Form4_BCCLM') {
+            $.get('@Url.Action("DetailForm4", "Form4BCCLM", new { area = "Report" })',
+                { id: id },
+                function (data) {
+                    if (data) {
+                        // inset info
+                        $("#ModalRP_Form6").html(data);
+                        var modal = new bootstrap.Modal(document.getElementById('Form6Modal'));
+                        var unit = $("#ModalRP_Form6").find("#UnitField").val();
+                        $(".modal-title").text("Chi tiết báo cáo - Chuyền : " + unit);
+
+                        modal.show();
+                    }
+                });
+        }
+    }
+
 </script>

@@ -53,6 +53,10 @@
       "PackagePath": "staticwebassets\\css\\login.css"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\menu_left.css",
+      "PackagePath": "staticwebassets\\css\\menu_left.css"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\report.css",
       "PackagePath": "staticwebassets\\css\\report.css"
     },

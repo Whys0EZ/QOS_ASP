@@ -18,7 +18,8 @@ namespace QOS.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            // return View();
+            return RedirectToAction("Index", "ManageOperation");
         }
         // [Route("")]
         [Permission("A_F1")]
