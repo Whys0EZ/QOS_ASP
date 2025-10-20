@@ -4,6 +4,7 @@
 ## Get latest from `dotnet new gitignore`
 # Bỏ qua thư mục publish
 out/
+appsettings.json
 # dotenv files
 .env
 
