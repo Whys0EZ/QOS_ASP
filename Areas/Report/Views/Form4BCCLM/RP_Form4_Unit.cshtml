@@ -82,7 +82,7 @@
                 <table class="table table-bordered table-hover align-middle ">
                     <thead>
                         <tr>
-                            <th style="width:50px;">LINE</th>
+                            <th style="width:50px; position: sticky;left: 0; z-index: 5; background: #54aafaff;" >LINE</th>
                             @foreach (var col in Model.ColumnHeaders)
                             {
                                 <th style="width:50px;">@col</th>
@@ -93,7 +93,7 @@
                         @foreach (var row in Model.LineDetails)
                         {
                             <tr>
-                                <td class="text-center">@row.Line</td>
+                                <td class="text-center" style ="position: sticky;left: 0; z-index: 5; background: #54aafaff;">@row.Line</td>
                                 @foreach (var col in Model.ColumnHeaders)
                                 {
                                     var status = row.StatusByStep[col];

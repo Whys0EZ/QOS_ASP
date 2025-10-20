@@ -796,7 +796,14 @@ namespace QOS.Areas.Report.Controllers
                     var result = new Dictionary<string, object>();
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
-                        result[reader.GetName(i)] = reader.IsDBNull(i) ? null : reader[i];
+                        if (reader.IsDBNull(i))
+                        {
+                            result[reader.GetName(i)] = "";
+                        }
+                        else
+                        {
+                            result[reader.GetName(i)] = reader[i] as object;
+                        }
                     }
                     results.Add(result);
                 }

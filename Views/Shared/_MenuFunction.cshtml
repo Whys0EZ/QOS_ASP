@@ -13,48 +13,52 @@
         </div>
 
         <!-- Desktop Sidebar -->
-        <div class="col-md-2 d-none d-md-block modern-sidebar">
+        <div class="col-md-2 d-none d-md-block modern-sidebar" id="desktopSidebar">
+        <!-- Toggle Button -->
+            <button class="toggle-sidebar-btn" id="toggleBtn" title="Thu nhỏ/Mở rộng menu">
+                <i class="fas fa-chevron-left"></i>
+            </button>
             <div class="sidebar-header">
                 <h3><span class="feature-icon">⚙️</span> TÍNH NĂNG</h3>
             </div>
 
             <ul class=" list-unstyled list-group list-group-flush">
                 <li class=" menu-item">
-                    <a class="nav-link @Html.IsActive(new[] { "ManageOperation" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ManageOperation">1- Quản Lý Công Đoạn</a>
+                    <a class="menu-link @Html.IsActive(new[] { "ManageOperation" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ManageOperation" ><span class="menu-number">1</span>Quản Lý Công Đoạn</a>
                 </li>
                 <li class="menu-item">
-                    <a class="nav-link @Html.IsActive(new[] { "ManageFault" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ManageFault">2- Quản Lý DS Lỗi</a>
+                    <a class="menu-link @Html.IsActive(new[] { "ManageFault" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ManageFault"><span class="menu-number">2</span>Quản Lý DS Lỗi</a>
                 </li>
                 <li class="menu-item">
-                    <a class="nav-link @Html.IsActive(new[] { "ThongSoBTP" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoBTP">3- Điểm Đo Thông Số BTP</a>
+                    <a class="menu-link @Html.IsActive(new[] { "ThongSoBTP" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoBTP"><span class="menu-number">3</span>Điểm Đo Thông Số BTP</a>
                 </li>
                 <li class="menu-item">
-                    <a class="nav-link @Html.IsActive(new[] { "ThongSoTP" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoTP">4- Điểm Đo Thông Số TP</a>
+                    <a class="menu-link @Html.IsActive(new[] { "ThongSoTP" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoTP"><span class="menu-number">4</span>Điểm Đo Thông Số TP</a>
                 </li>
                 <li class="menu-item">
-                    <a class="nav-link @Html.IsActive(new[] { "ThongSoDo" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoDo">5- Điểm Đo Thông Số Đo</a>
+                    <a class="menu-link @Html.IsActive(new[] { "ThongSoDo" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoDo"><span class="menu-number">5</span>Điểm Đo Thông Số Đo</a>
                 </li>
                 <li class="menu-item">
-                    <a class="nav-link @Html.IsActive(new[] { "ETSMoStyle" }, new[] { "Index" })" asp-controller="Function" asp-action="F_MOStyleSize">6- ETS: MO-Style-Size</a>
+                    <a class="menu-link @Html.IsActive(new[] { "ETSMoStyle" }, new[] { "Index" })" asp-controller="Function" asp-action="F_MOStyleSize"><span class="menu-number">6</span>ETS: MO-Style-Size</a>
                 </li>
                 <li class="menu-item">
-                    <a class="nav-link @Html.IsActive(new[] { "TrackingContact" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingContact">7- TRACKING - Contact List</a>
+                    <a class="menu-link @Html.IsActive(new[] { "TrackingContact" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingContact"><span class="menu-number">7</span>TRACKING - Contact List</a>
                 </li>
                 <li class="menu-item">
-                    <a class="nav-link @Html.IsActive(new[] { "TrackingSetup" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingSetup">8- TRACKING - Infor Setup</a>
+                    <a class="menu-link @Html.IsActive(new[] { "TrackingSetup" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingSetup"><span class="menu-number">8</span>TRACKING - Infor Setup</a>
                 </li>
                 <li class="menu-item">
-                    <a class="nav-link @Html.IsActive(new[] { "TrackingUpload" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingUpload">9- TRACKING - Upload Data</a>
+                    <a class="menu-link @Html.IsActive(new[] { "TrackingUpload" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingUpload"><span class="menu-number">9</span>TRACKING - Upload Data</a>
                 </li>
                 <li class="menu-item">
-                    <a class="nav-link @Html.IsActive(new[] { "OnlineFile" }, new[] { "Index" })" asp-controller="Function" asp-action="F_OnlineFiles">10- Online Files</a>
+                    <a class="menu-link @Html.IsActive(new[] { "OnlineFile" }, new[] { "Index" })" asp-controller="Function" asp-action="F_OnlineFiles"><span class="menu-number">10</span>Online Files</a>
                 </li>
             </ul>
             <hr/>
         </div>
 
         <!-- Nội dung chính -->
-        <div class="col-md-10">
+        <div class="col-md-10 content-area" id="contentArea">
             @RenderBody()
         </div>
     </div>
@@ -101,3 +105,36 @@
         </ul>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleBtn = document.getElementById('toggleBtn');
+        const sidebar = document.getElementById('desktopSidebar');
+        const contentArea = document.getElementById('contentArea');
+        
+        // Lấy trạng thái từ localStorage
+        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        
+        // Áp dụng trạng thái ban đầu
+        if (isCollapsed) {
+            sidebar.classList.add('collapsed');
+            contentArea.classList.add('expanded');
+            toggleBtn.innerHTML = '▶';
+        }
+        
+        // Xử lý sự kiện click
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+            contentArea.classList.toggle('expanded');
+            
+            // Thay đổi icon
+            if (sidebar.classList.contains('collapsed')) {
+                toggleBtn.innerHTML = '▶';
+                localStorage.setItem('sidebarCollapsed', 'true');
+            } else {
+                toggleBtn.innerHTML = '◀';
+                localStorage.setItem('sidebarCollapsed', 'false');
+            }
+        });
+    });
+</script>

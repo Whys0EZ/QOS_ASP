@@ -157,7 +157,7 @@
                                 int rowNum = 1;
                                 foreach (var row in Model.ReportData)
                                 {
-                                    List<string>? faultCode = row["Fault_Code"]?.ToString().Split(',').ToList();
+                                    List<string>? faultCode = row["Fault_Code"]?.ToString()?.Split(',').ToList();
                                     <tr>
                                         <td>@rowNum</td>
                                         <td><strong>@row["Fault_Code"]</strong></td>

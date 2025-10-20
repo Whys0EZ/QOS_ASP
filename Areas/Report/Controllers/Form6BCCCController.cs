@@ -10,7 +10,7 @@ using OfficeOpenXml;
 using System.Data;
 using System.Text.Json;
 using QOS.Areas.Function.Filters;
-
+using System.Linq;
 
 namespace QOS.Areas.Report.Controllers
 {
@@ -121,12 +121,12 @@ namespace QOS.Areas.Report.Controllers
 
                         if (row.ContainsKey("OQL_TT") && row["OQL_TT"] != null &&  double.TryParse(row["OQL_TT"]?.ToString(), out var oqlTT))
                         {
-                            model.DataPointsREG.Add(new ChartPoint { Label = unit_v, Y = Math.Round(oqlTT * 100.0, 2) });
+                            model.DataPointsREG.Add(new ChartPoint { Label = unit_v ?? "", Y = Math.Round(oqlTT * 100.0, 2) });
                         }
 
                         if (row.ContainsKey("OQL_Target") && row["OQL_Target"] != null &&  double.TryParse(row["OQL_Target"]?.ToString(), out var oqlTarget))
                         {
-                            model.DataPointsUnitTarget.Add(new ChartPoint { Label = unit_v,  Y = Math.Round(oqlTarget * 100.0, 2) });
+                            model.DataPointsUnitTarget.Add(new ChartPoint { Label = unit_v ?? "",  Y = Math.Round(oqlTarget * 100.0, 2) });
                         }
                     }
                 }
@@ -142,11 +142,13 @@ namespace QOS.Areas.Report.Controllers
                             if (kvp.Key == "Unit" || kvp.Key == "OQL_TT" || kvp.Key == "OQL_Target") continue;
 
                             if (kvp.Value == null) continue;
-                            var parts = kvp.Value.ToString().Split('_'); 
-                            if (parts.Length < 4) continue;
+                            var parts = kvp.Value.ToString()?.Split('_'); 
+                            if (parts?.Length < 4) continue;
 
-                            var color = parts[0];   // red / green / yellow
+                            var color = parts?[0];   // red / green / yellow
+    #pragma warning disable CS8602 // Dereference of a possibly null reference.
                             var value = double.Parse(parts[1]); // số %
+    #pragma warning restore CS8602 // Dereference of a possibly null reference.
                             var target = double.Parse(parts[2]); // target
                             var code = parts[3];   // ví dụ 201S11
 
@@ -385,41 +387,38 @@ namespace QOS.Areas.Report.Controllers
                     if (row == 4)
                     {
                         // nameList = reader["CL"].ToString().Split(',');
-                        nameList = !reader.IsDBNull(reader.GetOrdinal("CL")) ? reader["CL"].ToString().Split(',') : Array.Empty<string>();
+                        nameList = !reader.IsDBNull(reader.GetOrdinal("CL")) ? reader["CL"]?.ToString()?.Split(',') : Array.Empty<string>();
                         col = 2;
-                        foreach (var cl in nameList)
+                        foreach (var cl in from cl in nameList
+                                           where !string.IsNullOrWhiteSpace(cl)
+                                           select cl)
                         {
-                            if (!string.IsNullOrWhiteSpace(cl))
-                            {
-                                col++;
-                                worksheet.Cells[3, col].Value = cl;
-                                
-                            }
+                            col++;
+                            worksheet.Cells[3, col].Value = cl;
                         }
                     }
 
                     // Ghi dữ liệu theo Name_List
                     col = 2;
-                    foreach (var cl in nameList)
+                    foreach (var cl in from cl in nameList
+                                       where !string.IsNullOrWhiteSpace(cl)
+                                       select cl)
                     {
-                        if (!string.IsNullOrWhiteSpace(cl))
+                        col++;
+                        var val = reader[cl]?.ToString();
+                        if (!string.IsNullOrEmpty(val))
                         {
-                            col++;
-                            var val = reader[cl]?.ToString();
-                            if (!string.IsNullOrEmpty(val))
-                            {
-                                var tmp = val.Split('_');
-                                if (tmp.Length > 1)
-                                    if (double.TryParse(tmp[1], out double numVal))
-                                    {
-                                        worksheet.Cells[row, col].Value = numVal;          // giữ số gốc
-                                        worksheet.Cells[row, col].Style.Numberformat.Format = "0.00%"; 
-                                    }
-                                    else
-                                    {
-                                        worksheet.Cells[row, col].Value = tmp[1]; // fallback nếu không parse được
-                                    } 
-                            }
+                            var tmp = val.Split('_');
+                            if (tmp.Length > 1)
+                                if (double.TryParse(tmp[1], out double numVal))
+                                {
+                                    worksheet.Cells[row, col].Value = numVal;          // giữ số gốc
+                                    worksheet.Cells[row, col].Style.Numberformat.Format = "0.00%";
+                                }
+                                else
+                                {
+                                    worksheet.Cells[row, col].Value = tmp[1]; // fallback nếu không parse được
+                                }
                         }
                     }
 

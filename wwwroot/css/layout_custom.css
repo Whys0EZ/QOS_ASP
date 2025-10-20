@@ -464,4 +464,7 @@ main {
         margin: 0.5rem 0;
         display: inline-block;
     }
+    .footer {
+        display: none;
+    }
 }

@@ -78,6 +78,12 @@ namespace QOS.Controllers
             // return View("ManageOperation/F_ManageOperation");
             return RedirectToAction("RP_PhotoDefect", "PhotoDefect", new { area = "Report" });
         }
+        [Permission("B_F6")]
+        public IActionResult RP_OQLEndLine()
+        {
+            // return View("ManageOperation/F_ManageOperation");
+            return RedirectToAction("RP_OQLEndLine", "OQLEndLine", new { area = "Report" });
+        }
         
         [Permission("B_F6")]
         public IActionResult RP_Summary_Defects_KCM()
@@ -85,10 +91,30 @@ namespace QOS.Controllers
             // return View("ManageOperation/F_ManageOperation");
             return RedirectToAction("RP_Summary_Defects_KCM", "SummaryKCM", new { area = "Report" });
         }
-
-        public IActionResult Feature2()
+        [Permission("B_F6")]
+        public IActionResult RP_Form4_BCCLM_SUM()
         {
-            return View();
+            return RedirectToAction("RP_Form4_BCCLM_SUM", "Form4BCCLMSUM", new { area = "Report" });
+        }
+        [Permission("B_F6")]
+        public IActionResult RP_Form7()
+        {
+            return RedirectToAction("RP_Form7", "Form7BTP", new { area = "Report" });
+        }
+        [Permission("B_F6")]
+        public IActionResult RP_Form8()
+        {
+            return RedirectToAction("RP_Form8", "Form8TP", new { area = "Report" });
+        }
+        [Permission("B_F6")]
+        public IActionResult SummaryEndline()
+        {
+            return RedirectToAction("SummaryEndline", "SummaryEndline", new { area = "Report" });
+        }
+        [Permission("B_F6")]
+        public IActionResult FCATracking()
+        {
+            return RedirectToAction("FCATracking", "FCATracking", new { area = "Report" });
         }
     }
 }

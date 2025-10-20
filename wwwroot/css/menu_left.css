@@ -59,10 +59,10 @@
 
 .menu-link {
     display: block;
-    padding: 12px 16px;
+    padding: 6px 10px;
     color: #ecf0f1;
     text-decoration: none;
-    font-size: 13px;
+    font-size: 14px;
     transition: all 0.3s ease;
     border-left: 3px solid transparent;
     position: relative;
@@ -174,4 +174,120 @@
 .menu-link.active .menu-number {
     background: rgba(52, 152, 219, 0.4);
     color: #fff;
+}
+
+.modern-sidebar {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.modern-sidebar.collapsed {
+    width: 60px !important;
+    min-width: 60px !important;
+}
+/* Sidebar Content - QUAN TRỌNG ĐỂ SCROLL - Tăng độ ưu tiên */
+.modern-sidebar .sidebar-content {
+    flex: 1;                    
+    overflow-y: auto !important;   /* !important để đảm bảo không bị ghi đè */
+    overflow-x: hidden !important;
+    padding: 10px 0 20px 0;
+    max-height: calc(100vh - 80px);
+}
+/* Hoặc tăng specificity bằng cách thêm nhiều class */
+#desktopSidebar .sidebar-content {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+.modern-sidebar .sidebar-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modern-sidebar .sidebar-content::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+    margin: 5px 0;
+}
+
+.modern-sidebar .sidebar-content::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.modern-sidebar .sidebar-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.4);
+    background-clip: padding-box;
+}
+
+.modern-sidebar.collapsed .sidebar-header h3 span:not(.feature-icon) {
+    display: none;
+}
+
+.modern-sidebar.collapsed .menu-link {
+    font-size: 0;
+    padding: 12px 8px;
+    text-align: center;
+}
+
+.modern-sidebar.collapsed .menu-link::before {
+    font-size: 16px;
+    content: attr(data-number);
+}
+
+.toggle-sidebar-btn {
+    position: absolute;
+    right: -10px;
+    top: 15px;
+    z-index: 1000;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #007bff;
+    color: #007bff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.toggle-sidebar-btn:hover {
+    background: #007bff;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.content-area {
+    transition: all 0.3s ease;
+    padding-left: 15px;
+}
+
+.content-area.expanded {
+    flex: 0 0 calc(100% - 60px);
+    max-width: calc(100% - 60px);
+}
+.menu-icon {
+    font-size: 18px;
+    min-width: 18px;
+    text-align: center;
+}
+.row>* {
+        padding-left: 3px !important;
+    }
+
+@media (max-width: 768px) {
+    .content-area {
+        padding: 0 !important;
+
+    }
+    .main-content {
+        padding: 0 !important;
+    }
+    .row>* {
+        padding-left: 0 !important;
+    }
 }

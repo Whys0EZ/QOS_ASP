@@ -3,6 +3,7 @@
     Layout = "_Layout";
 }
 <link rel="stylesheet" href="~/css/menu_left.css" />
+
 <div class="container-fluid p-0">
     <div class="row g-0">
         <!-- Mobile Menu Button -->
@@ -13,45 +14,104 @@
         </div>
 
         <!-- Desktop Sidebar -->
-        <div class="col-md-2 d-none d-md-block modern-sidebar">
+        <div class="col-md-2 d-none d-md-block modern-sidebar" id="desktopSidebar">
+            <!-- Toggle Button -->
+            <button class="toggle-sidebar-btn" id="toggleBtn" title="Thu nhỏ/Mở rộng menu">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            
             <div class="sidebar-header">
-                <h3><span class="feature-icon">📋</span> THIẾT LẬP</h3>
+                <h3><i class="fas fa-sliders-h me-2"></i> <span>THIẾT LẬP</span></h3>
             </div>
 
-            <ul class=" list-unstyled list-group list-group-flush">
+            <ul class="list-unstyled list-group list-group-flush">
                 <li class="menu-item">
-                    <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "FactoryList" })" asp-controller="Setting" asp-action="FactoryList">1-Danh sách nhà máy</a>
+                    <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "FactoryList" })" 
+                       asp-controller="Setting" 
+                       asp-action="FactoryList"
+                       data-number="1"
+                       title="Danh sách nhà máy">1-Danh sách nhà máy</a>
                 </li>
                 <li class="menu-item">
-                    <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "DepartmentList" })" asp-controller="Setting" asp-action="DepartmentList">2-Danh sách phòng ban</a>
+                    <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "DepartmentList" })" 
+                       asp-controller="Setting" 
+                       asp-action="DepartmentList"
+                       data-number="2"
+                       title="Danh sách phòng ban">2-Danh sách phòng ban</a>
                 </li>
                 <li class="menu-item">
-                    <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "UnitList" })" asp-controller="Setting" asp-action="UnitList">3-Danh sách xưởng</a>
+                    <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "UnitList" })" 
+                       asp-controller="Setting" 
+                       asp-action="UnitList"
+                       data-number="3"
+                       title="Danh sách xưởng">3-Danh sách xưởng</a>
                 </li>
-        </ul>
-    </div>
-    <div class="col-10">
-        @RenderBody()
+            </ul>
+        </div>
+
+        <!-- Content Area -->
+        <div class="col-md-10 content-area" id="contentArea">
+            @RenderBody()
+        </div>
     </div>
 </div>
 
 <!-- Offcanvas cho mobile -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="menuSidebar">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title">TÍNH NĂNG</h5>
+        <h5 class="offcanvas-title">THIẾT LẬP</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body">
         <ul class="list-group list-group-flush">
             <li class="menu-item">
-                <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "FactoryList" })" asp-controller="Setting" asp-action="FactoryList">1-Danh sách nhà máy</a>
+                <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "FactoryList" })" 
+                   asp-controller="Setting" 
+                   asp-action="FactoryList">1-Danh sách nhà máy</a>
             </li>
             <li class="menu-item">
-                <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "DepartmentList" })" asp-controller="Setting" asp-action="DepartmentList">2-Danh sách phòng ban</a>
+                <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "DepartmentList" })" 
+                   asp-controller="Setting" 
+                   asp-action="DepartmentList">2-Danh sách phòng ban</a>
             </li>
             <li class="menu-item">
-                <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "UnitList" })" asp-controller="Setting" asp-action="UnitList">3-Danh sách xưởng</a>
+                <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "UnitList" })" 
+                   asp-controller="Setting" 
+                   asp-action="UnitList">3-Danh sách xưởng</a>
             </li>
         </ul>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleBtn = document.getElementById('toggleBtn');
+        const sidebar = document.getElementById('desktopSidebar');
+        const contentArea = document.getElementById('contentArea');
+        
+        // Lấy trạng thái từ localStorage
+        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        
+        // Áp dụng trạng thái ban đầu
+        if (isCollapsed) {
+            sidebar.classList.add('collapsed');
+            contentArea.classList.add('expanded');
+            toggleBtn.innerHTML = '▶';
+        }
+        
+        // Xử lý sự kiện click
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+            contentArea.classList.toggle('expanded');
+            
+            // Thay đổi icon
+            if (sidebar.classList.contains('collapsed')) {
+                toggleBtn.innerHTML = '▶';
+                localStorage.setItem('sidebarCollapsed', 'true');
+            } else {
+                toggleBtn.innerHTML = '◀';
+                localStorage.setItem('sidebarCollapsed', 'false');
+            }
+        });
+    });
+</script>

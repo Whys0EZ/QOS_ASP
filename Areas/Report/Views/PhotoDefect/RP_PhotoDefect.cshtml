@@ -172,7 +172,7 @@
                                         <td>
                                             @if (!object.ReferenceEquals(row["Photo_URL"], null))
                                             {
-                                                var photos = row["Photo_URL"].ToString().Split(';', StringSplitOptions.RemoveEmptyEntries);
+                                                var photos = row["Photo_URL"]?.ToString()?.Split(';', StringSplitOptions.RemoveEmptyEntries);
                                                 foreach (var photo in photos)
                                                 {
                                                     <img src="@($"{imgPath}{photo}")" alt="Defect Photo" style="width: 100px; height: auto; margin: 2px; border: 1px solid #ccc;"  onclick='Show_Photo("@($"{imgPath}{photo}")")'/>
