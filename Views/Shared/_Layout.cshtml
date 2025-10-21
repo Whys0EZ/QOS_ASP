@@ -134,6 +134,18 @@
                                             </div>
                                         </a>
                                     </li>
+                                    @if(@User.Identity?.Name =="admin")
+                                    {
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Contact" asp-action="Admin">
+                                            <i class="fas fa-cog me-3"></i>
+                                            <div>
+                                                <div class="dropdown-item-title">Contact</div>
+                                                <small class="dropdown-item-desc">Thông tin phản hồi</small>
+                                            </div>
+                                        </a>
+                                    </li>  
+                                    }
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <a class="dropdown-item logout-item" asp-area="" asp-controller="Account" asp-action="Logout">
@@ -220,7 +232,7 @@
                         <strong>ISD TEAM</strong> &copy; 2025 - 
                         <span style="background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 600;">QOS</span>
                     
-                        <a asp-area="" asp-controller="Home" asp-action="Contact">
+                        <a asp-area="" asp-controller="Contact" asp-action="Index">
                             <i class="fas fa-envelope me-2"></i>Liên hệ
                         </a>
                         @* <p>Quality Operations System - Giải pháp quản lý chất lượng toàn diện</p> *@

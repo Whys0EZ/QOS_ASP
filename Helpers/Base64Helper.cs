@@ -8,7 +8,7 @@ namespace QOS.Helpers
         /// <summary>
         /// Mã hóa chuỗi sang Base64
         /// </summary>
-        public static string Encode(string plainText)
+        public static string Encode(string? plainText)
         {
             if (string.IsNullOrEmpty(plainText))
                 return string.Empty;
@@ -20,7 +20,7 @@ namespace QOS.Helpers
         /// <summary>
         /// Giải mã chuỗi Base64 về dạng gốc
         /// </summary>
-        public static string Decode(string base64Text)
+        public static string Decode(string? base64Text)
         {
             if (string.IsNullOrEmpty(base64Text))
                 return string.Empty;

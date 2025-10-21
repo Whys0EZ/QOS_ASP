@@ -170,6 +170,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZvcm04VFBcUlBfRm9ybTguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/C_Sharp/QOS/Areas/Report/Views/Form8TP/RP_Form8_ThongSo_TP_SUM_Detail_Full_Size.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZvcm04VFBcUlBfRm9ybThfVGhvbmdTb19UUF9TVU1fRGV0YWlsX0Z1bGxfU2l6ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Report/Views/Form8TP/RP_Form8_ThongSo_TP_SUM_Detail_New.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZvcm04VFBcUlBfRm9ybThfVGhvbmdTb19UUF9TVU1fRGV0YWlsX05ldy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/C_Sharp/QOS/Areas/Report/Views/OQLEndline/RP_OQLEndline.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXE9RTEVuZGxpbmVcUlBfT1FMRW5kbGluZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -180,6 +188,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/C_Sharp/QOS/Areas/Report/Views/Report/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXFJlcG9ydFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Report/Views/SummaryEndline/SummaryEndline.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXFN1bW1hcnlFbmRsaW5lXFN1bW1hcnlFbmRsaW5lLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/C_Sharp/QOS/Areas/Report/Views/SummaryKCC/RP_Summary_Defects_KCC.cshtml]
@@ -288,6 +300,22 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/C_Sharp/QOS/Views/Account/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Views/Contact/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFjdFxBY2Nlc3NEZW5pZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Views/Contact/Admin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFjdFxBZG1pbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Views/Contact/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFjdFxEZXRhaWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Views/Contact/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFjdFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/C_Sharp/QOS/Views/Home/AccessDenied.cshtml]

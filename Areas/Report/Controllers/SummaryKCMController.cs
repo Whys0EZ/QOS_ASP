@@ -98,7 +98,8 @@ namespace QOS.Areas.Report.Controllers
         {
             try {
                 var zones = new List<string>();
-                string connStr = _configuration.GetConnectionString("DefaultConnection");
+                string connStr = _configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Missing connection string: DefaultConnection");
+                
                 using (SqlConnection conn = new SqlConnection(connStr) )
                 {
                     conn.Open();

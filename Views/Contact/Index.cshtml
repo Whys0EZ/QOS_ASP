@@ -1,0 +1,411 @@
+@model QOS.Models.ContactViewModel
+@{
+    ViewData["Title"] = "Liên hệ";
+}
+
+<style>
+    .contact-page {
+        @* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); *@
+        background-image : url('../images/img/mountains.jpg');
+        min-height: 100vh;
+        background-size: cover;
+        padding: 60px 0;
+    }
+
+    .contact-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .contact-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    /* Left Side - Contact Info */
+    .contact-info {
+        flex: 1;
+        min-width: 300px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 50px 40px;
+    }
+
+    .contact-info h2 {
+        font-size: 32px;
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+
+    .contact-info > p {
+        font-size: 16px;
+        margin-bottom: 40px;
+        opacity: 0.9;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 30px;
+        transition: transform 0.3s;
+    }
+
+    .info-item:hover {
+        transform: translateX(10px);
+    }
+
+    .info-item i {
+        font-size: 24px;
+        margin-right: 20px;
+        margin-top: 5px;
+        color: #ffd700;
+    }
+
+    .info-item-content h4 {
+        font-size: 18px;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .info-item-content p {
+        margin: 0;
+        opacity: 0.9;
+        font-size: 14px;
+    }
+
+    .social-links {
+        margin-top: 40px;
+        display: flex;
+        gap: 15px;
+    }
+
+    .social-links a {
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 20px;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    .social-links a:hover {
+        background: white;
+        color: #667eea;
+        transform: translateY(-5px);
+    }
+
+    /* Right Side - Contact Form */
+    .contact-form {
+        flex: 1;
+        min-width: 300px;
+        padding: 50px 40px;
+    }
+
+    .contact-form h2 {
+        font-size: 28px;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .contact-form > p {
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s;
+        box-sizing: border-box;
+    }
+
+    .form-control:focus {
+        border-color: #667eea;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+        font-family: inherit;
+    }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 12px;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 14px 40px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        width: 100%;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-submit:active {
+        transform: translateY(0);
+    }
+
+    .alert {
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .alert-success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .alert-danger {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    .required {
+        color: red;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .contact-page {
+            padding: 30px 0;
+        }
+
+        .contact-card {
+            flex-direction: column;
+        }
+
+        .contact-info, .contact-form {
+            padding: 30px 20px;
+            min-width: 100%;
+        }
+
+        .contact-info h2 {
+            font-size: 26px;
+        }
+
+        .contact-form h2 {
+            font-size: 24px;
+        }
+
+        .info-item {
+            margin-bottom: 25px;
+        }
+
+        .social-links {
+            margin-top: 30px;
+        }
+    }
+</style>
+
+<div class="contact-page">
+    <div class="contact-container">
+        <div class="contact-card">
+            <!-- Left Side - Contact Information -->
+            <div class="contact-info">
+                <h2>THÔNG TIN LIÊN HỆ</h2>
+                <p>Chúng tôi luôn sẵn sàng lắng nghe ý kiến của bạn</p>
+
+                <div class="info-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div class="info-item-content">
+                        <h4>Địa chỉ</h4>
+                        <p>Tầng 1, Block 1 -Công ty May Tinh Lợi 2<br>Khu công nghiệp Lai Vu - Thành phố Hải Phòng, Việt Nam</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <div class="info-item-content">
+                        <h4>Điện thoại</h4>
+                        <p>87061<br>+84 987 654 321</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div class="info-item-content">
+                        <h4>Email</h4>
+                        <p>contact@crystal-regent.com.vn<br>support@crystal-regent.com.vn</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <i class="fa-solid fa-clock"></i>
+                    <div class="info-item-content">
+                        <h4>Giờ làm việc</h4>
+                        <p>Thứ 2 - Thứ 6: 8:00 - 17:00<br>Thứ 7: 8:00 - 12:00<br>Chủ nhật: Nghỉ</p>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="https://facebook.com" target="_blank" title="Facebook">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a href="https://twitter.com" target="_blank" title="Twitter">
+                        <i class="fa-brands fa-twitter"></i>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" title="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" title="Instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Side - Feedback Form -->
+            <div class="contact-form">
+                <h2>THÔNG TIN PHẢN HỒI</h2>
+                <p>Vui lòng điền thông tin bên dưới và chúng tôi sẽ liên hệ lại sớm nhất</p>
+
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>@TempData["SuccessMessage"]</span>
+                    </div>
+                }
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span>@TempData["ErrorMessage"]</span>
+                    </div>
+                }
+
+                <form asp-action="Contact" asp-controller="Home" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        <label asp-for="Username">
+                            Họ và tên <span class="required">*</span>
+                        </label>
+                        <input asp-for="Username" 
+                               class="form-control" 
+                               placeholder="Nhập họ và tên của bạn"
+                               maxlength="100" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Email">
+                            Email <span class="required">*</span>
+                        </label>
+                        <input asp-for="Email" 
+                               type="email"
+                               class="form-control" 
+                               placeholder="example@email.com"
+                               maxlength="100" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label asp-for="Content" class="">
+                            Nội dung <span class="required">*</span>
+                            <span class="text-end float-end " style="font-size:12px; font-style:italic;" id ="count_content">3000/3000</span>
+                        </label>
+                        <textarea asp-for="Content" 
+                                  class="form-control" 
+                                  placeholder="Nhập nội dung phản hồi của bạn..."
+                                  rows="5"
+                                  maxlength="3000"></textarea>
+                        <span asp-validation-for="Content" class="text-danger"></span>
+                    </div>
+                    
+
+                    <button type="submit" class="btn-submit">
+                        <i class="fa-solid fa-paper-plane"></i> Gửi phản hồi
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+    <script>
+        // Optional: Additional client-side validation or behaviors
+        document.addEventListener('DOMContentLoaded', function() {
+            // Character counter for textarea (optional)
+            const count_content = document.getElementById("count_content");
+            count_content.style.color = 'blue';
+
+            const textarea = document.querySelector('textarea[name="Content"]');
+            if (textarea) {
+                textarea.addEventListener('input', function() {
+                    const remaining = 3000 - this.value.length;
+                    @* console.log('Còn lại: ' + remaining + ' ký tự'); *@
+                    document.getElementById('count_content').textContent = remaining + '/3000';
+                    // 🔴 Đổi màu nếu còn dưới 200 ký tự
+                    if (remaining < 200) {
+                        count_content.style.color = 'red ';
+                    } else {
+                        count_content.style.color = 'blue'; // trở lại màu mặc định
+                    }
+                });
+            }
+
+            // Auto-dismiss success message after 5 seconds
+            const successAlert = document.querySelector('.alert-success');
+            if (successAlert) {
+                setTimeout(function() {
+                    successAlert.style.transition = 'opacity 0.5s';
+                    successAlert.style.opacity = '0';
+                    setTimeout(function() {
+                        successAlert.remove();
+                    }, 500);
+                }, 5000);
+            }
+        });
+    </script>
+}

@@ -41,6 +41,10 @@
       "PackagePath": "staticwebassets\\Report\\RP_Form6_BCKCC.xlsx"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\RP_Form8_ThongSo_TP_SUM.xlsx",
+      "PackagePath": "staticwebassets\\Report\\RP_Form8_ThongSo_TP_SUM.xlsx"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\all.min.css",
       "PackagePath": "staticwebassets\\css\\all.min.css"
     },
@@ -87,6 +91,10 @@
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\green_On.png",
       "PackagePath": "staticwebassets\\images\\green_On.png"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\img\\mountains.jpg",
+      "PackagePath": "staticwebassets\\images\\img\\mountains.jpg"
     },
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\qos_icon.png",

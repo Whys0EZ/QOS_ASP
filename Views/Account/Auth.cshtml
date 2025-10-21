@@ -5,6 +5,35 @@
     Layout = "~/Views/Shared/_AuthLayout.cshtml";
     var activeTab = ViewBag.ActiveTab as string ?? "login"; // mặc định login
 }
+<style>
+    .input-group {
+    position: relative;
+    width: 100%;
+}
+
+.form-control-custom {
+    width: 100%;
+    padding-right: 40px; /* chừa chỗ cho icon */
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 10px 12px;
+    font-size: 16px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 30%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #000000ff !important;
+    
+}
+
+.toggle-password:hover {
+    color: #333;
+}
+</style>
 <partial name="_AlertMessage" />
 
 <!-- Mặc định hiển thị form Login -->
@@ -37,7 +66,22 @@
             <div class="input-group mb-3">
                 <input asp-for="Login.Password" type="password" class="form-control-custom" placeholder="Mật khẩu" />
                 <span asp-validation-for="Login.Password" class="text-danger"></span>
+                <span class="toggle-password" onclick="togglePassword(this)"><i class="fa-solid fa-eye"></i></span>
             </div>
+            <script>
+                function togglePassword(element) {
+                    const passwordInput = document.getElementById('Login_Password');
+                    const icon = element.querySelector('i');
+                    
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        icon.className = 'fa-solid fa-eye-slash';
+                    } else {
+                        passwordInput.type = 'password';
+                        icon.className = 'fa-solid fa-eye';
+                    }
+                }
+            </script>
             
             <div class="form-check mb-3">
                 <input type="checkbox" name="RememberMe" class="form-check-input" id="rememberMe" />

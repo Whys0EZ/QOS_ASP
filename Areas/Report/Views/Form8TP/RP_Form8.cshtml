@@ -130,9 +130,9 @@ th, td {
 			<th>Người kiểm</th>
 			<th>Trạng thái</th>
 			<th>Chi tiết</th>
-			<th>Hành động</th>
+			<th></th>
         </thead>
-        <tbody>
+        <tbody class="align-middle text-center">
 			@if(Model.ReportData != null && Model.ReportData.Any())
 			{
 				foreach ( var row in Model.ReportData)
@@ -147,32 +147,32 @@ th, td {
 						OQL = (count_fault / total_Qty)*100 ;
 					}
 					<tr>
-						<td>@row["ID_L"]</td>
-						<td>@row["WorkDate"]</td>
-						<td>@row["Line"]</td>
-						<td>@row["StyleCode"]</td>
-						<td>@row["MO"]</td>
-						<td>@row["Item"]</td>
-						<td>@row["WorkstageName"]</td>
-						<td>@row["ColorCode"]</td>
-						<td>@row["PatternCode"]</td>
-						<td>@row["TableCode"]</td>
+						<td class="align-middle text-center">@row["ID_L"]</td>
+						<td class="align-middle text-center">@row["WorkDate"]</td>
+						<td class="align-middle text-center">@row["Line"]</td>
+						<td class="align-middle text-center">@row["StyleCode"]</td>
+						<td class="align-middle text-center">@row["MO"]</td>
+						<td class="align-middle text-center">@row["Item"]</td>
+						<td class="align-middle text-center">@row["WorkstageName"]</td>
+						<td class="align-middle text-center">@row["ColorCode"]</td>
+						<td class="align-middle text-center">@row["PatternCode"]</td>
+						<td class="align-middle text-center">@row["TableCode"]</td>
 						<td class="text-start">@row["SizeList"]</td>
-						<td>@count_fault / @total_Qty</td>
-						<td>@OQL %</td>
+						<td class="align-middle text-center">@count_fault / @total_Qty</td>
+						<td class="align-middle text-center">@OQL %</td>
 						<td>@row["UpdatedBy"]</td>
 						@* <td>@row["Status_Flag"]</td> *@
-						<td>
+						<td class="align-middle text-center">
 							@{
 								var status = row["Status_Flag"]?.ToString();
-								var badgeClass = status == "Pass" ? "badge bg-success" : "badge bg-warning";
+								var badgeClass = status == "Pass" ? "badge bg-success " : "badge bg-warning";
 								var statusText = status == "Pass" ? "Pass" : "Fail";
 							}
 							<span class="@badgeClass">@statusText</span>
 						</td>
 						
-						<td onclick="Row_Click('@Base64Helper.Encode($"{row["WorkDate"]}#_#{row["FactoryID"]}#_#{row["TypeName"]}#_#{row["WorkstageName"]}#_#{row["Line"]}#_#{row["StyleCode"]}#_#{row["MO"]}#_#{row["ColorCode"]}#_#{row["Item"]}#_#{row["PatternCode"]}#_#{row["BatchCode"]}#_#{row["TableCode"]}")') "><i class="fa-solid fa-eye"></i></td>
-						<td><span class="@badgeClass">Print</span></td>
+						<td class="align-middle text-center" onclick="Row_Click('@Base64Helper.Encode($"{row["WorkDate"]}#_#{row["FactoryID"]}#_#{row["TypeName"]}#_#{row["WorkstageName"]}#_#{row["Line"]}#_#{row["StyleCode"]}#_#{row["MO"]}#_#{row["ColorCode"]}#_#{row["Item"]}#_#{row["PatternCode"]}#_#{row["BatchCode"]}#_#{row["TableCode"]}")') "><i class="fa-solid fa-eye pe-auto" style="cursor: pointer;"></i></td>
+						<td class="align-middle text-center" onclick="Row_Click_Print('@Base64Helper.Encode($"{row["WorkDate"]}#_#{row["FactoryID"]}#_#{row["TypeName"]}#_#{row["WorkstageName"]}#_#{row["Line"]}#_#{row["StyleCode"]}#_#{row["MO"]}#_#{row["ColorCode"]}#_#{row["Item"]}#_#{row["PatternCode"]}#_#{row["BatchCode"]}#_#{row["TableCode"]}#_#{row["SizeList"]}")') "><span class="@badgeClass">Print</span></td>
 						
 
 					</tr>
@@ -188,91 +188,109 @@ th, td {
 	</table>
 </div>
 
-
-<script>	
-	// Pagination functionality
-	document.addEventListener('DOMContentLoaded', function() {
-		const paginationIcons = document.querySelectorAll('.pagination-icon');
-		const form = document.getElementById('SearchForm');
-		const pageNoInput = document.getElementById('Page_No');
-		const rowPageInput = document.getElementById('Row_Page');
-		const totalRowsInput = document.getElementById('Total_Rows');
-		
-		paginationIcons.forEach(icon => {
-			icon.addEventListener('click', function() {
-				const action = this.getAttribute('data-action');
-				let currentPage = parseInt(pageNoInput.value) || 1;
-				const rowsPerPage = parseInt(rowPageInput.value) || 10;
-				const totalRows = parseInt(totalRowsInput.value) || 0;
-				const totalPages = Math.ceil(totalRows / rowsPerPage);
-				
-				let newPage = currentPage;
-				
-				switch(action) {
-					case 'first':
-						newPage = 1;
-						break;
-					case 'prev':
-						newPage = Math.max(1, currentPage - 1);
-						break;
-					case 'next':
-						newPage = Math.min(totalPages, currentPage + 1);
-						break;
-					case 'last':
-						newPage = Math.max(1, totalPages);
-						break;
-				}
-				
-				// Chỉ submit nếu trang thay đổi
-				if(newPage !== currentPage) {
-					pageNoInput.value = newPage;
-					form.submit();
-				}
-			});
-		});
-
-		// Export Excel functionality
-		document.getElementById('ExportExcel').addEventListener('click', function() {
-			const formData = new FormData(form);
-			const params = new URLSearchParams(formData);
+<script>
+// Pagination functionality
+document.addEventListener('DOMContentLoaded', function() {
+	const paginationIcons = document.querySelectorAll('.pagination-icon');
+	const form = document.getElementById('SearchForm');
+	const pageNoInput = document.getElementById('Page_No');
+	const rowPageInput = document.getElementById('Row_Page');
+	const totalRowsInput = document.getElementById('Total_Rows');
+	
+	paginationIcons.forEach(icon => {
+		icon.addEventListener('click', function() {
+			const action = this.getAttribute('data-action');
+			let currentPage = parseInt(pageNoInput.value) || 1;
+			const rowsPerPage = parseInt(rowPageInput.value) || 10;
+			const totalRows = parseInt(totalRowsInput.value) || 0;
+			const totalPages = Math.ceil(totalRows / rowsPerPage);
 			
-			window.location.href = '/Report/Form8TP/ExportExcel?' + params.toString();
-		});
-
-		// Change rows per page
-		// Change rows per page
-		rowPageInput.addEventListener('change', function() {
-			const newValue = parseInt(this.value);
-			if(newValue > 0) {
-				pageNoInput.value = 1; // Reset to first page
-				console.log('Row_Page changed to:', newValue);
-				console.log('Page_No set to:', pageNoInput.value);
+			let newPage = currentPage;
+			
+			switch(action) {
+				case 'first':
+					newPage = 1;
+					break;
+				case 'prev':
+					newPage = Math.max(1, currentPage - 1);
+					break;
+				case 'next':
+					newPage = Math.min(totalPages, currentPage + 1);
+					break;
+				case 'last':
+					newPage = Math.max(1, totalPages);
+					break;
+			}
+			
+			if(newPage !== currentPage) {
+				pageNoInput.value = newPage;
 				form.submit();
-			} else {
-				alert('Số dòng phải lớn hơn 0');
-				this.value = 10; // Set default
 			}
 		});
-		
-		// Prevent form submit if Page_No is invalid
-		form.addEventListener('submit', function(e) {
-			const pageNo = parseInt(pageNoInput.value);
-			if(!pageNo || pageNo < 1) {
-				console.warn('Invalid Page_No detected:', pageNo, '- Setting to 1');
-				pageNoInput.value = 1;
-			}
-			console.log('Form submitting with Page_No:', pageNoInput.value, 'Row_Page:', rowPageInput.value);
-		});
-
 	});
 
-	// View detail function
-	function viewDetail(id) {
-		window.location.href = '/Report/Form8TP/Detail/' + id;
-	}
+	// Export Excel functionality
+	document.getElementById('ExportExcel').addEventListener('click', function() {
+		const formData = new FormData(form);
+		const params = new URLSearchParams(formData);
+		
+		window.location.href = '/Report/Form8TP/ExportExcel?' + params.toString();
+	});
 
-	// Edit record function
-	function editRecord(id) {
-		window.location.href = '/Report/Form8TP/Edit/' + id;
-	}
+	// Change rows per page
+	rowPageInput.addEventListener('change', function() {
+		const newValue = parseInt(this.value);
+		if(newValue > 0) {
+			pageNoInput.value = 1;
+			form.submit();
+		} else {
+			alert('Số dòng phải lớn hơn 0');
+			this.value = 10;
+		}
+	});
+	
+	form.addEventListener('submit', function(e) {
+		const pageNo = parseInt(pageNoInput.value);
+		if(!pageNo || pageNo < 1) {
+			pageNoInput.value = 1;
+		}
+	});
+});
+
+// View detail function
+function Row_Click(id) {
+	var width = 1200;
+	var height = 800;
+	var left = (screen.width - width) / 2;
+	var top = (screen.height - height) / 2;
+	
+	window.open('/Report/Form8TP/RP_Form8_ThongSo_TP_SUM_Detail_New?ID=' + id, 
+		'DetailWindow',
+		'width=' + width + 
+		',height=' + height + 
+		',left=' + left + 
+		',top=' + top + 
+		',scrollbars=yes,resizable=yes');
+}
+
+function Row_Click_Print(id) {
+	var width = 1200;
+	var height = 800;
+	var left = (screen.width - width) / 2;
+	var top = (screen.height - height) / 2;
+	
+	window.open('/Report/Form8TP/RP_Form8_ThongSo_TP_SUM_Detail_Full_Size?ID=' + id, 
+		'DetailWindow',
+		'width=' + width + 
+		',height=' + height + 
+		',left=' + left + 
+		',top=' + top + 
+		',scrollbars=yes,resizable=yes');
+}
+
+// Edit record function
+function editRecord(id) {
+	window.location.href = '/Report/Form8TP/Edit/' + id;
+}
+
 </script>

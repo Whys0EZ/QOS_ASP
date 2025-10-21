@@ -1,0 +1,164 @@
+@model QOS.Areas.Report.Models.Form8TPTicketViewModel
+@{
+    ViewData["Title"] = "Measurement Ticket";
+    Layout = "";
+}
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<style>
+    .table_size {
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .info_td {
+        border: 1px solid black;
+        padding: 5px;
+        font-size: 12px;
+    }
+
+    .table-break {
+        page-break-after: always;
+        height: 20px;
+    }
+
+    @@media print {
+        .no-print {
+            display: none;
+        }
+        
+        .table-break {
+            page-break-after: always;
+        }
+        
+        body {
+            margin: 0;
+            padding: 10px;
+        }
+    }
+
+    /* Layout cho 2 cột */
+    .ticket-container {
+        display: table;
+        width: 100%;
+    }
+
+    .ticket-row {
+        display: table-row;
+    }
+
+    .ticket-cell {
+        display: table-cell;
+        vertical-align: top;
+        padding-right: 10px;
+        padding-top: 20px;
+        width: 48%;
+    }
+
+    .ticket-spacer {
+        display: table-cell;
+        width: 4%;
+    }
+</style>
+
+<div class="container my-3">
+    <div class="no-print mb-3">
+        <button type="button" class="btn btn-primary" onclick="window.print();">
+            <i class="fa-solid fa-print"></i> Print
+        </button>
+        <a asp-action="RP_Form8" asp-controller="Form8TP" asp-area="Report" class="btn btn-secondary">
+            <i class="fa-solid fa-arrow-left"></i> Back
+        </a>
+    </div>
+
+    <div class="ticket-container">
+        @if (Model.TicketGroups != null && Model.TicketGroups.Any())
+        {
+            var resultCount = 0;
+            var totalGroups = Model.TicketGroups.Count;
+
+            foreach (var group in Model.TicketGroups)
+            {
+                // Mở row mới nếu là item chẵn (0, 2, 4...)
+                if (resultCount % 2 == 0)
+                {
+                    @:<div class="ticket-row">
+                }
+
+                <!-- Ticket cell -->
+                <div class="ticket-cell">
+                    <table class="table_size">
+                        <thead>
+                            <tr>
+                                <td class="info_td" style="width: 250px; text-align:center; font-weight:bold;" colspan="4">
+                                    @Model.Pattern SAMPLE MEASUREMENT INSTRUCTION
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="info_td" style="width: 150px; text-align:center;" colspan="2">
+                                    SMPL NO: @group.StyleCode
+                                </td>
+                                <td class="info_td" style="text-align:center;">
+                                    Measurement
+                                </td>
+                                <td class="info_td" style="width: 45px; text-align:center;">
+                                    @group.SizeName
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var measurement in group.Measurements)
+                            {
+                                <tr>
+                                    <td class="info_td" style="width: 20px; text-align:center;">
+                                        @measurement.ItemID
+                                    </td>
+                                    <td class="info_td" style="width: 220px;">
+                                        @measurement.Item_Name
+                                    </td>
+                                    <td class="info_td" style="width: 50px; text-align:center;">
+                                        @measurement.Base_Value
+                                    </td>
+                                    <td class="info_td" style="width: 50px; text-align:center;">
+                                        @(Math.Round(Convert.ToDouble(measurement.Sum_Value), 1))
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                @if (resultCount % 2 == 0 && resultCount < totalGroups - 1)
+                {
+                    <!-- Thêm spacer giữa 2 cột -->
+                    <div class="ticket-spacer"></div>
+                }
+
+                // Đóng row nếu là item lẻ hoặc item cuối cùng
+                @if (resultCount % 2 == 1 || resultCount == totalGroups - 1)
+                {
+                    @:</div>
+                    
+                    // Thêm page break sau mỗi 4 tickets (2 rows)
+                    if ((resultCount + 1) % 4 == 0 && resultCount < totalGroups - 1)
+                    {
+                        <div class="table-break"></div>
+                    }
+                }
+
+                resultCount++;
+            }
+        }
+        else
+        {
+            <div class="alert alert-warning">Không có dữ liệu</div>
+        }
+    </div>
+</div>
+
+<script>
+    // Optional: Auto print when page loads
+    // window.onload = function() {
+    //     window.print();
+    // }
+</script>

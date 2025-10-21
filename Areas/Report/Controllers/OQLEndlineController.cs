@@ -184,7 +184,7 @@ namespace QOS.Areas.Report.Controllers
 				return new List<Unit_List>();
 			}
 		}
-        private List<string> GetUnitbyZone(string zone)
+        private List<string?> GetUnitbyZone(string zone)
 		{
 			try
 			{
@@ -200,14 +200,14 @@ namespace QOS.Areas.Report.Controllers
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Error loading unit list");
-				return new List<string>();
+				return new List<string?>();
 			}
 		}
         private List<string> GetZone()
         {
             try {
                 var zones = new List<string>();
-                string connStr = _configuration.GetConnectionString("DefaultConnection");
+                string connStr = _configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Missing connection string: DefaultConnection");
                 using (SqlConnection conn = new SqlConnection(connStr) )
                 {
                     conn.Open();
@@ -243,7 +243,7 @@ namespace QOS.Areas.Report.Controllers
             var data = new List<OQL_EndLine>();
             var startDate = new DateTime(year, month, 1);
             var endDate = startDate.AddMonths(1).AddDays(-1);
-            List<string> unitsToQuery = new List<string>();
+            List<string?> unitsToQuery = new List<string?>();
             if (unit.StartsWith("Z"))
             {
                 var zone = unit.Substring(1); //bỏ chữ Z
@@ -362,7 +362,7 @@ namespace QOS.Areas.Report.Controllers
             var startDate = new DateTime(year, month, 1);
             var endDate = startDate.AddMonths(1).AddDays(-1);
 
-            List<string> unitsToQuery = new List<string>();
+            List<string?> unitsToQuery = new List<string?>();
             if (unit.StartsWith("Z"))
             {
                 var zone = unit.Substring(1); //bỏ chữ Z
