@@ -1,21 +1,91 @@
 @{
     Layout = "_Layout";
 }
+<link rel="stylesheet" href="~/css/menu_left.css" />
+<div class="container-fluid p-0">
+    <div class="row g-0">
+        <!-- Mobile Menu Button -->
+        <div class="col-12 d-md-none p-3">
+            <button class="btn mobile-menu-btn w-100" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuSidebar">
+                ☰ Menu
+            </button>
+        </div>
 
-<div class="row">
-    
-    <div class="col-2 bg-light">
-        <h1>@ViewData["Title"]</h1>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                <a class="nav-link" asp-active="true" asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="Index">1-Quản lý người dùng</a>
+        <!-- Desktop Sidebar -->
+        <div class="col-md-2 d-none d-md-block modern-sidebar" id="desktopSidebar">
+            <!-- Toggle Button -->
+            <button class="toggle-sidebar-btn" id="toggleBtn" title="Thu nhỏ/Mở rộng menu">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+
+            <div class="sidebar-header">
+                <h3><i class="fas fa-sliders-h me-2"></i> <span>SYSTEM</span></h3>
+            </div>
+           <div class="sidebar-content"> 
+                <ul class="list-unstyled list-group list-group-flush">
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "SystemAdmin" }, new[] { "Index" })" asp-active="true" asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="Index">1-Quản lý người dùng</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "SystemAdmin" }, new[] { "ChangePassword" })" asp-active="true" asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="ChangePassword">2-Thay đổi mật khẩu</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="col-md-10 content-area pd-3" id="contentArea">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+<!-- Offcanvas cho mobile -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="menuSidebar">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">THIẾT LẬP</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="list-unstyled list-group list-group-flush">
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "SystemAdmin" }, new[] { "Index" })" asp-active="true" asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="Index">1-Quản lý người dùng</a>
             </li>
-            <li class="list-group-item">
-                <a class="nav-link" asp-active="true" asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="ChangePassword">2-Thay đổi mật khẩu</a>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "SystemAdmin" }, new[] { "ChangePassword" })" asp-active="true" asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="ChangePassword">2-Thay đổi mật khẩu</a>
             </li>
         </ul>
     </div>
-    <div class="col-10">
-        @RenderBody()
-    </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleBtn = document.getElementById('toggleBtn');
+        const sidebar = document.getElementById('desktopSidebar');
+        const contentArea = document.getElementById('contentArea');
+        
+        // Lấy trạng thái từ localStorage
+        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        
+        // Áp dụng trạng thái ban đầu
+        if (isCollapsed) {
+            sidebar.classList.add('collapsed');
+            contentArea.classList.add('expanded');
+            toggleBtn.innerHTML = '▶';
+        }
+        
+        // Xử lý sự kiện click
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+            contentArea.classList.toggle('expanded');
+            
+            // Thay đổi icon
+            if (sidebar.classList.contains('collapsed')) {
+                toggleBtn.innerHTML = '▶';
+                localStorage.setItem('sidebarCollapsed', 'true');
+            } else {
+                toggleBtn.innerHTML = '◀';
+                localStorage.setItem('sidebarCollapsed', 'false');
+            }
+        });
+    });
+</script>

@@ -106,6 +106,30 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRnVuY3Rpb25cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/C_Sharp/QOS/Areas/Report/Views/FCATrackingACDate/FCATrackingACDate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZDQVRyYWNraW5nQUNEYXRlXEZDQVRyYWNraW5nQUNEYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Report/Views/FCATracking/FCATracking.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZDQVRyYWNraW5nXEZDQVRyYWNraW5nLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Report/Views/Form10BCHT/RP_Form10.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZvcm0xMEJDSFRcUlBfRm9ybTEwLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Report/Views/Form10BCHT/_LineHistory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZvcm0xMEJDSFRcX0xpbmVIaXN0b3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Report/Views/Form10BCHT/_tableRP_Form10.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZvcm0xMEJDSFRcX3RhYmxlUlBfRm9ybTEwLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Report/Views/Form10OQL/RP_Form10OQL.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZvcm0xME9RTFxSUF9Gb3JtMTBPUUwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/C_Sharp/QOS/Areas/Report/Views/Form1BCCLC/RP_Form1.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZvcm0xQkNDTENcUlBfRm9ybTEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -150,6 +174,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZvcm00QkNDTE1cX3RhYmxlUlBfRm9ybTQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/C_Sharp/QOS/Areas/Report/Views/Form4Quality/Form4_Quality.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZvcm00UXVhbGl0eVxGb3JtNF9RdWFsaXR5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/C_Sharp/QOS/Areas/Report/Views/Form6BCCC/RP_Form6.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZvcm02QkNDQ1xSUF9Gb3JtNi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -178,6 +206,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZvcm04VFBcUlBfRm9ybThfVGhvbmdTb19UUF9TVU1fRGV0YWlsX05ldy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/C_Sharp/QOS/Areas/Report/Views/FQCTracking/FQCTracking.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZRQ1RyYWNraW5nXEZRQ1RyYWNraW5nLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/C_Sharp/QOS/Areas/Report/Views/OQLEndline/RP_OQLEndline.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXE9RTEVuZGxpbmVcUlBfT1FMRW5kbGluZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -190,8 +222,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXFJlcG9ydFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/C_Sharp/QOS/Areas/Report/Views/SummaryBCHT/SummaryBCHT.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXFN1bW1hcnlCQ0hUXFN1bW1hcnlCQ0hULmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Report/Views/SummaryChecker/SummaryChecker.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXFN1bW1hcnlDaGVja2VyXFN1bW1hcnlDaGVja2VyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/C_Sharp/QOS/Areas/Report/Views/SummaryEndline/SummaryEndline.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXFN1bW1hcnlFbmRsaW5lXFN1bW1hcnlFbmRsaW5lLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Report/Views/SummaryFQC/SummaryFQC.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXFN1bW1hcnlGUUNcU3VtbWFyeUZRQy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/C_Sharp/QOS/Areas/Report/Views/SummaryKCC/RP_Summary_Defects_KCC.cshtml]

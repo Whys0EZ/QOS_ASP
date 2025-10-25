@@ -9,46 +9,46 @@
     <partial name="_AlertMessage" />
 <h2>Quản lý người dùng</h2>
 <a asp-action="Create" class="btn btn-primary">+ Thêm user</a>
-<div class="table-container" id="tableContainer">
-<table class="table table-bordered table-striped mt-3">
-    <thead class="table-dark">
-        <tr>
-            <th>ID</th>
-            <th>Factory</th>
-            <th>Team</th>
-            <th>Username</th>
-            <th>FullName</th>
-            <th>Email</th>
-            <th>Unit Check</th>
-            <th>Line Check</th>
-            <th>User Update</th>
-            <th>Last Update</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model)
-        {
+<div class="table-container pb-5" id="tableContainer">
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="table-dark">
             <tr>
-                <td>@user.Id</td>
-                <td>@user.FactoryID</td>
-                <td>@user.TeamID</td>
-                <td>@user.Username</td>
-                <td>@user.FullName</td>
-                <td>@user.Email</td>
-                <td>@user.Unit_Check</td>
-                <td>@user.Line_Check</td>
-                <td>@user.UserUpdate</td>
-                <td>@user.LastUpdate</td>
-                <td>
-                    <a asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-sm btn-warning">Sửa</a>
-                    <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-sm btn-danger"
-                       onclick="return confirm('Xóa user này?')">Xóa</a>
-                </td>
+                <th>ID</th>
+                <th>Factory</th>
+                <th>Team</th>
+                <th>Username</th>
+                <th>FullName</th>
+                <th>Email</th>
+                <th>Unit Check</th>
+                <th>Line Check</th>
+                <th>User Update</th>
+                <th>Last Update</th>
+                <th>Action</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.FactoryID</td>
+                    <td>@user.TeamID</td>
+                    <td>@user.Username</td>
+                    <td>@user.FullName</td>
+                    <td>@user.Email</td>
+                    <td>@user.Unit_Check</td>
+                    <td>@user.Line_Check</td>
+                    <td>@user.UserUpdate</td>
+                    <td>@user.LastUpdate</td>
+                    <td>
+                        <a asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-sm btn-warning">Sửa</a>
+                        <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-sm btn-danger"
+                        onclick="return confirm('Xóa user này?')">Xóa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 }
 else {

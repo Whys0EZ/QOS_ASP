@@ -4,7 +4,7 @@
     Layout = "_MenuSystem";
 }
 
-<div class=" me-3 ">
+<div class=" container mt-3">
     <h2>Thêm user</h2>
 
     <form asp-action="Create" method="post">
@@ -40,8 +40,10 @@
             <label>Line Check</label>
             <input asp-for="Line_Check" class="form-control" />
         </div>
-        <button type="submit" class="btn btn-success">Save</button>
-        <a asp-action="Index" class="btn btn-secondary">Back</a>
+        <div class="mt-3">
+            <button type="submit" class="btn btn-success">Save</button>
+            <a asp-action="Index" class="btn btn-secondary">Back</a>
+        </div>
 
     </form>
 </div>

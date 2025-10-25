@@ -1,0 +1,170 @@
+@using System.Text.Json
+@model QOS.Areas.Report.Models.Form4QualityViewModel
+@{
+	ViewData["Title"] = "Tổng hợp lỗi chuyền may";
+	Layout = "_MenuReport";
+}
+<link rel="stylesheet" href="~/css/report.css" />
+<partial name="_AlertMessage" />
+<div class="ddashboard-container">
+    <div class="container-fluid ">
+        <!-- Header -->
+        <div class="header-card">
+            <marquee behavior="alternate"><h1 class="header-title ma">
+                <i class="bi bi-clipboard-data me-2"></i>
+                QOS - TỔNG HỢP LỖI CHUYỀN MAY
+            </h1></marquee>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-card p-3 shadow-sm rounded bg-white mb-3">
+            <form method="get" asp-action="Form4_Quality" id="filterForm"
+                class="filter-form d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                <!-- Left group -->
+                <div class="d-flex flex-wrap align-items-center gap-3">
+
+                    <!-- Unit -->
+                    <div class="filter-item d-flex align-items-center gap-2 flex-wrap">
+                        <label class="filter-label me-2 fw-semibold">Unit:</label>
+                        <select class="form-select form-select-sm" name="unit" id="unitSelect" style="width: 120px;">
+                            <option value="ALL" selected>--Unit--</option>
+                            
+                            @if(Model.Unit_List.Any()){
+                                foreach( var unit in Model.Unit_List)
+                                {
+                                    <option value="@unit.Unit" selected ="@(unit.Unit == Model.Unit)">@unit.Unit</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Ngày -->
+                    <div class="filter-item d-flex align-items-center gap-2 flex-wrap">
+                        <label class="filter-label fw-semibold mb-0">Ngày:</label>
+                        <input type="date" value="@Model.DateFrom.ToString("yyyy-MM-dd")" class="form-control form-control-sm" name="dateFrom" style="width: 140px;">
+                        <span class="fw-semibold">-</span>
+                        <input type="date" value="@Model.DateEnd.ToString("yyyy-MM-dd")" class="form-control form-control-sm" name="dateEnd" style="width: 140px;">
+                    </div>
+
+                </div>
+
+                <!-- Right group (buttons) -->
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="bi bi-search me-1"></i> Tìm kiếm
+                    </button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="exportToExcel()">
+                        <i class="bi bi-file-earmark-excel me-1"></i> Tải Excel
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="chart-card">
+        @if(Model.ReportData != null && Model.ReportData.Any())
+        {
+            var index  = 1;
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm text-center align-middle table-striped">
+                    <thead class="bg-primary bg-gradient bg-opacity-75">
+                        <th>STT</th>
+                        <th>Unit</th>
+                        <th>Line</th>
+                        <th>Ngày</th>
+                        <th>Đơn Hàng</th>
+                        <th>Style</th>
+                        <th>Số công đoạn</th>
+                        <th>Công đoạn</th>
+                        <th>Số lượng kiểm</th>
+                        <th>Số lượng lỗi</th>
+                        <th>Defect Rate</th>
+                        <th>Defect Name</th>
+                    </thead>
+                    <tbody>
+                        @foreach(var row in Model.ReportData)
+                        {
+                            var checkQty = row["Check_Qty"] == DBNull.Value ? 0 : Convert.ToDouble(row["Check_Qty"]);
+                            var totalDefect = row["Fault"] == DBNull.Value ? 0 : Convert.ToDouble(row["Fault"]);
+
+                            double OQL = (checkQty == 0) ? 0 : (totalDefect / checkQty) * 100;
+                            OQL = Math.Round(OQL, 2); // 🔹 chỉ giữ 2 số thập phân
+                            <tr class ="@(index % 2 == 0 ? "table-info" : "")">
+                                <td>@index</td>
+                                <td>@row["Unit"]</td>
+                                <td>@row["Line"]</td>
+                                <td>@row["WorkDate"]</td>
+                                <td>@row["MO"]</td>
+                                <td>@row["StyleCode"]</td>
+                                <td>@row["Operation_Code"]</td>
+                                <td>@row["Operation_Name_VN"]</td>
+                                <td>@row["Check_Qty"]</td>
+                                <td>@row["Fault"]</td>
+                                <td>@OQL%</td>
+                                <td>@row["Defect_Name"]</td>
+                                
+                            </tr>
+                            index ++;
+                        }
+                    </tbody>
+                </table>
+            </div>        
+
+        } 
+        else 
+        {
+            <p class="text-center text-muted">Không có dữ liệu</p>
+        }
+        
+    </div>
+</div>
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-body text-center py-4">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="fw-bold">Đang tải dữ liệu...</div>
+                <small class="text-muted">Vui lòng chờ trong giây lát</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
+<script>
+ 
+    function Submit()
+        {
+            // Show loading
+            var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+            loadingModal.show();
+            document.getElementById("filterForm").submit();
+            
+        }
+    // Show loading on form submit
+    document.getElementById('filterForm').addEventListener('submit', function() {
+        var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+        loadingModal.show();
+    });
+
+        // Export to Excel function
+    function exportToExcel() {
+        
+
+        const form = document.getElementById('filterForm');
+        const formData = new FormData(form);
+        const params = new URLSearchParams(formData);
+
+        // Nối thêm danh sách lỗi
+       
+        console.log('params:', params.toString());
+        // Gọi controller qua GET
+         window.location.href = `/Report/Form4Quality/ExportExcel?${params.toString()}`;
+    }
+
+</script>

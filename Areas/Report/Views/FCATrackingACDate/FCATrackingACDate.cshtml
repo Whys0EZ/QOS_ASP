@@ -1,0 +1,269 @@
+@model QOS.Areas.Report.Models.FCATrackingViewModel
+@{
+    ViewData["Title"] = "Report Page";
+    Layout = "_MenuReport";
+}
+<link rel="stylesheet" href="~/css/report.css" />
+<style>
+    #TableContainer {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .no-data {
+        text-align: center;
+        padding: 40px;
+        color: #7f8c8d;
+    }
+
+    .no-data i {
+        font-size: 48px;
+        color: #bdc3c7;
+        margin-bottom: 15px;
+    }
+
+     .table {
+        font-size: 0.9rem;
+    }
+    .table thead th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        padding: 1rem;
+    }
+    .table tbody tr:hover {
+        background-color: rgba(0,123,255,0.05) !important;
+        transition: all 0.2s;
+    }
+    .table td {
+        padding: 0.75rem;
+        vertical-align: middle;
+    }
+    .badge {
+        padding: 0.5em 0.75em;
+    }
+
+    /* Mobile responsive adjustments */
+    @@media (max-width: 768px) {
+        .col-md-4, .col-md-8 {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        h3.text-primary {
+            font-size: 1.5rem;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        #SearchForm {
+            flex-direction: column;
+            width: 100%;
+            padding: 0 10px;
+        }
+
+        #SearchForm select,
+        #SearchForm input,
+        #SearchForm button {
+            width: 95%;
+            margin: 5px 0;
+        }
+
+        .btn {
+            width: 100%;
+            margin: 5px 0;
+        }
+    }
+</style>
+<partial name="_AlertMessage" />
+<div class="">
+    <div class="row align-items-center mb-3">
+        <!-- Bên trái -->
+
+        <div class="col-md-4 d-flex flex-wrap gap-2">
+            <h3 class="text-primary fw-bold ms-3">FCA Tracking Report AC Date</h3>
+        </div>
+
+        <!-- Bên phải -->
+        <div class="col-md-8 d-flex justify-content-end flex-wrap gap-2">
+            <form id="SearchForm" asp-area="Report" asp-action="FCATrackingACDate" asp-controller="FCATrackingACDate" method="get"
+                class="d-flex align-items-center gap-2 mb-0">
+
+                <select class="form-control" id="Customer" name="Customer"  >
+                    <option value="ALL">--Customer--</option>
+                    @foreach (var customer in Model.Customer_List)
+                                {
+                                    <option value="@customer" selected="@(customer == Model.Customer)">
+                                        @customer
+                                    </option>
+                                }
+                </select>
+                <input type="text" id="search" name="search" class="form-control" value="@Model.Searching" placeholder="Tìm kiếm..." />
+                <div>AC&nbsp;Date: </div>
+                <input type="date" id="dateFrom" name="dateFrom" class="form-control"
+                    value="@Model.DateFrom.ToString("yyyy-MM-dd")" />
+                <input  type="hidden" id="dateEnd" name="dateEnd" class="form-control"
+                    value="@Model.DateEnd.ToString("yyyy-MM-dd")" />
+
+
+                <button class="btn btn-warning" id="Check" name="Check" type="submit"> Check</button>
+               
+                <button onClick="Export2Excel_Click();" type="button" class="btn btn-primary" id="ExportExcel"
+                    name="ExportExcel">Tải&nbsp;Excel</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="TableContainer">
+    @if(Model.ReportData.Any())
+    {
+        var index =1;
+        <div class="table-responsive">
+            <table class="table table-hover shadow-sm caption-top" id='headerTable'>
+                <caption>List of trackings</caption>
+                <thead>
+                    <tr class="bg-primary text-white align-middle">
+                        <th scope="col">No</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Customer</th>
+                        <th scope="col">SO</th>
+                        <th scope="col">Style No</th>
+                        <th scope="col">Contract/ Item No</th>
+                        <th scope="col">PO</th>
+                        <th scope="col">QTY</th>
+                        <th scope="col">AC Date</th>
+                        <th scope="col">Update Ship</th>
+                        <th scope="col">Destinantion</th>
+                        <th scope="col">Pro</th>
+                        <th scope="col">Reason</th>
+                        <th scope="col">UserUpdate</th>
+                        <th scope="col">TimeCreate</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider ">
+                    @foreach(var row in Model.ReportData)
+                    {
+                        var color_text =row["ResultStatus"].ToString() == "Pass" ? "text-success" : "text-danger" ;
+                        <tr class="@color_text align-middle @(index % 2 == 0 ? "table-info" : "")">
+                            <td class="fw-bold">@index</td>
+                            <td><span class="badge bg-@(row["ResultStatus"].ToString() == "Pass" ? "success" : "danger")">@row["ResultStatus"]</span></td>
+                            <td>@row["Customer"]</td>
+                            <td>@row["Infor_01"]</td>
+                            <td>@row["Infor_02"]</td>
+                            <td>@row["Infor_03"]</td>
+                            <td>@row["Infor_04"]</td>
+                            <td>@row["Infor_05"]</td>
+                            <td>@row["Infor_09"]</td>
+                            <td>@row["Infor_07"]</td>
+                            <td>@row["Infor_06"]</td>
+                            <td>@row["Infor_10"]</td>
+                            <td>@row["Infor_08"]</td>
+                            <td><i class="fas fa-user me-1"></i>@row["UserUpdate"]</td>
+                            <td><i class="far fa-clock me-1"></i>@row["WorkDate"]</td>
+                        </tr>
+                        index++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="no-data">
+            <i class="fa-solid fa-inbox"></i>
+            <p>Không có dữ liệu trong khoảng thời gian này</p>
+        </div>
+    }
+</div>
+
+
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-body text-center py-4">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="fw-bold">Đang tải dữ liệu...</div>
+                <small class="text-muted">Vui lòng chờ trong giây lát</small>
+            </div>
+        </div>
+    </div>
+</div>
+@* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
+<script>
+    // Show loading on form submit
+    document.getElementById('SearchForm').addEventListener('submit', function() {
+        var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+        loadingModal.show();
+    });
+
+    $("#ExportExcel_Test").click(function () {
+        var Customer = $("#Customer").val();
+        var dateFrom = $("#dateFrom").val();
+        var dateEnd = $("#dateEnd").val();
+        var Search = $("search").val();
+
+        var url = '@Url.Action("ExportExcel", "FCATrackingACDate", new { area = "Report" })'
+        + "?Customer=" + encodeURIComponent(Customer)
+        + "&dateFrom=" + encodeURIComponent(dateFrom)
+        + "&dateEnd=" + encodeURIComponent(dateEnd)
+        + "&Search=" + encodeURIComponent(Search);
+
+        window.location.href = url; // tự động download file
+    });
+
+    function Export2Excel_Click()
+    {
+                
+        var tab_text="<table border='1px'><tr>";
+        var textRange = ''; 
+        var j=0;
+        var tab = document.getElementById('headerTable'); // id of table
+        var row = tab.rows[0];
+    
+        
+        
+        // Tiêu đề 
+        tab_text += "<tr>";				
+        for (var l = 0; l < row.cells.length; l++) {
+        
+            
+                tab_text += "<td bgcolor='#87AFC6'>" + row.cells[l].innerHTML + "</td>";
+            
+        }
+        tab_text += "</tr>";
+        j++;
+        
+        //dữ liệu bảng
+        for(; j < tab.rows.length ; j++) 
+        {
+        
+            var row = tab.rows[j];
+                tab_text += "<tr>";
+                // them dau ' cột dữ liệu cs chứ số 000 ở đầu
+
+                
+                for (var l = 0; l < row.cells.length; l++) {
+                        
+                        tab_text += "<td >" + row.cells[l].innerHTML + "</td>";
+                    
+                }
+                tab_text += "</tr>";
+        }
+
+        tab_text = tab_text + "</table>";
+
+        var a = document.createElement('a');
+        var data_type = 'data:application/vnd.ms-excel';
+        a.href = data_type + ', ' + encodeURIComponent(tab_text);
+        //setting the file name
+        a.download = 'FCA_Tracking_Report.xls';
+        //triggering the function
+        a.click();
+        //just in case, prevent default behaviour
+        @* e.preventDefault(); *@
+    }
+</script>

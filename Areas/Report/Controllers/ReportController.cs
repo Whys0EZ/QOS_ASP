@@ -116,5 +116,72 @@ namespace QOS.Controllers
         {
             return RedirectToAction("FCATracking", "FCATracking", new { area = "Report" });
         }
+        [Permission("B_F6")]
+        public IActionResult FCATrackingACDate()
+        {
+            return RedirectToAction("FCATrackingACDate", "FCATrackingACDate", new { area = "Report" });
+        }
+        [Permission("B_F6")]
+        public IActionResult RP_Form10()
+        {
+            return RedirectToAction("RP_Form10", "Form10BCHT", new { area = "Report" });
+        }
+        [Permission("B_F6")]
+        public IActionResult SummaryBCHT()
+        {
+            return RedirectToAction("SummaryBCHT", "SummaryBCHT", new { area = "Report" });
+        }
+        [Permission("B_F6")]
+        public IActionResult SummaryChecker()
+        {
+            return RedirectToAction("SummaryChecker", "SummaryChecker", new { area = "Report" });
+        }
+        [Permission("B_F6")]
+        public IActionResult RP_Form10OQL()
+        {
+            return RedirectToAction("RP_Form10OQL", "Form10OQL", new { area = "Report" });
+        }
+        [Permission("B_F6")]
+        public IActionResult FQCTracking()
+        {
+            return RedirectToAction("FQCTracking", "FQCTracking", new { area = "Report" });
+        }
+        [Permission("B_F6")]
+        public IActionResult SummaryFQC()
+        {
+            return RedirectToAction("SummaryFQC", "SummaryFQC", new { area = "Report" });
+        }
+        [Permission("B_F6")]
+        public IActionResult Form4_Quality()
+        {
+            return RedirectToAction("Form4_Quality", "Form4Quality", new { area = "Report" });
+        }
+        [Permission("B_F6")]
+        public IActionResult TopForm4Quality()
+        {
+            return RedirectToAction("TopForm4Quality", "TopForm4Quality", new { area = "Report" });
+        }
+        [Permission("B_F6")]
+        public IActionResult TopForm6Quality()
+        {
+            return RedirectToAction("TopForm6Quality", "TopForm6Quality", new { area = "Report" });
+        }
+        [Permission("B_F6")]
+        public IActionResult EndlineReport()
+        {
+            return RedirectToAction("EndlineReport", "EndlineReport", new { area = "Report" });
+        }
+        [Permission("B_F6")]
+        public IActionResult EndlineUnit()
+        {
+            return RedirectToAction("EndlineUnit", "EndlineUnit", new { area = "Report" });
+        }
+        [Permission("B_F6")]
+        public IActionResult EndlineUnitEN()
+        {
+            return RedirectToAction("EndlineUnitEN", "EndlineUnitEN", new { area = "Report" });
+        }
+        
+
     }
 }

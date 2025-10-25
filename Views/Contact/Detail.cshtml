@@ -273,41 +273,41 @@
             <div class="meta-info">
                 <div class="meta-item">
                     <i class="fa-solid fa-calendar"></i>
-                    <span>@Model.CreatedDate?.ToString("dd/MM/yyyy HH:mm")</span>
+                    <span>@Model?.CreatedDate?.ToString("dd/MM/yyyy HH:mm")</span>
                 </div>
                 <div class="meta-item">
                     <i class="fa-solid fa-user"></i>
-                    <span>@Model.Username</span>
+                    <span>@Model?.Username</span>
                 </div>
                 <div class="meta-item">
                     <i class="fa-solid fa-envelope"></i>
-                    <span>@Model.Email</span>
+                    <span>@Model?.Email</span>
                 </div>
             </div>
 
             <!-- Feedback Information -->
             <div class="info-row">
                 <div class="info-label">Họ và tên:</div>
-                <div class="info-value">@Model.Username</div>
+                <div class="info-value">@Model?.Username</div>
             </div>
 
             <div class="info-row">
                 <div class="info-label">Email:</div>
                 <div class="info-value">
-                    <a href="mailto:@Model.Email">@Model.Email</a>
+                    <a href="mailto:@Model?.Email">@Model?.Email</a>
                 </div>
             </div>
 
             <div class="info-row">
                 <div class="info-label">Ngày gửi:</div>
-                <div class="info-value">@Model.CreatedDate?.ToString("dd/MM/yyyy HH:mm")</div>
+                <div class="info-value">@Model?.CreatedDate?.ToString("dd/MM/yyyy HH:mm")</div>
             </div>
 
             <div class="info-row">
                 <div class="info-label">Nội dung:</div>
                 <div class="info-value">
                     <div class="content-box">
-                        @Model.Content
+                        @Model?.Content
                     </div>
                 </div>
             </div>
@@ -316,29 +316,29 @@
             <div class="response-section">
                 <h3><i class="fa-solid fa-reply"></i> Phản hồi từ Admin</h3>
 
-                @if (!string.IsNullOrEmpty(Model.Response))
+                @if (!string.IsNullOrEmpty(Model?.Response))
                 {
                     <div class="response-box">
                         <p><strong>Phản hồi:</strong></p>
-                        <p>@Model.Response</p>
+                        <p>@Model?.Response</p>
                         <hr style="margin: 15px 0; border: none; border-top: 1px solid #c3e6cb;" />
                         <small>
-                            <i class="fa-solid fa-user"></i> @Model.ResponseBy | 
-                            <i class="fa-solid fa-clock"></i> @Model.ResponseDate?.ToString("dd/MM/yyyy HH:mm")
+                            <i class="fa-solid fa-user"></i> @Model?.ResponseBy | 
+                            <i class="fa-solid fa-clock"></i> @Model?.ResponseDate?.ToString("dd/MM/yyyy HH:mm")
                         </small>
                     </div>
                 }
 
                 <!-- Update Form -->
-                <form method="post" asp-action="UpdateStatus" asp-route-id="@Model.Id">
+                <form method="post" asp-action="UpdateStatus" asp-route-id="@Model?.Id">
                     @Html.AntiForgeryToken()
 
                     <div class="form-group">
                         <label>Trạng thái</label>
                         <select name="status" class="form-control">
-                            <option value="Pending" selected="@(Model.Status == "Pending")">Pending - Chờ xử lý</option>
-                            <option value="Resolved" selected="@(Model.Status == "Resolved")">Resolved - Đã giải quyết</option>
-                            <option value="Closed" selected="@(Model.Status == "Closed")">Closed - Đã đóng</option>
+                            <option value="Pending" selected="@(Model?.Status == "Pending")">Pending - Chờ xử lý</option>
+                            <option value="Resolved" selected="@(Model?.Status == "Resolved")">Resolved - Đã giải quyết</option>
+                            <option value="Closed" selected="@(Model?.Status == "Closed")">Closed - Đã đóng</option>
                         </select>
                     </div>
 
@@ -347,7 +347,7 @@
                         <textarea name="response" 
                                   class="form-control" 
                                   placeholder="Nhập nội dung phản hồi cho khách hàng..."
-                                  rows="5">@Model.Response</textarea>
+                                  rows="5">@Model?.Response</textarea>
                     </div>
 
                     <div class="btn-group">

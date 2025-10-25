@@ -440,8 +440,9 @@ namespace QOS.Areas.Report.Controllers
             for(int j = 0; j < countfaultCodes; j++)
             {
                 int currentCol = j + 7;
-                worksheet.Cells[row + 1, currentCol].Formula = $"SUM({currentCol}4:{currentCol}{row})";
-                worksheet.Cells[row + 2, currentCol].Formula = $"{currentCol}{row + 1}/D{row + 1}";
+                string colLetter = GetExcelColumnName(currentCol);
+                worksheet.Cells[row + 1, currentCol].Formula = $"SUM({colLetter}4:{colLetter}{row})";
+                worksheet.Cells[row + 2, currentCol].Formula = $"{colLetter}{row + 1}/D{row + 1}";
             }
 
             // Tô màu nền từ G2 đến cột cuối cùng (dòng 2)

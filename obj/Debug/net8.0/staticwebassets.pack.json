@@ -9,6 +9,10 @@
       "PackagePath": "staticwebassets\\Report\\B7_Summary_Endline_Defects.xlsx"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\B7_Summary_FQC_Defects.xlsx",
+      "PackagePath": "staticwebassets\\Report\\B7_Summary_FQC_Defects.xlsx"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\BCCLBC.xlsx",
       "PackagePath": "staticwebassets\\Report\\BCCLBC.xlsx"
     },
@@ -59,6 +63,10 @@
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\menu_left.css",
       "PackagePath": "staticwebassets\\css\\menu_left.css"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\oql.css",
+      "PackagePath": "staticwebassets\\css\\oql.css"
     },
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\report.css",

@@ -24,7 +24,7 @@ body {
   /* margin-bottom: 60px; */
   padding-bottom: 40px;
   padding-top: 50px;
-  width: 99%;
+  width: 100%;
 
 }
 
@@ -35,7 +35,7 @@ body {
 } */
 
 /* Dark mode */
-/* [data-bs-theme="dark"]  body {
+/* [data-bs-theme="dark"]  .wrappers {
     background: #212529 !important;
     color: #f8f9fa !important;
 } */
@@ -53,10 +53,10 @@ body {
     padding: 1rem 0;
     margin-top: 2rem;
 }
-[data-bs-theme="light"]  .footer {
+/* [data-bs-theme="light"]  .footer {
     background: #d4e5f5 !important;
     color: #000 !important;
-}
+} */
 [data-bs-theme="dark"]  .footer {
     background: #121212 !important;
     color: #fff !important;

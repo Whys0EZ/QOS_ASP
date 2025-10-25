@@ -39,14 +39,14 @@ namespace QOS.Models
         public bool SYS_Admin { get; set; }
         public bool A_F1 { get; set; }
         public bool A_F2 { get; set; }
-        public bool A_F3 { get; set; }
-        public bool A_F4 { get; set; }
-        public bool A_F5 { get; set; }
-        public bool A_F6 { get; set; }
-        public bool A_F7 { get; set; }
-        public bool A_F8 { get; set; }
-        public bool A_F9 { get; set; }
-        public bool A_F10 { get; set; }
+        public bool? A_F3 { get; set; }
+        public bool? A_F4 { get; set; }
+        public bool? A_F5 { get; set; }
+        public bool? A_F6 { get; set; }
+        public bool? A_F7 { get; set; }
+        public bool? A_F8 { get; set; }
+        public bool? A_F9 { get; set; }
+        public bool? A_F10 { get; set; }
 
         public bool B_F0 { get; set; }
         public bool B_F01 { get; set; }
@@ -56,8 +56,9 @@ namespace QOS.Models
         public bool B_F4 { get; set; }
         public bool B_F5 { get; set; }
         public bool B_F6 { get; set; }
-        public bool B_F7 { get; set; }
-        public bool B_F8 { get; set; }
+        public bool? B_F7 { get; set; }
+        public bool? B_F8 { get; set; }
+        public bool? B_F9 { get; set; }
 
         public bool C_F1 { get; set; }
         public bool C_F2 { get; set; }
@@ -75,7 +76,7 @@ namespace QOS.Models
         public bool Q_F6 { get; set; }
         public bool Q_F7 { get; set; }
         public bool Q_F8 { get; set; }
-        public bool Q_F9 { get; set; }
+        public bool? Q_F9 { get; set; }
         public bool SYS_LED { get; set; }
 
  

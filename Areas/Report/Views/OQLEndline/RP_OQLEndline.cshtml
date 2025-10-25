@@ -5,202 +5,8 @@
 	Layout = "_MenuReport";
 }
 <link rel="stylesheet" href="~/css/report.css" />
+<link rel="stylesheet" href="~/css/oql.css" />
 <partial name="_AlertMessage" />
-
-
-<style>
-    .oql-container {
-        padding: 20px;
-        background: #f5f5f5;
-    }
-    
-    .oql-header {
-        background: white;
-        padding: 20px;
-        margin-bottom: 20px;
-        border-left: 4px solid #003d82;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    .oql-title {
-        color: #003d82;
-        font-size: 28px;
-        font-weight: bold;
-        margin: 0;
-    }
-    
-    .filter-section {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-bottom: 20px;
-        background: white;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    .filter-section label {
-        font-weight: 600;
-        color: #333;
-        margin: 0;
-    }
-    
-    .filter-section select {
-        padding: 8px 12px;
-        border: 2px solid #003d82;
-        border-radius: 4px;
-        font-size: 14px;
-        font-weight: bold;
-        min-width: 100px;
-    }
-    
-    .btn-submit {
-        background: #003d82;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 50%;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
-    }
-    
-    .btn-submit:hover {
-        background: #002a5c;
-    }
-    
-    .btn-download {
-        background: #28a745;
-        color: white;
-        border: none;
-        padding: 10px 25px;
-        border-radius: 25px;
-        cursor: pointer;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    
-    .btn-download:hover {
-        background: #218838;
-    }
-    
-    .oql-table-wrapper {
-        overflow-x: auto;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    
-    .oql-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 13px;
-    }
-    
-    .oql-table th,
-    .oql-table td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
-        white-space: nowrap;
-    }
-    
-    .oql-table thead th {
-        background: #003d82;
-        color: white;
-        font-weight: bold;
-        position: sticky;
-        top: 0;
-        z-index: 10;
-    }
-    
-    .oql-table th.date-header {
-        min-width: 80px;
-    }
-    
-    .oql-table th.day-header {
-        min-width: 45px;
-        padding: 5px;
-    }
-    
-    .oql-table tbody tr:nth-child(even) {
-        background: #f9f9f9;
-    }
-    
-    .oql-table tbody tr:hover {
-        background: #e8f4f8;
-    }
-    
-    .oql-table td.line-name {
-        text-align: left;
-        font-weight: bold;
-        background: #f0f0f0;
-        position: sticky;
-        left: 0;
-        z-index: 5;
-    }
-    
-    .oql-table td.target-cell {
-        background: #e8e8e8;
-        font-weight: bold;
-    }
-    
-    .oql-table td.value-cell {
-        font-weight: 600;
-        color: #d32f2f;
-    }
-    
-    .oql-table td.avg-cell {
-        background: #f5f5f5;
-        font-weight: bold;
-        color: #1976d2;
-    }
-    
-    .oql-table th.red-header {
-        background: #d32f2f !important;
-    }
-    
-    .oql-table th.empty-header {
-        background: #e0e0e0 !important;
-    }
-    
-    .oql-table td.empty-cell {
-        background: #f5f5f5;
-    }
-    
-    .download-link {
-        color: #28a745;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 16px;
-        display: inline-block;
-        margin-bottom: 10px;
-    }
-    
-    .download-link:hover {
-        text-decoration: underline;
-    }
-    .empty-cell { background: #f8f9fa; color: #aaa; }
-    .low-cell { background: #ffebee; color: #c62828; font-weight: bold; }
-    .medium-cell { background: #fff3e0; color: #ef6c00; }
-    .high-cell { background: #e8f5e9; color: #2e7d32; font-weight: bold; }
-    table td, table th {
-        text-align: center;
-        padding: 6px 10px;
-        border: 1px solid #ddd;
-    }
-    .line-name {
-        font-weight: 600;
-        background-color: #f1f1f1;
-    }
-</style>
 
 <div class="oql-container">
     <div class="oql-header">
@@ -279,7 +85,7 @@
                
                 @foreach (var unitGroup in Model.Lines.GroupBy(l => l.LineName.Substring(0, 3)))
                 {
-                    @* <!-- Tính trung bình môi Unit --> *@
+                    
                     var dayCount = unitGroup.First().DailyValues.Count;
                     var avgValues = new List<double?>();
 
@@ -301,7 +107,7 @@
                         </td>
                     </tr>
 
-                    <!-- Các dòng line thuộc Unit đó -->
+                    
                     @foreach (var line in unitGroup)
                     {
                         <tr>
@@ -315,10 +121,6 @@
                             }
                         </tr>
                     }
-  
-                    
-                    
-
                     <tr style="background:#e3f2fd;">
                         <td class="line-name" style="background:#1976d2;color:white;">Average</td>
                         <td class="target-cell"></td>
@@ -328,6 +130,7 @@
                         }
                     </tr>
                 }
+
             </tbody>
         </table>
     </div>

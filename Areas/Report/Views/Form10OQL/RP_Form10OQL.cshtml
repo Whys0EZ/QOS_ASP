@@ -1,0 +1,147 @@
+@using System.Text.Json
+@model QOS.Areas.Report.Models.OQLEndLineViewModel
+@{
+	ViewData["Title"] = "DAILY OQL CHECKER 84";
+	Layout = "_MenuReport";
+}
+<link rel="stylesheet" href="~/css/report.css" />
+<link rel="stylesheet" href="~/css/oql.css" />
+<partial name="_AlertMessage" />
+
+<div class="oql-container">
+    <div class="oql-header">
+        <h1 class="oql-title">QOS - DAILY OQL CHECKER 84</h1>
+    </div>
+    
+    <a asp-action="DownloadReport" 
+       asp-route-unit="@Model.SelectedUnit" 
+       asp-route-month="@Model.SelectedMonth" 
+       asp-route-year="@Model.SelectedYear" 
+       class="download-link">Download File Report</a>
+    
+    <form method="get" class="filter-section">
+        <label>UNIT:</label>
+        <select name="unit" asp-for="SelectedUnit">
+            @if (Model.Zone.Any())
+            {
+                foreach (var zone in Model.Zone)
+                {
+                    <option value="@($"Z{zone}")" selected="@($"Z{zone}" == Model.SelectedUnit)">@zone</option>
+                }
+            }
+            @if (Model.DistinctUnits.Any())
+            {
+                foreach (var u in Model.DistinctUnits)
+                {
+                    <option value="@u.Unit" selected="@(u.Unit == Model.SelectedUnit)">@u.Unit</option>
+                }
+            }
+            
+        </select>
+        
+        <label>Tháng:</label>
+        <select name="month" asp-for="SelectedMonth">
+            @for (int i = 1; i <= 12; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+        
+        <label>Năm:</label>
+        <select name="year" asp-for="SelectedYear">
+            @for (int i = DateTime.Now.Year; i >= 2015; i--)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+        
+        <button type="submit" class="btn-submit">🔍</button>
+        <button type="button" class="btn-download">📥 Nhập Lại</button>
+    </form>
+    
+    <div class="oql-table-wrapper">
+        <table class="oql-table">
+            <thead>
+                <tr>
+                    <th colspan="2" class="date-header">Date</th>
+                    @for (int day = 1; day <= 31; day++)
+                    {
+                        var isRed = day == 5 || day == 12 || day == 19 || day == 26;
+                        var isEmpty = day == 4 || day == 11 || day == 18 || day == 25;
+                        var headerClass = isRed ? "red-header" : (isEmpty ? "empty-header" : "");
+                        <th class="day-header @headerClass">@day.ToString("D2")</th>
+                    }
+                </tr>
+                <tr>
+                    <th  class="date-header">Line</th>
+                    <th class="date-header">Target<br/>OQL</th>
+                    @for (int day = 1; day <= 31; day++)
+                    {
+                        <th class="day-header">5%</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+               
+                @foreach (var unitGroup in Model.Lines.GroupBy(l => l.LineName.Substring(0, 3)))
+                {
+                    
+                    var dayCount = unitGroup.First().DailyValues.Count;
+                    var avgValues = new List<double?>();
+
+                    for (int i = 0; i < dayCount; i++)
+                    {
+                        var values = unitGroup
+                            .Select(x => x.DailyValues[i])
+                            .Where(v => v.HasValue)
+                            .Select(v => v.Value)
+                            .ToList();
+
+                        avgValues.Add(values.Any() ? values.Average() : (double?)null);
+                    }
+
+                    <!-- Tiêu đề Unit -->
+                    <tr class="unit-header">
+                        <td colspan="100" style="background:#1565c0;color:white;font-weight:bold;">
+                            Unit: @unitGroup.Key
+                        </td>
+                    </tr>
+
+                    
+                    @foreach (var line in unitGroup)
+                    {
+                        <tr>
+                            <td colspan="2" class="line-name">@line.LineName</td>
+                            @foreach (var value in line.DailyValues)
+                            {
+                                var cellClass = value == null ? "empty-cell" : "value-cell";
+                                <td class="@cellClass">
+                                    @(value == null ? "" : value.Value.ToString("F1") + "%")
+                                </td>
+                            }
+                        </tr>
+                    }
+                    <tr style="background:#e3f2fd;">
+                        <td class="line-name" style="background:#1976d2;color:white;">Average</td>
+                        <td class="target-cell"></td>
+                        @foreach (var avg in avgValues)
+                        {
+                            <td class="avg-cell">@(avg == null ? "" : avg.Value.ToString("F1") + "%")</td>
+                        }
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    // Tự động submit form khi thay đổi select
+    document.querySelectorAll('.filter-section select').forEach(select => {
+        select.addEventListener('change', function() {
+            this.form.submit();
+        });
+    });
+</script>

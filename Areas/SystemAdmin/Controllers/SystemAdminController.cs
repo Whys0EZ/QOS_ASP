@@ -16,11 +16,13 @@ namespace QOS.Controllers
     [Area("SystemAdmin")]
     public class SystemAdminController : Controller
     {
+        private readonly ILogger<SystemAdminController> _logger;
         private readonly AppDbContext _context;
         private readonly IUserPermissionService _permissionService;
 
-        public SystemAdminController(AppDbContext context, IUserPermissionService permissionService)
+        public SystemAdminController(ILogger<SystemAdminController> logger, AppDbContext context, IUserPermissionService permissionService)
         {
+            _logger =logger;
             _context = context;
             _permissionService = permissionService;
         }
@@ -88,13 +90,18 @@ namespace QOS.Controllers
         }
 
         // Sửa user
+        [HttpGet]
         public IActionResult EditUser(int id)
         {
             var user = _context.Users.FirstOrDefault(u => u.Id == id);
             if (user == null) return NotFound();
 
-            var per = _context.UserPermissions.FirstOrDefault(p => p.UserName == user.Username && p.FactoryID == user.FactoryID);
+
+            var per = _context.UserPermissions
+                .FirstOrDefault(p => p.UserName == user.Username && p.FactoryID == user.FactoryID);
             if (per == null) return NotFound();
+    
+            
 
             var model = new UserEditViewModel
             {
@@ -117,14 +124,14 @@ namespace QOS.Controllers
                 SYS_Admin = per.SYS_Admin,
                 A_F1 = per.A_F1,
                 A_F2 = per.A_F2,
-                A_F3 = per.A_F3,
-                A_F4 = per.A_F4,
-                A_F5 = per.A_F5,
-                A_F6 = per.A_F6,
-                A_F7 = per.A_F7,
-                A_F8 = per.A_F8,
-                A_F9 = per.A_F9,
-                A_F10 = per.A_F10,
+                A_F3 = per.A_F3 ?? false,
+                A_F4 = per.A_F4 ?? false,
+                A_F5 = per.A_F5 ?? false,
+                A_F6 = per.A_F6 ?? false,
+                A_F7 = per.A_F7 ?? false,
+                A_F8 = per.A_F8 ?? false,
+                A_F9 = per.A_F9 ?? false,
+                A_F10 = per.A_F10 ?? false,
 
                 B_F0 = per.B_F0,
                 B_F01 = per.B_F01,
@@ -134,8 +141,9 @@ namespace QOS.Controllers
                 B_F4 = per.B_F4,
                 B_F5 = per.B_F5,
                 B_F6 = per.B_F6,
-                B_F7 = per.B_F7,
-                B_F8 = per.B_F8,
+                B_F7 = per.B_F7 ?? false,
+                B_F8 = per.B_F8 ?? false,
+                B_F9 = per.B_F9 ?? false,
 
                 C_F1 = per.C_F1,
                 C_F2 = per.C_F2,
@@ -153,7 +161,7 @@ namespace QOS.Controllers
                 Q_F6 = per.Q_F6,
                 Q_F7 = per.Q_F7,
                 Q_F8 = per.Q_F8,
-                Q_F9 = per.Q_F9,
+                Q_F9 = per.Q_F9  ?? false,
 
                 SYS_LED = per.SYS_LED
 
