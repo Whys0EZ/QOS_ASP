@@ -1,0 +1,207 @@
+@using System.Text.Json
+@model QOS.Areas.Report.Models.EndlineReportViewModel
+@{
+	ViewData["Title"] = "ENDLINE REPORT";
+	Layout = "_MenuReport";
+}
+<link rel="stylesheet" href="~/css/report.css" />
+<style>
+    tr:nth-child(even) {
+        background-color: #D6EEEE;
+    }
+    thead {
+        background-color: #00ffff!important;
+    }
+    .chart-card {
+        padding: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+</style>
+<partial name="_AlertMessage" />
+<div class="ddashboard-container">
+    <div class="container-fluid ">
+        <!-- Header -->
+        
+
+        <!-- Filter Section -->
+        <div class="filter-card p-3 shadow-sm rounded bg-white mb-3">
+            <form method="get" asp-action="EndlineReport" id="filterForm"
+                class="filter-form d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                <!-- Left group -->
+                <div class="d-flex flex-wrap align-items-center gap-3">
+
+                    <!-- Unit -->
+                    <div class="filter-item d-flex align-items-center gap-2 flex-wrap">
+                        <label class="filter-label me-2 fw-semibold">Unit:</label>
+                        <select class="form-select form-select-sm" name="unit" id="unitSelect" style="width: 120px;">
+                            
+                            <option value="ALL" selected>--Unit--</option>
+                            
+                            @if(Model.Unit_List.Any()){
+                                foreach( var unit in Model.Unit_List)
+                                {
+                                    <option value="@unit.Unit" selected ="@(unit.Unit == Model.Unit)">@unit.Unit</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        
+                        <input placeholder="Mo or StyleCode"  value="@(Model.Mo == "" ? "" : Model.Mo)" class="form-control" name="Mo" style="width: 150px;">
+                    </div>
+
+                    <div class="filter-item">
+                        
+                        <input placeholder="Color" type="text" value="@(Model.Color== "" ? "" : Model.Color)" class="form-control" name="Color" style="width: 150px;">
+                    </div>
+
+                    <!-- Ngày -->
+                    <div class="filter-item d-flex align-items-center gap-2 flex-wrap">
+                        <label class="filter-label fw-semibold mb-0">Ngày:</label>
+                        <input type="date" value="@Model.DateFrom.ToString("yyyy-MM-dd")" class="form-control form-control-sm" name="dateFrom" style="width: 140px;">
+                        <span class="fw-semibold">-</span>
+                        <input type="date" value="@Model.DateEnd.ToString("yyyy-MM-dd")" class="form-control form-control-sm" name="dateEnd" style="width: 140px;">
+                    </div>
+
+                </div>
+
+                <!-- Right group (buttons) -->
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="bi bi-search me-1"></i> Tìm kiếm
+                    </button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="exportToExcel()">
+                        <i class="bi bi-file-earmark-excel me-1"></i> Tải Excel
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="header-card">
+            <marquee behavior="alternate"><h1 class="header-title ma">
+                <i class="bi bi-clipboard-data me-2"></i>
+                ENDLINE DETAIL REPORT
+            </h1></marquee>
+        </div>
+
+    </div>
+
+    <div class="chart-card table-responsive">
+        @if(Model.ReportData != null && Model.ReportData.Any())
+        {
+            <table class="table table-bordered table-striped" style="font-size: 14px;">
+                <thead >
+                    <tr class="text-center align-middel text-uppercase">
+                        <th>Unit</th>
+                        <th>Line</th>
+                        <th>MO</th>
+                        <th>Color</th>
+                        <th>Style</th>
+                        <th>Emp.No</th>
+                        <th>Emp.Name</th>
+                        <th>QTY_ETS</th>
+                        <th>Check_QTY</th>
+                        <th>Total_Fault</th>
+                        <th style="width: 70px;">OQL</th>
+                        <th>User_Update</th>
+                        <th>Fault_Detail</th>
+                        <th>LastUpdate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach(var row in Model.ReportData)
+                {
+                    double Check_Qty = row["Check_Qty"] == DBNull.Value ? 0 : Convert.ToDouble(row["Check_Qty"]);
+                    double Total_Fault_QTY = row["Total_Fault_QTY"] == DBNull.Value ? 0 : Convert.ToDouble(row["Total_Fault_QTY"]);
+                    double defect_rate =  (Check_Qty == 0) ? 0 : (Total_Fault_QTY / Check_Qty) * 100;
+                    defect_rate = Math.Round(defect_rate, 2);
+                    var css_color ="";
+                    if((row["Unit"]?.ToString() ?? "") == "Total")
+                    {
+                        css_color = "background-color:Tomato; font-size:1rem ; font-weight:bold";
+                    }
+                    else
+                    {
+
+                    }
+                    <tr style ="@css_color">
+                        <td>@row["Unit"]</td>
+                        <td>@row["Line"]</td>
+                        <td>@row["MO"]</td>
+                        <td>@row["Color"]</td>
+                        <td>@row["Size"]</td>
+                        <td>@row["Sewer"]</td>
+                        <td>@row["Sewer_Name"]</td>
+                        <td>@row["TotalQty"]</td>
+                        <td>@row["Check_Qty"]</td>
+                        <td>@row["Total_Fault_QTY"]</td>
+                        <td>@defect_rate</td>
+                        <td>@row["UserUpdate_Name"]</td>
+                        <td>@row["defectName"]</td>
+                        <td>@row["LastUpdate"]</td>
+                        
+                    </tr>
+                }
+
+                </tbody>
+            </table>
+
+        }
+        else
+        {
+            <p class="text-center text-muted">Không có dữ liệu</p>
+        }
+        
+    </div>
+</div>
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-body text-center py-4">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="fw-bold">Đang tải dữ liệu...</div>
+                <small class="text-muted">Vui lòng chờ trong giây lát</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
+<script>
+ 
+    function Submit()
+        {
+            // Show loading
+            var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+            loadingModal.show();
+            document.getElementById("filterForm").submit();
+            
+        }
+    // Show loading on form submit
+    document.getElementById('filterForm').addEventListener('submit', function() {
+        var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+        loadingModal.show();
+    });
+
+         // Export to Excel function
+    function exportToExcel() {
+        
+
+        const form = document.getElementById('filterForm');
+        const formData = new FormData(form);
+        const params = new URLSearchParams(formData);
+
+        // Nối thêm danh sách lỗi
+       
+        console.log('params:', params.toString());
+        // Gọi controller qua GET
+         window.location.href = `/Report/EndlineReport/ExportExcel?${params.toString()}`;
+    }
+
+</script>

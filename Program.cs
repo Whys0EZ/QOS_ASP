@@ -20,9 +20,13 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.PropertyNamingPolicy = null; // giữ nguyên tên property
     });
-    
+
+// Factory Name
+builder.Services.Configure<QOS.Models.AppSettings>(builder.Configuration.GetSection("AppSettings"));  
 // builder.Services.AddSession();
 
+// 
+builder.Services.AddScoped<QOS.Services.CommonDataService>();
 // Thêm Session
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>

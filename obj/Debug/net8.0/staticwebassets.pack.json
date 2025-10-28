@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\Report\\Form2_BCCPI.xlsx"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\Format_Quality.xlsx",
+      "PackagePath": "staticwebassets\\Report\\Format_Quality.xlsx"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\QOS_Form_ThongSoThanhPham.xlsx",
       "PackagePath": "staticwebassets\\Report\\QOS_Form_ThongSoThanhPham.xlsx"
     },
@@ -41,12 +45,28 @@
       "PackagePath": "staticwebassets\\Report\\QOS_Form_ThongSoThanhPham_US.xlsx"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\RP_BaoCaoChatLuongChecker_KCC.xlsx",
+      "PackagePath": "staticwebassets\\Report\\RP_BaoCaoChatLuongChecker_KCC.xlsx"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\RP_EndLine_Detail_Report.xlsx",
+      "PackagePath": "staticwebassets\\Report\\RP_EndLine_Detail_Report.xlsx"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\RP_Form6_BCKCC.xlsx",
       "PackagePath": "staticwebassets\\Report\\RP_Form6_BCKCC.xlsx"
     },
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\RP_Form8_ThongSo_TP_SUM.xlsx",
       "PackagePath": "staticwebassets\\Report\\RP_Form8_ThongSo_TP_SUM.xlsx"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\RP_Top_Defect_Endline.xlsx",
+      "PackagePath": "staticwebassets\\Report\\RP_Top_Defect_Endline.xlsx"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\RP_Top_Defect_Inline.xlsx",
+      "PackagePath": "staticwebassets\\Report\\RP_Top_Defect_Inline.xlsx"
     },
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\all.min.css",

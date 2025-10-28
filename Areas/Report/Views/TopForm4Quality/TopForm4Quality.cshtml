@@ -1,0 +1,324 @@
+@using System.Text.Json
+@model QOS.Areas.Report.Models.TopForm4QualityViewModel
+@{
+	ViewData["Title"] = "TOP INLINE QUALITY";
+	Layout = "_MenuReport";
+}
+<link rel="stylesheet" href="~/css/report.css" />
+<partial name="_AlertMessage" />
+<div class="ddashboard-container">
+    <div class="container-fluid ">
+        <!-- Header -->
+        
+
+        <!-- Filter Section -->
+        <div class="filter-card p-3 shadow-sm rounded bg-white mb-3">
+            <form method="get" asp-action="TopForm4Quality" id="filterForm"
+                class="filter-form d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                <!-- Left group -->
+                <div class="d-flex flex-wrap align-items-center gap-3">
+
+                    <!-- Unit -->
+                    <div class="filter-item d-flex align-items-center gap-2 flex-wrap">
+                        <label class="filter-label me-2 fw-semibold">Unit:</label>
+                        <select class="form-select form-select-sm" name="unit" id="unitSelect" style="width: 120px;">
+                            
+                            <option value="ALL" selected>--Unit--</option>
+                            
+                            @if(Model.Unit_List.Any()){
+                                foreach( var unit in Model.Unit_List)
+                                {
+                                    <option value="@unit.Unit" selected ="@(unit.Unit == Model.Unit)">@unit.Unit</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="filter-item d-flex align-items-center gap-2 flex-wrap">
+                        <label class="filter-label">
+                            Line:
+                            <span class="loading-spinner" id="lineLoadingSpinner"></span>
+                        </label>
+                        <select class="form-select" name="line" id="lineSelect" style="width: 120px;" >
+                            <option value="ALL">--Line--</option>
+                        </select>
+                    </div>
+                    <input type="hidden" id="selectedLineHidden" value="@Model.Line" />
+
+                    <!-- Ngày -->
+                    <div class="filter-item d-flex align-items-center gap-2 flex-wrap">
+                        <label class="filter-label fw-semibold mb-0">Ngày:</label>
+                        <input type="date" value="@Model.DateFrom.ToString("yyyy-MM-dd")" class="form-control form-control-sm" name="dateFrom" style="width: 140px;">
+                        <span class="fw-semibold">-</span>
+                        <input type="date" value="@Model.DateEnd.ToString("yyyy-MM-dd")" class="form-control form-control-sm" name="dateEnd" style="width: 140px;">
+                    </div>
+
+                </div>
+
+                <!-- Right group (buttons) -->
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="bi bi-search me-1"></i> Tìm kiếm
+                    </button>
+                    <button type="button" class="btn btn-success btn-sm" onclick="exportToExcel()">
+                        <i class="bi bi-file-earmark-excel me-1"></i> Tải Excel
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="header-card">
+            <marquee behavior="alternate"><h1 class="header-title ma">
+                <i class="bi bi-clipboard-data me-2"></i>
+                INLINE QUALITY - @Model.Line
+            </h1></marquee>
+        </div>
+
+    </div>
+
+    <div class="chart-card">
+        @if(Model.ReportData != null && Model.ReportData.Any())
+        {
+            double  Total_Qty =0;
+            double  Total_Fault =0;
+            double defect_rate =1;
+            var Style="";
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table table-bordered table-striped">
+                        
+                        @foreach(var row in Model.ReportData)
+                        {
+                            Total_Qty = row["Total_Qty"] == DBNull.Value ? 0 : Convert.ToDouble(row["Total_Qty"]);
+                            Total_Fault += row["Total_Fault_Qty"] == DBNull.Value ? 0 : Convert.ToDouble(row["Total_Fault_Qty"]);
+                            Style = row["Style"]?.ToString() ?? "";
+                            
+                            
+                        }
+                        @{
+                            defect_rate =  (Total_Qty == 0) ? 0 : (Total_Fault / Total_Qty) * 100;
+                            defect_rate = Math.Round(defect_rate, 2); // 🔹 chỉ giữ 2 số thập phân
+                            
+                        }
+                        <tbody>
+                            <tr>
+                                <td rowspan="3" style="font-weight:bold;"> INLINE<br>@Model.Line <br> Style: @Style <br> @Model.DateFrom.ToString("yyyy-MM-dd") - @Model.DateEnd.ToString("yyyy-MM-dd")</td>
+                                <td>Số hàng kiểm / Check QTY</td>
+                                <td>@Total_Qty</td>
+                            </tr>
+                            <tr>
+                                
+                                <td>Số hàng lỗi / Defect QTY</td>
+                                <td>@Total_Fault</td>
+                            </tr>
+                            <tr>
+                               
+                                <td>Tỉ lệ lỗi / Defect rate</td>
+                                <td>@defect_rate %</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <table class="table table-bordered table-striped">
+                        
+                        
+                        <tr>
+                            <th style="color: brown;">Decfect Name</th>
+                            <th style="color: brown;">Số lượng lỗi / Defect quantity </th>
+                            <th style="color: brown;">Tỉ lệ lỗi / Defect rate</th>
+                        </tr>
+                        <tbody>
+                        @foreach(var row in Model.ReportData)
+                        {
+                            double Total_Qty_2 = row["Total_Qty"] == DBNull.Value ? 0 : Convert.ToDouble(row["Total_Qty"]);
+                            double Total_Fault_2 = row["Total_Fault_Qty"] == DBNull.Value ? 0 : Convert.ToDouble(row["Total_Fault_Qty"]);
+                            double defect_rate_2 =  (Total_Qty_2 == 0) ? 0 : (Total_Fault_2 / Total_Qty_2) * 100;
+                            defect_rate_2 = Math.Round(defect_rate_2, 2);
+
+                            <tr>
+                                <td>@row["defectName"] / <span style="color:blue;">@row["defectNameEN"]</span></td>
+                                <td>@row["Total_Fault_Qty"]</td>
+                                <td>@defect_rate_2 %</td>
+                            </tr>
+
+                        }
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>  
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-striped">
+                        
+                        
+                        <thead class="table-info align-middle text-center">
+                            <tr>
+                                <th>Tên Công Nhân / Worker name</th>
+                                <th>Công đoạn / Operations</th>
+                                <th>Tên Công đoạn / Operations name</th>
+                                <th>Tổng check / Check qty</th>
+                                <th>Số lỗi / Total defect</th>
+                                <th>Tên lỗi / Defect name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach(var row in Model.ReportData)
+                            {
+                                <tr>
+                                    <td>@row["FullName"]</td>
+                                    <td>@row["Operation_Code"]</td>
+                                    <td>@row["Operation_Name_VN"] / <span style="color:blue;">@row["Operation_Name_EN"]</span></td>
+                                    <td>@row["Qty"]</td>
+                                    <td>@row["Total_Fault_Qty"]</td>
+                                    <td>@row["defectName"] / <span style="color:blue;">@row["defectNameEN"]</span></td>
+                                </tr>
+
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+                        
+
+        } 
+        else 
+        {
+            <p class="text-center text-muted">Không có dữ liệu</p>
+        }
+        
+    </div>
+</div>
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-body text-center py-4">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="fw-bold">Đang tải dữ liệu...</div>
+                <small class="text-muted">Vui lòng chờ trong giây lát</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
+<script>
+ 
+    function Submit()
+        {
+            // Show loading
+            var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+            loadingModal.show();
+            document.getElementById("filterForm").submit();
+            
+        }
+    // Show loading on form submit
+    document.getElementById('filterForm').addEventListener('submit', function() {
+        var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+        loadingModal.show();
+    });
+
+    // Handle Unit selection change and load Lines
+    document.getElementById('unitSelect').addEventListener('change', async function() {
+        @* var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+        loadingModal.show(); *@
+        const selectedUnit = this.value;
+        const lineSelect = document.getElementById('lineSelect');
+        const spinner = document.getElementById('lineLoadingSpinner');
+        
+        // Clear current options
+        lineSelect.innerHTML = ''; // xóa dòng cũ
+        
+        if (selectedUnit && selectedUnit !== 'ALL') {
+            try {
+                // Show loading spinner
+                spinner.style.display = 'inline-block';
+                lineSelect.disabled = true;
+                
+                // Fetch lines from server
+                const response = await fetch(`/Report/TopForm4Quality/GetLinesByUnit?unitId=${encodeURIComponent(selectedUnit)}`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch lines');
+                }
+                
+                const lines = await response.json();
+                
+                // Populate dropdown
+                if (lines && lines.length > 0) {
+                    lines.forEach(line => {
+                        const option = document.createElement('option');
+                        option.value = line.value;
+                        option.textContent = line.text;
+                        lineSelect.appendChild(option);
+                    });
+                    
+                    lineSelect.disabled = false;
+                    // 🔹 Lấy lại giá trị Line đã chọn từ server (model)
+                    //const selectedLine = document.getElementById('selectedLineHidden').value;
+                   // if (selectedLine) {
+                     //   lineSelect.value = selectedLine; // Tự chọn lại Line trước đó
+                    //}
+                    // Add visual feedback
+                    lineSelect.style.borderColor = '#10b981';
+                    setTimeout(() => {
+                        lineSelect.style.borderColor = '';
+                    }, 500);
+                } else {
+                    lineSelect.innerHTML = '<option value="">--Không có Line--</option>';
+                    lineSelect.disabled = true;
+                }
+            } catch (error) {
+                console.error('Error loading lines:', error);
+                lineSelect.innerHTML = '<option value="">--Lỗi tải dữ liệu--</option>';
+                lineSelect.disabled = true;
+            } finally {
+                // Hide loading spinner
+                spinner.style.display = 'none';
+            }
+        } else {
+            // Disable line select if "ALL" or no unit selected
+            lineSelect.disabled = true;
+        }
+    });
+
+    // Trigger change event on page load if unit is already selected
+    window.addEventListener('DOMContentLoaded', function() {
+        const unitSelect = document.getElementById('unitSelect');
+        const selectedUnit = '@Model.Unit';
+        const selectedLine = '@Model.Line';
+        if (unitSelect.value && unitSelect.value !== 'ALL') {
+            unitSelect.dispatchEvent(new Event('change'));
+            // Set selected line after a short delay to ensure options are loaded
+                if (selectedLine) {
+                    setTimeout(function() {
+                        const lineSelect = document.getElementById('lineSelect');
+                        lineSelect.value = selectedLine;
+                    }, 500);
+                }
+        }
+    });
+
+        // Export to Excel function
+    function exportToExcel() {
+        
+
+        const form = document.getElementById('filterForm');
+        const formData = new FormData(form);
+        const params = new URLSearchParams(formData);
+
+        // Nối thêm danh sách lỗi
+       
+        console.log('params:', params.toString());
+        // Gọi controller qua GET
+         window.location.href = `/Report/TopForm4Quality/ExportExcel?${params.toString()}`;
+    }
+
+</script>

@@ -106,6 +106,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRnVuY3Rpb25cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/C_Sharp/QOS/Areas/Report/Views/EndlineReport/EndlineReport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEVuZGxpbmVSZXBvcnRcRW5kbGluZVJlcG9ydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Report/Views/EndlineUnitEN/EndlineUnitEN.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEVuZGxpbmVVbml0RU5cRW5kbGluZVVuaXRFTi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Report/Views/EndlineUnit/EndlineUnit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEVuZGxpbmVVbml0XEVuZGxpbmVVbml0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/C_Sharp/QOS/Areas/Report/Views/FCATrackingACDate/FCATrackingACDate.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXEZDQVRyYWNraW5nQUNEYXRlXEZDQVRyYWNraW5nQUNEYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -244,6 +256,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/C_Sharp/QOS/Areas/Report/Views/SummaryKCM/RP_Summary_Defects_KCM.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXFN1bW1hcnlLQ01cUlBfU3VtbWFyeV9EZWZlY3RzX0tDTS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Report/Views/TopForm4Quality/TopForm4Quality.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXFRvcEZvcm00UXVhbGl0eVxUb3BGb3JtNFF1YWxpdHkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Report/Views/TopForm6Quality/TopForm6Quality.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXFRvcEZvcm02UXVhbGl0eVxUb3BGb3JtNlF1YWxpdHkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/C_Sharp/QOS/Areas/Report/Views/_ViewImports.cshtml]
