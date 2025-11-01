@@ -195,11 +195,11 @@
 
 
     const defectStats = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
-        Model.ReportData.Select(d => new { 
-            name = d.ContainsKey("Unit") ? d["Unit"]?.ToString() : "",
-            count = d.ContainsKey("OQL_total") ? Convert.ToInt32(d["OQL_total"]) : 0,
-            
-        })
+        (Model.ReportData ?? new List<Dictionary<string, object>>())
+            .Select(d => new { 
+                name = d.ContainsKey("Unit") ? d["Unit"]?.ToString() : "",
+                count = d.ContainsKey("OQL_total") ? Convert.ToInt32(d["OQL_total"]) : 0
+            })
     ));
     const labels = defectStats.map(d => d.name);      // Tên lỗi thực tế
     const counts = defectStats.map(d => d.count);     // Số lượng thực tế

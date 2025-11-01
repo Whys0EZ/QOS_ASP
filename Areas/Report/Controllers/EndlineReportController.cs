@@ -47,7 +47,7 @@ namespace QOS.Areas.Report.Controllers
         [HttpGet]
         public IActionResult EndlineReport(string? Unit, string? Mo, string? Color, DateTime? dateFrom, DateTime? dateEnd)
         {
-            _logger.LogInformation("=== EndlineReport GET Request ===" + _appSettings.FactoryName );
+            // _logger.LogInformation("=== EndlineReport GET Request ===" + _appSettings.FactoryName );
             // _logger.LogInformation($"Parameters - Unit: '{Unit}', DateFrom: {dateFrom}, DateEnd: {dateEnd}, Line: '{Line}' ");
             try
             {
@@ -330,7 +330,7 @@ namespace QOS.Areas.Report.Controllers
                 var worksheet = package.Workbook.Worksheets[0];
              
 
-                int row = 9;
+                // int row = 9;
                 int ro_count = 2;
                 // worksheet.Cells[1, 1].Value = "Báo cáo Inline" ;
                 worksheet.Cells["B6"].Value = (Unit ?? "ALL");

@@ -58,6 +58,8 @@ app.UseRouting();
 app.UseAuthentication();  // phải trước Authorization
 app.UseAuthorization();   // sau Authentication
 
+app.MapControllers(); // ✅ cho API
+
 app.UseSession(); 
 // app.UseClearSessionMiddleware(); // Middleware xóa session khi chưa đăng nhập
 app.MapAreaControllerRoute(
@@ -79,6 +81,11 @@ app.MapAreaControllerRoute(
     name: "system",
     areaName: "SystemAdmin",
     pattern: "SystemAdmin/{controller=SystemAdmin}/{action=Index}/{id?}"
+);
+app.MapAreaControllerRoute(
+    name: "api",
+    areaName: "API",
+    pattern: "api/{controller}/{action}/{id?}"
 );
 app.MapControllerRoute(
     name: "default",

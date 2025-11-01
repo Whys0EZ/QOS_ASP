@@ -195,7 +195,7 @@ namespace QOS.Controllers
             return feedbacks;
         }
 
-        private ContactViewModel GetFeedbackById(int id)
+        private ContactViewModel? GetFeedbackById(int id)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -253,7 +253,7 @@ namespace QOS.Controllers
                     cmd.Parameters.AddWithValue("@Status", status);
                     cmd.Parameters.AddWithValue("@Response", string.IsNullOrEmpty(response) ? DBNull.Value : response);
                     cmd.Parameters.AddWithValue("@ResponseDate", string.IsNullOrEmpty(response) ? DBNull.Value : DateTime.Now);
-                    cmd.Parameters.AddWithValue("@ResponseBy", string.IsNullOrEmpty(response) ? DBNull.Value : User.Identity.Name ?? "Admin");
+                    cmd.Parameters.AddWithValue("@ResponseBy", string.IsNullOrEmpty(response) ? DBNull.Value : (User?.Identity?.Name ?? "Admin"));
 
                     cmd.ExecuteNonQuery();
                 }

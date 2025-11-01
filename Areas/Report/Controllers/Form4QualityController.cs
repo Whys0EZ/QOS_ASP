@@ -236,7 +236,7 @@ namespace QOS.Areas.Report.Controllers
                 var worksheet = package.Workbook.Worksheets[0];
 
                 int row = 3;
-                int col = 1;
+                // int col = 1;
                 // worksheet.Cells[1, 1].Value = "Báo cáo Inline" ;
                 worksheet.Cells["A1"].Value = "Báo cáo Inline - " + (Unit ?? "ALL");
                 worksheet.Cells["E1"].Value = $"{(dateFrom ?? DateTime.Now):dd/MM/yyyy}" ;

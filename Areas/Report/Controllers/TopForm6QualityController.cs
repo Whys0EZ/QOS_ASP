@@ -304,7 +304,7 @@ namespace QOS.Areas.Report.Controllers
                 var worksheet = package.Workbook.Worksheets[0];
 
                 int row = 9;
-                int col = 1;
+                // int col = 1;
                 // worksheet.Cells[1, 1].Value = "Báo cáo Inline" ;
                 worksheet.Cells["B6"].Value = (Unit ?? "ALL");
                 worksheet.Cells["B7"].Value = (Line ?? "ALL");
