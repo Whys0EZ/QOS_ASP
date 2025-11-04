@@ -27,7 +27,7 @@ namespace QOS.Areas.API.Controllers
             [FromQuery] string? Code_G,
             [FromQuery] string? Report_ID,
             [FromQuery] string? Audit_Time_V,
-            [FromBody] DeletePhotoRequest? request)
+            [FromForm] DeletePhotoRequest? request)
         {
             if (string.IsNullOrEmpty(Code_G))
                 return BadRequest(new { KQ = "NG: Code_G is required" });

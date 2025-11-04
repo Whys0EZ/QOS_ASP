@@ -179,40 +179,37 @@ public class Functions()
     {
         try
         {
-            // Tạo thư mục gốc nếu chưa có
+            // logger?.LogInformation($"[DecodeImgAdd] Processing: {imgName}");
+            // logger?.LogInformation($"[DecodeImgAdd] Base path: {imagePath}");
+
+            // ✅ Tạo thư mục gốc nếu chưa có
             if (!Directory.Exists(imagePath))
             {
                 Directory.CreateDirectory(imagePath);
+                // logger?.LogInformation($"[DecodeImgAdd] Created base directory: {imagePath}");
             }
 
-            // Xử lý đường dẫn: tách thành các phần thư mục + file
-            string[] nameParts = imgName.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            // ✅ Xây dựng đường dẫn đầy đủ
+            string fullImagePath = Path.Combine(imagePath, imgName.Replace("/", Path.DirectorySeparatorChar.ToString()));
+            
+            // logger?.LogInformation($"[DecodeImgAdd] Full path: {fullImagePath}");
 
-            string fullImagePath = imagePath;
-
-            // Tạo folder structure
-            for (int i = 0; i < nameParts.Length; i++)
+            // ✅ Tạo TẤT CẢ các thư mục cha (2025-Nov, 2025-Nov/2ISD, etc.)
+            string? directoryPath = Path.GetDirectoryName(fullImagePath);
+            if (!string.IsNullOrEmpty(directoryPath) && !Directory.Exists(directoryPath))
             {
-                fullImagePath = Path.Combine(fullImagePath, nameParts[i]);
-
-                // Tạo folder ở phần áp chót
-                if (i == nameParts.Length - 2)
-                {
-                    string? folderPath = Path.GetDirectoryName(fullImagePath);
-                    if (!string.IsNullOrEmpty(folderPath) && !Directory.Exists(folderPath))
-                    {
-                        Directory.CreateDirectory(folderPath);
-                    }
-                }
+                Directory.CreateDirectory(directoryPath);
+                // logger?.LogInformation($"[DecodeImgAdd] Created directory structure: {directoryPath}");
             }
 
-            // Xóa file cũ nếu tồn tại
+            // ✅ Xóa file cũ nếu tồn tại
             if (File.Exists(fullImagePath))
             {
                 File.Delete(fullImagePath);
+                logger?.LogInformation($"[DecodeImgAdd] Deleted old file: {fullImagePath}");
             }
 
-            // Decode base64 và lưu file
+            // ✅ Decode base64
             string base64Data = base64Value;
             if (base64Value.Contains(","))
             {
@@ -221,16 +218,16 @@ public class Functions()
 
             byte[] imageBytes = Convert.FromBase64String(base64Data);
 
-            // Lưu file
+            // ✅ Lưu file
             File.WriteAllBytes(fullImagePath, imageBytes);
 
-            logger?.LogInformation($"Photo uploaded: {imgName} ({imageBytes.Length} bytes)");
+            logger?.LogInformation($"[DecodeImgAdd] ✅ SUCCESS: Saved {fullImagePath} ({imageBytes.Length} bytes)");
 
             return $"{imgName} --> OK";
         }
         catch (Exception ex)
         {
-            logger?.LogError(ex, $"Error uploading {imgName}");
+            logger?.LogError(ex, $"[DecodeImgAdd] ❌ ERROR processing {imgName}");
             return $"{imgName} --> NG: {ex.Message}";
         }
     }

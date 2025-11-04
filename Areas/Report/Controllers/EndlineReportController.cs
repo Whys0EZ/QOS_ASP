@@ -364,7 +364,7 @@ namespace QOS.Areas.Report.Controllers
                 cmd.Parameters.AddWithValue("@Color", color);
 
                 conn.Open();
-                string lastSewer = null;
+                string? lastSewer = null;
                 var UserUpdate_Name = "";
 
                 using (var reader = cmd.ExecuteReader())
@@ -372,7 +372,7 @@ namespace QOS.Areas.Report.Controllers
                     
                     while (reader.Read())
                     {
-                        string sewer = reader["Sewer"] == DBNull.Value ? null : reader["Sewer"].ToString();
+                        string? sewer = reader["Sewer"] == DBNull.Value ? null : reader["Sewer"].ToString();
                         if(lastSewer != null && lastSewer != sewer)
                         {
                             foreach (var data_total in reportDataList)

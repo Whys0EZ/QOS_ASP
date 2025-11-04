@@ -26,7 +26,7 @@ namespace QOS.Areas.API.Controllers
         [HttpPost]
         public IActionResult Get_SQLite_2_Server_BCCPI_Upload_IMG(
             [FromQuery] string? Code_G,
-            [FromBody] PhotoUploadRequest request)
+            [FromForm] PhotoUploadRequest request)
         {
             if (string.IsNullOrEmpty(Code_G))
                 return BadRequest(new { KQ = "NG: Code_G is required" });

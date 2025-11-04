@@ -76,6 +76,7 @@ namespace QOS.Areas.API.Controllers
         }
         private List<object> Emp_Infor(string CardNo , string Type_c, string FactoryID)
         {
+            string factoryID = (FactoryID.Length > 3) ? FactoryID.Substring(0, 3) : FactoryID;
             List<object> list = new();
 
             using (SqlConnection conn = new(_connectionString))
@@ -83,7 +84,7 @@ namespace QOS.Areas.API.Controllers
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                
-                cmd.Parameters.AddWithValue("@FactoryID", FactoryID);
+                cmd.Parameters.AddWithValue("@FactoryID", factoryID);
                 cmd.Parameters.AddWithValue("@Card_no", CardNo);
                 cmd.Parameters.AddWithValue("@Type_c", Type_c);
 

@@ -6,6 +6,7 @@ namespace QOS.Areas.API.Helpers
 {
     public static class EmailHelper
     {
+        private static readonly Random _rnd = new Random();
         /// <summary>
         /// Send email via external API
         /// </summary>
@@ -24,7 +25,7 @@ namespace QOS.Areas.API.Helpers
                 {
                     Email_v = emailTo,
                     Subject_v = subject,
-                    Body_v = EncodeBase64(body)
+                    Body_v = Enc(body)
                 };
 
                 var json = JsonSerializer.Serialize(requestData);
@@ -156,6 +157,35 @@ namespace QOS.Areas.API.Helpers
             catch
             {
                 return input;
+            }
+        }
+        // Encode: thêm 5 chữ số ngẫu nhiên vào đầu rồi Base64 encode
+        public static string Enc(string plain)
+        {
+            var sb = new StringBuilder(5 + (plain?.Length ?? 0));
+            for (int i = 0; i < 5; i++)
+            {
+                sb.Append(_rnd.Next(0, 10)); // 0..9
+            }
+            sb.Append(plain ?? string.Empty);
+            var bytes = Encoding.UTF8.GetBytes(sb.ToString());
+            return Convert.ToBase64String(bytes);
+        }
+
+        // Decode: Base64 decode rồi bỏ 5 ký tự đầu
+        public static string Dec(string encoded)
+        {
+            if (string.IsNullOrEmpty(encoded)) return string.Empty;
+            try
+            {
+                var bytes = Convert.FromBase64String(encoded);
+                var decoded = Encoding.UTF8.GetString(bytes);
+                if (decoded.Length <= 5) return string.Empty;
+                return decoded.Substring(5);
+            }
+            catch
+            {
+                return string.Empty;
             }
         }
     }

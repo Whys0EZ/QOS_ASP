@@ -67,7 +67,7 @@ namespace QOS.Areas.API.Controllers
             List<object> list = new();
 
             using (SqlConnection conn = new(_connectionString))
-            using (SqlCommand cmd = new("Select top 1 * from System_Push where FactoyID= = @FactoryID  ", conn))
+            using (SqlCommand cmd = new("Select top 1 * from System_Push where FactoyID= @FactoryID  ", conn))
             {
                
                 cmd.Parameters.AddWithValue("@FactoryID", FactoryID);

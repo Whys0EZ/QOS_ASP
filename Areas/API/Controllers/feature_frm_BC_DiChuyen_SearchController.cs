@@ -68,9 +68,9 @@ namespace QOS.Areas.API.Controllers
             }
         }
 
-        private List<object> GetInLineData(string factoryID, string dateF, string unit,string line, string searchTxt, string all)
+        private List<Dictionary<string, object>> GetInLineData(string factoryID, string dateF, string unit,string line, string searchTxt, string all)
         {
-            List<object> list = new();
+            var list = new List<Dictionary<string, object>>();
 
             using (SqlConnection conn = new(_connectionString))
             using (SqlCommand cmd = new("Json_RP_BC_DiChuyen_SUM", conn))
@@ -102,48 +102,41 @@ namespace QOS.Areas.API.Controllers
                 int i = 1;
                 while (dr.Read())
                 {
-                    list.Add(new 
+                    var item = new Dictionary<string, object>
                     {
-                        No = i,
-                        Led = Functions.GetStringValue(dr, "Led_"),
-                        LastUpdate = Functions.GetDateTimeValue(dr,"LastUpdate"),
+                        ["No"] = i,
+                        ["Led"] = Functions.GetStringValue(dr, "Led"),
+                        ["LastUpdate"] = Functions.GetDateTimeValue(dr, "LastUpdate"),
+                        ["MO"] = Functions.GetStringValue(dr, "MO"),
+                        ["Sewer"] = Functions.GetStringValue(dr, "Sewer"),
+                        ["Operation_Name"] = Functions.GetStringValue(dr, "Operation_Name"),
+                        ["Qty-defected"] = Functions.GetStringValue(dr, "Total_Fault_QTY"), // ✅ Giữ nguyên key
+                        ["Audit_Time"] = Functions.GetStringValue(dr, "Audit_Time"),
+                        ["Color"] = Functions.GetStringValue(dr, "Color"),
+                        ["Size"] = Functions.GetStringValue(dr, "Size"),
+                        ["Style"] = Functions.GetStringValue(dr, "Style"),
+                        ["UserUpdate"] = Functions.GetStringValue(dr, "UserUpdate"),
+                        ["Report_ID"] = Functions.GetStringValue(dr, "Report_ID"),
+                        ["Unit"] = Functions.GetStringValue(dr, "Unit"),
+                        ["Line"] = Functions.GetStringValue(dr, "Line"),
+                        ["Sewer_Workstation"] = Functions.GetStringValue(dr, "Sewer_Workstation"),
+                        ["Sup"] = Functions.GetStringValue(dr, "Sup"),
+                        ["QTY"] = Functions.GetIntValue(dr, "QTY"),
+                        ["Operation"] = Functions.GetStringValue(dr, "Operation").Trim(),
+                        ["Fault_Detail"] = Functions.GetStringValue(dr, "Fault_Detail"),
+                        ["Remark"] = Functions.GetStringValue(dr, "Remark"),
+                        ["Re_Audit"] = Functions.GetBoolValue(dr, "Re_Audit"),
+                        ["Re_Audit_Time"] = Functions.GetDateTimeValue(dr, "Re_Audit_Time"),
+                        ["PhysicalLine"] = Functions.GetStringValue(dr, "PhysicalLine"),
+                        ["Photo_URL"] = Functions.GetStringValue(dr, "Photo_URL"),
+                        ["cl_List"] = Functions.GetStringValue(dr, "cl_List"),
+                        ["cl_Size"] = Functions.GetStringValue(dr, "cl_Size"),
+                        ["RowColor_Set"] = Functions.GetStringValue(dr, "RowColor_Set"),
+                        ["RowColor_V"] = Functions.GetStringValue(dr, "RowColor_V"),
+                        ["RowClick_V"] = Functions.GetStringValue(dr, "RowClick_V")
+                    };
 
-                        MO = Functions.GetStringValue(dr, "MO"),
-                        Sewer = Functions.GetStringValue(dr, "Sewer"),
-                        Operation_Name = Functions.GetStringValue(dr, "Operation_Name"),
-                        Qtydefected = Functions.GetStringValue(dr, "Total_Fault_QTY"),
-                        Audit_Time = Functions.GetStringValue(dr, "Audit_Time"),
-                        Color = Functions.GetStringValue(dr, "Color"),
-                        Size = Functions.GetStringValue(dr, "Size"),
-                        Style = Functions.GetStringValue(dr, "Style"),
-
-                        UserUpdate = Functions.GetStringValue(dr, "UserUpdate"),
-                        Report_ID = Functions.GetStringValue(dr, "Report_ID"),
-                        Unit = Functions.GetStringValue(dr, "Unit"),
-                        Line = Functions.GetStringValue(dr, "Line"),
-                        Sewer_Workstation = Functions.GetStringValue(dr, "Sewer_Workstation"),
-                        Sup = Functions.GetStringValue(dr, "Sup"),
-                       
-                        QTY = Functions.GetIntValue(dr, "QTY"),
-                        Operation = Functions.GetStringValue(dr, "Operation").Trim(),
-                        // Total_Fault_QTY = Functions.GetIntValue(dr, "Total_Fault_QTY"),
-                        
-                        Fault_Detail = Functions.GetStringValue(dr, "Fault_Detail"),
-                        
-                        Remark = Functions.GetStringValue(dr, "Remark"),
-                        
-                        
-                        Re_Audit = Functions.GetBoolValue(dr, "Re_Audit"),
-                        Re_Audit_Time = Functions.GetDateTimeValue(dr,"Re_Audit_Time"),
-                        PhysicalLine = Functions.GetStringValue(dr, "PhysicalLine"),
-                        Photo_URL = Functions.GetStringValue(dr, "Photo_URL"),
-
-                        cl_List = Functions.GetStringValue(dr, "cl_List"),
-                        cl_Size = Functions.GetStringValue(dr, "cl_Size"),
-                        RowColor_Set = Functions.GetStringValue(dr, "RowColor_Set"),
-                        RowColor_V = Functions.GetStringValue(dr, "RowColor_V"),
-                        RowClick_V = Functions.GetStringValue(dr, "RowClick_V")
-                    });
+                    list.Add(item);
                     i++;
                 }
             }

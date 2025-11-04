@@ -103,7 +103,7 @@ namespace QOS.Areas.API.Controllers
                     list.Add(new BCCLCModel
                     {
                         No = i,
-                        Led = GetStringValue(dr, "Led_"),
+                        Led = GetStringValue(dr, "Led"),
                         LastUpdate = Functions.GetDateTimeValue(dr,"LastUpdate"),
                         ID = GetStringValue(dr, "ID"),
                         Report_ID = GetStringValue(dr, "Report_ID"),

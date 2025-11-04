@@ -240,26 +240,26 @@ namespace QOS.Areas.API.Controllers
             cmd.Parameters.AddWithValue("@Cut_Table_Long", request.Cut_Table_Long ?? "");
             
             // Các trường boolean (chuyển từ PHP truthy/falsy sang 1/0)
-            cmd.Parameters.AddWithValue("@vai_ke", request.vai_ke ? 1 : 0);
-            cmd.Parameters.AddWithValue("@noi_vai", request.noi_vai ? 1 : 0);
-            cmd.Parameters.AddWithValue("@cang_vai", request.cang_vai ? 1 : 0);
-            cmd.Parameters.AddWithValue("@sai_mat", request.sai_mat ? 1 : 0);
-            cmd.Parameters.AddWithValue("@hep_kho", request.hep_kho ? 1 : 0);
-            cmd.Parameters.AddWithValue("@ban_vai", request.ban_vai ? 1 : 0);
-            cmd.Parameters.AddWithValue("@vi_tri", request.vi_tri ? 1 : 0);
-            cmd.Parameters.AddWithValue("@vai_nghieng", request.vai_nghieng ? 1 : 0);
-            cmd.Parameters.AddWithValue("@song_vai", request.song_vai ? 1 : 0);
-            cmd.Parameters.AddWithValue("@thang_ke", request.thang_ke ? 1 : 0);
-            cmd.Parameters.AddWithValue("@khac_mau", request.khac_mau ? 1 : 0);
-            cmd.Parameters.AddWithValue("@quen_bam", request.quen_bam ? 1 : 0);
-            cmd.Parameters.AddWithValue("@bam_sau", request.bam_sau ? 1 : 0);
-            cmd.Parameters.AddWithValue("@xoc_xech", request.xoc_xech ? 1 : 0);
-            cmd.Parameters.AddWithValue("@khong_cat", request.khong_cat ? 1 : 0);
-            cmd.Parameters.AddWithValue("@khong_gon", request.khong_gon ? 1 : 0);
-            cmd.Parameters.AddWithValue("@doi_ke", request.doi_ke ? 1 : 0);
-            cmd.Parameters.AddWithValue("@doi_xung", request.doi_xung ? 1 : 0);
-            cmd.Parameters.AddWithValue("@so_lop", request.so_lop ? 1 : 0);
-            cmd.Parameters.AddWithValue("@so_btp", request.so_btp ? 1 : 0);
+            cmd.Parameters.AddWithValue("@vai_ke", request.vai_ke );
+            cmd.Parameters.AddWithValue("@noi_vai", request.noi_vai );
+            cmd.Parameters.AddWithValue("@cang_vai", request.cang_vai);
+            cmd.Parameters.AddWithValue("@sai_mat", request.sai_mat );
+            cmd.Parameters.AddWithValue("@hep_kho", request.hep_kho  );
+            cmd.Parameters.AddWithValue("@ban_vai", request.ban_vai  );
+            cmd.Parameters.AddWithValue("@vi_tri", request.vi_tri  );
+            cmd.Parameters.AddWithValue("@vai_nghieng", request.vai_nghieng  );
+            cmd.Parameters.AddWithValue("@song_vai", request.song_vai  );
+            cmd.Parameters.AddWithValue("@thang_ke", request.thang_ke  );
+            cmd.Parameters.AddWithValue("@khac_mau", request.khac_mau  );
+            cmd.Parameters.AddWithValue("@quen_bam", request.quen_bam  );
+            cmd.Parameters.AddWithValue("@bam_sau", request.bam_sau  );
+            cmd.Parameters.AddWithValue("@xoc_xech", request.xoc_xech  );
+            cmd.Parameters.AddWithValue("@khong_cat", request.khong_cat  );
+            cmd.Parameters.AddWithValue("@khong_gon", request.khong_gon  );
+            cmd.Parameters.AddWithValue("@doi_ke", request.doi_ke  );
+            cmd.Parameters.AddWithValue("@doi_xung", request.doi_xung  );
+            cmd.Parameters.AddWithValue("@so_lop", request.so_lop  );
+            cmd.Parameters.AddWithValue("@so_btp", request.so_btp  );
             
             cmd.Parameters.AddWithValue("@Size_Parameter_Cat", request.Size_Parameter_Cat ?? "");
             cmd.Parameters.AddWithValue("@Size_Parameter_CPI", request.Size_Parameter_CPI ?? "");

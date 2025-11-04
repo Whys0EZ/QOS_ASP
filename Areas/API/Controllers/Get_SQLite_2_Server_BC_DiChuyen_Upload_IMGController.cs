@@ -26,12 +26,23 @@ namespace QOS.Areas.API.Controllers
         [HttpPost]
         public IActionResult Get_SQLite_2_Server_BC_DiChuyen_Upload_IMG(
             [FromQuery] string? Code_G,
-            [FromBody] PhotoUploadRequest request)
+            [FromForm] string? Form_Data,      // ✅ Thay đổi: nhận trực tiếp từ Form
+            [FromForm] string? Folder,
+            [FromForm] string? Img_Name,
+            [FromForm] string? Image)
         {
+            _logger.LogInformation("===== UPLOAD REQUEST =====");
+            _logger.LogInformation($"Code_G: {Code_G}");
+            _logger.LogInformation($"Form_Data: {Form_Data}");
+            _logger.LogInformation($"Folder: {Folder}");
+            _logger.LogInformation($"Img_Name: {Img_Name}");
+            _logger.LogInformation($"Image length: {Image?.Length ?? 0}");
+
+
             if (string.IsNullOrEmpty(Code_G))
                 return BadRequest(new { KQ = "NG: Code_G is required" });
 
-            if (request == null || string.IsNullOrEmpty(request.Img_Name) || string.IsNullOrEmpty(request.Image))
+            if (string.IsNullOrEmpty(Img_Name) || string.IsNullOrEmpty(Image))
                 return BadRequest(new { KQ = "NG: Img_Name and Image are required" });
 
             try
@@ -50,11 +61,33 @@ namespace QOS.Areas.API.Controllers
                 string formID = "Form4_BCCLM";
                 string imagePath = Path.Combine(_environment.WebRootPath, "upload", "Photos", "Form4_BCCLM");
                 string textCut = "_###_";
+                // ✅ Tự động thêm folder theo tháng nếu Img_Name không có path
+                string processedImgName = Img_Name;
+                if (!Img_Name.Contains("/"))
+                {
+                    string monthFolder = DateTime.Now.ToString("yyyy-MMM", 
+                        new System.Globalization.CultureInfo("en-US"));
+                    
+                    if (Img_Name.Contains(textCut))
+                    {
+                        string[] names = Img_Name.Split(textCut, StringSplitOptions.RemoveEmptyEntries);
+                        processedImgName = string.Join(textCut, 
+                            names.Select(n => $"{monthFolder}/{n.Trim()}"));
+                    }
+                    else
+                    {
+                        processedImgName = $"{monthFolder}/{Img_Name}";
+                    }
+                }
+                _logger.LogInformation($"Original Img_Name: {Img_Name}");
+                _logger.LogInformation($"Processed Img_Name: {processedImgName}");
+                _logger.LogInformation($"Image path: {imagePath}");
+                
 
                 // ✅ SỬ DỤNG HELPER DECODE IMAGE
                 string result = Functions.DecodeImgListAdd(
-                    request.Img_Name,
-                    request.Image,
+                    processedImgName,
+                    Image,
                     imagePath,
                     textCut,
                     formID,

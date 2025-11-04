@@ -83,7 +83,7 @@ namespace QOS.Areas.API.Controllers
                         MO = dr["MO"]?.ToString() ?? "",
                         Operation_Code = dr["Operation_Code"]?.ToString() ?? "",
                         Operation_Name = dr["Operation_Name_VN"]?.ToString() ?? "",
-                        CMD = dr["CMD"]?.ToString() ?? "",
+                        CMD = Convert.ToInt32(dr["CMD"]),
                         WorkDate = DateTime.Now.ToString("yyyy-MM-dd"),
                     });
                 }

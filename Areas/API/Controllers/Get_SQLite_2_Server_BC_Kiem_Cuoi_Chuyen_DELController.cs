@@ -28,7 +28,7 @@ namespace QOS.Areas.API.Controllers
             [FromQuery] string? Code_G,
             [FromQuery] string? Report_ID,
             [FromQuery] string? Audit_Time_V,
-            [FromBody] DeletePhotoRequest? request)
+            [FromForm] DeletePhotoRequest? request)
         {
             var results = new List<object>();
             if (string.IsNullOrEmpty(Code_G))
@@ -83,7 +83,7 @@ namespace QOS.Areas.API.Controllers
             try
             {
                 using (SqlConnection conn = new(_connectionString))
-                using (SqlCommand cmd = new("Json_BC_DiChuyen_Delete_Report", conn))
+                using (SqlCommand cmd = new("Json_BC_KiemCuoiChuyen_Delete_Report", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Report_ID", reportID);

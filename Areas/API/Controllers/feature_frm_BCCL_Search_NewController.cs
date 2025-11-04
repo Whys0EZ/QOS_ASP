@@ -53,7 +53,7 @@ namespace QOS.Areas.API.Controllers
                 // Query database...
                 var BCCLCList = GetBCCLCData(factoryID, dateF, Unit ?? "", Search_txt ?? "", ALL ?? "");
 
-                return Ok(new { BCCLC_Search = BCCLCList });
+                return Ok(new { BCCL_Search = BCCLCList });
             }
             catch (SqlException ex)
             {
@@ -108,7 +108,7 @@ namespace QOS.Areas.API.Controllers
                         ID = GetStringValue(dr, "ID"),
                         Report_ID = GetStringValue(dr, "Report_ID"),
                         MO = GetStringValue(dr, "MO"),
-                        Cut_Leader = GetStringValue(dr, "Cut_Leader"),
+                        Sewer = GetStringValue(dr, "Cut_Leader"),
                         Cut_Table = GetStringValue(dr, "CutTableName").Trim(),
                         Cut_Lot = GetStringValue(dr, "Cut_Lot").Trim(),
                         CutTableName = GetStringValue(dr, "CutTableName").Trim(),

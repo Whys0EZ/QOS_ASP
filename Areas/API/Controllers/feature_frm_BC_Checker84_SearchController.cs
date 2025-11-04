@@ -105,7 +105,7 @@ namespace QOS.Areas.API.Controllers
                     list.Add(new 
                     {
                         No = i,
-                        Led = Functions.GetStringValue(dr, "Led_"),
+                        Led = Functions.GetStringValue(dr, "Led"),
                         LastUpdate = Functions.GetDateTimeValue(dr,"LastUpdate"),
 
                         MO = Functions.GetStringValue(dr, "MO"),
@@ -114,6 +114,7 @@ namespace QOS.Areas.API.Controllers
                         Color = Functions.GetStringValue(dr, "Color").Trim(),
                         Size = Functions.GetStringValue(dr, "Size").Trim(),
                         UserUpdate = Functions.GetStringValue(dr, "UserUpdate").Trim(),
+                        Report_ID = Functions.GetStringValue(dr, "Report_ID"),
                         Unit = Functions.GetStringValue(dr, "Unit"),
                         Line = Functions.GetStringValue(dr, "Line"),
                         Sup = Functions.GetStringValue(dr, "Sup").Trim(),

@@ -29,7 +29,7 @@ namespace QOS.Areas.API.Controllers
         [HttpDelete] // Hỗ trợ cả POST và DELETE
         public IActionResult Get_SQLite_2_Server_BC_Kiem_Cuoi_Chuyen_DEL_Photo(
             [FromQuery] string? Code_G,
-            [FromBody] DeletePhotoRequest? request)
+            [FromForm] DeletePhotoRequest? request)
         {
             if (string.IsNullOrEmpty(Code_G))
                 return BadRequest(new { KQ = "NG: Code_G is required" });

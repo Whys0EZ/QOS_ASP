@@ -9,6 +9,7 @@ namespace QOS.Areas.API.Models
         public string? Report_ID { get; set; }
         public string? Unit { get; set; }
         public string? Cut_Leader { get; set; }
+        public string? Sewer { get; set; }
         public string? Cut_Lot { get; set; }
         public string? Lay_Height { get; set; }
         public string? Table_Long { get; set; }

@@ -22,7 +22,7 @@ namespace QOS.Areas.API.Controllers
         /// Send tracking email
         /// </summary>
         [HttpPost("SendTrackingEmail")]
-        public async Task<IActionResult> SendTrackingEmail([FromBody] SendEmailRequest request)
+        public async Task<IActionResult> SendTrackingEmail([FromForm] SendEmailRequest request)
         {
             if (request == null || string.IsNullOrEmpty(request.Email))
                 return BadRequest(new { error = "Email is required" });
@@ -47,6 +47,8 @@ namespace QOS.Areas.API.Controllers
                     status: request.Status ?? "",
                     remark: request.Remark ?? ""
                 );
+
+                _logger.LogInformation($"Sending tracking email to: {emailBody}");
 
                 // Send email via API
                 string result = await EmailHelper.SendEmailApiAsync(

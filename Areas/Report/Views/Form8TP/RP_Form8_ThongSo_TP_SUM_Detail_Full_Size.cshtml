@@ -120,7 +120,10 @@
                                         @measurement.Base_Value
                                     </td>
                                     <td class="info_td" style="width: 50px; text-align:center;">
-                                        @(Math.Round(Convert.ToDouble(measurement.Sum_Value), 1))
+                                        @* @(Math.Round(Convert.ToDouble(measurement.Sum_Value), 1)) *@
+                                        @(string.IsNullOrWhiteSpace(measurement?.Sum_Value?.ToString())
+                                        ? ""
+                                        : Math.Round(Convert.ToDouble(measurement.Sum_Value), 1).ToString())
                                     </td>
                                 </tr>
                             }

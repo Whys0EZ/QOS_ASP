@@ -71,7 +71,7 @@ namespace QOS.Areas.API.Controllers
             List<object> list = new();
 
             using (SqlConnection conn = new(_connectionString))
-            using (SqlCommand cmd = new("Json_RP_ThongSo_BTP_SUM", conn))
+            using (SqlCommand cmd = new("Json_RP_ThongSo_TP_SUM", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@FactoryID", SqlDbType.NVarChar).Value = factoryID;
@@ -112,10 +112,14 @@ namespace QOS.Areas.API.Controllers
                         Type = Functions.GetStringValue(dr, "Type"),
                         Unit = Functions.GetStringValue(dr, "Unit"),
                         Line = Functions.GetStringValue(dr, "Line"),
+                        Supervisor = Functions.GetStringValue(dr, "Supervisor"),
+                        StyleCode = Functions.GetStringValue(dr, "StyleCode"),
                         MO = Functions.GetStringValue(dr, "MO"),
                         Workstage = Functions.GetStringValue(dr, "Workstage"),
                         Color = Functions.GetStringValue(dr, "Color"),
+                        Item = Functions.GetStringValue(dr, "Item"),
                         Pattern = Functions.GetStringValue(dr, "Pattern"),
+                        BatchCode = Functions.GetStringValue(dr, "BatchCode"),
                         CutTable = Functions.GetStringValue(dr, "CutTable"),
                         
                         UpdatedBy = Functions.GetStringValue(dr, "UpdatedBy"),

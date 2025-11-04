@@ -1,3 +1,4 @@
+
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
@@ -34,5 +35,19 @@
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   </ItemGroup>
+
+  <Target Name="UpdateWebConfigAfterPublish" AfterTargets="Publish">
+    <!-- File web.config trong thư mục publish -->
+    <ItemGroup>
+      <PublishedWebConfig Include="$(PublishDir)\web.config" />
+    </ItemGroup>
+
+    <!-- Thêm các phần tử XML -->
+    <Message Text="Modifying web.config after publish..." Importance="high" />
+    <XmlPoke
+      XmlInputPath="@(PublishedWebConfig)"
+      Query="/configuration/system.webServer"
+      Value='&lt;clear /&gt;&#x0A;&lt;validation validateIntegratedModeConfiguration="false" /&gt;' />
+  </Target>
 
 </Project>

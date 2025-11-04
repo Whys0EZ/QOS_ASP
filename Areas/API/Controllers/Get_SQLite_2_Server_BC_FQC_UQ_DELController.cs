@@ -28,7 +28,7 @@ namespace QOS.Areas.API.Controllers
             [FromQuery] string? Code_G,
             [FromQuery] string? ID_Report,
             [FromQuery] string? Audit_Time_V,
-            [FromBody] DeletePhotoRequest? request)
+            [FromForm] DeletePhotoRequest? request)
         {
             var results = new List<object>();
             if (string.IsNullOrEmpty(Code_G))

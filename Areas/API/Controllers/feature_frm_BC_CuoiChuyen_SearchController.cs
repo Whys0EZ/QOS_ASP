@@ -105,14 +105,14 @@ namespace QOS.Areas.API.Controllers
                     list.Add(new 
                     {
                         No = i,
-                        Led = Functions.GetStringValue(dr, "Led_"),
+                        Led = Functions.GetStringValue(dr, "Led"),
                         LastUpdate = Convert.ToDateTime(dr["LastUpdate"]).ToString("dd-MMM-yyyy HH:mm:ss"),
 
                         MO = Functions.GetStringValue(dr, "MO"),
                         Sewer = Functions.GetStringValue(dr, "Sewer"),
                         // Operation_Name = Functions.GetStringValue(dr, "Operation_Name"),
                         // Qtydefected = Functions.GetStringValue(dr, "Total_Fault_QTY"),
-                        Audit_Time = Functions.GetStringValue(dr, "Audit_Time"),
+                        Audit_Time = Functions.GetIntValue(dr, "Audit_Time"),
                         Color = Functions.GetStringValue(dr, "Color"),
                         Size = Functions.GetStringValue(dr, "Size"),
                         // Style = Functions.GetStringValue(dr, "Style"),

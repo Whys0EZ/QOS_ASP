@@ -68,7 +68,7 @@ namespace QOS.Areas.Report.Controllers
                 {
                     // Ép kiểu an toàn, tránh lỗi DBNull
                     // var value = reader["Infor_10"] == DBNull.Value ? "" : reader["Infor_10"].ToString();
-                    var value = reader["Infor_10"] == DBNull.Value ? "" : (reader["Infor_10"]?.ToString() ?? "");
+                    var value = Convert.ToString(reader["Infor_10"]) ?? "";
                     // if (!string.IsNullOrWhiteSpace(value))
                         customers.Add(value);
                 }

@@ -20,26 +20,26 @@ namespace QOS.Areas.API.Models
         public string? Cut_Table_Long { get; set; }
         
         // Các lỗi fabric
-        public bool vai_ke { get; set; }
-        public bool noi_vai { get; set; }
-        public bool cang_vai { get; set; }
-        public bool sai_mat { get; set; }
-        public bool hep_kho { get; set; }
-        public bool ban_vai { get; set; }
-        public bool vi_tri { get; set; }
-        public bool vai_nghieng { get; set; }
-        public bool song_vai { get; set; }
-        public bool thang_ke { get; set; }
-        public bool khac_mau { get; set; }
-        public bool quen_bam { get; set; }
-        public bool bam_sau { get; set; }
-        public bool xoc_xech { get; set; }
-        public bool khong_cat { get; set; }
-        public bool khong_gon { get; set; }
-        public bool doi_ke { get; set; }
-        public bool doi_xung { get; set; }
-        public bool so_lop { get; set; }
-        public bool so_btp { get; set; }
+        public int? vai_ke { get; set; }
+        public int? noi_vai { get; set; }
+        public int? cang_vai { get; set; }
+        public int? sai_mat { get; set; }
+        public int? hep_kho { get; set; }
+        public int? ban_vai { get; set; }
+        public int? vi_tri { get; set; }
+        public int? vai_nghieng { get; set; }
+        public int? song_vai { get; set; }
+        public int? thang_ke { get; set; }
+        public int? khac_mau { get; set; }
+        public int? quen_bam { get; set; }
+        public int? bam_sau { get; set; }
+        public int? xoc_xech { get; set; }
+        public int? khong_cat { get; set; }
+        public int? khong_gon { get; set; }
+        public int? doi_ke { get; set; }
+        public int? doi_xung { get; set; }
+        public int? so_lop { get; set; }
+        public int? so_btp { get; set; }
         
         public string? Size_Parameter_Cat { get; set; }
         public string? Size_Parameter_CPI { get; set; }

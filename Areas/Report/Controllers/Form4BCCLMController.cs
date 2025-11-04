@@ -864,7 +864,7 @@ namespace QOS.Areas.Report.Controllers
             }
 
             // Lấy công đoạn
-            string Operation_Code = detail.Operation;
+            string Operation_Code = detail.Operation ?? "";
             
             string sqlOperation = @"SELECT Operation_Code AS Operation_Code,
                         Operation_Name_VN AS Operation_Name_VN
