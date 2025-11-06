@@ -20,6 +20,7 @@ namespace QOS.Areas.Report.Controllers
         private readonly IWebHostEnvironment _env;
         private readonly IConfiguration _configuration;
         private readonly AppDbContext _context;
+        
 
         public Form2BCCPIController(ILogger<Form2BCCPIController> logger, IWebHostEnvironment env, IConfiguration configuration, AppDbContext context)
         {
@@ -36,9 +37,10 @@ namespace QOS.Areas.Report.Controllers
 
         public IActionResult RP_Form2(string? Unit, DateTime? dateFrom, DateTime? dateEnd)
         {
+            string FactoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
             var model = new RP_Form2ViewModel
             {
-                Unit_List = _context.Set<Unit_List>().Where(u => u.Factory == "REG2").OrderBy(u => u.Unit).ToList(),
+                Unit_List = _context.Set<Unit_List>().Where(u => u.Factory == FactoryName).OrderBy(u => u.Unit).ToList(),
                 Unit = Unit,
                 DateFrom = dateFrom ?? DateTime.Now.AddDays(-7),
                 DateEnd = dateEnd ?? DateTime.Now.Date.AddDays(1).AddTicks(-1)

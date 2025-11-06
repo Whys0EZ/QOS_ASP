@@ -12,7 +12,7 @@
 <div class="d-flex align-items-center gap-2">
     <form asp-area="Function" asp-action="Search" asp-controller="ManageOperation" method="post" class="d-flex align-items-center gap-2 mb-0">
         <label>MO</label>
-        <input type="text" id="mo" name="mo"   class="form-control" />
+        <input type="text" id="mo" name="mo" value="@Model.MO"  class="form-control" />
         <button type="submit" class="btn btn-primary" style="width: 200px;">Tìm Kiếm</button>
     </form>
     <form asp-area="Function" asp-action="Upload" asp-controller="ManageOperation" enctype="multipart/form-data"

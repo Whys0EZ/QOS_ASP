@@ -106,8 +106,8 @@ namespace QOS.Areas.API.Controllers
                     {
                         ["No"] = i,
                         ["Led"] = Functions.GetStringValue(dr, "Led"),
-                        ["LastUpdate"] = Functions.GetDateTimeValue(dr, "LastUpdate"),
-                        ["MO"] = Functions.GetStringValue(dr, "MO"),
+						["LastUpdate"] = Functions.GetDateTimeValue(dr, "LastUpdate") ?? DateTime.MinValue,
+						["MO"] = Functions.GetStringValue(dr, "MO"),
                         ["Sewer"] = Functions.GetStringValue(dr, "Sewer"),
                         ["Operation_Name"] = Functions.GetStringValue(dr, "Operation_Name"),
                         ["Qty-defected"] = Functions.GetStringValue(dr, "Total_Fault_QTY"), // ✅ Giữ nguyên key
@@ -126,7 +126,7 @@ namespace QOS.Areas.API.Controllers
                         ["Fault_Detail"] = Functions.GetStringValue(dr, "Fault_Detail"),
                         ["Remark"] = Functions.GetStringValue(dr, "Remark"),
                         ["Re_Audit"] = Functions.GetBoolValue(dr, "Re_Audit"),
-                        ["Re_Audit_Time"] = Functions.GetDateTimeValue(dr, "Re_Audit_Time"),
+                        ["Re_Audit_Time"] = Functions.GetDateTimeValue(dr, "Re_Audit_Time") ?? DateTime.MinValue,
                         ["PhysicalLine"] = Functions.GetStringValue(dr, "PhysicalLine"),
                         ["Photo_URL"] = Functions.GetStringValue(dr, "Photo_URL"),
                         ["cl_List"] = Functions.GetStringValue(dr, "cl_List"),

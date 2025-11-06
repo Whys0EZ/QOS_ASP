@@ -22,6 +22,7 @@ namespace QOS.Areas.Report.Controllers
         private readonly IConfiguration _configuration;
         private readonly string _connectionString;
         private readonly AppDbContext _context;
+        private readonly string _factoryName;
 
         public Form4BCCLMController(ILogger<Form4BCCLMController> logger, IWebHostEnvironment env, IConfiguration configuration, AppDbContext context)
         {
@@ -30,6 +31,7 @@ namespace QOS.Areas.Report.Controllers
             _connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Missing connection string: DefaultConnection");
             _configuration =configuration;
             _context = context;
+            _factoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
         }
         public IActionResult Index()
         {
@@ -297,7 +299,7 @@ namespace QOS.Areas.Report.Controllers
                         DateFrom = dateFrom.Value.ToString("yyyy-MM-dd HH:mm:ss"),
                         DateEnd = dateEnd.Value.ToString("yyyy-MM-dd HH:mm:ss"),
                         Unit = unit,
-                        FactoryID = "REG2"
+                        FactoryID = _factoryName
                     }
                 };
 
@@ -317,7 +319,7 @@ namespace QOS.Areas.Report.Controllers
             try
             {
                 var units = _context.Set<QOS.Models.Unit_List>()
-                    .Where(u => u.Factory == "REG2")
+                    .Where(u => u.Factory == _factoryName)
                     .OrderBy(u => u.Unit)
                     .ToList();
 
@@ -355,7 +357,7 @@ namespace QOS.Areas.Report.Controllers
                 command.Parameters.AddWithValue("@Date_From", dateFStr);
                 command.Parameters.AddWithValue("@Date_To", dateTStr);
                 command.Parameters.AddWithValue("@Line_Type", model.Unit == "ALL" ? "" : model.Unit);
-                command.Parameters.AddWithValue("@Factory", "REG2");
+                command.Parameters.AddWithValue("@Factory", _factoryName);
 
                 using var reader = command.ExecuteReader();
                 var reportUnits = new List<ReportUnit>();
@@ -786,7 +788,7 @@ namespace QOS.Areas.Report.Controllers
                 command.Parameters.AddWithValue("@DateF", dateFrom);
                 command.Parameters.AddWithValue("@DateT", dateEnd);
                 command.Parameters.AddWithValue("@Unit", unit == "ALL" ? "" : unit);
-                command.Parameters.AddWithValue("@FactoryID", "REG2");
+                command.Parameters.AddWithValue("@FactoryID", _factoryName);
 
                 var results = new List<object>();
                 using var reader = command.ExecuteReader();

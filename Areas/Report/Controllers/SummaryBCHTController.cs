@@ -25,6 +25,7 @@ namespace QOS.Areas.Report.Controllers
         private readonly IConfiguration _configuration;
         private readonly string _connectionString;
         private readonly AppDbContext _context;
+        private readonly string _factoryName;
 
         public SummaryBCHTController(ILogger<SummaryBCHTController> logger, IWebHostEnvironment env, IConfiguration configuration, AppDbContext context)
         {
@@ -33,6 +34,7 @@ namespace QOS.Areas.Report.Controllers
             _connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Missing connection string: DefaultConnection");
             _configuration =configuration;
             _context = context;
+            _factoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
         }
         public IActionResult Index()
         {
@@ -80,7 +82,7 @@ namespace QOS.Areas.Report.Controllers
             try
             {
                 var units = _context.Set<Unit_List>()
-                    .Where(u => u.Factory == "REG2")
+                    .Where(u => u.Factory == _factoryName)
                     .OrderBy(u => u.Unit)
                     .ToList();
 
@@ -109,7 +111,7 @@ namespace QOS.Areas.Report.Controllers
 
                 // Assuming you have a Line_List table with Unit field
                 var lines = _context.Set<Line_List>()
-                    .Where(l => l.Unit == unitId && l.Factory == "REG2")
+                    .Where(l => l.Unit == unitId && l.Factory == _factoryName)
                     .OrderBy(l => l.Line)
                     .Select(l => new { 
                         value = l.Line, 

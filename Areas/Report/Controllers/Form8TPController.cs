@@ -28,6 +28,7 @@ namespace QOS.Controllers
         private readonly IConfiguration _configuration;
         private readonly AppDbContext _context;
         private readonly string _connectionString;
+        private readonly string _factoryName;
 
         public Form8TPController(ILogger<Form8TPController> logger, IWebHostEnvironment env, IConfiguration configuration, AppDbContext context)
         {
@@ -37,6 +38,7 @@ namespace QOS.Controllers
             _connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Missing connection string: DefaultConnection");
             
             _context = context;
+            _factoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
         }
         [TempData]
         public string? MessageStatus { get; set;}
@@ -66,7 +68,7 @@ namespace QOS.Controllers
             try
             {
                 var units = _context.Set<QOS.Models.Unit_List>()
-                    .Where(u => u.Factory == "REG2")
+                    .Where(u => u.Factory == _factoryName)
                     .OrderBy(u => u.Unit)
                     .ToList();
 

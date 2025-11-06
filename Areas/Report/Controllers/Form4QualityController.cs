@@ -20,6 +20,8 @@ namespace QOS.Areas.Report.Controllers
         private readonly IConfiguration _configuration;
         private readonly string _connectionString;
         private readonly AppDbContext _context;
+        private readonly string _factoryName;
+        
         [TempData]
         public string? MessageStatus { get; set;}
 
@@ -30,6 +32,7 @@ namespace QOS.Areas.Report.Controllers
             _configuration = configuration ;
             _context = context ;
             _connectionString = configuration.GetConnectionString("DefaultConnection") ?? "";
+            _factoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
 
         }
         public ActionResult Index()
@@ -55,7 +58,7 @@ namespace QOS.Areas.Report.Controllers
             try
             {
                 var units = _context.Set<QOS.Models.Unit_List>()
-                    .Where(u => u.Factory == "REG2")
+                    .Where(u => u.Factory == _factoryName)
                     .OrderBy(u => u.Unit)
                     .ToList();
 

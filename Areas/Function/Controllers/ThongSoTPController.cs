@@ -52,8 +52,9 @@ namespace QOS.Areas.Function.Controllers
                 MessageStatus = "Chưa chọn file Excel!";
                 return RedirectToAction("Index");
             }
+            string FactoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
             string UMSS = "NG";
-            FactoryID = "REG2";
+            FactoryID = FactoryName;
             string Search_V = "";
             // 1. Lưu file Excel tạm
             string uploadsFolder = Path.Combine(_env.WebRootPath, "upload/ThongSoThanhPham/EXCEL");

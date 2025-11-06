@@ -101,6 +101,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\REG.ico",
+      "PackagePath": "staticwebassets\\images\\REG.ico"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\avatars\\406860.png",
       "PackagePath": "staticwebassets\\images\\avatars\\406860.png"
     },
