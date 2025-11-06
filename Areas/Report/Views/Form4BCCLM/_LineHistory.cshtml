@@ -5,7 +5,7 @@
         <thead class="table-dark">
             <tr>
                 <th >STT</th>
-                <th >Báo Cáo</th>
+                <th >ID Báo Cáo</th>
                 <th >Công đoạn</th>
                 <th >Sewer</th>
                 <th >SL Lỗi/SL Kiểm</th>
@@ -24,8 +24,8 @@
                 
                 <tr class="@(item.Status == "green" ? "table-success" : item.Status == "red" ? "table-danger" : item.Status == "yellow" ? "table-warning" : "")">
                     <td>@idx</td>
-                    <td> <span style="text-decoration: underline; cursor: pointer; color:blue;"
-                                onclick="showDetails('@item.ID')">@item.Report_ID</span></td>
+                    <td width=100px> <span style="text-decoration: underline; cursor: pointer; color:blue;"
+                                onclick="showDetails('@item.ID')">@item.Report_ID.Substring(0, 20)</span></td>
                     <td>@item.Operation_Name_VN</td>
                     <td>@item.Sewer</td>
                     <td>@item.Total_Fault_QTY/ @item.QTY</td>

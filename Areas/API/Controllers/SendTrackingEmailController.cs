@@ -48,7 +48,7 @@ namespace QOS.Areas.API.Controllers
                     remark: request.Remark ?? ""
                 );
 
-                _logger.LogInformation($"Sending tracking email to: {emailBody}");
+                // _logger.LogInformation($"Sending tracking email to: {emailBody}");
 
                 // Send email via API
                 string result = await EmailHelper.SendEmailApiAsync(

@@ -147,7 +147,7 @@
 <div class="modal fade" id="historyModal" tabindex="-1">
     <div class="modal-dialog modal-fullscreen ">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-info text-white">
                 <h2 style="text-align: center; text-transform: uppercase;" class="modal-title">Lịch sử kiểm tra chất lượng may xưởng - <span id="lineCodeTitle"></span></h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -208,38 +208,33 @@ function resetForm() {
     document.getElementById('dateEnd').value = '@DateTime.Now.ToString("yyyy-MM-dd")';
 }
 
-function showHistoryRPLine(lineCode,col, dateF, dateT) {
-    document.getElementById('lineCodeTitle').textContent = lineCode;
-    
-    // You can implement AJAX call here to load detailed history
-    var historyContent = document.getElementById('historyContent');
-    historyContent.innerHTML = `
-        <div class="text-center py-3">
-            <div class="spinner-border text-primary mb-2" role="status">
-                <span class="visually-hidden">Loading...</span>
+function showHistoryRPLine(lineCode, col, dateF, dateT) {
+    const titleEl = document.getElementById('lineCodeTitle');
+    if (titleEl) titleEl.textContent = lineCode;
+
+    const historyContent = document.getElementById('historyContent');
+    if (historyContent) {
+        historyContent.innerHTML = `
+            <div class="text-center py-3">
+                <div class="spinner-border text-primary mb-2" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div>Đang tải lịch sử cho line ${lineCode}...</div>
+                <small class="text-muted">Từ ${dateF} đến ${dateT}</small>
             </div>
-            <div>Đang tải lịch sử cho line ${lineCode}...</div>
-            <small class="text-muted">Từ ${dateF} đến ${dateT}</small>
-        </div>
-    `;
-    
-    var historyModal = new bootstrap.Modal(document.getElementById('historyModal'));
+        `;
+    }
+
+    const modalEl = document.getElementById('historyModal');
+    const historyModal = bootstrap.Modal.getOrCreateInstance(modalEl);
     historyModal.show();
+
     $.ajax({
         url: '/Report/Form4BCCLM/GetSewerLineHistory',
         type: 'GET',
-        data: {
-            lineCode: lineCode,
-            position: col,
-            dateFrom: dateF || new Date().toISOString().slice(0, 10),
-            dateEnd: dateT   || new Date().toISOString().slice(0, 10)
-        },
-        success: function (html) {
-            $("#historyContent").html(html);
-        },
-        error: function () {
-            $("#historyContent").html('<div class="alert alert-danger">Lỗi tải dữ liệu</div>');
-        }
+        data: { lineCode: lineCode, position: col, dateFrom: dateF, dateEnd: dateT },
+        success: (html) => $("#historyContent").html(html),
+        error: () => $("#historyContent").html('<div class="alert alert-danger">Lỗi tải dữ liệu</div>')
     });
 }
 
@@ -249,69 +244,3 @@ document.getElementById('SearchForm').addEventListener('submit', function() {
     loadingModal.show();
 });
 </script>
-
-@* <script>
- $.ajax({
-        url: '/Report/Form4BCCLM/GetLineHistory',
-        type: 'GET',
-        data: {
-            lineCode: lineCode,
-            dateFrom: dateF || new Date().toISOString().slice(0, 10), // nếu rỗng thì mặc định hôm nay
-            dateEnd: dateT   || new Date().toISOString().slice(0, 10)
-        },
-        success: function (res) {
-          
-            if (res.success) {
-                console.log("res.data:", res.data);
-                if (!res.data || res.data.length === 0) {
-                    historyContent.innerHTML = `
-                        <div class="alert alert-warning">
-                            Không có dữ liệu cho line ${lineCode}.
-                        </div>`;
-                    return;
-                }
-                let content = `
-                    <div class="alert ">
-                        <table class="table table-striped" align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="position:relative; width:100%;">
-                        <thead class="table-primary">
-                            <tr class="Title_TB" style="font-size: 1.5em!important;">
-                                <th style="width:25px;;" >STT</th>
-                                <th style="width:230px;" >Báo Cáo</th>
-                                <th style="width:200px;" >Công đoạn</th>
-                                <th style="width:250px;" >Sewer</th>
-                                <th style="width:100px;" >SL Lỗi/SL Kiểm</th>
-                                <th style="width:60px;" >Trạng thái</th>
-                                <th style="width:60px;" >Lần kiểm</th>
-                                <th style="width:200px;" >Người tạo</th>
-                                <th  >Thời gian kiểm</th>
-                            </tr> 
-                        </thead>
-                        <tbody>               
-
-                    
-                `;
-                res.data.forEach((item, idx) => {
-                content += `
-                    <tr>
-                        <td>${idx + 1}</td>
-                        <td>${item.Report_ID}</td>
-                        <td>${item.Operation_Name_VN}</td>
-                        <td>${item.Sewer}</td>
-                        <td>${item.Total_Fault_QTY}/${item.QTY}</td>
-                        <td>${item.Status}</td>
-                        <td>${item.Audit_Time}</td>
-                        <td>${item.UserUpdate}- ${item.FullName}</td>
-                        <td>${item.LastUpdate}</td>
-                    </tr>
-                `;
-            });
-
-            content += `</tbody></table> </div>`;
-                historyContent.innerHTML = content;
-            } else {
-                historyContent.innerHTML = `<div class="alert alert-danger">${res.message}</div>`;
-            }
-        }
-    });
-
-    </script> *@

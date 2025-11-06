@@ -288,36 +288,32 @@
     });
 
     function Show_History_RP(lineCode, dateF, dateT) {
-        document.getElementById('lineCodeTitle').textContent = lineCode;
-        
-        // You can implement AJAX call here to load detailed history
-        var historyContent = document.getElementById('historyContent');
-        historyContent.innerHTML = `
-            <div class="text-center py-3">
-                <div class="spinner-border text-primary mb-2" role="status">
-                    <span class="visually-hidden">Loading...</span>
+        const titleEl = document.getElementById('lineCodeTitle');
+        if (titleEl) titleEl.textContent = lineCode;
+
+        const historyContent = document.getElementById('historyContent');
+        if (historyContent) {
+            historyContent.innerHTML = `
+                <div class="text-center py-3">
+                    <div class="spinner-border text-primary mb-2" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div>Đang tải lịch sử cho line ${lineCode}...</div>
+                    <small class="text-muted">Từ ${dateF} đến ${dateT}</small>
                 </div>
-                <div>Đang tải lịch sử cho line ${lineCode}...</div>
-                <small class="text-muted">Từ ${dateF} đến ${dateT}</small>
-            </div>
-        `;
-        
-        var historyModal = new bootstrap.Modal(document.getElementById('historyModal'));
+            `;
+        }
+
+        const modalEl = document.getElementById('historyModal');
+        const historyModal = bootstrap.Modal.getOrCreateInstance(modalEl);
         historyModal.show();
+
         $.ajax({
             url: '/Report/Form10BCHT/GetLineHistory',
             type: 'GET',
-            data: {
-                lineCode: lineCode,
-                dateFrom: dateF || new Date().toISOString().slice(0, 10),
-                dateEnd: dateT   || new Date().toISOString().slice(0, 10)
-            },
-            success: function (html) {
-                $("#historyContent").html(html);
-            },
-            error: function () {
-                $("#historyContent").html('<div class="alert alert-danger">Lỗi tải dữ liệu</div>');
-            }
+            data: { lineCode: lineCode, dateFrom: dateF, dateEnd: dateT },
+            success: (html) => $("#historyContent").html(html),
+            error: () => $("#historyContent").html('<div class="alert alert-danger">Lỗi tải dữ liệu</div>')
         });
     }
     $("#ExportExcel").click(function () {

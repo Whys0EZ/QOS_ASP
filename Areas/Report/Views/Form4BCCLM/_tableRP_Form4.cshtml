@@ -1,183 +1,526 @@
+<!-- Thêm đoạn CSS này vào đầu file -->
+<style>
+    /* Base styles */
+    * {
+        box-sizing: border-box;
+    }
+    
+    #Form4Report {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    /* Optimized table layout for desktop */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    
+    .table td {
+        padding: 10px;
+        vertical-align: middle;
+    }
+    
+    .table label {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 5px;
+    }
+    
+    .table input,
+    .table select {
+        width: 100%;
+        padding: 8px 12px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    
+    /* Grid layout for form fields on desktop */
+    @@media (min-width: 769px) {
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        /* Two column layout for fault table */
+        #tblFault {
+            max-width: 800px;
+        }
+        
+        #tblFault td:first-child {
+            width: 60%;
+        }
+        
+        #tblFault td:last-child {
+            width: 40%;
+        }
+    }
+    
+    /* Textarea */
+    textarea {
+        width: 100%;
+        max-width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: inherit;
+    }
+    
+    /* LED Quality Assessment */
+    .quality-section {
+        margin: 30px 0;
+    }
+    
+    .led-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 80px;
+        margin: 20px 0;
+    }
+    
+    .led-item {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .led-item img {
+        width: 80px;
+        height: auto;
+        display: block;
+    }
+    
+    .led-item input[type="radio"] {
+        transform: scale(2);
+        cursor: pointer;
+    }
+    
+    /* Photo Gallery */
+    .photo-section {
+        margin: 30px 0;
+    }
+    
+    .photo-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin: 15px 0;
+    }
+    
+    .photo-gallery img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        cursor: pointer;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        transition: transform 0.2s;
+    }
+    
+    .photo-gallery img:hover {
+        transform: scale(1.05);
+        border-color: #00bcd4;
+    }
+    
+    /* Re-audit checkbox */
+    .reaudit-section {
+        margin: 30px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .reaudit-section input[type="checkbox"] {
+        transform: scale(2);
+        cursor: pointer;
+    }
+    
+    /* Action buttons */
+    .action-buttons {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin: 30px 0;
+    }
+    
+    .action-buttons img {
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    
+    .action-buttons img:hover {
+        transform: scale(1.1);
+    }
+    
+    .action-buttons .btn {
+        padding: 10px 30px;
+        font-size: 16px;
+    }
+    
+    /* Modal */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.7);
+    }
+    
+    .modal-content {
+        background-color: #fefefe;
+        margin: 3% auto;
+        padding: 0;
+        border: 1px solid #888;
+        width: 80%;
+        
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    
+    .modal-header {
+        padding: 20px;
+        color: white;
+        border-radius: 8px 8px 0 0;
+    }
+    
+    .modal-body {
+        padding: 30px;
+        text-align: center;
+    }
+    
+    .modal-body img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+    }
+    
+    .close {
+        color: white;
+        float: right;
+        font-size: 32px;
+        font-weight: bold;
+        cursor: pointer;
+        line-height: 20px;
+    }
+    
+    .close:hover,
+    .close:focus {
+        opacity: 0.7;
+    }
+    
+    /* Section headers */
+    .section-header {
+        font-weight: bold;
+        font-size: 16px;
+        margin: 25px 0 15px 0;
+    }
+    
+    .section-header span {
+        color: red;
+    }
+    
+    /* Tablet */
+    @@media (max-width: 1024px) {
+        #Form4Report {
+            padding: 15px;
+        }
+        
+        .led-container {
+            gap: 50px;
+        }
+        
+        .led-item img {
+            width: 70px;
+        }
+        
+        .photo-gallery img {
+            width: 100px;
+            height: 100px;
+        }
+    }
+    
+    /* Mobile */
+    @@media (max-width: 768px) {
+        #Form4Report {
+            padding: 10px;
+        }
+        
+        .table {
+            display: block;
+            overflow-x: auto;
+            font-size: 13px;
+        }
+        
+        .table td {
+            padding: 6px;
+        }
+        
+        .table input,
+        .table select {
+            font-size: 13px;
+            padding: 6px 8px;
+        }
+        
+        textarea {
+            font-size: 13px;
+            padding: 8px;
+        }
+        
+        .led-container {
+            gap: 30px;
+        }
+        
+        .led-item img {
+            width: 60px;
+        }
+        
+        .led-item input[type="radio"] {
+            transform: scale(1.5);
+        }
+        
+        .reaudit-section input[type="checkbox"] {
+            transform: scale(1.5);
+        }
+        
+        .photo-gallery img {
+            width: 80px;
+            height: 80px;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .action-buttons img {
+            width: 80px !important;
+        }
+        
+        .modal-content {
+            width: 95%;
+            margin: 10% auto;
+        }
+        
+        .modal-body {
+            padding: 15px;
+        }
+    }
+    
+    /* Small mobile */
+    @@media (max-width: 480px) {
+        .table {
+            font-size: 12px;
+        }
+        
+        .table input,
+        .table select {
+            font-size: 12px;
+            padding: 5px 6px;
+        }
+        
+        textarea {
+            font-size: 12px;
+        }
+        
+        .led-container {
+            gap: 20px;
+        }
+        
+        .led-item img {
+            width: 50px;
+        }
+        
+        .photo-gallery img {
+            width: 70px;
+            height: 70px;
+        }
+        
+        .section-header {
+            font-size: 14px;
+        }
+    }
+</style>
+
 @model QOS.Areas.Report.Models.Form4DetailViewModel
 
 <form id="Form4Report" method="post" asp-action="CreateReport_Form4" asp-controller="Report" asp-area="Report">
     <input type="hidden" id="ReportID" name="ReportID" value="@Model.Detail.ID"/>
-<table class="table">
-    <tr>
-        <td><label>Unit</label></td>
-        <td><label>Công nhân</label></td>
-        <td><label>Vị trí</label></td>
-        <td><label>Chuyền trưởng</label></td>     
-    </tr>
-    <tr>
-        <td><input value="@Model.Detail.Unit"/> <input id="UnitField" value="@Model.Detail.Line"/></td>
-        <td><input value="@Model.Detail.Sewer"/></td>
-        <td><input value="@Model.Detail.Sewer_Workstation"/></td>
-        <td><input value="@Model.Detail.Sup"/></td>
-
-    </tr>
-    <tr>
-        <td><label>MO</label></td>
-        <td><label>Màu </label></td>
-        <td><label>Size </label></td>
-        <td><label></label></td>     
-    </tr>
-    <tr>
-        <td><input value="@Model.Detail.MO" /></td>
-        <td><input value="@Model.Detail.Color" /></td>
-        <td><input value="@Model.Detail.Size" /></td>
-        <td></td>
-
-    </tr>
-    <tr>
-        <td><label>Công đoạn kiểm </label></td>
-        <td><label>Số lượng kiểm </label></td>
-        <td><label></label></td>
-        <td><label> </label></td>     
-    </tr>
-    <tr>
-        <td><input value="@(Model.Operations.FirstOrDefault()?.Operation_Name_VN ?? "")"/></td>
-        <td><input value="@Model.Detail.QTY"/></td>
-        <td></td>
-        <td></td>
-    </tr>
-    @* <tr>
-        <td colspan="4"><label>Chất lượng vải: </label><i style="color: red;">(Tích chọn nếu có lỗi)</i></td>
-    </tr>
-    <tr>
-        <td style="padding: 3px; text-align:center;">
-                <div>Loang màu</div>
-                <input type="checkbox" name="F1_chk_loang_mau" value="true" @(Model.Shading == true ? "checked" : "") id="F1_chk_loang_mau"  value="1" style="zoom:3.0;"  autocomplete="on" />
-        </td>
-        <td style="padding: 3px; text-align:center;">
-                <div>Căng/Trùng/Sóng vải </div>
-                <input type="checkbox" name="F1_chk_song_vai"  value="true" @(Model.Wave == true ? "checked" : "") id="F1_chk_song_vai"  value="1" style="zoom:3.0;"  autocomplete="on" />
-        </td>
-        <td style="padding: 3px; text-align:center;">
-                <div>Hẹp khổ </div>
-                <input type="checkbox" name="F1_chk_hep_kho"   value="true" @(Model.Narrow_Width == true ? "checked" : "") id="F1_chk_hep_kho"  value="1" style="zoom:3.0;"  autocomplete="on" />
-        </td>
-        <td style="padding: 3px; text-align:center;">
-                <div>Trải vải </div>
-                <input type="checkbox" name="F1_chk_trai_vai"  value="true" @(Model.Spreading == true ? "checked" : "") id="F1_chk_trai_vai"  value="1" style="zoom:3.0;"  autocomplete="on" />
-        </td>
-    </tr> *@
-</table>
-<table style="width: 100%; margin-top: -10PX; " name="tblFault" id="tblFault">
-    <tr style="height: 0px;">
-          <td style="max-width: 30%;">&nbsp;</td>
-          <td style="max-width: 30%;">&nbsp;</td>
-        </tr>
-    <tr style="text-align: left;">
-      <td><label>Lỗi</label></td>
-      <td><label>Số lượng lỗi</label></td>
-    </tr>
-    @for (int i = 0; i < Model.SelectedFaults.Count; i++)
-    {
-        var selected = Model.SelectedFaults[i];
-        <tr id="Fault_R@(i+1)">
-            <td>
-                <select name="optFault[@i]" id="optFault_@i"
-                        class="form-select"
-                        style="color:red;font-weight:bold;font-size:1em;"
-                        onchange="Turn_Led();">
-                    <option value="loi-0">--Không có lỗi--</option>
-
-                    <option value="" disabled>--Lỗi Nặng--</option>
-                    @foreach (var fault in Model.Faults.Where(f => f.FaultLevel == 1))
-                    {
-                         
-                        bool sel = (fault.FaultCode == selected.FaultCode );
-                        <option value="@fault.FaultCode-@fault.FaultLevel" selected="@(sel)" >@fault.FaultNameVN</option>
-                    }
-
-                    <option value="" disabled>--Lỗi Nhẹ--</option>
-                    @foreach (var fault in Model.Faults.Where(f => f.FaultLevel == 2))
-                    {
-                        
-                        bool sel = (fault.FaultCode == selected.FaultCode );
-                        <option value="@fault.FaultCode-@fault.FaultLevel" selected="@(sel)">@fault.FaultNameVN</option>
-                    }
-                </select>
-            </td>
-            <td>
-                <input type="number" name="qty[@i]" value="@selected.FaultQty" class="form-control" min="0" />
-            </td>
-        </tr>
-    }
-</table>
-
-<p style="font-weight: bold; text-align: left;"><span style="color: red;">*</span> Ghi chú:</p>
-<textarea rows="4" cols="100" name="Remark" id="Remark" onClick="this.select();" > @(string.IsNullOrEmpty(Model.Detail.Remark) ? "" : Model.Detail.Remark)</textarea>
-
-<p style="font-weight: bold; text-align: left;"><span style="color: red;">*</span> Đánh giá chất lượng :</p>
-<TABLE style="width: 100%; "  >
-    <tr style="height: 0px;">
-          <td style="max-width: 30%;">&nbsp;</td>
-          <td style="max-width: 30%;">&nbsp;</td>
-          <td style="max-width: 30%;">&nbsp;</td>
-        </tr>
-    <tr style="text-align: center;">
-      <td><img id="Led_Green" src="~/images/green_@(Model.Detail.Led == "green" ? "On" : "Off").png" style="width: 80px; "></td>
-      <td><img id="Led_Yellow" src="~/images/yellow_@(Model.Detail.Led == "yellow" ? "On" : "Off").png" style="width: 80px; "></td>
-      <td><img id="Led_Red" src="~/images/red_@(Model.Detail.Led == "red" ? "On" : "Off").png" style="width: 80px; "></td>
-    </tr>
-    <tr style="height: 10px;"></tr>
-    <tr style="text-align: center;">
-      <td>
-        <input type="radio" name="rdLight" id="rdGreen"   value="green" @(Model.Detail.Led == "green" ? "checked ='checked'" : "") style=" color:#360;  zoom:3.0;"  autocomplete="on" />
-      </td>
-      <td>
-        <input type="radio" name="rdLight" id="rdYellow"   value="yellow" @(Model.Detail.Led == "yellow" ? "checked ='checked'" : "") style=" color:#360;  zoom:3.0;"  autocomplete="on" />
-      </td>
-      <td>
-        <input type="radio" name="rdLight" id="rdRed"  value="red" @(Model.Detail.Led == "red" ? "checked ='checked'" : "") style=" color:#360;  zoom:3.0;"  autocomplete="on" />
-      </td>
-      <td>&nbsp;</td>
-    </tr>
-  </TABLE>
-
-<p style="font-weight: bold;"><span style="color: red;">*</span>Hình ảnh lỗi:</p>
-@if(!string.IsNullOrEmpty(Model.Detail.Photo_URL))
-{
-    var photos = Model.Detail.Photo_URL.Split(";");
-    foreach(var photo in photos)
-    {
-        if(!string.IsNullOrEmpty(photo))
-        {
-            <img src="upload/Photos/Form4_BCCLM/@photo" style='width:100px;' onclick='Show_Photo("@photo")'/>
-        }
-    }
-}
-
-<p style="font-weight: bold;">
-    <span style="color: red;">*</span> Kiểm lại: &nbsp;
-    <input type="checkbox" name="Re_Audit" id="Re_Audit"  value="true" @(Model.Detail.Re_Audit == true ? "checked" : "") value="0" style="  color:#360; font-size:20px; zoom:3.0;"  autocomplete="on" />   
-</p>
-
-
-<br>
-    <p style="text-align: center; display: block;">
-        <img src="~/images/delete.png" style="width: 95px; margin-right:20px; " align="center" onClick="Delete_Click1();" title="Delete this report" >
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-    </p>
     
-<br>
+    <table class="table">
+        <tr>
+            <td><label>Unit</label></td>
+            <td><label>Công nhân</label></td>
+            <td><label>Vị trí</label></td>
+            <td><label>Chuyền trưởng</label></td>     
+        </tr>
+        <tr>
+            <td><input value="@Model.Detail.Unit"/> <input id="UnitField" value="@Model.Detail.Line"/></td>
+            <td><input value="@Model.Detail.Sewer"/></td>
+            <td><input value="@Model.Detail.Sewer_Workstation"/></td>
+            <td><input value="@Model.Detail.Sup"/></td>
+        </tr>
+        <tr>
+            <td><label>MO</label></td>
+            <td><label>Màu </label></td>
+            <td><label>Size </label></td>
+            <td><label></label></td>     
+        </tr>
+        <tr>
+            <td><input value="@Model.Detail.MO" /></td>
+            <td><input value="@Model.Detail.Color" /></td>
+            <td><input value="@Model.Detail.Size" /></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><label>Công đoạn kiểm </label></td>
+            <td><label>Số lượng kiểm </label></td>
+            <td><label></label></td>
+            <td><label> </label></td>     
+        </tr>
+        <tr>
+            <td><input value="@(Model.Operations.FirstOrDefault()?.Operation_Name_VN ?? "")"/></td>
+            <td><input value="@Model.Detail.QTY"/></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    
+    <table style="width: 100%; margin-top: -10px;" name="tblFault" id="tblFault">
+        <tr style="text-align: left;">
+            <td><label>Lỗi</label></td>
+            <td><label>Số lượng lỗi</label></td>
+        </tr>
+        @for (int i = 0; i < Model.SelectedFaults.Count; i++)
+        {
+            var selected = Model.SelectedFaults[i];
+            <tr id="Fault_R@(i+1)">
+                <td>
+                    <select name="optFault[@i]" id="optFault_@i"
+                            class="form-select"
+                            style="color:red;font-weight:bold;"
+                            onchange="Turn_Led();">
+                        <option value="loi-0">--Không có lỗi--</option>
+                        <option value="" disabled>--Lỗi Nặng--</option>
+                        @foreach (var fault in Model.Faults.Where(f => f.FaultLevel == 1))
+                        {
+                            bool sel = (fault.FaultCode == selected.FaultCode);
+                            <option value="@fault.FaultCode-@fault.FaultLevel" selected="@(sel)">@fault.FaultNameVN</option>
+                        }
+                        <option value="" disabled>--Lỗi Nhẹ--</option>
+                        @foreach (var fault in Model.Faults.Where(f => f.FaultLevel == 2))
+                        {
+                            bool sel = (fault.FaultCode == selected.FaultCode);
+                            <option value="@fault.FaultCode-@fault.FaultLevel" selected="@(sel)">@fault.FaultNameVN</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <input type="number" name="qty[@i]" value="@selected.FaultQty" class="form-control" min="0" />
+                </td>
+            </tr>
+        }
+    </table>
+
+    <p class="section-header"><span>*</span> Ghi chú:</p>
+    <textarea rows="4" name="Remark" id="Remark" onClick="this.select();">@(string.IsNullOrEmpty(Model.Detail.Remark) ? "" : Model.Detail.Remark)</textarea>
+
+    <div class="quality-section">
+        <p class="section-header"><span>*</span> Đánh giá chất lượng:</p>
+        <div class="led-container">
+            <div class="led-item">
+                <img id="Led_Green" src="~/images/green_@(Model.Detail.Led == "green" ? "On" : "Off").png" alt="Green">
+                <input type="radio" name="rdLight" id="rdGreen" value="green" @(Model.Detail.Led == "green" ? "checked='checked'" : "") autocomplete="on" />
+            </div>
+            <div class="led-item">
+                <img id="Led_Yellow" src="~/images/yellow_@(Model.Detail.Led == "yellow" ? "On" : "Off").png" alt="Yellow">
+                <input type="radio" name="rdLight" id="rdYellow" value="yellow" @(Model.Detail.Led == "yellow" ? "checked='checked'" : "") autocomplete="on" />
+            </div>
+            <div class="led-item">
+                <img id="Led_Red" src="~/images/red_@(Model.Detail.Led == "red" ? "On" : "Off").png" alt="Red">
+                <input type="radio" name="rdLight" id="rdRed" value="red" @(Model.Detail.Led == "red" ? "checked='checked'" : "") autocomplete="on" />
+            </div>
+        </div>
+    </div>
+
+    <div class="photo-section">
+        <p class="section-header"><span>*</span> Hình ảnh lỗi:</p>
+        @if(!string.IsNullOrEmpty(Model.Detail.Photo_URL))
+        {
+            var imgPath = "https://qos.crystal-regent.com.vn/";
+            var photos = Model.Detail.Photo_URL.Split(";");
+            <div class="photo-gallery">
+                @foreach(var photo in photos)
+                {
+                    if(!string.IsNullOrEmpty(photo))
+                    {
+                        <img src="@($"{imgPath}upload/Photos/Form4_BCCLM/{photo}")" onclick='Show_Photo("@($"{imgPath}upload/Photos/Form4_BCCLM/{photo}")")' alt="Fault Photo"/>
+                    }
+                }
+            </div>
+        }
+    </div>
+
+    <div class="reaudit-section">
+        <p style="font-weight: bold; margin: 0;">
+            <span style="color: red;">*</span> Kiểm lại:
+        </p>
+        <input type="checkbox" name="Re_Audit" id="Re_Audit" value="true" @(Model.Detail.Re_Audit == true ? "checked" : "") autocomplete="on" />   
+    </div>
+
+    <div class="action-buttons">
+        @* <img src="~/images/delete.png" style="width: 95px;" onClick="Delete_Click1();" title="Delete this report"> *@
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick="Delete_Click1();" title="Delete this report">Delete</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    </div>
 </form>
 
 <!-- Modal Show anh loi -->
-	<div id="Modal_Photo" class="modal" style="height: 100%;"> 
-        <!-- Modal content -->
-          <div class="modal-content">
-            <div class="modal-header bg-success text-center">
-              <span class="close" id="close_Modal_Photo">&times;</span>
-              <h2 style="text-align: center; text-transform: uppercase;"> Hình ảnh lỗi </h2> 
-            </div>
-            <div class="modal-body" style="text-align: center;">
-                <img src="" style="width: 90%"  id="Fault_Photo" align="center">
-            </div>
-          </div>
+<div id="Modal_Photo" class="modal"> 
+    <div class="modal-content">
+        <div class="modal-header bg-success">
+            <span class="close" id="close_Modal_Photo">&times;</span>
+            <h2 style="text-align: center; text-transform: uppercase; margin: 0;">Hình ảnh lỗi</h2> 
+        </div>
+        <div class="modal-body">
+            <img src="" id="Fault_Photo" alt="Fault Image">
+        </div>
     </div>
+</div>
 
 <script>
     function Delete_Click1() {
@@ -193,11 +536,9 @@
                 function (data) {
                     if (data.success) {
                         alert("Report deleted successfully.");
-                        // Redirect to another page or refresh
                         var Unit = $("#Unit").val();
                         var dateFrom = $("#dateFrom").val();
                         var dateEnd = $("#dateEnd").val();
-
                         window.location.href = '@Url.Action("RP_Form4", "Form4BCCLM", new { area = "Report" })' + '?Unit=' + Unit + '&dateFrom=' + dateFrom + '&dateEnd=' + dateEnd;
                     } else {
                         alert("Error deleting report: " + data.message);
@@ -207,28 +548,21 @@
         }
     }
 
-
-function Show_Photo(img)
-{
-	// Get the modal
-    var modal = document.getElementById('Modal_Photo');
-    // Get the <span> element that closes the modal
-    var span = document.getElementById('close_Modal_Photo');
-    
-     modal.style.display = "block";
-     document.getElementById("Fault_Photo").src= 'upload/Photos/Form4_BCCLM/'+img;
-     
-     // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-    
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
+    function Show_Photo(img) {
+        var modal = document.getElementById('Modal_Photo');
+        var span = document.getElementById('close_Modal_Photo');
+        
+        modal.style.display = "block";
+        document.getElementById("Fault_Photo").src = img;
+        
+        span.onclick = function() {
             modal.style.display = "none";
         }
+        
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
     }
-}
-
 </script>

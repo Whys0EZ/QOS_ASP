@@ -4,9 +4,39 @@ using OfficeOpenXml;
 using QOS.Data;
 using QOS.Middlewares;
 using QOS.Services;
+using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
+// Configure Serilog
+// --- Bật/Tắt log dựa theo appsettings.json ---
+var logEnabled = builder.Configuration.GetValue<bool>("Logging:File:Enabled");
+
+if (logEnabled)
+{
+    var logPath = builder.Configuration.GetValue<string>("Logging:File:Path") ?? "Logs/app-.log";
+
+    Log.Logger = new LoggerConfiguration()
+        .MinimumLevel.Information()
+        .WriteTo.File(
+            logPath,
+            rollingInterval: RollingInterval.Day,
+            retainedFileCountLimit: 7, // Giữ log 7 ngày gần nhất
+            flushToDiskInterval: TimeSpan.FromSeconds(2), // flush nhẹ, vừa phải
+            buffered: true, // vẫn dùng bộ đệm để giảm I/O
+            shared: false,   // cho phép nhiều process đọc log
+            outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"
+        )
+        .CreateLogger();
+
+    builder.Host.UseSerilog();
+}
+else
+{
+    // Dùng logger mặc định (chỉ log ra console)
+    builder.Logging.ClearProviders();
+    builder.Logging.AddConsole();
+}
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>

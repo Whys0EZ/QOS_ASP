@@ -139,12 +139,14 @@
         <div class="section-title"><span style="color: red;">*</span> Hình ảnh lỗi:</div>
         @if(!string.IsNullOrEmpty(Model.Detail.Photo_URL))
         {
+            var imgPath = "https://qos.crystal-regent.com.vn/";
             var photos = Model.Detail.Photo_URL.Split(";");
             foreach(var photo in photos)
             {
                 if(!string.IsNullOrEmpty(photo))
                 {
-                    <img src="upload/Photos/Form6_BCCC/@photo" class="photo-thumb" onclick='Show_Photo("@photo")'/>
+                    @* <img src="/upload/Photos/Form6_BCCC/@photo" class="photo-thumb" onclick='Show_Photo("@photo")'/> *@
+                    <img src="@($"{imgPath}upload/Photos/Form6_BCKCC/{photo}")" class="photo-thumb" onclick='Show_Photo("@($"{imgPath}upload/Photos/Form6_BCKCC/{photo}")")'/>
                 }
             }
         }
@@ -168,7 +170,7 @@
 
 <!-- Modal Show anh loi -->
 <div id="Modal_Photo" class="modal" style="height: 100%;">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header bg-success text-center">
                 <span class="close" id="close_Modal_Photo" style="font-size:2rem;cursor:pointer;">&times;</span>
@@ -212,7 +214,7 @@
         var modal = document.getElementById('Modal_Photo');
         var span = document.getElementById('close_Modal_Photo');
         modal.style.display = "block";
-        document.getElementById("Fault_Photo").src = 'upload/Photos/Form6_BCCC/' + img;
+        document.getElementById("Fault_Photo").src = '' + img;
         span.onclick = function () {
             modal.style.display = "none";
         }

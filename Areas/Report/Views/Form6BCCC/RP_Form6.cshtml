@@ -4,7 +4,15 @@
     ViewData["Title"] = "Báo Cáo Cuối Chuyền";
     Layout = "_MenuReport";
 }
-
+<style>
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+.modal-fullscreen {
+  background-color: rgba(255,255,255,0.95);
+}
+</style>
 <partial name="_AlertMessage" />
 <div class="w-100 px-2 my-3">
     <div class="row align-items-center g-2">
@@ -189,8 +197,6 @@
     var dataPointsREG = @Html.Raw(JsonSerializer.Serialize(Model.DataPointsREG));
     var dataPointsUnitTarget = @Html.Raw(JsonSerializer.Serialize(Model.DataPointsUnitTarget));
 
-    console.log("Data REG:", dataPointsREG);
-    console.log("Data Target:", dataPointsUnitTarget);
 
     // Tách label và value
     var labels = dataPointsREG.map(p => p.Label);
@@ -259,9 +265,6 @@
     var dataPointsREG = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DataPointsREG));
     var dataPointsUnitTarget = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DataPointsUnitTarget));
 
-    console.log(dataPointsREG);
-    console.log(dataPointsUnitTarget);
-
     
     function UnitDetail_Click(unit) {
         var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
@@ -288,36 +291,32 @@
     });
 
     function Show_History_RP(lineCode, dateF, dateT) {
-        document.getElementById('lineCodeTitle').textContent = lineCode;
-        
-        // You can implement AJAX call here to load detailed history
-        var historyContent = document.getElementById('historyContent');
-        historyContent.innerHTML = `
-            <div class="text-center py-3">
-                <div class="spinner-border text-primary mb-2" role="status">
-                    <span class="visually-hidden">Loading...</span>
+        const titleEl = document.getElementById('lineCodeTitle');
+        if (titleEl) titleEl.textContent = lineCode;
+
+        const historyContent = document.getElementById('historyContent');
+        if (historyContent) {
+            historyContent.innerHTML = `
+                <div class="text-center py-3">
+                    <div class="spinner-border text-primary mb-2" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div>Đang tải lịch sử cho line ${lineCode}...</div>
+                    <small class="text-muted">Từ ${dateF} đến ${dateT}</small>
                 </div>
-                <div>Đang tải lịch sử cho line ${lineCode}...</div>
-                <small class="text-muted">Từ ${dateF} đến ${dateT}</small>
-            </div>
-        `;
-        
-        var historyModal = new bootstrap.Modal(document.getElementById('historyModal'));
+            `;
+        }
+
+        const modalEl = document.getElementById('historyModal');
+        const historyModal = bootstrap.Modal.getOrCreateInstance(modalEl);
         historyModal.show();
+
         $.ajax({
             url: '/Report/Form6BCCC/GetLineHistory',
             type: 'GET',
-            data: {
-                lineCode: lineCode,
-                dateFrom: dateF || new Date().toISOString().slice(0, 10),
-                dateEnd: dateT   || new Date().toISOString().slice(0, 10)
-            },
-            success: function (html) {
-                $("#historyContent").html(html);
-            },
-            error: function () {
-                $("#historyContent").html('<div class="alert alert-danger">Lỗi tải dữ liệu</div>');
-            }
+            data: { lineCode: lineCode, dateFrom: dateF, dateEnd: dateT },
+            success: (html) => $("#historyContent").html(html),
+            error: () => $("#historyContent").html('<div class="alert alert-danger">Lỗi tải dữ liệu</div>')
         });
     }
     $("#ExportExcel").click(function () {

@@ -274,7 +274,7 @@
                 }
                 
                 const lines = await response.json();
-                
+                lineSelect.innerHTML = '<option value="ALL">--ALL--</option>';
                 // Populate dropdown
                 if (lines && lines.length > 0) {
                     lines.forEach(line => {

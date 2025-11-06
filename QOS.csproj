@@ -32,6 +32,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.*" />
     <PackageReference Include="MimeKit" Version="4.13.0" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="8.*" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   </ItemGroup>
@@ -44,10 +46,7 @@
 
     <!-- Thêm các phần tử XML -->
     <Message Text="Modifying web.config after publish..." Importance="high" />
-    <XmlPoke
-      XmlInputPath="@(PublishedWebConfig)"
-      Query="/configuration/system.webServer"
-      Value='&lt;clear /&gt;&#x0A;&lt;validation validateIntegratedModeConfiguration="false" /&gt;' />
+    <XmlPoke XmlInputPath="@(PublishedWebConfig)" Query="/configuration/system.webServer" Value="&lt;clear /&gt;&#xA;&lt;validation validateIntegratedModeConfiguration=&quot;false&quot; /&gt;" />
   </Target>
 
 </Project>
