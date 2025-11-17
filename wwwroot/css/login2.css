@@ -1,0 +1,867 @@
+ /* Animated Background */
+ body {
+     margin: 0;
+     padding: 0;
+     /* overflow: hidden; */
+ }
+
+ .animated-background {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background: linear-gradient(135deg, #1e5799 0%, #2989d8 50%, #7db9e8 100%);
+     z-index: -1;
+ }
+
+ /* Mountains */
+ .mountain {
+     position: absolute;
+     bottom: 0;
+     width: 100%;
+ }
+
+ .mountain-back {
+     height: 300px;
+     background: linear-gradient(to top, rgba(0, 0, 0, 0.1), transparent);
+     clip-path: polygon(0% 100%, 10% 60%, 25% 80%, 40% 50%, 60% 70%, 75% 45%, 90% 65%, 100% 55%, 100% 100%);
+     opacity: 0.6;
+ }
+
+ .mountain-front {
+     height: 250px;
+     background: linear-gradient(to top, rgba(0, 0, 0, 0.15), transparent);
+     clip-path: polygon(0% 100%, 15% 70%, 30% 85%, 50% 60%, 70% 80%, 85% 65%, 100% 75%, 100% 100%);
+     opacity: 0.8;
+ }
+
+ /* Clouds */
+ .clouds {
+     position: absolute;
+     width: 100%;
+     height: 100%;
+     overflow: hidden;
+ }
+
+ .cloud {
+     position: absolute;
+     background: rgba(255, 255, 255, 0.3);
+     border-radius: 100px;
+     animation: float 20s infinite ease-in-out;
+ }
+
+ .cloud::before,
+ .cloud::after {
+     content: '';
+     position: absolute;
+     background: rgba(255, 255, 255, 0.3);
+     border-radius: 100px;
+ }
+
+ .cloud1 {
+     width: 100px;
+     height: 30px;
+     top: 10%;
+     left: -100px;
+     animation-delay: 0s;
+ }
+
+ .cloud1::before {
+     width: 50px;
+     height: 30px;
+     top: -15px;
+     left: 15px;
+ }
+
+ .cloud1::after {
+     width: 60px;
+     height: 25px;
+     top: -10px;
+     right: 15px;
+ }
+
+ .cloud2 {
+     width: 120px;
+     height: 35px;
+     top: 25%;
+     left: -120px;
+     animation-delay: 7s;
+ }
+
+ .cloud2::before {
+     width: 60px;
+     height: 35px;
+     top: -18px;
+     left: 20px;
+ }
+
+ .cloud2::after {
+     width: 70px;
+     height: 30px;
+     top: -12px;
+     right: 20px;
+ }
+
+ .cloud3 {
+     width: 80px;
+     height: 25px;
+     top: 60%;
+     right: -80px;
+     animation: float-reverse 25s infinite ease-in-out;
+     animation-delay: 3s;
+ }
+
+ .cloud3::before {
+     width: 40px;
+     height: 25px;
+     top: -12px;
+     left: 10px;
+ }
+
+ .cloud3::after {
+     width: 50px;
+     height: 20px;
+     top: -8px;
+     right: 10px;
+ }
+
+ @keyframes float {
+     0% {
+         transform: translateX(0);
+     }
+
+     100% {
+         transform: translateX(calc(100vw + 150px));
+     }
+ }
+
+ @keyframes float-reverse {
+     0% {
+         transform: translateX(0);
+     }
+
+     100% {
+         transform: translateX(calc(-100vw - 150px));
+     }
+ }
+
+ /* Stars */
+ .stars {
+     position: absolute;
+     width: 100%;
+     height: 100%;
+ }
+
+ .star {
+     position: absolute;
+     width: 2px;
+     height: 2px;
+     background: white;
+     border-radius: 50%;
+     animation: twinkle 3s infinite;
+ }
+
+ .star:nth-child(1) {
+     top: 10%;
+     left: 15%;
+     animation-delay: 0s;
+ }
+
+ .star:nth-child(2) {
+     top: 20%;
+     left: 45%;
+     animation-delay: 0.5s;
+ }
+
+ .star:nth-child(3) {
+     top: 15%;
+     left: 75%;
+     animation-delay: 1s;
+ }
+
+ .star:nth-child(4) {
+     top: 30%;
+     left: 25%;
+     animation-delay: 1.5s;
+ }
+
+ .star:nth-child(5) {
+     top: 25%;
+     left: 85%;
+     animation-delay: 2s;
+ }
+
+ .star:nth-child(6) {
+     top: 8%;
+     left: 55%;
+     animation-delay: 2.5s;
+ }
+
+ @keyframes twinkle {
+
+     0%,
+     100% {
+         opacity: 0.3;
+     }
+
+     50% {
+         opacity: 1;
+     }
+ }
+
+ /* Moon */
+ .moon {
+     position: absolute;
+     top: 8%;
+     left: 50%;
+     transform: translateX(-50%);
+     width: 60px;
+     height: 60px;
+     background: rgba(255, 255, 255, 0.9);
+     border-radius: 50%;
+     box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+     animation: moon-glow 4s infinite ease-in-out;
+ }
+
+ @keyframes moon-glow {
+
+     0%,
+     100% {
+         box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+     }
+
+     50% {
+         box-shadow: 0 0 50px rgba(255, 255, 255, 0.8);
+     }
+ }
+
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+
+ body {
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     background: linear-gradient(135deg, #d8dbe6 0%, #0ba2fa 100%);
+     min-height: 100vh;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+
+ /* Debug: Thêm một số style để kiểm tra */
+ .container {
+     position: relative;
+     width: 900px;
+     height: 650px;
+     background: rgba(255, 255, 255, 0.1);
+     backdrop-filter: blur(20px);
+     border-radius: 30px;
+     overflow: hidden;
+     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+ }
+
+ /* Đảm bảo container có thể chứa animation */
+ .container * {
+     box-sizing: border-box;
+ }
+
+ .form-container {
+     position: absolute;
+     top: 0;
+     height: 100%;
+     width: 50%;
+     transition: all 0.8s cubic-bezier(0.23, 1, 0.320, 1);
+ }
+
+ /* Form positioning - Logic hoàn toàn mới */
+ .form-container {
+     position: absolute;
+     top: 0;
+     height: 100%;
+     width: 50%;
+     transition: all 0.8s cubic-bezier(0.23, 1, 0.320, 1);
+ }
+
+ /* Mặc định: Login form ở bên trái (0-50%) */
+ .sign-in {
+     left: 0;
+     background: linear-gradient(135deg, #6366f1, #8b5cf6);
+     /* background: #ffffff; */
+     z-index: 2;
+ }
+
+ /* Register form ở bên phải (50%-100%) */
+ .sign-up {
+     left: 50%;
+     background: rgba(255, 255, 255, 0.95);
+     backdrop-filter: blur(10px);
+     z-index: 1;
+ }
+
+ /* Khi active: Login form trượt sang trái biến mất */
+ .container.right-panel-active .sign-in {
+     transform: translateX(-100%);
+     z-index: 1;
+ }
+
+ /* Register form không di chuyển, chỉ tăng z-index để hiện lên */
+ .container.right-panel-active .sign-up {
+     transform: translateX(0);
+     z-index: 2;
+ }
+
+ .form {
+     background: transparent;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     flex-direction: column;
+     padding: 0 50px;
+     height: 100%;
+     text-align: center;
+ }
+
+ .social-container {
+     margin: 5px 0;
+ }
+
+ .social-container a {
+     border: 1px solid rgba(255, 255, 255, 0.3);
+     border-radius: 12px;
+     display: inline-flex;
+     justify-content: center;
+     align-items: center;
+     margin: 0 5px;
+     height: 40px;
+     width: 40px;
+     transition: all 0.3s ease;
+     color: #666;
+     background: rgba(255, 255, 255, 0.8);
+     text-decoration: none;
+     font-size: 16px;
+ }
+
+ .social-container a:hover {
+     transform: translateY(-2px);
+     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+     background: white;
+     text-decoration: none;
+ }
+
+ .sign-in .social-container a {
+     color: white;
+     background: rgba(255, 255, 255, 0.2);
+     border-color: rgba(255, 255, 255, 0.3);
+ }
+
+ .sign-in .social-container a:hover {
+     background: rgba(255, 255, 255, 0.3);
+ }
+
+ span {
+     font-size: 12px;
+     margin: 10px 0;
+     color: #666;
+ }
+
+ .sign-in span {
+     color: rgba(255, 255, 255, 0.8);
+ }
+
+ .input-group {
+     width: 100%;
+     margin: 6px 0;
+ }
+
+ .form-control-custom,
+ input[type="text"],
+ input[type="email"],
+ input[type="password"] {
+     background: rgba(255, 255, 255, 0.9);
+     border: none;
+     padding: 12px 18px;
+     width: 100%;
+     border-radius: 15px;
+     outline: none;
+     font-size: 14px;
+     transition: all 0.3s ease;
+     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+ }
+
+ .form-control-custom:focus,
+ input[type="text"]:focus,
+ input[type="email"]:focus,
+ input[type="password"]:focus {
+     background: white;
+     transform: translateY(-2px);
+     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+ }
+
+ .sign-in .form-control-custom,
+ .sign-in input[type="text"],
+ .sign-in input[type="email"],
+ .sign-in input[type="password"] {
+     background: rgba(255, 255, 255, 0.2);
+     color: white;
+     border: 1px solid rgba(255, 255, 255, 0.3);
+ }
+
+ .sign-in input::placeholder {
+     color: rgba(255, 255, 255, 0.7);
+ }
+
+ .sign-in .form-control-custom:focus,
+ .sign-in input[type="text"]:focus,
+ .sign-in input[type="email"]:focus,
+ .sign-in input[type="password"]:focus {
+     background: rgba(255, 255, 255, 0.3);
+     border-color: rgba(255, 255, 255, 0.5);
+     transform: translateY(-2px);
+ }
+
+ .form-check {
+     display: flex;
+     align-items: center;
+     margin: 10px 0;
+     font-size: 14px;
+ }
+
+ .form-check-input {
+     /* width: auto !important; */
+     margin-right: 8px !important;
+     transform: none !important;
+     box-shadow: none !important;
+     /* background: rgba(255, 255, 255, 0.8) !important; */
+ }
+
+ .form-check-label {
+     color: rgba(255, 255, 255, 0.9);
+     cursor: pointer;
+     margin: 0;
+ }
+
+ .forgot-password {
+     color: rgba(255, 255, 255, 0.8);
+     text-decoration: none;
+     font-size: 14px;
+     margin: 15px 0;
+     transition: color 0.3s ease;
+ }
+
+ .forgot-password:hover {
+     color: white;
+     text-decoration: underline;
+ }
+
+ .btnLogin button[type="submit"] {
+     background: linear-gradient(135deg, #dcdde4, #0a63e9) !important;
+ }
+
+ button[type="submit"],
+ button {
+     border-radius: 20px;
+     border: none;
+     background: linear-gradient(135deg, #6366f1, #8b5cf6);
+     color: white;
+     font-size: 12px;
+     font-weight: bold;
+     padding: 12px 40px;
+     letter-spacing: 1px;
+     text-transform: uppercase;
+     transition: all 0.3s ease;
+     cursor: pointer;
+     margin: 10px 0;
+     box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+ }
+
+ button:hover {
+     transform: translateY(-3px);
+     box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4);
+ }
+
+ button:active {
+     transform: scale(0.95);
+ }
+
+ .ghost {
+     background: transparent !important;
+     border: 2px solid white !important;
+     box-shadow: none !important;
+ }
+
+ .ghost:hover {
+     background: rgba(255, 255, 255, 0.1) !important;
+ }
+
+ /* Overlay positioning - Sửa lại để phù hợp */
+ /* Mặc định: overlay ở bên phải che form register */
+ .overlay-container {
+     position: absolute;
+     top: 0;
+     left: 50%;
+     width: 50%;
+     height: 100%;
+     overflow: hidden;
+     transition: transform 0.8s cubic-bezier(0.23, 1, 0.320, 1);
+     z-index: 100;
+ }
+
+ /* Khi active: overlay trượt sang trái che form login */
+ .container.right-panel-active .overlay-container {
+     transform: translateX(-100%);
+ }
+
+ .overlay {
+     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+     color: white;
+     position: relative;
+     left: -100%;
+     height: 100%;
+     width: 200%;
+     transform: translateX(0);
+     transition: transform 0.8s cubic-bezier(0.23, 1, 0.320, 1);
+ }
+
+ /* Overlay sliding animation */
+ .container.right-panel-active .overlay {
+     transform: translateX(50%);
+ }
+
+ .overlay-panel {
+     position: absolute;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     flex-direction: column;
+     padding: 0 40px;
+     text-align: center;
+     top: 0;
+     height: 100%;
+     width: 50%;
+     transform: translateX(0);
+     transition: transform 0.8s cubic-bezier(0.23, 1, 0.320, 1);
+ }
+
+ /* Overlay panels positioning */
+ .overlay-left {
+     transform: translateX(-20%);
+ }
+
+ .container.right-panel-active .overlay-left {
+     transform: translateX(0);
+ }
+
+ .overlay-right {
+     right: 0;
+     transform: translateX(0);
+ }
+
+ .container.right-panel-active .overlay-right {
+     transform: translateX(20%);
+ }
+
+ h1 {
+     font-weight: 300;
+     /* margin-bottom: 15px; */
+     font-size: 28px;
+ }
+
+ .sign-up h1 {
+     color: #333;
+ }
+
+ /* Đảm bảo text của form đăng nhập có màu trắng */
+ .sign-in h1,
+ .sign-in span,
+ .sign-in .form-check-label {
+     color: white;
+ }
+
+ p {
+     font-size: 16px;
+     font-weight: 300;
+     line-height: 1.6;
+     letter-spacing: 0.5px;
+     margin: 15px 0 25px;
+ }
+
+ .sign-up p {
+     color: #666;
+ }
+
+ .sign-up input {
+     margin-bottom: 5px;
+ }
+
+ /* Validation Errors */
+ .text-danger {
+     color: #dc3545 !important;
+     font-size: 12px;
+     display: block;
+     margin-top: 5px;
+     text-align: left;
+ }
+
+ .sign-in .text-danger {
+     color: #ffcccb !important;
+ }
+
+ /* Alert Messages */
+ .alert {
+     position: fixed;
+     top: 20px;
+     right: 20px;
+     padding: 15px 20px;
+     border-radius: 10px;
+     z-index: 1000;
+     max-width: 400px;
+     animation: slideIn 0.3s ease;
+ }
+
+ .alert-danger {
+     background: rgba(220, 53, 69, 0.9);
+     color: white;
+     border: 1px solid rgba(220, 53, 69, 0.5);
+ }
+
+ .alert-success {
+     background: rgba(40, 167, 69, 0.9);
+     color: white;
+     border: 1px solid rgba(40, 167, 69, 0.5);
+ }
+
+ .alert-info {
+     background: rgba(13, 202, 240, 0.9);
+     color: white;
+     border: 1px solid rgba(13, 202, 240, 0.5);
+ }
+
+ @keyframes slideIn {
+     from {
+         transform: translateX(100%);
+         opacity: 0;
+     }
+
+     to {
+         transform: translateX(0);
+         opacity: 1;
+     }
+ }
+
+ /* Responsive */
+ @media (max-width: 768px) {
+     .container {
+         width: 95%;
+         height: 600px;
+     }
+
+     .form-container {
+         width: 100%;
+         position: static;
+     }
+
+     .overlay-container {
+         display: none;
+     }
+
+     /* Mobile: Mặc định hiển thị login form */
+     .sign-in {
+         left: 0;
+         display: flex;
+         position: static;
+         width: 100%;
+     }
+
+     .sign-up {
+         display: none;
+         position: static;
+         width: 100%;
+     }
+
+     .container.right-panel-active .sign-in {
+         display: none;
+     }
+
+     .container.right-panel-active .sign-up {
+         display: flex;
+         transform: translateX(0);
+     }
+
+     .form {
+         padding: 0 30px;
+     }
+ }
+
+ @media (max-width: 1024px) {
+     body {
+         overflow-y: auto;
+     }
+
+     h1 {
+         font-size: 1.5rem;
+     }
+
+     .page-wrapper {
+         display: block;
+         padding: 10px;
+         min-height: auto;
+     }
+
+     #container {
+         display: block;
+         
+         min-height: auto;
+     }
+
+     .form-container {
+         padding: 30px 20px;
+         display: block;
+     }
+
+     .form-container.sign-in,
+     .form-container.sign-up {
+         background: rgba(138, 99, 210, 0.95);
+         margin-bottom: 20px;
+         border-radius: 25px;
+     }
+
+     .form-container h1 {
+         color: white;
+     }
+
+     .form {
+         max-width: 100%;
+     }
+
+     /* Show both forms on mobile */
+     .form-container.sign-in {
+         display: block !important;
+     }
+
+     .form-container.sign-up {
+         display: block !important;
+     }
+
+     .moon {
+         width: 50px;
+         height: 50px;
+         top: 5%;
+     }
+
+     .animated-background .mountain-back {
+         height: 200px;
+     }
+
+     .animated-background .mountain-front {
+         height: 150px;
+     }
+
+     .social-container a {
+         border: 1px solid rgba(255, 255, 255, 0.3);
+         border-radius: 12px;
+         display: inline-flex;
+         justify-content: center;
+         align-items: center;
+         margin: 0 3px;
+         height: 30px;
+         width: 30px;
+         transition: all 0.3s ease;
+         color: #666;
+         background: rgba(255, 255, 255, 0.8);
+         text-decoration: none;
+         font-size: 16px;
+     }
+
+     /* Adjust form controls for mobile */
+     .form-control-custom,
+     .form-control {
+         background: rgba(255, 255, 255, 0.2);
+         border-color: rgba(255, 255, 255, 0.3);
+         color: white;
+
+     }
+
+     .form-control-custom::placeholder,
+     .form-control::placeholder {
+         color: rgba(51, 50, 50, 0.7);
+     }
+
+     .form-container.sign-up .social {
+         border-color: rgba(255, 255, 255, 0.5);
+         color: white;
+     }
+
+     .form-container.sign-up span {
+         color: white;
+     }
+
+     .toggle-password {
+         color: rgba(255, 255, 255, 0.8);
+     }
+
+     /* Section divider */
+     .form-container.sign-up::before {
+         content: '';
+         display: block;
+         width: 100%;
+         height: 1px;
+         background: rgba(255, 255, 255, 0.3);
+         margin-bottom: 20px;
+     }
+ }
+
+ @media (max-width: 576px) {
+
+     .page-wrapper {
+         padding: 10px 5px;
+     }
+
+     #container {
+         margin: 10px auto;
+     }
+
+     .form-container {
+         padding: 25px 15px;
+     }
+
+     .form-container h1 {
+         font-size: 1.3rem;
+     }
+
+     .form-control-custom,
+     .form-control {
+         font-size: 14px;
+         padding: 10px 35px 10px 12px;
+     }
+
+     .social {
+         width: 35px;
+         height: 35px;
+         font-size: 14px;
+     }
+
+     .moon {
+         width: 40px;
+         height: 40px;
+     }
+
+     .btnLogin,
+     .btn-success {
+         font-size: 14px;
+         padding: 10px;
+     }
+ }
+
+ /* Desktop: side by side layout */
+ @media (min-width: 1025px) {
+     .form-container.sign-up {
+         order: 2;
+     }
+
+     .form-container.sign-in {
+         order: 1;
+     }
+ }

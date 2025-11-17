@@ -12,6 +12,8 @@ using System.Text;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
+using QOS;
+using Microsoft.Extensions.Localization;
 
 namespace QOS.Controllers
 {
@@ -19,11 +21,13 @@ namespace QOS.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly AppDbContext _context;
+        private readonly IStringLocalizer<QOS.SharedResource> _sharedLocalizer;
 
-        public AccountController(ILogger<AccountController> logger, AppDbContext context) 
+        public AccountController(ILogger<AccountController> logger, AppDbContext context,IStringLocalizer<QOS.SharedResource> sharedLocalizer) 
         { 
             _logger = logger;
             _context = context;
+            _sharedLocalizer = sharedLocalizer;
         }
         [TempData]
         public string? MessageStatus { get; set; }
@@ -94,7 +98,7 @@ namespace QOS.Controllers
                 {
                    
                     // ViewBag.Error = "Vui lòng nhập Username và Password!";
-                    ViewBag.Error = "Vui lòng nhập Username và Password!";
+                    ViewBag.Error = _sharedLocalizer["LoginRequired"];
                     ViewBag.ActiveForm  = "login";
                     return View(vm);
                 }
@@ -109,7 +113,7 @@ namespace QOS.Controllers
                 if (user == null)
                 {
                     // ViewBag.Error = "Sai tên đăng nhập hoặc mật khẩu!";
-                    ViewBag.Error = "Sai tên đăng nhập hoặc mật khẩu!";
+                    ViewBag.Error = _sharedLocalizer["ErrorRequired"];
                     ViewBag.ActiveForm  = "login";
                     return View(vm);
                 }
@@ -129,8 +133,13 @@ namespace QOS.Controllers
                     claimsPrincipal,
                     new AuthenticationProperties
                     {
-                        IsPersistent = true,
-                        ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1)
+                        // IsPersistent = true,
+                        // ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1)
+                        
+                        IsPersistent = vm.Login.RememberMe,   // 👈 Dùng giá trị người dùng chọn
+                        ExpiresUtc = vm.Login.RememberMe
+                            ? DateTimeOffset.UtcNow.AddDays(7)   // Nếu có “Ghi nhớ đăng nhập” → giữ 7 ngày
+                            : DateTimeOffset.UtcNow.AddHours(12) // Nếu không có thì giữ trong 12h
                     });
 
                 HttpContext.Session.SetString("Username", user.Username);
@@ -142,7 +151,7 @@ namespace QOS.Controllers
                 if (string.IsNullOrWhiteSpace(vm.Register.FullName) ||string.IsNullOrWhiteSpace(vm.Register.Username) || string.IsNullOrWhiteSpace(vm.Register.Pass))
                 {
                    
-                    ViewBag.Error = "Vui lòng nhập FullName, Username và Password!";
+                    ViewBag.Error = _sharedLocalizer["RegRequired"];
                     ViewBag.ActiveForm  = "register";
                     return View(vm);
                 }
@@ -150,8 +159,8 @@ namespace QOS.Controllers
                 if (_context.Users.Any(u => u.Username == vm.Register.Username))
                 {
                     // ModelState.AddModelError("Register.Username", "Username đã tồn tại");
-                    MessageStatus = "Username đã tồn tại";
-                    ModelState.AddModelError("Register.Username", "Username đã tồn tại");
+                    MessageStatus = _sharedLocalizer["UsernameExist"];
+                    ModelState.AddModelError("Register.Username", _sharedLocalizer["UsernameExist"]);
                     ViewBag.ActiveForm  = "register";
                     ReloadDropdown(vm.Register);
                     return View(vm);
@@ -193,7 +202,7 @@ namespace QOS.Controllers
                 });
                 _context.SaveChanges();
 
-                MessageStatus = "Đăng ký thành công. Vui lòng đăng nhập.";
+                MessageStatus = _sharedLocalizer["RegSuccess"];
                 return RedirectToAction("Auth");
             }
 

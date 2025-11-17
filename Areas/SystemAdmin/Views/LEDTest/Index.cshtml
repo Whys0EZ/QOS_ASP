@@ -1,0 +1,416 @@
+@model QOS.Controllers.LEDTestViewModel
+
+@{
+    ViewData["Title"] = "QOS LED TEST";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-size: 50px !important;
+            color: #333;
+            background-color: #FFF;
+            font-family: "Courier New", Courier, monospace;
+            margin: 0;
+            padding: 0;
+        }
+
+        input, select {
+            font-size: 50px !important;
+            height: auto !important;
+            width: 100% !important;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        td {
+            padding: 5px;
+        }
+
+        .page-title {
+            font-size: 80px;
+            text-align: center;
+            font-weight: bold;
+            color: #00F;
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        .BT_button_G {
+            border-radius: 7px;
+            font-size: 40px !important;
+            width: 100%;
+            cursor: pointer;
+            border: solid 2px #0C0;
+            background: #0C0;
+            color: #FFF;
+            height: 100%;
+            min-height: 120px;
+            text-align: center;
+            vertical-align: middle;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .BT_button_G:hover {
+            background: #0F0;
+        }
+
+        .BT_button_R {
+            border-radius: 7px;
+            width: 100%;
+            cursor: pointer;
+            border: solid 2px #F00;
+            background: #F00;
+            color: #FFF;
+            font-size: 40px !important;
+            height: 100%;
+            min-height: 120px;
+            text-align: center;
+            vertical-align: middle;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .BT_button_R:hover {
+            background: #F33;
+        }
+
+        .BT_button_O {
+            border-radius: 7px;
+            width: 100%;
+            cursor: pointer;
+            border: solid 2px #CCC;
+            background: #CCC;
+            color: #000;
+            font-size: 40px !important;
+            height: 100%;
+            min-height: 120px;
+            text-align: center;
+            vertical-align: middle;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .BT_button_O:hover {
+            background: #DDD;
+        }
+
+        .BT_button_U {
+            border-radius: 7px;
+            width: 100%;
+            cursor: pointer;
+            border: solid 2px #0C0;
+            background: #FFF;
+            color: #000;
+            font-size: 40px !important;
+            height: 100%;
+            min-height: 120px;
+            text-align: center;
+            vertical-align: middle;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .BT_button_U:hover {
+            background: #EFE;
+        }
+
+        .BT_button_P {
+            border-radius: 7px;
+            width: 100%;
+            cursor: pointer;
+            border: solid 2px #F60;
+            background: #F60;
+            color: #000;
+            font-size: 40px !important;
+            height: 100%;
+            min-height: 120px;
+            text-align: center;
+            vertical-align: middle;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .BT_button_P:hover {
+            background: #F90;
+        }
+
+        /* Compact Loading Modal */
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+            background: white;
+            padding: 40px 60px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #e0e0e0;
+            border-top-color: #00bcd4;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        .loading-text {
+            color: #333;
+            font-size: 24px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        @@keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .message-box {
+            font-size: 25px;
+            text-align: center;
+            width: 100%;
+            color: #0C0;
+            font-weight: bold;
+            padding: 20px 0;
+        }
+
+        .section-header {
+            font-size: 25px;
+            text-align: left;
+            padding-top: 5px;
+            width: 100%;
+            border-top: solid 1px #CCC;
+            color: #00F;
+            margin-top: 30px;
+        }
+
+        .line-port-table {
+            font-size: 14px;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .line-port-table table {
+            border-collapse: collapse;
+        }
+
+        .line-port-table td {
+            border: 1px solid #ddd;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .tr1 {
+            background-color: #e8f4f8;
+        }
+
+        .tr2 {
+            background-color: #f8f8f8;
+        }
+
+        /* Responsive */
+        @@media (max-width: 1024px) {
+            body {
+                font-size: 40px !important;
+            }
+
+            input, select {
+                font-size: 40px !important;
+            }
+
+            .page-title {
+                font-size: 60px;
+            }
+
+            .BT_button_G, .BT_button_R, .BT_button_O, .BT_button_U, .BT_button_P {
+                font-size: 35px !important;
+                min-height: 100px;
+            }
+        }
+
+        @@media (max-width: 768px) {
+            body {
+                font-size: 30px !important;
+            }
+
+            input, select {
+                font-size: 30px !important;
+            }
+
+            .page-title {
+                font-size: 40px;
+            }
+
+            .BT_button_G, .BT_button_R, .BT_button_O, .BT_button_U, .BT_button_P {
+                font-size: 25px !important;
+                min-height: 80px;
+            }
+
+            .message-box {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="Loading">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading...</div>
+    </div>
+
+    <form asp-action="Index" method="post" id="MainForm">
+        <input type="hidden" asp-for="Act" id="Act" />
+        <input type="hidden" asp-for="ON_OFF" id="ON_OFF" />
+
+        <table border="0" cellpadding="5" cellspacing="5">
+            <tr>
+                <td colspan="2">
+                    <div class="page-title">QOS LED TEST</div>
+                </td>
+            </tr>
+
+            <tr>
+                <td width="50%">Unit:</td>
+                <td width="50%" align="right">
+                    <select asp-for="Unit" asp-items="Model.Units" id="Unit" onchange="submitAction('ReLoad')"></select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>COM:</td>
+                <td align="right">
+                    <select asp-for="COM" asp-items="Model.COMs" id="COM" onchange="submitAction('ReLoad')"></select>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <div class="line-port-table">
+                        @Html.Raw(Model.LinePortMapping)
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Ard-Port:</td>
+                <td align="right">
+                    <select asp-for="Arduino_Port" id="Arduino_Port">
+                        @for (int i = 1; i <= 14; i++)
+                        {
+                            <option value="@i" selected="@(Model.Arduino_Port == i)">@i</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" style="font-size:10px">&nbsp;</td>
+            </tr>
+
+            <tr>
+                <td colspan="2" align="center">
+                    <table width="100%" height="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td align="center" width="25%">
+                                <div class="BT_button_G" onclick="submitAction('green')" style="@Model.OpacityGreen">
+                                    GREEN
+                                </div>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td align="center" width="25%">
+                                <div class="BT_button_R" onclick="submitAction('red')" style="@Model.OpacityRed">
+                                    RED
+                                </div>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td align="center" width="25%">
+                                <div class="BT_button_O" onclick="submitAction('@Model.ON_OFF')" style="@Model.OpacityOff">
+                                    @Model.ON_OFF
+                                </div>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td align="center" width="25%">
+                                <div class="BT_button_U" onclick="submitAction('update')" style="@Model.OpacityUpdate">
+                                    UPDATE
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="8" style="font-size:30px">&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="8" align="center">
+                                <div class="message-box">@Model.Message</div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="8" style="font-size:30px">&nbsp;</td>
+                        </tr>
+
+                        <tr style="@Model.SetLineDisplay">
+                            <td colspan="8" align="center">
+                                <div class="section-header">SET Arduino-port for other Line</div>
+                            </td>
+                        </tr>
+
+                        <tr style="@Model.SetLineDisplay">
+                            <td align="center">&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td align="center" colspan="3">
+                                <select asp-for="Line" asp-items="Model.Lines" id="Line"></select>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td align="center" width="25%">
+                                <div class="BT_button_P" onclick="submitAction('Set_Line_Port')">SET</div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <script>
+        function submitAction(act) {
+            var loading = document.getElementById("Loading");
+            loading.style.display = 'flex'; // Changed from 'block' to 'flex'
+            document.getElementById('Act').value = act;
+            document.getElementById('MainForm').submit();
+        }
+
+        window.onload = function() {
+            document.getElementById("Loading").style.display = 'none';
+        };
+    </script>
+</body>
+</html>

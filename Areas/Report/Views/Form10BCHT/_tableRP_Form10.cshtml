@@ -72,15 +72,32 @@
         <table class="table table-bordered table-custom align-middle" style="margin-bottom: 0;" name="tblFault" id="tblFault">
             <thead class="table-light">
                 <tr>
-                    <th style="width:60%">Lỗi</th>
-                    <th style="width:40%">Số lượng lỗi</th>
+                    <th style="width:40%">Công đoạn</th>
+                    <th style="width:40%">Lỗi</th>
+                    <th style="width:20%">Số lượng lỗi</th>
                 </tr>
             </thead>
             <tbody>
             @for (int i = 0; i < Model.SelectedFaults.Count; i++)
             {
                 var selected = Model.SelectedFaults[i];
+                var operationselected = Model.SelectedOperations[i];
+                @* Console.WriteLine("Selected Fault: " + selected.FaultCode + ", Qty: " + selected.FaultQty); *@
                 <tr id="Fault_R@(i+1)">
+                    <td>
+                        <select name="optOperation[@i]" id="optOperation_@i"
+                                class="form-select"
+                                style="color:blue;font-weight:bold;font-size:1em;">
+                            <option value="cd-0-0">--Chọn công đoạn--</option>
+                            @foreach (var operation in Model.Operations)
+                            {
+                                @* Console.WriteLine("Selected operation: " + operation.OperationCode + ", operationselected: " + operationselected.OperationCode); *@
+                                bool sel = (operation.OperationCode == operationselected.OperationCode);
+                                <option value="@operation.OperationCode" selected="@(sel)">@operation.OperationNameVN</option>
+                            }
+                        </select>
+                    </td>
+ 
                     <td>
                         <select name="optFault[@i]" id="optFault_@i"
                                 class="form-select"
@@ -91,6 +108,7 @@
                             @foreach (var fault in Model.Faults.Where(f => f.FaultLevel == 1))
                             {
                                 bool sel = (fault.FaultCode == selected.FaultCode );
+                                @* Console.WriteLine("Selected fault.FaultCode: " + fault.FaultCode); *@
                                 <option value="@fault.FaultCode-@fault.FaultLevel" selected="@(sel)" >@fault.FaultNameVN</option>
                             }
                             <option value="" disabled>--Lỗi Nhẹ--</option>
@@ -144,7 +162,7 @@
             {
                 if(!string.IsNullOrEmpty(photo))
                 {
-                    <img src="upload/Photos/Form10BCHT/@photo" class="photo-thumb" onclick='Show_Photo("@photo")'/>
+                    <img src="~/upload/Photos/Form10BCHT/@photo" class="photo-thumb" onclick='Show_Photo("@photo")'/>
                 }
             }
         }
@@ -212,7 +230,7 @@
         var modal = document.getElementById('Modal_Photo');
         var span = document.getElementById('close_Modal_Photo');
         modal.style.display = "block";
-        document.getElementById("Fault_Photo").src = 'upload/Photos/Form10BCHT/' + img;
+        document.getElementById("Fault_Photo").src = '/upload/Photos/Form10BCHT/' + img;
         span.onclick = function () {
             modal.style.display = "none";
         }

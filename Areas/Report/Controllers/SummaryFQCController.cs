@@ -54,7 +54,7 @@ namespace QOS.Areas.Report.Controllers
                     Unit_List = GetUnitList(),
                     TopDefected = topDefected ?? "5",
                     TypeCode = typeCode ?? "ALL",
-                    Unit = string.IsNullOrEmpty(Unit) ? "" : Unit,
+                    Unit = string.IsNullOrEmpty(Unit) ? "ALL" : Unit,
                     Mo = Mo ?? "",
                     StyleCode = styleCode ?? "",
                     DateFrom = dateFrom ?? DateTime.Now,

@@ -9,6 +9,9 @@ using QOS.Data;
 using System.IO;
 using System.Drawing;
 using OfficeOpenXml.Drawing;
+using QOS.Areas.Function;
+using QOS;
+using Microsoft.Extensions.Localization;
 
 namespace QOS.Areas.Function.Controllers
 {
@@ -20,13 +23,19 @@ namespace QOS.Areas.Function.Controllers
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _env;
         private readonly IConfiguration _configuration;
+        private readonly IStringLocalizer<QOS.SharedResource> _sharedLocalizer;
+        private readonly IStringLocalizer<QOS.Areas.Function.SharedResource> _funcLocalizer;
 
-        public ThongSoTPController(ILogger<ThongSoTPController> logger, AppDbContext context, IWebHostEnvironment env, IConfiguration configuration)
+        public ThongSoTPController(ILogger<ThongSoTPController> logger, AppDbContext context, IWebHostEnvironment env, IConfiguration configuration,
+        IStringLocalizer<QOS.SharedResource> sharedLocalizer,
+        IStringLocalizer<QOS.Areas.Function.SharedResource> funcLocalizer)
         {
             _logger = logger;
             _context = context;
             _env = env;
             _configuration = configuration;
+            _sharedLocalizer = sharedLocalizer;
+            _funcLocalizer = funcLocalizer;
         }
         [TempData]
         public string? MessageStatus { get; set; } = "";
@@ -49,7 +58,7 @@ namespace QOS.Areas.Function.Controllers
         {
             if (Upload_EXCEL == null || Upload_EXCEL.Length == 0)
             {
-                MessageStatus = "Chưa chọn file Excel!";
+                MessageStatus = _funcLocalizer["MessageStatus_File"];
                 return RedirectToAction("Index");
             }
             string FactoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";

@@ -5,6 +5,9 @@ using QOS.Data;
 using QOS.Middlewares;
 using QOS.Services;
 using Serilog;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
+using System.Globalization;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -81,7 +84,33 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.WebHost.UseUrls("http://0.0.0.0:8080");
 
+// 1. Đăng ký Localization
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+// 2. Cấu hình MVC hỗ trợ localization
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization()
+    .AddDataAnnotationsLocalization();
+
+// 3. Khai báo ngôn ngữ hỗ trợ
+var supportedCultures = new[] { "en", "vi" };
+
+
 var app = builder.Build();
+
+// 4. Middleware xác định ngôn ngữ
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("vi"),
+    SupportedCultures = supportedCultures.Select(c => new CultureInfo(c)).ToList(),
+    SupportedUICultures = supportedCultures.Select(c => new CultureInfo(c)).ToList()
+};
+
+// Cho phép đổi ngôn ngữ bằng query string, cookie, hoặc header
+localizationOptions.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());
+localizationOptions.RequestCultureProviders.Insert(1, new CookieRequestCultureProvider());
+
+app.UseRequestLocalization(localizationOptions);
 
 app.UseStaticFiles();
 app.UseRouting();

@@ -19,7 +19,7 @@ namespace QOS.Controllers
         public IActionResult Index()
         {
             // return View();
-            return RedirectToAction("Index", "ManageOperation");
+            return RedirectToAction("Index", "OnlineFile");
         }
         // [Route("")]
         [Permission("A_F1")]

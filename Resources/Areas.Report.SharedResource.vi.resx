@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="CutTable" xml:space="preserve">
+    <value>Bàn Cắt</value>
+  </data>
+  <data name="modal-title" xml:space="preserve">
+    <value>Chi tiết báo cáo</value>
+  </data>
+  <data name="Remark" xml:space="preserve">
+    <value>Ghi Chú</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Trạng Thái</value>
+  </data>
+  <data name="ReAudit" xml:space="preserve">
+    <value>Kiểm Lại</value>
+  </data>
+  <data name="CheckQty" xml:space="preserve">
+    <value>SL Kiểm</value>
+  </data>
+  <data name="FaultQty" xml:space="preserve">
+    <value>SL Lỗi</value>
+  </data>
+  
+  <data name="CutLeader" xml:space="preserve">
+    <value>Quản lý cắt</value>
+  </data>
+  <data name="CutTableName" xml:space="preserve">
+    <value>Tên sơ đồ</value>
+  </data>
+  <data name="CutTableRatio" xml:space="preserve">
+    <value>Tỉ lệ sơ đồ</value>
+  </data>
+  <data name="Lay_Height" xml:space="preserve">
+    <value>Chiều cao(cm)</value>
+  </data>
+  <data name="Table_Long" xml:space="preserve">
+    <value>Chiều dài (inch)</value>
+  </data>
+  <data name="Table_Width" xml:space="preserve">
+    <value>Chiều rộng (inch)</value>
+  </data>
+  <data name="Batch" xml:space="preserve">
+    <value>Cắt Lot</value>
+  </data>
+  <data name="Qty" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="QualityFabric" xml:space="preserve">
+    <value>Chất lượng vải</value>
+  </data>
+  <data name="CheckboxE" xml:space="preserve">
+    <value>Tích chọn nếu có lỗi</value>
+  </data>
+  <data name="Shading" xml:space="preserve">
+    <value>Loang màu</value>
+  </data>
+  <data name="Wave" xml:space="preserve">
+    <value>Căng/Trùng/Sóng vải</value>
+  </data>
+  <data name="Narrow_Width" xml:space="preserve">
+    <value>Hẹp khổ</value>
+  </data>
+  <data name="Spreading" xml:space="preserve">
+    <value>Trải vải</value>
+  </data>
+  <data name="Tolerance1" xml:space="preserve">
+    <value>Dung sai 1</value>
+  </data>
+  <data name="Tolerance2" xml:space="preserve">
+    <value>Dung sai 2</value>
+  </data>
+  <data name="longTo" xml:space="preserve">
+    <value>Dài từ</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>đến</value>
+  </data>
+  <data name="widthTo" xml:space="preserve">
+    <value>Rộng từ</value>
+  </data>
+  <data name="ParametersLW" xml:space="preserve">
+    <value>Thông số Dài - Rộng</value>
+  </data>
+  <data name="Firstleaves" xml:space="preserve">
+    <value>Lá đầu</value>
+  </data>
+  <data name="Middleleaves" xml:space="preserve">
+    <value>Lá giữa</value>
+  </data>
+  <data name="Lastleaves" xml:space="preserve">
+    <value>Lá cuối</value>
+  </data>
+  <data name="QualityCut" xml:space="preserve">
+    <value>Chất lượng cắt</value>
+  </data>
+  <data name="Notch" xml:space="preserve">
+    <value>Dấu bấm</value>
+  </data>
+  <data name="Unclean" xml:space="preserve">
+    <value>Cắt không gọn</value>
+  </data>
+  <data name="Straigh" xml:space="preserve">
+    <value>Cắt cong</value>
+  </data>
+  <data name="Shape" xml:space="preserve">
+    <value>Mất dáng</value>
+  </data>
+  <data name="Edge" xml:space="preserve">
+    <value>Dính biên</value>
+  </data>
+  <data name="Stripe" xml:space="preserve">
+    <value>Không đối kẻ</value>
+  </data>
+  <data name="ImgError" xml:space="preserve">
+    <value>Hình ảnh lỗi</value>
+  </data>
+  <data name="CPI_Leader" xml:space="preserve">
+    <value>Quản lý CPI</value>
+  </data>
+  <data name="Rap" xml:space="preserve">
+    <value>Rập</value>
+  </data>
+  <data name="Hole" xml:space="preserve">
+    <value>Thủng</value>
+  </data>
+  <data name="Yarn" xml:space="preserve">
+    <value>Lẫn sợi</value>
+  </data>
+  <data name="Slub" xml:space="preserve">
+    <value>Cục</value>
+  </data>
+  <data name="Dirty" xml:space="preserve">
+    <value>Bẩn</value>
+  </data>
+  <data name="OtherError" xml:space="preserve">
+    <value>Lỗi khác</value>
+  </data>
+  <data name="Match" xml:space="preserve">
+    <value>Phối sai</value>
+  </data>
+  <data name="Label" xml:space="preserve">
+    <value>Mác, phụ liệu</value>
+  </data>
+
+  <data name="Roll" xml:space="preserve">
+    <value>Roll</value>
+  </data>
+  <data name="Label_SP_SD" xml:space="preserve">
+    <value>Qty / diagram</value>
+  </data>
+  <data name="Layer_QTY" xml:space="preserve">
+    <value>Layer QTY</value>
+  </data>
+  <data name="Cut_QTY" xml:space="preserve">
+    <value>Cut QTY</value>
+  </data>
+  <data name="Cut_Table_Height" xml:space="preserve">
+    <value>Cut Table Height(inch)</value>
+  </data>
+  <data name="Cut_Table_Long" xml:space="preserve">
+    <value>Cut Table Long(inch)</value>
+  </data>
+  <data name="QualityTFabric" xml:space="preserve">
+    <value>Quality Fabric</value>
+  </data>
+  <data name="Fabricsplit" xml:space="preserve">
+    <value>Nối vải</value>
+  </data>
+  <data name="Fabrictension" xml:space="preserve">
+    <value>Độ căng vải</value>
+  </data>
+  <data name="Wrongside" xml:space="preserve">
+    <value>Trải sai mặt</value>
+  </data>
+  <data name="dirtfabric" xml:space="preserve">
+    <value>Dầu, bẩn, đốm màu vải</value>
+  </data>
+  <data name="Loc_diagram" xml:space="preserve">
+    <value>Vị trí sơ đồ</value>
+  </data>
+  <data name="Slantedfabric" xml:space="preserve">
+    <value>Vải nghiêng, xiên</value>
+  </data>
+  <data name="Notstraight" xml:space="preserve">
+    <value>Không kẻ thẳng</value>
+  </data>
+  <data name="Differentcolor" xml:space="preserve">
+    <value>Khác màu</value>
+  </data>
+  <data name="CheckNot" xml:space="preserve">
+    <value>Tích chọn nếu không đạt</value>
+  </data>
+  <data name="notchDeep" xml:space="preserve">
+    <value>Bấm quá sâu</value>
+  </data>
+  <data name="Cutxoc_xech" xml:space="preserve">
+    <value>Cắt xộc xệch</value>
+  </data>
+  <data name="NotCut" xml:space="preserve">
+    <value>Không cắt</value>
+  </data>
+  <data name="TS_afterCut" xml:space="preserve">
+    <value>Thông số sau cắt</value>
+  </data>
+  <data name="TS_afterCPI" xml:space="preserve">
+    <value>Thông số sau kiểm CPI</value>
+  </data>
+  <data name="TS_TP" xml:space="preserve">
+    <value>Thông số thành phẩm</value>
+  </data>
+  <data name="circle_notcheck" xml:space="preserve">
+    <value>Chưa kiểm tra</value>
+  </data>
+  <data name="circle_notfault" xml:space="preserve">
+    <value>Không có lỗi</value>
+  </data>
+  <data name="circle_minor" xml:space="preserve">
+    <value>Lỗi nhẹ</value>
+  </data>
+  <data name="circle_serious" xml:space="preserve">
+    <value>Lỗi nặng</value>
+  </data>
+  <data name="line_Status" xml:space="preserve">
+    <value>Trạng thái chuyền</value>
+  </data>
+  <data name="info_data" xml:space="preserve">
+    <value>Không tìm thấy dữ liệu trong khoảng thời gian này.</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Đang tải...</value>
+  </data>
+  <data name="Loadingdata" xml:space="preserve">
+    <value>Đang tải dữ liệu ...</value>
+  </data>
+  <data name="Loadingplease" xml:space="preserve">
+    <value>Vui lòng chờ trong giây lát</value>
+  </data>
+  <data name="HistoryInline" xml:space="preserve">
+    <value>Lịch sử kiểm tra chất lượng may chuyền</value>
+  </data>
+
+</root>

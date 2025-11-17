@@ -54,7 +54,7 @@ namespace QOS.Areas.Report.Controllers
                 FROM Form1_BCCLC t1
                 LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
                 WHERE t1.Unit = @Unit
-                AND t1.LastUpdate BETWEEN @dateF AND @dateT
+                AND CAST(t1.LastUpdate as DATE) >= CAST(@dateF as DATE) AND CAST(t1.LastUpdate as DATE) <= CAST(@dateT as DATE)
                 ORDER BY t1.LastUpdate DESC";
             }
             else
@@ -63,11 +63,11 @@ namespace QOS.Areas.Report.Controllers
                 SELECT t1.*, t4.FullName 
                 FROM Form1_BCCLC t1
                 LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
-                WHERE t1.LastUpdate BETWEEN @dateF AND @dateT
+                WHERE CAST(t1.LastUpdate as DATE) >= CAST(@dateF as DATE) AND CAST(t1.LastUpdate as DATE) <= CAST(@dateT as DATE)
                 ORDER BY t1.LastUpdate DESC";
             }
             ;
-            // Console.WriteLine("SQL: " + sql + " Unit: " + Unit);
+            // Console.WriteLine("SQL: " + sql + " Unit: " + Unit + " From: " + model.DateFrom + " To: " + model.DateEnd);
             var history = conn.Query<Form1_BCCLC>(sql, new { Unit, dateF = model.DateFrom, dateT = model.DateEnd }).ToList();
 
             model.History = history; // đưa thẳng vào Model
@@ -147,7 +147,7 @@ namespace QOS.Areas.Report.Controllers
                 FROM Form1_BCCLC t1
                 LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
                 WHERE t1.Unit = @Unit
-                AND t1.LastUpdate BETWEEN @dateF AND @dateT
+                AND CAST(t1.LastUpdate as DATE) >= CAST(@dateF as DATE) AND CAST(t1.LastUpdate as DATE) <= CAST(@dateT as DATE)
                 ORDER BY t1.LastUpdate DESC";
             }
             else
@@ -156,7 +156,7 @@ namespace QOS.Areas.Report.Controllers
                 SELECT t1.*, t4.FullName 
                 FROM Form1_BCCLC t1
                 LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
-                WHERE t1.LastUpdate BETWEEN @dateF AND @dateT
+                WHERE CAST(t1.LastUpdate as DATE) >= CAST(@dateF as DATE) AND CAST(t1.LastUpdate as DATE) <= CAST(@dateT as DATE)
                 ORDER BY t1.LastUpdate DESC";
             }
             ;

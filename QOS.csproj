@@ -49,4 +49,9 @@
     <XmlPoke XmlInputPath="@(PublishedWebConfig)" Query="/configuration/system.webServer" Value="&lt;clear /&gt;&#xA;&lt;validation validateIntegratedModeConfiguration=&quot;false&quot; /&gt;" />
   </Target>
 
+  <ItemGroup>
+    <!-- Loại bỏ toàn bộ thư mục upload khỏi publish -->
+    <Content Update="wwwroot\upload\**" CopyToPublishDirectory="Never" />
+  </ItemGroup>
+
 </Project>

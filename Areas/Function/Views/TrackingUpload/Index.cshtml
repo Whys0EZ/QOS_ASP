@@ -1,6 +1,6 @@
 @using static QOS.Areas.Function.Controllers.TrackingUploadController
-@* @model IEnumerable<QOS.Areas.Function.Models.ManageOperation> *@
-@* @model QOS.Areas.Function.Models.SearchOperationViewModel *@
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Function.SharedResource> FuncLocalizer
 @model string
 
 @{
@@ -9,7 +9,7 @@
 }
 
 <partial name="_AlertMessage" />
-<div class="continer my-3">
+<div class="continer my-3 m-3">
     <div class="row align-items-center mb-3">
         <!-- Bên trái -->
 
@@ -36,12 +36,12 @@
                     }
                 </select>
 
-                <a href="" id="downloadForm" class="text-decoration-none pt-2">(Tải mẫu Form)</a>
+                <a href="" id="downloadForm" class="text-decoration-none pt-2">(@FuncLocalizer["downloadForm"])</a>
 
                 <input type="file" name="Upload_EXCEL" class="form-control w-auto" />
 
-                <button class="btn btn-success">
-                    <i class="bi bi-upload"></i> Upload
+                <button class="btn btn-success text-nowrap">
+                    <i class="bi bi-upload"></i> @Localizer["Upload"]
                 </button>
             </form>
             <!-- Form Search -->
@@ -49,15 +49,15 @@
                 class="d-flex align-items-center gap-2 mb-0">
                 <input type="text" class="form-control w-auto" placeholder="MO; Style" id="Search_V" name="Search_V" />
                 <input type="hidden" id="Search_ModuleName" name="ModuleName" value="" />
-                <button class="btn btn-warning">
-                    <i class="bi bi-search"></i> Check
+                <button class="btn btn-warning text-nowrap">
+                    <i class="bi bi-search"></i> @Localizer["Check"]
                 </button>
             </form>
         </div>
     </div>
 </div>
 <div id="loadingMsg" class="alert alert-info d-none">
-    Đang upload và xử lý dữ liệu...
+    @Localizer["loadingMsg"]
 </div>
 
 <div class="table-responsive">

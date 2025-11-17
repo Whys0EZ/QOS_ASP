@@ -1,4 +1,5 @@
 ﻿@using QOS.Helpers
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="auto">
 
@@ -47,27 +48,27 @@
                 <div class="collapse navbar-collapse" id="mainNavbar">
                     <ul class="navbar-nav mx-auto">
                         <li class="nav-item fade-in-up" style="animation-delay: 0.1s">
-                            <a class="nav-link @Html.IsActive(new[] { "Function", "ManageOperation", "ManageFault", "ThongSoBTP", "ThongSoTP", "ThongSoDo", "ETSMoStyle", "TrackingContact", "TrackingSetup", "TrackingUpload", "OnlineFile" })"
+                            <a style="text-transform: uppercase;" class="nav-link @Html.IsActive(new[] { "Function", "ManageOperation", "ManageFault", "ThongSoBTP", "ThongSoTP", "ThongSoDo", "ETSMoStyle", "TrackingContact", "TrackingSetup", "TrackingUpload", "OnlineFile" })"
                                 asp-area="Function" asp-controller="Function" asp-action="Index">
-                                <i class="fas fa-cogs me-2"></i>CHỨC NĂNG
+                                <i class="fas fa-cogs me-2"></i>@Localizer["Function"]
                             </a>
                         </li>
                         <li class="nav-item fade-in-up" style="animation-delay: 0.2s">
-                            <a class="nav-link @Html.IsActive(new[] { "Report", "Form1BCCLC","Form2BCCPI","Form3BCDT","Form4BCCLM","Form6BCCC","SummaryKCC","PhotoDefect","OQLEndline","SummaryKCM","Form4BCCLMSUM","Form7BTP","Form8TP","SummaryEndline","FCATracking","FCATrackingACDate","Form10BCHT","SummaryBCHT","SummaryChecker","Form10OQL","FQCTracking","SummaryFQC","Form4Quality","TopForm4Quality","TopForm6Quality","EndlineReport","EndlineUnit","EndlineUnitEN" })"
+                            <a style="text-transform: uppercase;" class="nav-link @Html.IsActive(new[] { "Report", "Form1BCCLC","Form2BCCPI","Form3BCDT","Form4BCCLM","Form6BCCC","SummaryKCC","PhotoDefect","OQLEndline","SummaryKCM","Form4BCCLMSUM","Form7BTP","Form8TP","SummaryEndline","FCATracking","FCATrackingACDate","Form10BCHT","SummaryBCHT","SummaryChecker","Form10OQL","FQCTracking","SummaryFQC","Form4Quality","TopForm4Quality","TopForm6Quality","EndlineReport","EndlineUnit","EndlineUnitEN" })"
                             asp-area="Report" asp-controller="Report" asp-action="Index">
-                                <i class="fas fa-chart-line me-2"></i>BÁO CÁO
+                                <i class="fas fa-chart-line me-2"></i>@Localizer["Report"]
                             </a>
                         </li>
                         <li class="nav-item fade-in-up" style="animation-delay: 0.3s">
-                            <a class="nav-link @(Html.IsActive(new[] { "Setting" }))" asp-area="Setting"
+                            <a style="text-transform: uppercase;" class="nav-link @(Html.IsActive(new[] { "Setting" }))" asp-area="Setting"
                                 asp-controller="Setting" asp-action="FactoryList">
-                                <i class="fas fa-sliders-h me-2"></i>THIẾT LẬP
+                                <i class="fas fa-sliders-h me-2"></i>@Localizer["Setting"]
                             </a>
                         </li>
                         <li class="nav-item fade-in-up" style="animation-delay: 0.4s">
-                            <a class="nav-link @(Html.IsActive(new[] { "SystemAdmin" }))" asp-area="SystemAdmin"
+                            <a style="text-transform: uppercase;" class="nav-link @(Html.IsActive(new[] { "SystemAdmin" }))" asp-area="SystemAdmin"
                                 asp-controller="SystemAdmin" asp-action="Index">
-                                <i class="fas fa-shield-alt me-2"></i>HỆ THỐNG
+                                <i class="fas fa-shield-alt me-2"></i>@Localizer["System"]
                             </a>
                         </li>
                     </ul>
@@ -112,8 +113,8 @@
                                         <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">
                                             <i class="fas fa-user-circle me-3"></i>
                                             <div>
-                                                <div class="dropdown-item-title">Thông tin cá nhân</div>
-                                                <small class="dropdown-item-desc">Xem và chỉnh sửa profile</small>
+                                                <div class="dropdown-item-title">@Localizer["Profile"]</div>
+                                                <small class="dropdown-item-desc">@Localizer["EditProfile"]</small>
                                             </div>
                                         </a>
                                     </li>
@@ -121,8 +122,8 @@
                                         <a class="dropdown-item" asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="ChangePassword">
                                             <i class="fas fa-key me-3"></i>
                                             <div>
-                                                <div class="dropdown-item-title">Đổi mật khẩu</div>
-                                                <small class="dropdown-item-desc">Thay đổi mật khẩu bảo mật</small>
+                                                <div class="dropdown-item-title">@Localizer["ChangePassword"]</div>
+                                                <small class="dropdown-item-desc">@Localizer["InfoPass"]</small>
                                             </div>
                                         </a>
                                     </li>
@@ -130,8 +131,8 @@
                                         <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Settings">
                                             <i class="fas fa-cog me-3"></i>
                                             <div>
-                                                <div class="dropdown-item-title">Cài đặt</div>
-                                                <small class="dropdown-item-desc">Tùy chỉnh giao diện</small>
+                                                <div class="dropdown-item-title">@Localizer["Setup"]</div>
+                                                <small class="dropdown-item-desc">@Localizer["Setupinfo"]</small>
                                             </div>
                                         </a>
                                     </li>
@@ -141,8 +142,8 @@
                                         <a class="dropdown-item" asp-area="" asp-controller="Contact" asp-action="Admin">
                                             <i class="fas fa-cog me-3"></i>
                                             <div>
-                                                <div class="dropdown-item-title">Contact</div>
-                                                <small class="dropdown-item-desc">Thông tin phản hồi</small>
+                                                <div class="dropdown-item-title">@Localizer["ContactUs"]</div>
+                                                <small class="dropdown-item-desc">@Localizer["Feedback"]</small>
                                             </div>
                                         </a>
                                     </li>  
@@ -152,8 +153,8 @@
                                         <a class="dropdown-item logout-item" asp-area="" asp-controller="Account" asp-action="Logout">
                                             <i class="fas fa-sign-out-alt me-3"></i>
                                             <div>
-                                                <div class="dropdown-item-title">Đăng xuất</div>
-                                                <small class="dropdown-item-desc">Thoát khỏi tài khoản</small>
+                                                <div class="dropdown-item-title">@Localizer["Logout"]</div>
+                                                <small class="dropdown-item-desc">@Localizer["LogoutInfo"]</small>
                                             </div>
                                         </a>
                                     </li>
@@ -166,14 +167,14 @@
                                 <a class="btn btn-modern btn-modern-outline" asp-area="" asp-controller="Account"
                                     asp-action="Auth">
                                     <i class="fas fa-sign-in-alt"></i>
-                                    Đăng nhập
+                                    @Localizer["Login"]
                                 </a>
                             </li>
                             <li class="nav-item fade-in-up" style="animation-delay: 0.6s">
                                 <a class="btn btn-modern btn-modern-primary" asp-area="" asp-controller="Account"
                                     asp-action="Auth">
                                     <i class="fas fa-user-plus"></i>
-                                    Đăng ký
+                                    @Localizer["Register"]
                                 </a>
                             </li>
                         }
@@ -205,6 +206,39 @@
                                         <i class="fas fa-adjust me-2"></i> Auto
                                     </button>
                                 </li>
+                                
+                            </ul>
+                        </li>
+                    </ul>
+
+                    @* Choose Language *@
+
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center" 
+                                    id="languageDropdown" 
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-globe me-2"></i> @Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName.ToUpper()
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                                <li>
+                                    <form asp-area="" asp-controller="Language" asp-action="SetLanguage" method="post" class="dropdown-item p-0">
+                                        <input type="hidden" name="culture" value="vi" />
+                                        <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                                        <button type="submit" class="btn btn-link dropdown-item">
+                                            🇻🇳 Tiếng Việt
+                                        </button>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form asp-area="" asp-controller="Language" asp-action="SetLanguage" method="post" class="dropdown-item p-0">
+                                        <input type="hidden" name="culture" value="en" />
+                                        <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                                        <button type="submit" class="btn btn-link dropdown-item">
+                                            🇺🇸 English
+                                        </button>
+                                    </form>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -234,7 +268,7 @@
                         <span style="background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 600;">QOS</span>
                     
                         <a asp-area="" asp-controller="Contact" asp-action="Index">
-                            <i class="fas fa-envelope me-2"></i>Liên hệ
+                            <i class="fas fa-envelope me-2"></i>@Localizer["ContactUs"]
                         </a>
                         @* <p>Quality Operations System - Giải pháp quản lý chất lượng toàn diện</p> *@
                     

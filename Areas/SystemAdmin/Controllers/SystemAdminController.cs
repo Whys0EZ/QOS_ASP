@@ -342,6 +342,11 @@ namespace QOS.Controllers
         {
             return View();
         }
+
+        public IActionResult LedTest()
+        {
+            return RedirectToAction("Index", "LEDTest", new { area = "SystemAdmin" });
+        }
     }
 
     

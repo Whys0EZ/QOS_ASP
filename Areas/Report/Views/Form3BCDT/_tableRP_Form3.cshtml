@@ -1,4 +1,5 @@
-@* @model QOS.Areas.Report.Models.Form2_BCCPI *@
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
 @model QOS.Areas.Report.Models.Form3_BCDT
 @{
     
@@ -21,11 +22,11 @@
     <input type="hidden" id="Audit_Time" name="Audit_Time" value="@Model.Audit_Time"/>
 <table class="table">
     <tr>
-        <td><label>Unit</label></td>
+        <td><label>@Localizer["Unit"]</label></td>
         
-        <td><label>Quản lý cắt</label></td>
+        <td><label>@ReportLocalizer["CutLeader"]</label></td>
         <td><label>MO </label></td>
-        <td><label>Màu </label></td>     
+        <td><label>@Localizer["Color"] </label></td>     
     </tr>
     <tr>
         <td><input id="UnitField" value="@Model.Unit"/></td>
@@ -48,7 +49,7 @@
 
     </tr>
     <tr>
-        <td><label>Tỉ lệ sơ đồ: </label></td>
+        <td><label>@ReportLocalizer["CutTableRatio"]: </label></td>
         <td><label>Số SP bàn cắt: </label></td>
         <td><label>Cao bàn cắt(inch): </label></td>
         <td><label>Dài sơ đồ(inch):</label></td>     
@@ -60,7 +61,7 @@
         <td><input value="@Model.Cut_Table_Long"/></td>
     </tr>
     <tr>
-        <td ><label>Chất lượng trải vải: </label><i style="color: red;">(Tích chọn nếu có lỗi)</i></td>
+        <td ><label>Chất lượng trải vải: </label><i style="color: red;">(@ReportLocalizer["CheckboxE"])</i></td>
         <td style="padding: 3px; text-align:center;">
                 <div>Vải kẻ </div>
                 <input type="checkbox" name="F1_chk_vai_ke" value="true" @(Model.vai_ke == true ? "checked" : "") id="F1_chk_loang_mau"  value="1" style="zoom:3.0;"  autocomplete="on" />
@@ -70,67 +71,67 @@
 <table class="table">
     <tr>
         <td style="padding: 3px; text-align:center;">
-                <div>Nối vải</div>
+                <div>@ReportLocalizer["Fabricsplit"]</div>
                 <input type="checkbox" name="F1_chk_noi_vai" value="true" @(Model.noi_vai == true ? "checked" : "") id="F1_chk_noi_vai"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
         <td style="padding: 3px; text-align:center;">
-                <div>Độ căng vải </div>
+                <div>@ReportLocalizer["Fabrictension"] </div>
                 <input type="checkbox" name="F1_chk_cang_vai"  value="true" @(Model.cang_vai == true ? "checked" : "") id="F1_chk_cang_vai"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
         <td style="padding: 3px; text-align:center;">
-                <div>Trải sai mặt </div>
+                <div>@ReportLocalizer["Wrongside"] </div>
                 <input type="checkbox" name="F1_chk_sai_mat"   value="true" @(Model.sai_mat == true ? "checked" : "") id="F1_chk_sai_mat"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
         <td style="padding: 3px; text-align:center;">
-                <div>Hẹp khổ vải </div>
+                <div>@ReportLocalizer["Narrow_Width"] </div>
                 <input type="checkbox" name="F1_chk_hep_kho"  value="true" @(Model.hep_kho == true ? "checked" : "") id="F1_chk_hep_kho"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
         <td style="padding: 3px; text-align:center;">
-                <div>Dầu, bẩn, đốm màu vải </div>
+                <div>@ReportLocalizer["dirtfabric"] </div>
                 <input type="checkbox" name="F1_chk_ban_vai"  value="true" @(Model.ban_vai == true ? "checked" : "") id="F1_chk_ban_vai"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
     </tr>
     <tr>
         <td style="padding: 3px; text-align:center;">
-                <div>Vị trí sơ đồ</div>
+                <div>@ReportLocalizer["Loc_diagram"]</div>
                 <input type="checkbox" name="F1_chk_vi_tri" value="true" @(Model.vi_tri == true ? "checked" : "") id="F1_chk_vi_tri"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
         <td style="padding: 3px; text-align:center;">
-                <div>Vải nghiêng, xiên</div>
+                <div>@ReportLocalizer["Slantedfabric"]</div>
                 <input type="checkbox" name="F1_chk_vai_nghieng"  value="true" @(Model.vai_nghieng == true ? "checked" : "") id="F1_chk_vai_nghieng"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
         <td style="padding: 3px; text-align:center;">
-                <div>Sóng vải </div>
+                <div>@ReportLocalizer["Ware"] </div>
                 <input type="checkbox" name="F1_chk_song_vai"   value="true" @(Model.song_vai == true ? "checked" : "") id="F1_chk_song_vai"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
         <td style="padding: 3px; text-align:center;">
-                <div>Không thẳng kẻ </div>
+                <div>@ReportLocalizer["Notstraight"]</div>
                 <input type="checkbox" name="F1_chk_thang_ke"  value="true" @(Model.thang_ke == true ? "checked" : "") id="F1_chk_thang_ke"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
         <td style="padding: 3px; text-align:center;">
-                <div>Khác màu </div>
+                <div>@ReportLocalizer["Differentcolor"]</div>
                 <input type="checkbox" name="F1_chk_khac_mau"  value="true" @(Model.khac_mau == true ? "checked" : "") id="F1_chk_khac_mau"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
     </tr>
 </table>
 
-<p style="font-weight: bold;"><span style="color: red;">*</span> Chất lượng cắt: <span style="color: red; font-weight: normal; font-style: italic;">(Tích chọn nếu không đạt)</span></p>
+<p style="font-weight: bold;"><span style="color: red;">*</span> @ReportLocalizer["QualityFabric"]: <span style="color: red; font-weight: normal; font-style: italic;">(@ReportLocalizer["CheckNot"])</span></p>
 <TABLE class="table" style="width: 100%; font-size: 0.8em!important; border: 1px solid gray; ">
     <tr>
         <td style="padding: 3px; text-align:center;">
-                <div>Quên dấu bấm </div>
+                <div>@ReportLocalizer["Notch"] </div>
                 <input type="checkbox" name="F1_chk_quen_bam"  value="true" @(Model.quen_bam == true ? "checked" : "") id="F1_chk_quen_bam"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
         <td style="padding: 3px; text-align:center;">
-                <div>Bấm quá sâu </div>
+                <div>@ReportLocalizer["notchDeep"] </div>
                 <input type="checkbox" name="F1_chk_bam_sau"  value="true" @(Model.bam_sau == true ? "checked" : "") id="F1_chk_bam_sau"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
         <td style="padding: 3px; text-align:center;">
-                <div>Cắt xộc xệch </div>
+                <div>@ReportLocalizer["Cutxoc_xech"]</div>
                 <input type="checkbox" name="F1_chk_xoc_xech"  value="true" @(Model.xoc_xech == true ? "checked" : "") id="F1_chk_xoc_xech"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
         <td style="padding: 3px; text-align:center;">
-                <div>Không cắt </div>
+                <div>@ReportLocalizer["NotCut"]</div>
                 <input type="checkbox" name="F1_chk_khong_cat"  value="true" @(Model.khong_cat == true ? "checked" : "") id="F1_chk_khong_cat"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
         <td style="padding: 3px; text-align:center;">
@@ -159,7 +160,7 @@
     </tr>
 </TABLE>
 <br>
-<p style="font-weight: bold;"><span style="color: red;">*</span> Thông số sau cắt:</p>
+<p style="font-weight: bold;"><span style="color: red;">*</span> @ReportLocalizer["TS_afterCut"]:</p>
 
 <table style="width: 100%; padding: 0px; ">
     <tr style="height: 0px;">
@@ -249,7 +250,7 @@ else
 </TABLE>
 <input type="hidden" name="Size_Parameter_Cat" id="Size_Parameter_Cat" value="@(string.IsNullOrEmpty(Size_Parameter_Cat) ? "" : Size_Parameter_Cat)" >
 <br>
-<p style="font-weight: bold;"><span style="color: red;">*</span> Thông số sau kiểm CPI: </p>
+<p style="font-weight: bold;"><span style="color: red;">*</span> @ReportLocalizer["TS_afterCPI"]: </p>
 
 <table style="width: 100%; padding: 0px; ">
     <tr style="height: 0px;">
@@ -304,7 +305,7 @@ else
 </TABLE>   
 <input type="hidden" name="Size_Parameter_CPI" id="Size_Parameter_CPI" value="@(string.IsNullOrEmpty(Size_Parameter_CPI) ? "" : Size_Parameter_CPI)" >
 <br>
-<p style="font-weight: bold;"><span style="color: red;">*</span> Thông số thành phẩm: </p>
+<p style="font-weight: bold;"><span style="color: red;">*</span> @ReportLocalizer["TS_TP"]: </p>
 
 <table style="width: 100%; padding: 0px; ">
     <tr style="height: 0px;">
@@ -360,10 +361,10 @@ else
 <input type="hidden" name="Size_Parameter_TP" id="Size_Parameter_TP" value="@(string.IsNullOrEmpty(Size_Parameter_TP) ? "" : Size_Parameter_TP)" >
 
 
-<p style="font-weight: bold; text-align: left;"><span style="color: red;">*</span> Ghi chú:</p>
+<p style="font-weight: bold; text-align: left;"><span style="color: red;">*</span> @Localizer["Remark"]:</p>
 <textarea rows="4" cols="100" name="Remark" id="Remark" onClick="this.select();" > @(string.IsNullOrEmpty(Model.Remark) ? "" : Model.Remark)</textarea>
 
-<p style="font-weight: bold;"><span style="color: red;">*</span>Hình ảnh lỗi:</p>
+<p style="font-weight: bold;"><span style="color: red;">*</span>@ReportLocalizer["ImgError"]:</p>
 @if(!string.IsNullOrEmpty(Model.Photo_URL))
 {
     var photos = Model.Photo_URL.Split(";");
@@ -371,13 +372,13 @@ else
     {
         if(!string.IsNullOrEmpty(photo))
         {
-            <img src="upload/Photos/Form3_BCDT/@photo" style='width:100px;' onclick='Show_Photo("@photo")'/>
+            <img src="~/upload/Photos/Form3_BCDT/@photo" style='width:100px;' onclick='Show_Photo("@photo")'/>
         }
     }
 }
 
 <p style="font-weight: bold;">
-    <span style="color: red;">*</span> Kiểm lại: &nbsp;
+    <span style="color: red;">*</span> @ReportLocalizer["ReAudit"]: &nbsp;
     <input type="checkbox" name="Re_Audit" id="Re_Audit"  value="true" @(Model.Re_Audit == true ? "checked" : "") value="0" style="  color:#360; font-size:20px; zoom:3.0;"  autocomplete="on" />   
     <input type="hidden" name="Audit_Time" id="Audit_Time" value="@(Model.Audit_Time >0 ? Model.Audit_Time : 0)" >
 </p>
@@ -385,8 +386,8 @@ else
 
 <br>
     <p style="text-align: center; display: block;">
-        <img src="~/images/delete.png" style="width: 95px; margin-right:20px; " align="center" onClick="Delete_Click1();" title="Delete this report" >
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" onClick="Delete_Click1();" title="Delete this report" >@Localizer["Delete"]</button> 
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["Close"]</button>
     </p>
     
 <br>
@@ -398,7 +399,7 @@ else
           <div class="modal-content">
             <div class="modal-header bg-success text-center">
               <span class="close" id="close_Modal_Photo">&times;</span>
-              <h2 style="text-align: center; text-transform: uppercase;"> Hình ảnh lỗi </h2> 
+              <h2 style="text-align: center; text-transform: uppercase;"> @ReportLocalizer["ImgError"]</h2> 
             </div>
             <div class="modal-body" style="text-align: center;">
                 <img src="" style="width: 90%"  id="Fault_Photo" align="center">
@@ -444,7 +445,7 @@ function Show_Photo(img)
     var span = document.getElementById('close_Modal_Photo');
     
      modal.style.display = "block";
-     document.getElementById("Fault_Photo").src= 'upload/Photos/Form3_BCDT/'+img;
+     document.getElementById("Fault_Photo").src= '/upload/Photos/Form3_BCDT/'+img;
      
      // When the user clicks on <span> (x), close the modal
     span.onclick = function() {

@@ -6,6 +6,11 @@ using QOS.Data;
 using QOS.Models;
 using QOS.Areas.Report.Models;
 using OfficeOpenXml;
+using System.Data;
+using System.Text.Json;
+using QOS.Areas.Function.Filters;
+using System.Linq;
+using Dapper;
 
 namespace QOS.Areas.Report.Controllers
 {
@@ -112,16 +117,16 @@ namespace QOS.Areas.Report.Controllers
                                 command.Parameters.AddWithValue("@Date_T", dateEnd);
 
                                 // Log SQL
-                                string debugSql = sql;
-                                foreach (SqlParameter p in command.Parameters)
-                                {
-                                    string value = p.Value == null || p.Value == DBNull.Value
-                                        ? "NULL"
-                                        : $"N'{p.Value.ToString().Replace("'", "''")}'";
-                                    debugSql = debugSql.Replace(p.ParameterName, value);
-                                }
+                                // string debugSql = sql;
+                                // foreach (SqlParameter p in command.Parameters)
+                                // {
+                                //     string value = p.Value == null || p.Value == DBNull.Value
+                                //         ? "NULL"
+                                //         : $"N'{p.Value.ToString().Replace("'", "''")}'";
+                                //     debugSql = debugSql.Replace(p.ParameterName, value);
+                                // }
 
-                                _logger.LogInformation("Debug SQL: {debugSql}", debugSql);
+                                // _logger.LogInformation("Debug SQL: {debugSql}", debugSql);
 
 
                                 using (var reader = command.ExecuteReader())
@@ -130,6 +135,7 @@ namespace QOS.Areas.Report.Controllers
                                     {
                                         var rowData = new Dictionary<string, object>
                                         {
+                                            ["ID_Result"] = reader["ID_Result"]?.ToString() ?? "",
                                             ["Industry"] = reader["Industry"]?.ToString() ?? "",
                                             ["Operation"] = reader["Operation"]?.ToString() ?? "",
                                             ["ResultStatus"] = reader["ResultStatus"]?.ToString() ?? "",
@@ -147,7 +153,7 @@ namespace QOS.Areas.Report.Controllers
                                             ["Check_Qty"] = reader["Check_Qty"]?.ToString() ?? "",
                                             
                                             ["UserUpdate"] = reader["UserUpdate"]?.ToString() ?? "",
-                                            ["WorkDate"] = reader["WorkDate"] == DBNull.Value ? null : reader["WorkDate"]
+                                            ["WorkDate"] = reader["WorkDate"] == DBNull.Value ? DateTime.MinValue : reader["WorkDate"]
                                         };
 
                                         reportDataList.Add(rowData);
@@ -166,6 +172,139 @@ namespace QOS.Areas.Report.Controllers
             }
 
         }
+
+        public IActionResult DetailFQCTracking(string id, string user, string auditTime)
+        {
+            // _logger.LogInformation($"DetailFQCTracking called with ID: {id}, User: {user}, AuditTime: {auditTime}");
+            FQCTracking_Detail? detail = null;
+            List<FQCTrackingFaultViewModel> faults = new();
+            List<FQCTrackingSelectedFault> selectedFaults = new();
+
+            using (var connection = new SqlConnection(_context.Database.GetConnectionString()))
+            {
+                connection.Open();
+
+                // 1️⃣ Lấy thông tin chi tiết
+                var sql = @"SELECT TOP 1 * 
+                            FROM FQC_UQ_Result  
+                            WHERE ID_Result=@ID AND UserUpdate=@User AND Audit_Time=@AuditTime
+                            ORDER BY LastUpdate DESC";
+
+                using (var command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@ID", id ?? "");
+                    command.Parameters.AddWithValue("@User", user ?? "");
+                    command.Parameters.AddWithValue("@AuditTime", auditTime ?? "");
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            detail = new FQCTracking_Detail
+                            {
+                                ID_Result = reader["ID_Result"]?.ToString() ?? "",
+                                WorkDate = reader["WorkDate"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(reader["WorkDate"]),
+                                ID_Report = reader["ID_Report"]?.ToString() ?? "",
+                                ResultStatus = reader["ResultStatus"]?.ToString() ?? "",
+                                IMG_Result = reader["IMG_Result"]?.ToString() ?? "",
+                                Size_Name = reader["Size_Name"]?.ToString() ?? "",
+                                SO = reader["SO"]?.ToString() ?? "",
+                                Style = reader["Style"]?.ToString() ?? "",
+                                Item_No = reader["Item_No"]?.ToString() ?? "",
+                                PO = reader["PO"]?.ToString() ?? "",
+                                Unit = reader["Unit"]?.ToString() ?? "",
+                                Operation = reader["Operation"]?.ToString() ?? "",
+                                Update_Date = reader["Update_Date"]?.ToString() ?? "",
+                                shipMode = reader["shipMode"]?.ToString() ?? "",
+                                QTY = reader["QTY"] == DBNull.Value ? 0 : Convert.ToInt32(reader["QTY"]),
+                                Check_QTY = reader["Check_QTY"] == DBNull.Value ? 0 : Convert.ToInt32(reader["Check_QTY"]),
+                              
+                                OQL = reader["OQL"] == DBNull.Value ? 0 : Convert.ToDouble(reader["OQL"]),
+                                Total_Fault_QTY = reader["Total_Fault_QTY"] == DBNull.Value ? 0 : Convert.ToInt32(reader["Total_Fault_QTY"]),
+                                
+                                Fault = reader["Fault"]?.ToString() ?? "",
+                                Destination = reader["Destination"]?.ToString() ?? "",
+                                CreatedBy = reader["CreatedBy"]?.ToString() ?? "",
+                                Re_Audit = reader["Re_Audit"] != DBNull.Value && Convert.ToBoolean(reader["Re_Audit"]),
+                                Audit_Time = reader["Audit_Time"] == DBNull.Value ? 0 : Convert.ToInt32(reader["Audit_Time"]),
+                                LastUpdate = reader["LastUpdate"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(reader["LastUpdate"]),
+                                // Photo_URL = reader["Photo_URL"]?.ToString() ?? "",
+                                UserUpdate = reader["UserUpdate"]?.ToString() ?? ""
+                            };
+                        }
+                    }
+                }
+
+                // 2️⃣ Lấy danh sách lỗi
+                string sqlFault = @"
+                    SELECT Fault_Code AS FaultCode,
+                        Fault_Name_VN AS FaultNameVN,
+                        Fault_Level AS FaultLevel
+                    FROM Fault_Code
+                    WHERE Form2_Active = 1
+                    ORDER BY Fault_Level ASC, Fault_Name_VN ASC";
+
+                faults = connection.Query<FQCTrackingFaultViewModel>(sqlFault).ToList();
+
+                // 3️⃣ Parse danh sách lỗi đã chọn
+                if (detail != null && !string.IsNullOrEmpty(detail.Fault))
+                {
+                    var arrFault = detail.Fault.Split(';', StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var f in arrFault)
+                    {
+                        var parts = f.Split('-');
+                        if (parts.Length >= 3)
+                        {
+                            selectedFaults.Add(new FQCTrackingSelectedFault
+                            {
+                                FaultCode = parts[0],
+                                FaultQty = int.TryParse(parts[2], out var q) ? q : 0
+                            });
+                        }
+                    }
+                }
+            }
+
+            // 4️⃣ Trả về PartialView
+            var model = new FQCTrackingDetailViewModel
+            {
+                Detail = detail ?? new FQCTracking_Detail(),
+                Faults = faults,
+                SelectedFaults = selectedFaults
+            };
+
+            return PartialView("_tableRP_FQC", model);
+        }
+
+
+        [Permission("B_F4")]
+        public IActionResult DeleteReport(int reportId)
+        {
+            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            string sql_Tranfer = @" INSERT INTO Form6_BCKCC_Delete SELECT * , @UserName,GETDATE() FROM Form6_BCKCC WHERE ID = @ID ";
+            string sql_Delete = @" DELETE FROM Form6_BCKCC WHERE ID = @ID";
+            var userName = User.Identity?.Name;
+            Console.WriteLine("report ID: " + reportId + "User : " + userName);
+            int result = conn.Execute(sql_Tranfer, new { ID = reportId, UserName = userName });
+            if (result > 0)
+            {
+                int result2 = conn.Execute(sql_Delete, new { ID = reportId });
+                if (result2 > 0)
+                {
+                    return Json(new { success = true, message = "Xóa báo cáo thành công!" });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Không thể xóa báo cáo." });
+                }
+            }
+            else
+            {
+                return Json(new { success = false, message = "Không tìm thấy báo cáo để xóa." });
+            }
+        }
+
+
         public IActionResult ExportExcel(string? Customer, DateTime? dateFrom, DateTime? dateEnd, string? Search)
         {
             // Tạo Excel file (ví dụ với ClosedXML hoặc EPPlus)

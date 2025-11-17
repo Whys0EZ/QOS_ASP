@@ -1,17 +1,18 @@
 @model QOS.Areas.Function.Models.OnlineFileViewModel
-
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Function.SharedResource> FuncLocalizer
 @{
-    ViewData["Title"] = "Online File";
+    ViewData["Title"] = FuncLocalizer["F_Online_Title"];
     Layout = "_MenuFunction";
 }
 
 <partial name="_AlertMessage" />
-<div class="continer my-3">
+<div class="continer my-3 m-5">
     <div class="row align-items-center mb-3">
         <!-- Bên trái -->
 
         <div class="col-md-4 d-flex flex-wrap gap-2">
-            <h3 class="text-primary fw-bold">Online Files</h3>
+            <h3 class="text-primary fw-bold">@FuncLocalizer["F_Online_Title"]</h3>
         </div>
 
         <!-- Bên phải -->
@@ -33,20 +34,20 @@
                     value="@Model.DateFrom.ToString("yyyy-MM-dd")" />
                 <input type="date" id="dateEnd" name="dateEnd" class="form-control"
                     value="@Model.DateEnd.ToString("yyyy-MM-dd")" />
-                <input type="text" class="form-control w-auto" placeholder="Tìm kiếm" id="Search_V" name="Search_V"
+                <input type="text" class="form-control w-auto" placeholder="@Localizer["Search"]" id="Search_V" name="Search_V"
                     value="@Model.Search_V" />
 
-                <button class="btn btn-warning" type="submit">
-                    <i class="bi bi-search"></i> Check
+                <button class="btn btn-warning text-nowrap" type="submit">
+                    <i class="bi bi-search"></i> @Localizer["Check"]
                 </button>
-                <button type="button" class="btn btn-primary" id="Create" name="Create">Tạo&nbsp;mới</button>
+                <button type="button" class="btn btn-primary text-nowrap" id="Create" name="Create">@Localizer["Create"]</button>
             </form>
         </div>
     </div>
 </div>
 
 <div id="loadingMsg" class="alert alert-info d-none">
-    Đang upload và xử lý dữ liệu...
+    @Localizer["loadingMsg"]
 </div>
 
 <div id="resultArea">
@@ -85,9 +86,9 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" id="btnSave" class="btn btn-success">Save</button>
-                <button type="button" id="btnDelete" class="btn btn-danger">Delete</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                <button type="button" id="btnSave" class="btn btn-success">@Localizer["Save"]</button>
+                <button type="button" id="btnDelete" class="btn btn-danger">@Localizer["Delete"]</button>
             </div>
         </div>
     </div>

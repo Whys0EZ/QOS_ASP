@@ -1,0 +1,8 @@
+<root>
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>Welcome to QOS System</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+</root>

@@ -1,4 +1,6 @@
 @model IEnumerable<QOS.Models.FaultCode>
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Function.SharedResource> FuncLocalizer
 @{
     ViewData["Title"] = "Manage Fault";
     Layout = "_MenuFunction";
@@ -6,25 +8,25 @@
 <form asp-action="Index" method="get" class="mb-3">
     <div class="input-group">
         <input type="text" name="searchString" value="@Context.Request.Query["searchString"]" class="form-control"
-            placeholder="Tìm theo Mã lỗi hoặc Tên Tiếng Việt..." />
-        <button type="submit" class="btn btn-primary me-2">Tìm kiếm</button>
-        <a asp-action="Index" class="btn btn-secondary me-2">Reset</a>
+            placeholder="@FuncLocalizer["F_Fault_place"]" />
+        <button type="submit" class="btn btn-primary me-2">@Localizer["Search"]</button>
+        <a asp-action="Index" class="btn btn-secondary me-2">@Localizer["Reset"]</a>
     </div>
 </form>
-<h2 class="text-center">QUẢN LÝ DANH SÁCH LỖI</h2>
-<a asp-action="Create" asp-controller="ManageFault" class="btn btn-primary">+ Thêm lỗi</a>
+<h2 class="text-center">@FuncLocalizer["F_Fault_Title"]</h2>
+<a asp-action="Create" asp-controller="ManageFault" class="btn btn-primary">+ @FuncLocalizer["F_Fault_Add"]</a>
 <table class="table table-bordered mt-3 table-striped">
     <thead class="table-light">
         <tr>
             <th>ID</th>
-            <th>Nhà Máy</th>
-            <th>Mã Lỗi</th>
-            <th>Loại Lỗi</th>
-            <th>Tên Tiếng Việt</th>
-            <th>Tên Tiếng Anh</th>
-            <th>Báo Cáo Đi Chuyền</th>
-            <th>Báo Cáo Cuối Chuyền</th>
-            <th>Người Tạo</th>
+            <th>@Localizer["Factory"]</th>
+            <th>@FuncLocalizer["F_Fault_Add"]</th>
+            <th>@FuncLocalizer["F_Fault_Type"]</th>
+            <th>@FuncLocalizer["F_Fault_NameVN"]</th>
+            <th>@FuncLocalizer["F_Fault_NameEN"]</th>
+            <th>@FuncLocalizer["F_Fault_inLine"]</th>
+            <th>@FuncLocalizer["F_Fault_endLine"]</th>
+            <th>@Localizer["UserUpdate"]</th>
 
         </tr>
     </thead>
@@ -42,17 +44,17 @@
                     <td>@item.Fault_Type</td>
                     <td>@item.Fault_Name_VN</td>
                     <td>@item.Fault_Name_EN</td>
-                    <td>@(item.Form4_Active == true ? "Có" : "Không")</td>
-                    <td>@(item.Form6_Active == true ? "Có" : "Không")</td>
+                    <td>@(item.Form4_Active == true ? Localizer["Y"] : Localizer["N"])</td>
+                    <td>@(item.Form6_Active == true ? Localizer["Y"] : Localizer["N"])</td>
                     <td>@item.UserUpdate</td>
                     <td>
                         <div class="btn-group">
                             <a asp-action="Edit" asp-controller="ManageFault" asp-route-id="@item.Fault_Code"
-                                class="btn btn-sm btn-warning me-4">Sửa</a>
+                                class="btn btn-sm btn-warning me-4">@Localizer["Edit"]</a>
                             @* <a asp-action="Delete" asp-controller="FaultCode" asp-route-id="@item.Fault_Code" class="btn btn-sm btn-danger">Xóa</a> *@
                             <form asp-action="DeleteAjax" method="post">
                                 <input type="hidden" name="faultCode" value="@item.Fault_Code" />
-                                <button type="submit" class="btn btn-danger btn-sm me-1">Xóa</button>
+                                <button type="submit" class="btn btn-danger btn-sm me-1">@Localizer["Delete"]</button>
                             </form>
                         </div>
                     </td>
@@ -63,7 +65,7 @@
         else
         {
             <tr>
-                <td colspan="10" class="text-center text-muted">Không có dữ liệu</td>
+                <td colspan="10" class="text-center text-muted">@Localizer["Nodata"]</td>
             </tr>
         }
     </tbody>

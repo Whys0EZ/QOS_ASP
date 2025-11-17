@@ -66,7 +66,7 @@
     <div class="text-left mb-3">
         @if (!string.IsNullOrEmpty(Model.Img))
         {
-            <img src="@($"https://qos.crystal-regent.com.vn/{Model.Img}")" style="width:150px;" alt="Style Image" />
+            <img src="@(Model.Img.StartsWith("..") ? Model.Img.Substring(2) : Model.Img)" style="width:150px;" alt="Style Image" />
         }
         <h2 class="text-primary fw-bold text-center">MEASUREMENT SHEET</h2>
     </div>

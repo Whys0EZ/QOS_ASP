@@ -18,7 +18,7 @@
   }
 
   .header-card {
-      background: linear-gradient(135deg, #f56708 0%,  #1e40af 100%);
+      background: linear-gradient(135deg, #f56708 0%, #1e40af 100%);
       border-radius: 20px;
       padding: 7px 30px;
       margin-bottom: 30px;
@@ -199,16 +199,218 @@
       color: #a855f7;
   }
 
-  @media (max-width: 768px) {
+  /* Desktop: 4 columns */
+  @media (min-width: 1200px) {
       .filter-group {
+          grid-template-columns: repeat(4, 1fr);
+      }
+  }
+
+  /* Large Tablet: 3 columns */
+  @media (min-width: 992px) and (max-width: 1199px) {
+      .filter-group {
+          grid-template-columns: repeat(3, 1fr);
+      }
+  }
+
+  /* Tablet: 2 columns */
+  @media (min-width: 768px) and (max-width: 991px) {
+      .filter-form {
+          padding: 15px;
+      }
+
+      .filter-group {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+      }
+
+      .btn {
+          flex: 1;
+      }
+  }
+
+  /* Mobile: Show toggle, hide form by default */
+  @media (max-width: 767px) {
+      .filter-header {
+          padding: 12px 15px;
+      }
+
+      .logo {
+          height: 35px;
+      }
+
+      .filter-toggle {
+          display: flex;
+      }
+
+      .filter-form {
+          padding: 15px;
+          display: none;
+      }
+
+      .filter-form.active {
+          display: block;
+          animation: slideDown 0.3s ease-out;
+      }
+
+      @keyframes slideDown {
+          from {
+              opacity: 0;
+              transform: translateY(-20px);
+          }
+
+          to {
+              opacity: 1;
+              transform: translateY(0);
+          }
+      }
+
+      .filter-group {
+          grid-template-columns: 1fr;
+          gap: 12px;
+      }
+
+      .filter-label {
+          font-size: 13px;
+      }
+
+      .form-select,
+      .form-control {
+          padding: 12px;
+          font-size: 16px;
+          /* Prevent zoom on iOS */
+      }
+
+      .filter-actions {
           flex-direction: column;
+          gap: 10px;
       }
 
-      .filter-item {
+      .btn {
           width: 100%;
+          padding: 12px;
+          font-size: 15px;
+      }
+  }
+
+  /* Small Mobile: Optimize spacing */
+  @media (max-width: 575px) {
+      .filter-card {
+          border-radius: 8px;
+          margin-bottom: 15px;
       }
 
-      .chart-container {
-          height: 300px;
+      .filter-header {
+          padding: 10px 12px;
+      }
+
+      .logo {
+          height: 30px;
+      }
+
+      .filter-toggle {
+          padding: 6px 12px;
+          font-size: 13px;
+      }
+
+      .filter-toggle span {
+          display: none;
+      }
+
+      .filter-form {
+          padding: 12px;
+      }
+
+      .filter-group {
+          gap: 10px;
+      }
+
+      .filter-label {
+          font-size: 12px;
+      }
+
+      .form-select,
+      .form-control {
+          padding: 10px;
+          font-size: 16px;
+      }
+
+      .btn {
+          padding: 10px;
+      }
+
+      .btn span {
+          font-size: 14px;
+      }
+  }
+
+  /* Extra Small Mobile: Icon only buttons */
+  @media (max-width: 380px) {
+      .btn span {
+          display: none;
+      }
+
+      .btn i {
+          margin: 0 !important;
+          font-size: 18px;
+      }
+  }
+
+  /* Landscape Mobile */
+  @media (max-width: 767px) and (orientation: landscape) {
+      .filter-group {
+          grid-template-columns: repeat(2, 1fr);
+      }
+
+      .filter-actions {
+          flex-direction: row;
+      }
+
+      .btn {
+          width: auto;
+          flex: 1;
+      }
+  }
+
+  /* Dark Mode */
+  @media (prefers-color-scheme: dark) {
+      .filter-card {
+          background: #2d2d2d;
+      }
+
+      .filter-form {
+          background: #2d2d2d;
+      }
+
+      .filter-label {
+          color: #e0e0e0;
+      }
+
+      .form-select,
+      .form-control {
+          background: #3a3a3a;
+          border-color: #555;
+          color: #e0e0e0;
+      }
+
+      .filter-actions {
+          border-top-color: #444;
+      }
+  }
+
+  /* Print */
+  @media print {
+      .filter-header {
+          background: white !important;
+          color: black !important;
+      }
+
+      .filter-toggle,
+      .filter-actions {
+          display: none !important;
+      }
+
+      .filter-form {
+          display: block !important;
       }
   }

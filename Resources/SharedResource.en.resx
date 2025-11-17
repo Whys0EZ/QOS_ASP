@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>Welcome to QOS Dashboard</value>
+  </data>
+
+  <data name="LoginTitle" xml:space="preserve">
+    <value>Welcome back!</value>
+  </data>
+  <data name="LoginTitleSub" xml:space="preserve">
+    <value>To connect with us, please log in with your personal information.</value>
+  </data>
+  <data name="RegTitle" xml:space="preserve">
+    <value>Wellcome !</value>
+  </data>
+  <data name="RegTitleSub" xml:space="preserve">
+    <value>Enter your personal information and start your journey with us</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>FullName</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email (Option)</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="UsernameRequired" xml:space="preserve">
+    <value>Please enter Username</value>
+  </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>Please enter Password</value>
+  </data>
+  <data name="ErrorRequired" xml:space="preserve">
+    <value>Wrong Username or Password!</value>
+  </data>
+  <data name="LoginRequired" xml:space="preserve">
+    <value>Please enter Username and Password!</value>
+  </data>
+  <data name="RegRequired" xml:space="preserve">
+    <value>Please enter FullName, Username and Password!</value>
+  </data>
+
+  <data name="UsernameExist" xml:space="preserve">
+    <value>Username already exists</value>
+  </data>
+  <data name="RegSuccess" xml:space="preserve">
+    <value>Registration successful. Please log in.</value>
+  </data>
+
+  <data name="RememberMe" xml:space="preserve">
+    <value>Remember me</value>
+  </data>
+  <data name="ForgetPass" xml:space="preserve">
+    <value>Forget Password?</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="LogoutInfo" xml:space="preserve">
+    <value>Logout Account</value>
+  </data>
+  <data name="ContactUs" xml:space="preserve">
+    <value>Contact us</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="EditProfile" xml:space="preserve">
+    <value>View &amp; Edit Profile</value>
+  </data>
+  <data name="InfoPass" xml:space="preserve">
+    <value>Change information password</value>
+  </data>
+  <data name="Setup" xml:space="preserve">
+    <value>Setup</value>
+  </data>
+  <data name="Setupinfo" xml:space="preserve">
+    <value>Option theme</value>
+  </data>
+  <data name="Feedback" xml:space="preserve">
+    <value>Feedback</value>
+  </data>
+
+
+  <!-- Nav-Bar Items -->
+  <data name="Function" xml:space="preserve">
+    <value>Function</value>
+  </data>
+  <data name="Report" xml:space="preserve">
+    <value>Report</value>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>Setting</value>
+  </data>
+  <data name="System" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <!-- Menu Functions -->
+  <data name="ManageOperation" xml:space="preserve">
+    <value>Management Operation</value>
+  </data>
+  <data name="ManageFault" xml:space="preserve">
+    <value>Management Error List</value>
+  </data>
+  <data name="ThongSoBTP" xml:space="preserve">
+    <value>Measurement Point Semi-finished product parameters</value>
+  </data>
+  <data name="ThongSoTP" xml:space="preserve">
+    <value>Finished Product Parameter Measurement Point</value>
+  </data>
+  <data name="ThongSoDo" xml:space="preserve">
+    <value>Measuring Points Measuring Parameters</value>
+  </data>
+  <data name="ETSMoStyle" xml:space="preserve">
+    <value>ETS: MO-Style-Size</value>
+  </data>
+  <data name="TrackingContact" xml:space="preserve">
+    <value>TRACKING - Group Contact List</value>
+  </data>
+  <data name="TrackingSetup" xml:space="preserve">
+    <value>TRACKING - Infor Setup</value>
+  </data>
+  <data name="TrackingUpload" xml:space="preserve">
+    <value>TRACKING - Upload Data</value>
+  </data>
+  <data name="OnlineFile" xml:space="preserve">
+    <value>Online Files</value>
+  </data>
+  <!-- Menu Reports -->
+  <data name="Form1BCCLC" xml:space="preserve">
+    <value>Cut Accuracy Report</value>
+  </data>
+  <data name="Form2BCCPI" xml:space="preserve">
+    <value>AQL Inspection After CPI</value>
+  </data>
+  <data name="Form3BCDT" xml:space="preserve">
+    <value>First Testing Cut Lot Report</value>
+  </data>
+  <data name="Form4BCCLM" xml:space="preserve">
+    <value>Inline Roving Inspection Report</value>
+  </data>
+  <data name="Form6BCCC" xml:space="preserve">
+    <value>End Line Inspection Report</value>
+  </data>
+  <data name="SummaryKCC" xml:space="preserve">
+    <value>End Line Defecteds Summary</value>
+  </data>
+  <data name="PhotoDefect" xml:space="preserve">
+    <value>Defected Photos</value>
+  </data>
+  <data name="OQLEndline" xml:space="preserve">
+    <value>Daily OQL End Line</value>
+  </data>
+  <data name="SummaryKCM" xml:space="preserve">
+    <value>In Line Defecteds Summary</value>
+  </data>
+  <data name="Form4BCCLMSUM" xml:space="preserve">
+    <value>In Line Error</value>
+  </data>
+  <data name="Form7BTP" xml:space="preserve">
+    <value>CUT Panel Measurement</value>
+  </data>
+  <data name="Form8TP" xml:space="preserve">
+    <value>Measurement SHEET</value>
+  </data>
+  <data name="SummaryEndline" xml:space="preserve">
+    <value>End-Line Summary Report</value>
+  </data>
+  <data name="FCATracking" xml:space="preserve">
+    <value>FCA Tracking Report</value>
+  </data>
+  <data name="FCATrackingACDate" xml:space="preserve">
+    <value>FCA Tracking Report AC-Date</value>
+  </data>
+  <data name="Form10BCHT" xml:space="preserve">
+    <value>Checker 84 Report</value>
+  </data>
+  <data name="SummaryBCHT" xml:space="preserve">
+    <value>Checker 84 Inspection Report</value>
+  </data>
+  <data name="SummaryChecker" xml:space="preserve">
+    <value>Checker 84 Summary Report</value>
+  </data>
+  <data name="Form10OQL" xml:space="preserve">
+    <value>Checker 84 Daily OQL</value>
+  </data>
+  <data name="FQCTracking" xml:space="preserve">
+    <value>FQC Tracking Report</value>
+  </data>
+  <data name="SummaryFQC" xml:space="preserve">
+    <value>FQC Tracking Summary Report</value>
+  </data>
+  <data name="Form4Quality" xml:space="preserve">
+    <value>InLine Quality Report Summary</value>
+  </data>
+  <data name="TopForm4Quality" xml:space="preserve">
+    <value>TOP InLine Quality Report</value>
+  </data>
+  <data name="TopForm6Quality" xml:space="preserve">
+    <value>TOP EndLine Quality Report</value>
+  </data>
+  <data name="EndlineReport" xml:space="preserve">
+    <value>EndLine Detail Report</value>
+  </data>
+  <data name="EndlineUnit" xml:space="preserve">
+    <value>EndLine By Unit Report</value>
+  </data>
+  <data name="EndlineUnitEN" xml:space="preserve">
+    <value>Report EndLine By Unit</value>
+  </data>
+  <!-- Menu Reports - End -->
+  <!-- Menu Item Settings -->
+  <data name="FactoryList" xml:space="preserve">
+    <value>Factory List</value>
+  </data>
+  <data name="DepartmentList" xml:space="preserve">
+    <value>Department List</value>
+  </data>
+  <data name="UnitList" xml:space="preserve">
+    <value>Unit List</value>
+  </data>
+  <!-- Menu Item Settings - End -->
+  <!-- Menu Item System -->
+  <data name="ManageUser" xml:space="preserve">
+    <value>Management User</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+<!-- Menu Item System - End -->
+
+  <!-- infomation all -->
+  <data name="Unit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="Line" xml:space="preserve">
+    <value>Line</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="ColorCode" xml:space="preserve">
+    <value>Color Code</value>
+  </data>
+  <data name="StyleName" xml:space="preserve">
+    <value>Style Name</value>
+  </data>
+
+  <data name="Style" xml:space="preserve">
+    <value>Style</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="LastUpdate" xml:space="preserve">
+    <value>LastUpdate</value>
+  </data>
+  <data name="WorKDate" xml:space="preserve">
+    <value>WorKDate</value>
+  </data>
+  <data name="UserUpdate" xml:space="preserve">
+    <value>UserUpdate</value>
+  </data>
+  <data name="AuditTime" xml:space="preserve">
+    <value>AuditTime</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="ExportExcel" xml:space="preserve">
+    <value>ExportExcel</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Factory" xml:space="preserve">
+    <value>Factory</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Y" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="N" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Nodata" xml:space="preserve">
+    <value>No data.</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value>Check</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="loadingMsg" xml:space="preserve">
+    <value>Uploading and processing data...</value>
+  </data>
+
+</root>

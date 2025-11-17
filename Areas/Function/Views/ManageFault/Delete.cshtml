@@ -1,15 +1,17 @@
 @model QOS.Models.FaultCode
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Function.SharedResource> FuncLocalizer
 @{
-    ViewData["Title"] = "Xóa Lỗi";
+    ViewData["Title"] = @FuncLocalizer["F_Fault_delete"];
     Layout = "_MenuFunction";
 }
 
-<h2>Xóa Lỗi</h2>
-<p>Bạn có chắc muốn xóa lỗi: <strong>@Model.Fault_Code - @Model.Fault_Name_VN</strong> ?</p>
+<h2>@FuncLocalizer["F_Fault_delete"]</h2>
+<p>@FuncLocalizer["F_Fault_deleteInfo"] <strong>@Model.Fault_Code - @Model.Fault_Name_VN</strong> ?</p>
 
 <form asp-action="DeleteConfirmed" method="post">
     <input type="hidden" asp-for="Fault_Code" />
-    <button type="submit" class="btn btn-danger">Xóa</button>
-    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+    <button type="submit" class="btn btn-danger">@Localizer["Delete"]</button>
+    <a asp-action="Index" class="btn btn-secondary">@Localizer["Cancel"]</a>
 </form>
-<p class="text-muted mt-3">Lưu ý: Việc xóa sẽ không thể hoàn tác.</p>
+<p class="text-muted mt-3">@FuncLocalizer["F_Fault_deleteCaution"]</p>

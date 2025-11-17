@@ -1,21 +1,24 @@
 @model QOS.Areas.Report.Models.Form1_BCCLC
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
 @{
     
     var Size_Parameter = Model.Size_Parameter;
     decimal DS_L_Min = ConvertToDecimal(Model.DS_L_Min), DS_L_Max = ConvertToDecimal(Model.DS_L_Max);
     decimal DS_W_Min = ConvertToDecimal(Model.DS_W_Min), DS_W_Max = ConvertToDecimal(Model.DS_W_Max);
-    decimal DS_L_Min_2 = 10, DS_L_Max_2 = 90;
-    decimal DS_W_Min_2 = 10, DS_W_Max_2 = 90;
+
+    decimal DS_L_Min_2 = ConvertToDecimal(Model.DS_L_Min_2), DS_L_Max_2 = ConvertToDecimal(Model.DS_L_Max_2);
+    decimal DS_W_Min_2 = ConvertToDecimal(Model.DS_W_Min_2), DS_W_Max_2 = ConvertToDecimal(Model.DS_W_Max_2);
     
 }
 <form id="Form1Report" method="post" asp-action="CreateReport_Form1" asp-controller="Report" asp-area="Report">
     <input type="hidden" id="ReportID" name="ReportID" value="@Model.ID"/>
 <table class="table">
     <tr>
-        <td><label>Unit</label></td>
-        <td><label>Quản lý cắt</label></td>
-        <td><label>Bàn cắt</label></td>
-        <td><label>Tên sơ đồ</label></td>     
+        <td><label>@Localizer["Unit"]</label></td>
+        <td><label>@ReportLocalizer["CutLeader"]</label></td>
+        <td><label>@ReportLocalizer["CutTable"]</label></td>
+        <td><label>@ReportLocalizer["CutTableName"]</label></td>     
     </tr>
     <tr>
         <td><input id="UnitField" value="@Model.Unit"/></td>
@@ -25,10 +28,10 @@
 
     </tr>
     <tr>
-        <td><label>Tỉ lệ sơ đồ</label></td>
-        <td><label>Chiều cao (cm)</label></td>
-        <td><label>Chiều dài (inch)</label></td>
-        <td><label>Chiều rộng (inch)</label></td>     
+        <td><label>@ReportLocalizer["CutTableRatio"]</label></td>
+        <td><label>@ReportLocalizer["Lay_Height"]</label></td>
+        <td><label>@ReportLocalizer["Table_Long"]</label></td>
+        <td><label>@ReportLocalizer["Table_Width"]</label></td>     
     </tr>
     <tr>
         <td><input value="@Model.CutTableRatio" /></td>
@@ -39,9 +42,9 @@
     </tr>
     <tr>
         <td><label>MO: </label></td>
-        <td><label>Màu: </label></td>
-        <td><label>Lot: </label></td>
-        <td><label>Số lượng: </label></td>     
+        <td><label>@Localizer["Color"]: </label></td>
+        <td><label>@ReportLocalizer["Batch"]: </label></td>
+        <td><label>@ReportLocalizer["Qty"]: </label></td>     
     </tr>
     <tr>
         <td><input value="@Model.MO"/></td>
@@ -50,23 +53,23 @@
         <td><input value="@Model.Cut_QTY"/></td>
     </tr>
     <tr>
-        <td colspan="4"><label>Chất lượng vải: </label><i style="color: red;">(Tích chọn nếu có lỗi)</i></td>
+        <td colspan="4"><label>@ReportLocalizer["QualityFabric"]: </label><i style="color: red;">(@ReportLocalizer["CheckboxE"])</i></td>
     </tr>
     <tr>
         <td style="padding: 3px; text-align:center;">
-                <div>Loang màu</div>
+                <div>@ReportLocalizer["Shading"]</div>
                 <input type="checkbox" name="F1_chk_loang_mau" value="true" @(Model.Shading == true ? "checked" : "") id="F1_chk_loang_mau"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
         <td style="padding: 3px; text-align:center;">
-                <div>Căng/Trùng/Sóng vải </div>
+                <div>@ReportLocalizer["Wave"]</div>
                 <input type="checkbox" name="F1_chk_song_vai"  value="true" @(Model.Wave == true ? "checked" : "") id="F1_chk_song_vai"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
         <td style="padding: 3px; text-align:center;">
-                <div>Hẹp khổ </div>
+                <div>@ReportLocalizer["Narrow_Width"]</div>
                 <input type="checkbox" name="F1_chk_hep_kho"   value="true" @(Model.Narrow_Width == true ? "checked" : "") id="F1_chk_hep_kho"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
         <td style="padding: 3px; text-align:center;">
-                <div>Trải vải </div>
+                <div>@ReportLocalizer["Spreading"]</div>
                 <input type="checkbox" name="F1_chk_trai_vai"  value="true" @(Model.Spreading == true ? "checked" : "") id="F1_chk_trai_vai"  value="1" style="zoom:3.0;"  autocomplete="on" />
         </td>
     </tr>
@@ -74,50 +77,50 @@
 <table class="table">
     <tr>
         <td width="50%">
-            <i style="color: red;">*</i> <label>Dung sai 1:</label>
+            <i style="color: red;">*</i> <label>@ReportLocalizer["Tolerance1"]:</label>
         </td>
         <td width="50%">
-            <i style="color: red;">*</i> <label>Dung sai 2:</label>
+            <i style="color: red;">*</i> <label>@ReportLocalizer["Tolerance1"]:</label>
         </td>
     </tr>
     <tr>
         <td>
             <p>
-                Dài từ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="text" name="DS_L_Min" id="DS_L_Min" value="@(string.IsNullOrEmpty(Model.DS_L_Min) ? "0" : Model.DS_L_Min)" />  đến <input type="text" name="DS_L_Max" id="DS_L_Max" value="@(string.IsNullOrEmpty(Model.DS_L_Max) ? "0" : Model.DS_L_Max)" />
+                @ReportLocalizer["longTo"] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="text" name="DS_L_Min" id="DS_L_Min" value="@(string.IsNullOrEmpty(Model.DS_L_Min) ? "0" : Model.DS_L_Min)" />  @ReportLocalizer["To"] <input type="text" name="DS_L_Max" id="DS_L_Max" value="@(string.IsNullOrEmpty(Model.DS_L_Max) ? "0" : Model.DS_L_Max)" />
             </p>
         </td>
         <td>
             <p>
-                Dài từ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="text" name="DS_L_Min_2" id="DS_L_Min_2" value="@(string.IsNullOrEmpty(Model.DS_L_Min) ? "0" : Model.DS_L_Min)" />  đến <input type="text" name="DS_L_Max_2" id="DS_L_Max_2" />
+                @ReportLocalizer["longTo"] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="text" name="DS_L_Min_2" id="DS_L_Min_2" value="@(string.IsNullOrEmpty(Model.DS_L_Min_2) ? "0" : Model.DS_L_Min_2)" />  @ReportLocalizer["To"] <input type="text" name="DS_L_Max_2" id="DS_L_Max_2" value="@(string.IsNullOrEmpty(Model.DS_L_Max_2) ? "0" : Model.DS_L_Max_2)" />
             </p>
         </td>
     </tr>
     <tr></tr>
         <td>
             <p>
-                Rộng từ &nbsp;&nbsp;&nbsp;
-                <input type="text" name="DS_W_Min" id="DS_W_Min" value="@(string.IsNullOrEmpty(Model.DS_W_Min) ? "0" : Model.DS_W_Min)" />  đến <input type="text" name="DS_W_Max" id="DS_W_Max" value="@(string.IsNullOrEmpty(Model.DS_W_Max) ? "0" : Model.DS_W_Max)" />
+                @ReportLocalizer["widthTo"] &nbsp;&nbsp;&nbsp;
+                <input type="text" name="DS_W_Min" id="DS_W_Min" value="@(string.IsNullOrEmpty(Model.DS_W_Min) ? "0" : Model.DS_W_Min)" />  @ReportLocalizer["To"] <input type="text" name="DS_W_Max" id="DS_W_Max" value="@(string.IsNullOrEmpty(Model.DS_W_Max) ? "0" : Model.DS_W_Max)" />
             </p>
         </td>
         <td>
             <p>
-                Rộng từ &nbsp;&nbsp;&nbsp;
-                <input type="text" name="DS_W_Min_2" id="DS_W_Min_2" />  đến <input type="text" name="DS_W_Max_2" id="DS_W_Max_2" />
+                @ReportLocalizer["widthTo"] &nbsp;&nbsp;&nbsp;
+                <input type="text" name="DS_W_Min_2" id="DS_W_Min_2" value="@(string.IsNullOrEmpty(Model.DS_W_Min_2) ? "0" : Model.DS_W_Min_2)" />  @ReportLocalizer["To"] <input type="text" name="DS_W_Max_2" id="DS_W_Max_2" value="@(string.IsNullOrEmpty(Model.DS_W_Max_2) ? "0" : Model.DS_W_Max_2)" />
             </p>
         </td>
     </tr>
 </table>
 
-<p style="font-weight: bold;"><span style="color: red;">*</span> Thông số Dài - Rộng:</p>
+<p style="font-weight: bold;"><span style="color: red;">*</span> @ReportLocalizer["ParametersLW"]:</p>
 <TABLE style="width: 100%; border: 1px solid gray !important; padding: 0px; display: inherit; " cell-padding="0px" cell-spacing="5px"  >
     <tr style="text-align: center;">
-        <th style="width: 40%;">Size</th>
+        <th style="width: 40%;">@Localizer["Size"]</th>
         <th style=""></th>
-        <th colspan="2">Lá đầu</th>
-        <th colspan="2">Lá giữa</th>
-        <th colspan="2">Lá cuối</th>
+        <th colspan="2">@ReportLocalizer["Firstleaves"]</th>
+        <th colspan="2">@ReportLocalizer["Middleleaves"]</th>
+        <th colspan="2">@ReportLocalizer["Lastleaves"]</th>
     </tr>
 
 @functions {
@@ -225,43 +228,43 @@ else
 </TABLE>
 
 
-<p style="font-weight: bold;"><span style="color: red;">*</span> Chất lượng cắt:</p>
+<p style="font-weight: bold;"><span style="color: red;">*</span> @ReportLocalizer["QualityCut"]:</p>
 <TABLE style="width: 100%; font-size: 0.8em!important; border: 1px solid gray; ">
     <tr style="text-align: left;">
         <td>
-                Dấu bấm: <br>
+                @ReportLocalizer["Notch"]: <br>
                 <input type="text" name="Notch" id="Notch" value="@(string.IsNullOrEmpty(Model.Notch) ? "" : Model.Notch)" style="  color:#360; width: 90%;"  autocomplete="on" />
         </td>
         <td>
-                Cắt không gọn: <br>
+                @ReportLocalizer["Unclean"]: <br>
                 <input type="text" name="Unclean" id="Unclean"  value="@(string.IsNullOrEmpty(Model.Unclean) ? "" : Model.Unclean)" style="  color:#360; width: 90%;"  autocomplete="on" />
         </td>
         <td>
-                Cắt cong: <br>
+                @ReportLocalizer["Straigh"]: <br>
                 <input type="text" name="Straigh" id="Straigh"  value="@(string.IsNullOrEmpty(Model.Straigh) ? "" : Model.Straigh)" style="  color:#360; width: 90%;"  autocomplete="on" />
         </td>
     </tr>
     <tr style="text-align: left;">
         <td>
-                Mất dáng: <br>
+                @ReportLocalizer["Shape"]: <br>
                 <input type="text" name="Shape" id="Shape"   value="@(string.IsNullOrEmpty(Model.Shape) ? "" : Model.Shape)" style="  color:#360; width: 90%;"  autocomplete="on" />
         </td>
         <td>
-                Dính biên: <br>
+                @ReportLocalizer["Edge"]: <br>
                 <input type="text" name="Edge" id="Edge"   value="@(string.IsNullOrEmpty(Model.Edge) ? "" : Model.Edge)" style="  color:#360; width: 90%;"  autocomplete="on" />
         </td>
         <td>
-                Không đối kẻ: <br>
+                @ReportLocalizer["Stripe"]: <br>
                 <input type="text" name="Stripe" id="Stripe"   value="@(string.IsNullOrEmpty(Model.Stripe) ? "" : Model.Stripe)" style="  color:#360; width: 90%;"  autocomplete="on" />
         </td>
 
     </tr>
 </TABLE>
 
-<p style="font-weight: bold; text-align: left;"><span style="color: red;">*</span> Ghi chú:</p>
+<p style="font-weight: bold; text-align: left;"><span style="color: red;">*</span> @Localizer["Remark"]:</p>
 <textarea rows="4" cols="100" name="Remark" id="Remark" onClick="this.select();" > @(string.IsNullOrEmpty(Model.Remark) ? "" : Model.Remark)</textarea>
 
-<p style="font-weight: bold;"><span style="color: red;">*</span>Hình ảnh lỗi:</p>
+<p style="font-weight: bold;"><span style="color: red;">*</span>@ReportLocalizer["ImgError"]:</p>
 @if(!string.IsNullOrEmpty(Model.Photo_URL))
 {
     var photos = Model.Photo_URL.Split(";");
@@ -269,21 +272,21 @@ else
     {
         if(!string.IsNullOrEmpty(photo))
         {
-            <img src="upload/Photos/Form1_BCCLC/@photo" style='width:100px;' onclick='Show_Photo("@photo")'/>
+            <img src="~/upload/Photos/Form1_BCCLC/@photo" style='width:100px;' onclick='Show_Photo("@photo")'/>
         }
     }
 }
 
 <p style="font-weight: bold;">
-    <span style="color: red;">*</span> Kiểm lại: &nbsp;
+    <span style="color: red;">*</span> @ReportLocalizer["ReAudit"]: &nbsp;
     <input type="checkbox" name="Re_Audit" id="Re_Audit"  value="true" @(Model.Re_Audit == true ? "checked" : "") value="0" style="  color:#360; font-size:20px; zoom:3.0;"  autocomplete="on" />   
 </p>
 
 
 <br>
     <p style="text-align: center; display: block;">
-        <img src="~/images/delete.png" style="width: 95px; margin-right:20px; " align="center" onClick="Delete_Click1();" title="Delete this report" >
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" onClick="Delete_Click1();" title="Delete this report" >@Localizer["Delete"]</button> 
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["Close"]</button>
     </p>
     
 <br>
@@ -295,7 +298,7 @@ else
           <div class="modal-content">
             <div class="modal-header bg-success text-center">
               <span class="close" id="close_Modal_Photo">&times;</span>
-              <h2 style="text-align: center; text-transform: uppercase;"> Hình ảnh lỗi </h2> 
+              <h2 style="text-align: center; text-transform: uppercase;"> @ReportLocalizer["ImgError"] </h2> 
             </div>
             <div class="modal-body" style="text-align: center;">
                 <img src="" style="width: 90%"  id="Fault_Photo" align="center">
@@ -340,7 +343,7 @@ function Show_Photo(img)
     var span = document.getElementById('close_Modal_Photo');
     
      modal.style.display = "block";
-     document.getElementById("Fault_Photo").src= 'upload/Photos/Form1_BCCLC/'+img;
+     document.getElementById("Fault_Photo").src= '/upload/Photos/Form1_BCCLC/'+img;
      
      // When the user clicks on <span> (x), close the modal
     span.onclick = function() {

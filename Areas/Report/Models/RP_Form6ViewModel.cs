@@ -51,6 +51,8 @@ namespace QOS.Areas.Report.Models
         public Form6_Detail Detail { get; set; } = new Form6_Detail();
         public List<Form6FaultViewModel> Faults { get; set; } = new();
         public List<Form6SelectedFault> SelectedFaults { get; set; } = new();
+        public List<OperationViewModel> Operations { get; set; } = new();
+        public List<OperationSelected> SelectedOperations { get; set; } = new();
         
     }
 
@@ -81,6 +83,7 @@ namespace QOS.Areas.Report.Models
         // public string? Sewer_Workstation {get; set;}
         public string? Photo_URL {get; set;}
         public string? UserUpdate {get; set;}
+        public string? Operation {get;set;} ="";
         
         
     }
@@ -94,5 +97,16 @@ namespace QOS.Areas.Report.Models
     {
         public string FaultCode { get; set; } = "";
         public int FaultQty { get; set; }   // nếu trong chuỗi Fault_Detail có số lượng
+    }
+    public class OperationSelected
+    {
+        public string OperationCode { get; set; } = "";
+        public int OperationQty { get; set; }   // nếu trong chuỗi Fault_Detail có số lượng
+    }
+    public class OperationViewModel
+    {
+        public string OperationCode { get; set; } = "";
+        public string OperationNameVN { get; set; } = "";
+        public string OperationNameEN { get; set; } = "";
     }
 }

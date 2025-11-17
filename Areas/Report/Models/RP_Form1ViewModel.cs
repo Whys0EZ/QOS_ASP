@@ -52,6 +52,10 @@ namespace QOS.Areas.Report.Models
         public string? Rap { get; set; }
         public string? User_Edit { get; set; }
         public DateTime? Date_Edit { get; set; }
+        public string? DS_L_Min_2 { get; set; }
+        public string? DS_L_Max_2 { get; set; }
+        public string? DS_W_Min_2 { get; set; }
+        public string? DS_W_Max_2 { get; set; }
 
         // Extra column từ JOIN (User_List)
         public string? FullName { get; set; }

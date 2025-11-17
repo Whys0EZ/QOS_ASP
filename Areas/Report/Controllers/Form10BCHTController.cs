@@ -262,19 +262,24 @@ namespace QOS.Areas.Report.Controllers
                 LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
                 WHERE t1.ID = @ID
             ";
+
             var detail = conn.QueryFirstOrDefault<Form6_Detail>(sql, new { ID = id });
+
+            // Console.WriteLine("Detail Form10 ID: " + id);
+            // Console.WriteLine("Detail Form10: " + detail.Operation);
 
             if (detail == null)
             {
                 return NotFound("Không tìm thấy báo cáo với ID đã chọn.");
             }
 
+            _logger.LogInformation($"id - {id} report");
             // Lấy danh sách lỗi từ bảng FaultCode
             string sqlFault = @"SELECT Fault_Code AS FaultCode,
                                     Fault_Name_VN AS FaultNameVN,
                                     Fault_Level AS FaultLevel
                                 FROM Fault_Code
-                                WHERE Form6_Active = 1
+                                WHERE Form1_Active=1
                                 ORDER BY Fault_Level ASC, Fault_Name_VN ASC";
 
             var faults = conn.Query<Form6FaultViewModel>(sqlFault).ToList();
@@ -298,12 +303,40 @@ namespace QOS.Areas.Report.Controllers
                     }
                 }
             }
+            string operationSql = @"SELECT Operation_Code as OperationCode, Operation_Name_VN as OperationNameVN, Operation_Name_EN as OperationNameEN FROM Operation_Code WHERE CMD=1 ORDER BY Operation_Code";
+            // _logger.LogInformation($"operationSql loaded - {operationSql} ");
+            var operations = conn.Query<OperationViewModel>(operationSql).ToList();
+
+            // Console.WriteLine("Detail Form10: " + detail.Operation);
+
+
+            List<OperationSelected> selectedOperations = new();
+            if (!string.IsNullOrEmpty(detail.Operation))
+            {
+                var arrOperation = detail.Operation.Split(';', StringSplitOptions.RemoveEmptyEntries);
+                // Console.WriteLine("DearrOperationtail Form10: " + arrOperation.Length);
+                foreach (var f in arrOperation)
+                {
+                    var parts = f.Split('-');
+                    if (parts.Length >= 3)
+                    {
+                        selectedOperations.Add(new OperationSelected
+                        {
+                            OperationCode = parts[0],
+                            OperationQty = int.TryParse(parts[2], out var q) ? q : 0
+                        });
+                    }
+                }
+            }
+            // Console.WriteLine("selectedOperations Form10: " + selectedOperations[0].OperationCode);
 
             var model = new Form6DetailViewModel
             {
                 Detail = detail,
                 Faults = faults,
-                SelectedFaults = selectedFaults
+                SelectedFaults = selectedFaults,
+                Operations = operations,
+                SelectedOperations = selectedOperations
             };
 
             return PartialView("_tableRP_Form10", model);

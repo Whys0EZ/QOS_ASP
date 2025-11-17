@@ -1,4 +1,5 @@
 @model QOS.Models.AuthViewModel
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
 
 @{
     ViewData["Title"] = "Đăng nhập / Đăng ký";
@@ -7,42 +8,68 @@
 }
 <style>
     .input-group {
-    position: relative;
-    width: 100%;
-}
+        position: relative;
+        width: 100%;
+    }
 
-.form-control-custom {
-    width: 100%;
-    padding-right: 40px; /* chừa chỗ cho icon */
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    padding: 10px 12px;
-    font-size: 16px;
-}
+    .form-control-custom {
+        width: 100%;
+        padding-right: 40px; /* chừa chỗ cho icon */
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        padding: 10px 12px;
+        font-size: 16px;
+    }
 
-.toggle-password {
-    position: absolute;
-    right: 12px;
-    top: 30%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #000000ff !important;
-    
-}
+    .toggle-password {
+        position: absolute;
+        right: 12px;
+        top: 30%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #000000ff !important;
+        
+    }
 
-.toggle-password:hover {
-    color: #333;
-}
+    .toggle-password:hover {
+        color: #333;
+    }
 </style>
 <partial name="_AlertMessage" />
+<!-- Animated Background -->
+<div class="animated-background">
+    <!-- Stars -->
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+
+    <!-- Moon -->
+    <div class="moon"></div>
+
+    <!-- Clouds -->
+    <div class="clouds">
+        <div class="cloud cloud1"></div>
+        <div class="cloud cloud2"></div>
+        <div class="cloud cloud3"></div>
+    </div>
+
+    <!-- Mountains -->
+    <div class="mountain mountain-back"></div>
+    <div class="mountain mountain-front"></div>
+</div>
 
 <!-- Mặc định hiển thị form Login -->
 <div class="container @(ViewBag.ActiveForm == "register" ? "right-panel-active" : "")" id="container">
     <!-- Sign In Form (Login) - Hiển thị đầu tiên -->
     <div class="form-container sign-in">
         <form class="form" asp-controller="Account" asp-action="Auth" method="post">
-            <h1 class="mb-3">Chào mừng trở lại!</h1>
-            <div class="social-container mb-3">
+            <h1 class="mb-3 fw-bold text-uppercase">@Localizer["LoginTitle"]</h1>
+            @* <div class="social-container mb-3">
                 <a href="#" class="social" title="Google">
                     <i class="fab fa-google-plus-g"></i>
                 </a>
@@ -55,16 +82,16 @@
                 <a href="#" class="social" title="LinkedIn">
                     <i class="fab fa-linkedin-in"></i>
                 </a>
-            </div>
-            <span class="d-block mb-3">hoặc sử dụng tài khoản của bạn</span>
+            </div> *@
+            @* <span class="d-block mb-3">hoặc sử dụng tài khoản của bạn</span> *@
             
             <div class="input-group mb-3">
-                <input asp-for="Login.Username" class="form-control-custom" placeholder="Tên đăng nhập" />
+                <input asp-for="Login.Username" class="form-control-custom" placeholder="@Localizer["Username"]" />
                 <span asp-validation-for="Login.Username" class="text-danger"></span>
             </div>
             
             <div class="input-group mb-3">
-                <input asp-for="Login.Password" type="password" class="form-control-custom" placeholder="Mật khẩu" />
+                <input asp-for="Login.Password" type="password" class="form-control-custom" placeholder="@Localizer["Password"]" />
                 <span asp-validation-for="Login.Password" class="text-danger"></span>
                 <span class="toggle-password" onclick="togglePassword(this)"><i class="fa-solid fa-eye"></i></span>
             </div>
@@ -85,14 +112,14 @@
             
             <div class="form-check mb-3">
                 <input type="checkbox" name="RememberMe" class="form-check-input" id="rememberMe" />
-                <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
+                <label class="form-check-label" for="rememberMe"> @Localizer["RememberMe"]</label>
             </div>
             
-            <a href="#" class="forgot-password d-block mb-3">Quên mật khẩu?</a>
+            <a href="#" class="forgot-password d-block mb-3">@Localizer["ForgetPass"]</a>
             <input type="hidden" name="actionType" value="login" />
-            <button class="btnLogin btn btn-primary w-100 mb-2" type="submit" style="background: linear-gradient(135deg, #dcdde4, #0a63e9) !important;">Đăng nhập</button>
+            <button class="btnLogin btn btn-primary w-100 mb-2" type="submit" style="background: linear-gradient(135deg, #dcdde4, #0a63e9) !important;">@Localizer["Login"]</button>
             
-            @if (ViewBag.Error != null)
+            @if (ViewBag.Error != null && ViewBag.ActiveForm == "login")
             {
                 <div class="text-danger mt-2">@ViewBag.Error</div>
             }
@@ -104,8 +131,8 @@
     <!-- Sign Up Form (Register) -->
     <div class="form-container sign-up">
         <form class="form" asp-controller="Account" asp-action="Auth" method="post">
-            <h1 >Tạo tài khoản</h1>
-            <div class="social-container ">
+            <h1 class="fw-bold mb-3 text-uppercase">@Localizer["Register"]</h1>
+            @* <div class="social-container ">
                 <a href="#" class="social" title="Google">
                     <i class="fab fa-google-plus-g"></i>
                 </a>
@@ -118,48 +145,48 @@
                 <a href="#" class="social" title="LinkedIn">
                     <i class="fab fa-linkedin-in"></i>
                 </a>
-            </div>
-            <span class="d-block ">hoặc sử dụng email để đăng ký</span>
+            </div> *@
+            @* <span class="d-block ">hoặc sử dụng email để đăng ký</span> *@
             
             <select  asp-for="Register.FactoryID" asp-items="Model.Register.FactoryOptions" class="form-control">
-                <option value="">-- Chọn Factory --</option>
+                <option value="">--Factory--</option>
             </select>
             <span asp-validation-for="Register.FactoryID" class="text-danger"></span>
 
             <select  asp-for="Register.TeamID" asp-items="Model.Register.TeamOptions" class="form-control">
-                <option value="">-- Chọn Team --</option>
+                <option value="">--Team--</option>
             </select>
             <span asp-validation-for="Register.TeamID" class="text-danger"></span>
 
             <div class="input-group ">
-                <input asp-for="Register.FullName" class="form-control" placeholder="Họ và tên" />
+                <input asp-for="Register.FullName" class="form-control" placeholder="@Localizer["FullName"]" />
                 <span asp-validation-for="Register.FullName" class="text-danger"></span>
             </div>
 
             <div class="input-group ">
-                <input asp-for="Register.Email" class="form-control" placeholder="Email (Tùy chọn)" />
+                <input asp-for="Register.Email" class="form-control" placeholder="@Localizer["Email"]" />
                 <span asp-validation-for="Register.Email" class="text-danger"></span>
             </div>
 
             <div class="input-group ">
-                <input asp-for="Register.Username" class="form-control" placeholder="Tên đăng nhập" />
+                <input asp-for="Register.Username" class="form-control" placeholder="@Localizer["Username"]" />
                 <span asp-validation-for="Register.Username" class="text-danger"></span>
             </div>
 
             <div class="input-group ">
-                <input asp-for="Register.Pass" type="password" class="form-control" placeholder="Mật khẩu" />
+                <input asp-for="Register.Pass" type="password" class="form-control" placeholder="@Localizer["Password"]" />
                 <span asp-validation-for="Register.Pass" class="text-danger"></span>
             </div>
 
             <div class="input-group ">
-                <input asp-for="Register.ConfirmPassword" type="password" class="form-control" placeholder="Xác nhận mật khẩu" />
+                <input asp-for="Register.ConfirmPassword" type="password" class="form-control" placeholder="@Localizer["PasswordRequired"]" />
                 <span asp-validation-for="Register.ConfirmPassword" class="text-danger"></span>
             </div>
 
             <input type="hidden" name="actionType" value="register" />
-            <button class="btn btn-success w-100" type="submit">Đăng ký</button>
+            <button class="btn btn-success w-100" type="submit">@Localizer["Register"]</button>
 
-            <div asp-validation-summary="All" class="text-danger mt-2"></div>
+            @* <div asp-validation-summary="All" class="text-danger mt-2"></div> *@
             @Html.AntiForgeryToken()
         </form>
     </div>
@@ -169,15 +196,15 @@
         <div class="overlay">
             <!-- Panel bên trái: hiển thị khi ở chế độ register, nút để quay về login -->
             <div class="overlay-panel overlay-left">
-                <h1>Chào mừng trở lại!</h1>
-                <p>Để kết nối với chúng tôi, vui lòng đăng nhập bằng thông tin cá nhân của bạn</p>
-                <button class="ghost" id="signIn">Đăng nhập</button>
+                <h1>@Localizer["LoginTitle"]</h1>
+                <p>@Localizer["LoginTitleSub"]</p>
+                <button class="ghost" id="signIn">@Localizer["Login"]</button>
             </div>
             <!-- Panel bên phải: hiển thị mặc định, nút để chuyển sang register -->
             <div class="overlay-panel overlay-right">
-                <h1>Xin chào!</h1>
-                <p>Nhập thông tin cá nhân của bạn và bắt đầu hành trình cùng chúng tôi</p>
-                <button class="ghost" id="signUp">Đăng ký</button>
+                <h1>@Localizer["RegTitle"]</h1>
+                <p>@Localizer["RegTitleSub"]</p>
+                <button class="ghost" id="signUp">@Localizer["Register"]</button>
             </div>
         </div>
     </div>
@@ -194,43 +221,3 @@
         });
     </script>
 }
-
-    <style>
-
-
-        /* Responsive Tablet */
-        @@media (max-width: 1024px) {
-            .auth-container {
-                flex-direction: column;
-                padding: 1rem;
-            }
-            .form-container {
-                width: 100%;
-                max-width: 500px;
-                margin-bottom: 1rem;
-            }
-            .overlay-container {
-                display: none; /* Ẩn overlay */
-            }
-        }
-
-        /* Responsive Mobile */
-        @@media (max-width: 576px) {
-            .form-container {
-                padding: 1rem;
-            }
-            .form-container h1 {
-                font-size: 1.5rem;
-            }
-            .form-container input,
-            .form-container select,
-            .form-container button {
-                font-size: 0.9rem;
-                padding: 0.75rem;
-            }
-            .social-container a {
-                margin: 0 5px;
-                font-size: 1rem;
-            }
-        }
-    </style>

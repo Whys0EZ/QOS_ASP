@@ -131,7 +131,7 @@
                         <td>@row["Fault_Level_1_Sum"]</td>
                         <td>@row["Fault_Level_2_Sum"]</td>
                         <td>@row["OQL_total"] %</td>
-                        <td>View</td>
+                        <td><a href="javascript:void(0);" onclick="viewDetails('@Model.DateFrom.ToString("yyyy-MM-dd")','@Model.DateFrom.ToString("yyyy-MM-dd")','@row["Unit"]','@Model.Mo','@Model.Color','@Model.Line')">View</a></td>
                     </tr>
                 }
 
@@ -163,6 +163,10 @@
 
 @* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
 <script>
+    function viewDetails(dateFrom, dateTo, unit, mo, color, line) {
+        const popupUrl = `/Report/EndlineUnitEN/EndlineSewer?DateFrom=${dateFrom}&DateTo=${dateTo}&Unit=${unit}&MO=${mo}&Color=${color}&Line=${line}`;
+        window.open(popupUrl, '_blank');
+    }
  
     function Submit()
         {

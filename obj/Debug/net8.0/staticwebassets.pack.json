@@ -49,6 +49,18 @@
       "PackagePath": "staticwebassets\\Report\\RP_BaoCaoChatLuongChecker_KCC.xlsx"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\RP_BaoCaoChatLuongChecker_KCC_Sewer.xlsx",
+      "PackagePath": "staticwebassets\\Report\\RP_BaoCaoChatLuongChecker_KCC_Sewer.xlsx"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\RP_BaoCaoChecker_KCC_Sewer_Detail.xlsx",
+      "PackagePath": "staticwebassets\\Report\\RP_BaoCaoChecker_KCC_Sewer_Detail.xlsx"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\RP_BaoCaoChecker_KCC_Sewer_Detail_D.xlsx",
+      "PackagePath": "staticwebassets\\Report\\RP_BaoCaoChecker_KCC_Sewer_Detail_D.xlsx"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\Report\\RP_EndLine_Detail_Report.xlsx",
       "PackagePath": "staticwebassets\\Report\\RP_EndLine_Detail_Report.xlsx"
     },
@@ -79,6 +91,10 @@
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\login.css",
       "PackagePath": "staticwebassets\\css\\login.css"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\login2.css",
+      "PackagePath": "staticwebassets\\css\\login2.css"
     },
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\menu_left.css",
@@ -23135,14 +23151,6 @@
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
-    },
-    {
-      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\upload\\ThongSoThanhPham\\EXCEL\\20250827140616_admin_2025Jul31130143_272684_5v2509069.xlsx",
-      "PackagePath": "staticwebassets\\upload\\ThongSoThanhPham\\EXCEL\\20250827140616_admin_2025Jul31130143_272684_5v2509069.xlsx"
-    },
-    {
-      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\upload\\ThongSoThanhPham\\IMG\\5V2509069.png",
-      "PackagePath": "staticwebassets\\upload\\ThongSoThanhPham\\IMG\\5V2509069.png"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.QOS.Microsoft.AspNetCore.StaticWebAssets.props",

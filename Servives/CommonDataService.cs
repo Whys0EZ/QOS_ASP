@@ -77,5 +77,24 @@ namespace QOS.Services
             }
         }
 
+        public List<Line_List> GetLineList(string unitId)
+        {
+            try
+            {
+                var lines = _context.Set<Line_List>()
+                    .Where(l => l.Unit == unitId && l.Factory == _appSettings.FactoryName)
+                    .OrderBy(l => l.Line)
+                    .ToList();
+
+                // _logger.LogInformation($"Loaded {lines.Count} lines from database");
+                return lines;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading line list");
+                return new List<Line_List>();
+            }
+        }
+
     }
 }

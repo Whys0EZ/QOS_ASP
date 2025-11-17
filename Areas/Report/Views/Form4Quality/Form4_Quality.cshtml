@@ -69,7 +69,7 @@
             var index  = 1;
             <div class="table-responsive">
                 <table class="table table-bordered table-sm text-center align-middle table-striped">
-                    <thead class="bg-primary bg-gradient bg-opacity-75">
+                    <thead class="bg-primary bg-gradient bg-opacity-75 text-center align-middle">
                         <th>STT</th>
                         <th>Unit</th>
                         <th>Line</th>
@@ -137,6 +137,11 @@
 
 @* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
 <script>
+
+    // Auto refresh page every 60 seconds
+    setInterval(function() {
+        Submit();
+    }, 60000);
  
     function Submit()
         {

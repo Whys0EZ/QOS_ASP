@@ -189,8 +189,8 @@
     var dataPointsREG = @Html.Raw(JsonSerializer.Serialize(Model.DataPointsREG));
     var dataPointsUnitTarget = @Html.Raw(JsonSerializer.Serialize(Model.DataPointsUnitTarget));
 
-    console.log("Data REG:", dataPointsREG);
-    console.log("Data Target:", dataPointsUnitTarget);
+    //console.log("Data REG:", dataPointsREG);
+   // console.log("Data Target:", dataPointsUnitTarget);
 
     // Tách label và value
     var labels = dataPointsREG.map(p => p.Label);
@@ -258,10 +258,6 @@
 
     var dataPointsREG = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DataPointsREG));
     var dataPointsUnitTarget = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DataPointsUnitTarget));
-
-    console.log(dataPointsREG);
-    console.log(dataPointsUnitTarget);
-
     
     function UnitDetail_Click(unit) {
         var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));

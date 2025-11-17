@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="MessageStatus_Mo" xml:space="preserve">
+        <value>Vui lòng nhập thông tin MO để tìm kiếm.</value>
+    </data>
+    <data name="MessageStatus_Mo_NotF" xml:space="preserve">
+        <value>Không tìm thấy công đoạn cho </value>
+    </data>
+    <data name="MessageStatus_File" xml:space="preserve">
+        <value>Vui lòng chon file xsml.</value>
+    </data>
+    <data name="MessageStatus_FileImp" xml:space="preserve">
+        <value>Đã xảy ra lỗi khi tải file.</value>
+    </data>
+    <data name="Nodata" xml:space="preserve">
+        <value>Không có dữ liệu.</value>
+    </data>
+    <data name="downloadForm" xml:space="preserve">
+        <value>Tải mẫu Form</value>
+    </data>
+    <data name="F_Operaton" xml:space="preserve">
+        <value>Quản lý công đoạn</value>
+    </data>
+    <data name="F_Operaton_Title" xml:space="preserve">
+        <value>Tải lên công đoạn từ Excel</value>
+    </data>
+    <data name="F_Operaton_Code" xml:space="preserve">
+        <value>Mã Công đoạn</value>
+    </data>
+    <data name="F_Operaton_VN" xml:space="preserve">
+        <value>Tên Công Đoạn VN</value>
+    </data>
+    <data name="F_Operaton_EN" xml:space="preserve">
+        <value>Tên Công Đoạn EN</value>
+    </data>
+
+    <data name="F_Fault_Title" xml:space="preserve">
+        <value>Quản Lý Danh Sách Lỗi</value>
+    </data>
+    <data name="F_Fault_place" xml:space="preserve">
+        <value>Tìm theo Mã lỗi hoặc Tên Tiếng Việt...</value>
+    </data>
+    <data name="F_Fault_Add" xml:space="preserve">
+        <value>Thêm lỗi</value>
+    </data>
+    <data name="F_Fault_Code" xml:space="preserve">
+        <value>Mã Lỗi</value>
+    </data>
+    <data name="F_Fault_Type" xml:space="preserve">
+        <value>Loại Lỗi</value>
+    </data>
+    <data name="F_Fault_NameVN" xml:space="preserve">
+        <value>Tên Tiếng Việt</value>
+    </data>
+    <data name="F_Fault_NameEN" xml:space="preserve">
+        <value>Tên Tiếng Anh</value>
+    </data>
+    <data name="F_Fault_inLine" xml:space="preserve">
+        <value>Báo Cáo Đi Chuyền</value>
+    </data>
+    <data name="F_Fault_endLine" xml:space="preserve">
+        <value>Báo Cáo Cuối Chuyền</value>
+    </data>
+    <data name="F_Fault_edit" xml:space="preserve">
+        <value>Sửa Lỗi</value>
+    </data>
+    <data name="F_Fault_delete" xml:space="preserve">
+        <value>Xóa Lỗi</value>
+    </data>
+    <data name="F_Fault_deleteInfo" xml:space="preserve">
+        <value>Bạn có chắc muốn xóa lỗi?</value>
+    </data>
+    <data name="F_Fault_deleteCaution" xml:space="preserve">
+        <value>Lưu ý: Việc xóa sẽ không thể hoàn tác.</value>
+    </data>
+    <data name="F_TP_Title" xml:space="preserve">
+        <value>Điểm Đo Thông Số Thành Phẩm</value>
+    </data>
+    <data name="F_Online_Title" xml:space="preserve">
+        <value>Tài Liệu Trực Tuyến</value>
+    </data>
+
+</root>

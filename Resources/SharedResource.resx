@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>Chào mừng bạn đến với hệ thống QOS</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Đăng nhập</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Đăng Ký</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Tên đăng nhập</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Mật khẩu</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Ghi nhớ đăng nhập</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Đăng xuất</value>
+  </data>
+  <data name="UsernameRequired" xml:space="preserve">
+    <value>Vui lòng nhập tên đăng nhập</value>
+  </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>Vui lòng nhập mật khẩu</value>
+  </data>
+  
+    <data name="LogoutInfo" xml:space="preserve">
+    <value>Thoát khỏi tài khoản</value>
+  </data>
+  <data name="ContactUs" xml:space="preserve">
+    <value>Liên hệ</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Gửi</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Trang chủ</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Ngôn ngữ</value>
+  </data>
+    <data name="Profile" xml:space="preserve">
+    <value>Thông tin cá nhân</value>
+  </data>
+  <data name="EditProfile" xml:space="preserve">
+    <value>Xem và chỉnh sửa profile</value>
+  </data>
+  <data name="InfoPass" xml:space="preserve">
+    <value>Thay đổi mật khẩu bảo mật</value>
+  </data>
+  <data name="Setup" xml:space="preserve">
+    <value>Cài đặt</value>
+  </data>
+  <data name="Setupinfo" xml:space="preserve">
+    <value>Tùy chỉnh giao diện</value>
+  </data>
+  <data name="Feedback" xml:space="preserve">
+    <value>Thông tin phản hồi</value>
+  </data>
+
+  <data name="Function" xml:space="preserve">
+    <value>Chức Năng</value>
+  </data>
+  <data name="Report" xml:space="preserve">
+    <value>Báo Cáo</value>
+  </data>
+  <data name="Setting" xml:space="preserve">
+    <value>Thiết Lập</value>
+  </data>
+  <data name="System" xml:space="preserve">
+    <value>Hệ thống</value>
+  </data>
+
+  <!-- Menu Functions -->
+  <data name="ManageOperation" xml:space="preserve">
+    <value>Quản Lý Công Đoạn</value>
+  </data>
+  <data name="ManageFault" xml:space="preserve">
+    <value>Quản Lý DS Lỗi</value>
+  </data>
+  <data name="ThongSoBTP" xml:space="preserve">
+    <value>Điểm Đo Thông Số BTP</value>
+  </data>
+  <data name="ThongSoTP" xml:space="preserve">
+    <value>Điểm Đo Thông Số TP</value>
+  </data>
+  <data name="ThongSoDo" xml:space="preserve">
+    <value>Điểm Đo Thông Số Đo</value>
+  </data>
+  <data name="ETSMoStyle" xml:space="preserve">
+    <value>ETS: MO-Style-Size</value>
+  </data>
+  <data name="TrackingContact" xml:space="preserve">
+    <value>TRACKING - Group Contact List</value>
+  </data>
+  <data name="TrackingSetup" xml:space="preserve">
+    <value>TRACKING - Infor Setup</value>
+  </data>
+  <data name="TrackingUpload" xml:space="preserve">
+    <value>TRACKING - Upload Data</value>
+  </data>
+  <data name="OnlineFile" xml:space="preserve">
+    <value>Tài liệu trực tuyến</value>
+  </data>
+  <!-- Menu Reports -->
+  <data name="Form1BCCLC" xml:space="preserve">
+    <value>Báo Cáo Chất Lượng Bàn Cắt</value>
+  </data>
+  <data name="Form2BCCPI" xml:space="preserve">
+    <value>Báo Cáo Chất Lượng CPI</value>
+  </data>
+  <data name="Form3BCDT" xml:space="preserve">
+    <value>Báo Cáo Bàn Cắt Đầu Tiên</value>
+  </data>
+  <data name="Form4BCCLM" xml:space="preserve">
+    <value>Báo Cáo Chất Lượng Chuyền May</value>
+  </data>
+  <data name="Form6BCCC" xml:space="preserve">
+    <value>Báo Cáo Chất Lượng Cuối Chuyền</value>
+  </data>
+  <data name="SummaryKCC" xml:space="preserve">
+    <value>Tổng Hợp Lỗi Cuối Chuyền</value>
+  </data>
+  <data name="PhotoDefect" xml:space="preserve">
+    <value>Hình Ảnh Lỗi</value>
+  </data>
+  <data name="OQLEndline" xml:space="preserve">
+    <value>Daily OQL End Line</value>
+  </data>
+  <data name="SummaryKCM" xml:space="preserve">
+    <value>Tổng Hợp Lỗi Chuyền May</value>
+  </data>
+  <data name="Form4BCCLMSUM" xml:space="preserve">
+    <value>Lỗi Chuyền May</value>
+  </data>
+  <data name="Form7BTP" xml:space="preserve">
+    <value>Thông Số BTP</value>
+  </data>
+  <data name="Form8TP" xml:space="preserve">
+    <value>Thông Số TP</value>
+  </data>
+  <data name="SummaryEndline" xml:space="preserve">
+    <value>End-Line Summary Report</value>
+  </data>
+  <data name="FCATracking" xml:space="preserve">
+    <value>FCA Tracking Report</value>
+  </data>
+  <data name="FCATrackingACDate" xml:space="preserve">
+    <value>FCA Tracking Report AC-Date</value>
+  </data>
+  <data name="Form10BCHT" xml:space="preserve">
+    <value>Báo Cáo Chất Lượng Hoàn Thiện 84</value>
+  </data>
+  <data name="SummaryBCHT" xml:space="preserve">
+    <value>Tổng Hợp Lỗi Hoàn Thiện 84</value>
+  </data>
+  <data name="SummaryChecker" xml:space="preserve">
+    <value>Checker 84 Summary Report</value>
+  </data>
+  <data name="Form10OQL" xml:space="preserve">
+    <value>Checker 84 Daily OQL</value>
+  </data>
+  <data name="FQCTracking" xml:space="preserve">
+    <value>FQC Tracking Report</value>
+  </data>
+  <data name="SummaryFQC" xml:space="preserve">
+    <value>Tổng Hợp Lỗi FQC</value>
+  </data>
+  <data name="Form4Quality" xml:space="preserve">
+    <value>InLine Quality Report Summary</value>
+  </data>
+  <data name="TopForm4Quality" xml:space="preserve">
+    <value>TOP InLine Quality Report</value>
+  </data>
+  <data name="TopForm6Quality" xml:space="preserve">
+    <value>TOP EndLine Quality Report</value>
+  </data>
+  <data name="EndlineReport" xml:space="preserve">
+    <value>EndLine Detail Report</value>
+  </data>
+  <data name="EndlineUnit" xml:space="preserve">
+    <value>Báo Cáo Cuối Chuyền Theo Unit</value>
+  </data>
+  <data name="EndlineUnitEN" xml:space="preserve">
+    <value>Report EndLine By Unit</value>
+  </data>
+
+    <!-- Menu Reports - End -->
+  <!-- Menu Item Settings -->
+  <data name="FactoryList" xml:space="preserve">
+    <value>Danh Sách Nhà Máy</value>
+  </data>
+  <data name="DepartmentList" xml:space="preserve">
+    <value>Danh Sách Phòng Ban</value>
+  </data>
+  <data name="UnitList" xml:space="preserve">
+    <value>Danh Sách Xưởng</value>
+  </data>
+  <!-- Menu Item Settings - End -->
+  <!-- Menu Item System -->
+  <data name="ManageUser" xml:space="preserve">
+    <value>Quản Lý Người Dùng</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Đổi Mật Khẩu</value>
+  </data>
+<!-- Menu Item System - End -->
+
+</root>

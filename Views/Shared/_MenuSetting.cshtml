@@ -1,4 +1,5 @@
 @using QOS.Helpers
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
 @{
     Layout = "_Layout";
 }
@@ -21,7 +22,7 @@
             </button>
             
             <div class="sidebar-header">
-                <h3><i class="fas fa-sliders-h me-2"></i> <span>THIẾT LẬP</span></h3>
+                <h3><i class="fas fa-sliders-h me-2"></i> <span>@Localizer["Setting"]</span></h3>
             </div>
 
             <ul class="list-unstyled list-group list-group-flush">
@@ -30,21 +31,21 @@
                        asp-controller="Setting" 
                        asp-action="FactoryList"
                        data-number="1"
-                       title="Danh sách nhà máy">1-Danh sách nhà máy</a>
+                       title="@Localizer["FactoryList"]">1-@Localizer["FactoryList"]</a>
                 </li>
                 <li class="menu-item">
                     <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "DepartmentList" })" 
                        asp-controller="Setting" 
                        asp-action="DepartmentList"
                        data-number="2"
-                       title="Danh sách phòng ban">2-Danh sách phòng ban</a>
+                       title="@Localizer["DepartmentList"]">2-@Localizer["DepartmentList"]</a>
                 </li>
                 <li class="menu-item">
                     <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "UnitList" })" 
                        asp-controller="Setting" 
                        asp-action="UnitList"
                        data-number="3"
-                       title="Danh sách xưởng">3-Danh sách xưởng</a>
+                       title="@Localizer["UnitList"]">3-@Localizer["UnitList"]</a>
                 </li>
             </ul>
         </div>
@@ -59,7 +60,7 @@
 <!-- Offcanvas cho mobile -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="menuSidebar">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title">THIẾT LẬP</h5>
+        <h5 class="offcanvas-title">@Localizer["Setting"]</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body">
@@ -67,17 +68,17 @@
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "FactoryList" })" 
                    asp-controller="Setting" 
-                   asp-action="FactoryList">1-Danh sách nhà máy</a>
+                   asp-action="FactoryList">1-@Localizer["FactoryList"]</a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "DepartmentList" })" 
                    asp-controller="Setting" 
-                   asp-action="DepartmentList">2-Danh sách phòng ban</a>
+                   asp-action="DepartmentList">2-@Localizer["DepartmentList"]</a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "UnitList" })" 
                    asp-controller="Setting" 
-                   asp-action="UnitList">3-Danh sách xưởng</a>
+                   asp-action="UnitList">3-@Localizer["UnitList"]</a>
             </li>
         </ul>
     </div>

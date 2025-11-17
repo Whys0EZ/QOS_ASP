@@ -1,3 +1,4 @@
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
 @{
     Layout = "_Layout";
 }
@@ -19,15 +20,15 @@
             </button>
 
             <div class="sidebar-header">
-                <h3><i class="fas fa-sliders-h me-2"></i> <span>SYSTEM</span></h3>
+                <h3><i class="fas fa-sliders-h me-2"></i> <span>@Localizer["System"]</span></h3>
             </div>
            <div class="sidebar-content"> 
                 <ul class="list-unstyled list-group list-group-flush">
                     <li class="menu-item">
-                        <a class="menu-link @Html.IsActive(new[] { "SystemAdmin" }, new[] { "Index" })" asp-active="true" asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="Index">1-Quản lý người dùng</a>
+                        <a class="menu-link @Html.IsActive(new[] { "SystemAdmin" }, new[] { "Index" })" asp-active="true" asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="Index">1-@Localizer["ManageUser"]</a>
                     </li>
                     <li class="menu-item">
-                        <a class="menu-link @Html.IsActive(new[] { "SystemAdmin" }, new[] { "ChangePassword" })" asp-active="true" asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="ChangePassword">2-Thay đổi mật khẩu</a>
+                        <a class="menu-link @Html.IsActive(new[] { "SystemAdmin" }, new[] { "ChangePassword" })" asp-active="true" asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="ChangePassword">2-@Localizer["ChangePassword"]</a>
                     </li>
                 </ul>
 
@@ -42,16 +43,16 @@
 <!-- Offcanvas cho mobile -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="menuSidebar">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title">THIẾT LẬP</h5>
+        <h5 class="offcanvas-title">@Localizer["System"]</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body">
         <ul class="list-unstyled list-group list-group-flush">
             <li class="menu-item">
-                <a class="menu-link @Html.IsActive(new[] { "SystemAdmin" }, new[] { "Index" })" asp-active="true" asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="Index">1-Quản lý người dùng</a>
+                <a class="menu-link @Html.IsActive(new[] { "SystemAdmin" }, new[] { "Index" })" asp-active="true" asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="Index">1-@Localizer["ManageUser"]</a>
             </li>
             <li class="menu-item">
-                <a class="menu-link @Html.IsActive(new[] { "SystemAdmin" }, new[] { "ChangePassword" })" asp-active="true" asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="ChangePassword">2-Thay đổi mật khẩu</a>
+                <a class="menu-link @Html.IsActive(new[] { "SystemAdmin" }, new[] { "ChangePassword" })" asp-active="true" asp-area="SystemAdmin" asp-controller="SystemAdmin" asp-action="ChangePassword">2-@Localizer["ChangePassword"]</a>
             </li>
         </ul>
     </div>

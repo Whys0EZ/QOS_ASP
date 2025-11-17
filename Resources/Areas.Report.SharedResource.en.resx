@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="CutTable" xml:space="preserve">
+    <value>CutTable</value>
+  </data>
+  <data name="modal-title" xml:space="preserve">
+    <value>Detail report</value>
+  </data>
+  <data name="Remark" xml:space="preserve">
+    <value>Remark</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ReAudit" xml:space="preserve">
+    <value>ReAudit</value>
+  </data>
+  <data name="CheckQty" xml:space="preserve">
+    <value>Check Qty</value>
+  </data>
+  <data name="FaultQty" xml:space="preserve">
+    <value>Fault Qty</value>
+  </data>
+
+  <data name="CutLeader" xml:space="preserve">
+    <value>Cut Leader</value>
+  </data>
+  <data name="CutTableName" xml:space="preserve">
+    <value>Cut Table Name</value>
+  </data>
+  <data name="CutTableRatio" xml:space="preserve">
+    <value>Cut Table Ratio</value>
+  </data>
+  <data name="Lay_Height" xml:space="preserve">
+    <value>Height(cm)</value>
+  </data>
+  <data name="Table_Long" xml:space="preserve">
+    <value>Long(inch)</value>
+  </data>
+  <data name="Table_Width" xml:space="preserve">
+    <value>Width(inch)</value>
+  </data>
+  <data name="Batch" xml:space="preserve">
+    <value>Cut Lot</value>
+  </data>
+  <data name="Qty" xml:space="preserve">
+    <value>QTY</value>
+  </data>
+  <data name="QualityFabric" xml:space="preserve">
+    <value>Fabric quality</value>
+  </data>
+  <data name="CheckboxE" xml:space="preserve">
+    <value>Check if there is an error</value>
+  </data>
+  <data name="Shading" xml:space="preserve">
+    <value>Shading</value>
+  </data>
+  <data name="Wave" xml:space="preserve">
+    <value>Wave</value>
+  </data>
+  <data name="Narrow_Width" xml:space="preserve">
+    <value>Narrow Width</value>
+  </data>
+  <data name="Spreading" xml:space="preserve">
+    <value>Spreading</value>
+  </data>
+  <data name="Tolerance1" xml:space="preserve">
+    <value>Tolerance 1</value>
+  </data>
+  <data name="Tolerance2" xml:space="preserve">
+    <value>Tolerance 2</value>
+  </data>
+  <data name="longTo" xml:space="preserve">
+    <value>Long to</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="widthTo" xml:space="preserve">
+    <value>Width to</value>
+  </data>
+  <data name="ParametersLW" xml:space="preserve">
+    <value>Length - Width Parameters</value>
+  </data>
+  <data name="Firstleaves" xml:space="preserve">
+    <value>First leaves</value>
+  </data>
+  <data name="Middleleaves" xml:space="preserve">
+    <value>Middle leaves</value>
+  </data>
+  <data name="Lastleaves" xml:space="preserve">
+    <value>Last leaves</value>
+  </data>
+  <data name="QualityCut" xml:space="preserve">
+    <value>Quality cut</value>
+  </data>
+  <data name="Notch" xml:space="preserve">
+    <value>Notch</value>
+  </data>
+  <data name="Unclean" xml:space="preserve">
+    <value>Unclean</value>
+  </data>
+  <data name="Straigh" xml:space="preserve">
+    <value>Straigh</value>
+  </data>
+  <data name="Shape" xml:space="preserve">
+    <value>Shape</value>
+  </data>
+  <data name="Edge" xml:space="preserve">
+    <value>Edge</value>
+  </data>
+  <data name="Stripe" xml:space="preserve">
+    <value>Stripe</value>
+  </data>
+  <data name="ImgError" xml:space="preserve">
+    <value>Image Error</value>
+  </data>
+  <data name="CPI_Leader" xml:space="preserve">
+    <value>CPI Leader</value>
+  </data>
+  <data name="Rap" xml:space="preserve">
+    <value>Rap</value>
+  </data>
+  <data name="Hole" xml:space="preserve">
+    <value>Hole</value>
+  </data>
+  <data name="Yarn" xml:space="preserve">
+    <value>Yarn</value>
+  </data>
+  <data name="Slub" xml:space="preserve">
+    <value>Slub</value>
+  </data>
+  <data name="Dirty" xml:space="preserve">
+    <value>Dirty</value>
+  </data>
+  <data name="OtherError" xml:space="preserve">
+    <value>Other Error</value>
+  </data>
+  <data name="Match" xml:space="preserve">
+    <value>Match False</value>
+  </data>
+  <data name="Label" xml:space="preserve">
+    <value>Label</value>
+  </data>
+
+  <data name="Roll" xml:space="preserve">
+    <value>Roll</value>
+  </data>
+  <data name="Label_SP_SD" xml:space="preserve">
+    <value>Qty / diagram</value>
+  </data>
+  <data name="Layer_QTY" xml:space="preserve">
+    <value>Layer QTY</value>
+  </data>
+  <data name="Cut_QTY" xml:space="preserve">
+    <value>Cut QTY</value>
+  </data>
+  <data name="Cut_Table_Height" xml:space="preserve">
+    <value>Cut Table Height(inch)</value>
+  </data>
+  <data name="Cut_Table_Long" xml:space="preserve">
+    <value>Cut Table Long(inch)</value>
+  </data>
+  <data name="QualityTFabric" xml:space="preserve">
+    <value>Quality Fabric</value>
+  </data>
+  <data name="Fabricsplit" xml:space="preserve">
+    <value>Fabric splicing</value>
+  </data>
+  <data name="Fabrictension" xml:space="preserve">
+    <value>Fabric tension</value>
+  </data>
+  <data name="Wrongside" xml:space="preserve">
+    <value>Wrong side</value>
+  </data>
+  <data name="dirtfabric" xml:space="preserve">
+    <value>Oil, dirt, fabric stains</value>
+  </data>
+  <data name="Loc_diagram" xml:space="preserve">
+    <value>Location diagram</value>
+  </data>
+  <data name="Slantedfabric" xml:space="preserve">
+    <value>Slanted fabric</value>
+  </data>
+  <data name="Notstraight" xml:space="preserve">
+    <value>Not straight</value>
+  </data>
+  <data name="Differentcolor" xml:space="preserve">
+    <value>Different color</value>
+  </data>
+  <data name="CheckNot" xml:space="preserve">
+    <value>Check if not passed</value>
+  </data>
+  <data name="notchDeep" xml:space="preserve">
+    <value>Notch Deep</value>
+  </data>
+  <data name="Cutxoc_xech" xml:space="preserve">
+    <value>Cut xoc_xech</value>
+  </data>
+  <data name="NotCut" xml:space="preserve">
+    <value>Not Cut</value>
+  </data>
+  <data name="TS_afterCut" xml:space="preserve">
+    <value>Parameters after cutting</value>
+  </data>
+  <data name="TS_afterCPI" xml:space="preserve">
+    <value>CPI post-test parameters</value>
+  </data>
+  <data name="TS_TP" xml:space="preserve">
+    <value>Product specifications</value>
+  </data>
+
+  <data name="circle_notcheck" xml:space="preserve">
+    <value>Not checked</value>
+  </data>
+  <data name="circle_notfault" xml:space="preserve">
+    <value>Not Error</value>
+  </data>
+  <data name="circle_minor" xml:space="preserve">
+    <value>minor error</value>
+  </data>
+  <data name="circle_serious" xml:space="preserve">
+    <value>serious error</value>
+  </data>
+  <data name="line_Status" xml:space="preserve">
+    <value>Line Status</value>
+  </data>
+  <data name="info_data" xml:space="preserve">
+    <value>No data found for the selected time period.</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="Loadingdata" xml:space="preserve">
+    <value>Loading data ...</value>
+  </data>
+  <data name="Loadingplease" xml:space="preserve">
+    <value>Please wait a moment</value>
+  </data>
+  <data name="HistoryInline" xml:space="preserve">
+    <value>History of factory quality inspection</value>
+  </data>
+  
+
+
+</root>

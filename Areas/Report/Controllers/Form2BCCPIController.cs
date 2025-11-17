@@ -56,7 +56,7 @@ namespace QOS.Areas.Report.Controllers
                 FROM Form2_BCCPI t1
                 LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
                 WHERE t1.Unit = @Unit
-                AND t1.LastUpdate BETWEEN @dateF AND @dateT
+                AND CAST(t1.LastUpdate as DATE) >= CAST(@dateF as DATE) AND CAST(t1.LastUpdate as DATE) <= CAST(@dateT as DATE)
                 ORDER BY t1.LastUpdate DESC";
             }
             else
@@ -65,7 +65,7 @@ namespace QOS.Areas.Report.Controllers
                 SELECT t1.*, t4.FullName 
                 FROM Form2_BCCPI t1
                 LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
-                WHERE t1.LastUpdate BETWEEN @dateF AND @dateT
+                WHERE CAST(t1.LastUpdate as DATE) >= CAST(@dateF as DATE) AND CAST(t1.LastUpdate as DATE) <= CAST(@dateT as DATE)
                 ORDER BY t1.LastUpdate DESC";
             }
             ;
@@ -166,7 +166,7 @@ namespace QOS.Areas.Report.Controllers
                 FROM Form2_BCCPI t1
                 LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
                 WHERE t1.Unit = @Unit
-                AND t1.LastUpdate BETWEEN @dateF AND @dateT
+                AND CAST(t1.LastUpdate as DATE) >= CAST(@dateF as DATE) AND CAST(t1.LastUpdate as DATE) <= CAST(@dateT as DATE)
                 ORDER BY t1.LastUpdate DESC";
             }
             else
@@ -175,7 +175,7 @@ namespace QOS.Areas.Report.Controllers
                 SELECT t1.*, t4.FullName 
                 FROM Form2_BCCPI t1
                 LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
-                WHERE t1.LastUpdate BETWEEN @dateF AND @dateT
+                WHERE CAST(t1.LastUpdate as DATE) >= CAST(@dateF as DATE) AND CAST(t1.LastUpdate as DATE) <= CAST(@dateT as DATE)
                 ORDER BY t1.LastUpdate DESC";
             }
             ;

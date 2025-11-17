@@ -18,9 +18,9 @@
     color: #212529; /* Màu chữ mặc định */
 }
 
-:root[data-bs-theme="dark"] .nav-link {
-    color: #fff !important; /* Chữ trắng khi Dark mode */
-}
+/* :root[data-bs-theme="dark"] .nav-link {
+    color: #fff !important; 
+} */
 
 
 

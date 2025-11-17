@@ -5,6 +5,9 @@ using Microsoft.Data.SqlClient;
 using OfficeOpenXml;
 using QOS.Areas.Function.Models;
 using QOS.Data;
+using QOS.Areas.Function;
+using QOS;
+using Microsoft.Extensions.Localization;
 
 
 namespace QOS.Areas.Function.Controllers
@@ -17,13 +20,20 @@ namespace QOS.Areas.Function.Controllers
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _env;
         private readonly IConfiguration _configuration;
+        private readonly IStringLocalizer<QOS.SharedResource> _sharedLocalizer;
+        private readonly IStringLocalizer<QOS.Areas.Function.SharedResource> _funcLocalizer;
 
-        public ManageOperationController(ILogger<ManageOperationController> logger, AppDbContext context, IWebHostEnvironment env, IConfiguration configuration)
+        public ManageOperationController(ILogger<ManageOperationController> logger, AppDbContext context, IWebHostEnvironment env, IConfiguration configuration,
+        IStringLocalizer<QOS.SharedResource> sharedLocalizer,
+        IStringLocalizer<QOS.Areas.Function.SharedResource> funcLocalizer)
         {
             _logger = logger;
             _context = context;
             _env = env;
             _configuration = configuration;
+            _sharedLocalizer = sharedLocalizer;
+            _funcLocalizer = funcLocalizer;
+
         }
         [TempData]
         public string? MessageStatus { get; set; } = "";
@@ -63,7 +73,7 @@ namespace QOS.Areas.Function.Controllers
             var vm = new SearchOperationViewModel { MO = mo };
             if (string.IsNullOrEmpty(mo))
             {
-                MessageStatus = "Vui lòng nhập MO để tìm kiếm.";
+                MessageStatus = _funcLocalizer["MessageStatus_Mo"];
                 return RedirectToAction("Index", new { mo });
             }
 
@@ -73,7 +83,7 @@ namespace QOS.Areas.Function.Controllers
                 .ToList();
             if (vm.Results.Count == 0)
             {
-                MessageStatus = $"Không tìm thấy công đoạn nào cho MO '{mo}'.";
+                MessageStatus = _funcLocalizer["MessageStatus_Mo_NotF"] + $" '{mo}'.";
             }
             else
             {
@@ -93,7 +103,7 @@ namespace QOS.Areas.Function.Controllers
             if (file == null || file.Length == 0)
             {
                 vm.MO = null;
-                MessageStatus = "Vui lòng chọn file.";
+                MessageStatus = _funcLocalizer["MessageStatus_File"];
                 Console.WriteLine("file null");
                 return RedirectToAction("Index", vm);
             }
@@ -163,7 +173,7 @@ namespace QOS.Areas.Function.Controllers
             {
                 // Xử lý lỗi
                 _logger.LogError(ex, "Error occurred while uploading file.");
-                MessageStatus = "Đã xảy ra lỗi trong quá trình import.";
+                MessageStatus = _funcLocalizer["MessageStatus_FileImp"];
                 // return RedirectToAction("Index", vm);
             }
             // _logger.LogInformation("MO" + vm.Results.FirstOrDefault()?.MO);

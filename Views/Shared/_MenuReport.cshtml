@@ -1,4 +1,5 @@
 @using QOS.Helpers
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
 @{
     Layout = "_Layout";
 }
@@ -21,143 +22,143 @@
             </button>
 
             <div class="sidebar-header">
-                <h3>📊 BÁO CÁO</h3>
+                <h3>📊 @Localizer["Report"]</h3>
             </div>
             <div class="sidebar-content">
                 <ul class="list-unstyled list-group list-group-flush">
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "Form1BCCLC" }, new[] { "RP_Form1" })" asp-controller="Report" asp-action="RP_Form1">
-                            <span class="menu-icon"><i class="fas fa-cut"></i></span><span class="menu-number">1</span>Báo Cáo Chất Lượng Bàn Cắt
+                            <span class="menu-icon"><i class="fas fa-cut"></i></span><span class="menu-number">1</span>@Localizer["Form1BCCLC"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "Form2BCCPI" }, new[] { "RP_Form2" })" asp-controller="Report" asp-action="RP_Form2">
-                            <span class="menu-icon"><i class="fas fa-clipboard-check"></i></span><span class="menu-number">2</span>Báo Cáo Chất Lượng CPI
+                            <span class="menu-icon"><i class="fas fa-clipboard-check"></i></span><span class="menu-number">2</span>@Localizer["Form2BCCPI"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "Form3BCDT" }, new[] { "RP_Form3" })" asp-controller="Report" asp-action="RP_Form3">
-                            <span class="menu-icon"><i class="fas fa-star"></i></span><span class="menu-number">3</span>Báo Cáo Bàn Cắt Đầu Tiên
+                            <span class="menu-icon"><i class="fas fa-star"></i></span><span class="menu-number">3</span>@Localizer["Form3BCDT"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "Form4BCCLM" }, new[] { "RP_Form4","RP_Form4_Unit" })" asp-controller="Report" asp-action="RP_Form4">
-                            <span class="menu-icon"><i class="fas fa-industry"></i></span><span class="menu-number">4</span>Báo Cáo Chất Lượng Chuyền May
+                            <span class="menu-icon"><i class="fas fa-industry"></i></span><span class="menu-number">4</span>@Localizer["Form4BCCLM"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "Form6BCCC" }, new[] { "RP_Form6" })" asp-controller="Report" asp-action="RP_Form6">
-                            <span class="menu-icon"><i class="fas fa-check-double"></i></span><span class="menu-number">5</span>Báo Cáo Chất Lượng Cuối Chuyền
+                            <span class="menu-icon"><i class="fas fa-check-double"></i></span><span class="menu-number">5</span>@Localizer["Form6BCCC"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "SummaryKCC" }, new[] { "RP_Summary_Defects_KCC" })" asp-controller="Report" asp-action="RP_Summary_Defects_KCC">
-                            <span class="menu-icon"><i class="fas fa-list-ul"></i></span><span class="menu-number">6</span>Tổng Hợp Lỗi Cuối Chuyền
+                            <span class="menu-icon"><i class="fas fa-list-ul"></i></span><span class="menu-number">6</span>@Localizer["SummaryKCC"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "PhotoDefect" }, new[] { "RP_PhotoDefect" })" asp-controller="Report" asp-action="RP_PhotoDefect">
-                            <span class="menu-icon"><i class="fas fa-images"></i></span><span class="menu-number">7</span>Hình Ảnh Lỗi
+                            <span class="menu-icon"><i class="fas fa-images"></i></span><span class="menu-number">7</span>@Localizer["PhotoDefect"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "OQLEndline" }, new[] { "RP_OQLEndline" })" asp-controller="Report" asp-action="RP_OQLEndline">
-                            <span class="menu-icon"><i class="fas fa-calendar-day"></i></span><span class="menu-number">8</span>Daily OQL End Line
+                            <span class="menu-icon"><i class="fas fa-calendar-day"></i></span><span class="menu-number">8</span>@Localizer["OQLEndline"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "SummaryKCM" }, new[] { "RP_Summary_Defects_KCM" })" asp-controller="Report" asp-action="RP_Summary_Defects_KCM">
-                            <span class="menu-icon"><i class="fas fa-exclamation-triangle"></i></span><span class="menu-number">9</span>Tổng Hợp Lỗi Chuyền May
+                            <span class="menu-icon"><i class="fas fa-exclamation-triangle"></i></span><span class="menu-number">9</span>@Localizer["SummaryKCM"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "Form4BCCLMSUM" }, new[] { "RP_Form4_BCCLM_SUM" })" asp-controller="Report" asp-action="RP_Form4_BCCLM_SUM">
-                            <span class="menu-icon"><i class="fas fa-bug"></i></span><span class="menu-number">9.1</span>Lỗi Chuyền May
+                            <span class="menu-icon"><i class="fas fa-bug"></i></span><span class="menu-number">9.1</span>@Localizer["Form4BCCLMSUM"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "Form7BTP" }, new[] { "RP_Form7" })" asp-controller="Report" asp-action="RP_Form7">
-                            <span class="menu-icon"><i class="fas fa-cogs"></i></span><span class="menu-number">10</span>Thông Số BTP
+                            <span class="menu-icon"><i class="fas fa-cogs"></i></span><span class="menu-number">10</span>@Localizer["Form7BTP"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "Form8TP" }, new[] { "RP_Form8" })" asp-controller="Report" asp-action="RP_Form8">
-                            <span class="menu-icon"><i class="fas fa-box"></i></span><span class="menu-number">11</span>Thông Số TP
+                            <span class="menu-icon"><i class="fas fa-box"></i></span><span class="menu-number">11</span>@Localizer["Form8TP"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "SummaryEndline" }, new[] { "SummaryEndline" })" asp-controller="Report" asp-action="SummaryEndline">
-                            <span class="menu-icon"><i class="fas fa-file-alt"></i></span><span class="menu-number">12</span>End-Line Summary Report
+                            <span class="menu-icon"><i class="fas fa-file-alt"></i></span><span class="menu-number">12</span>@Localizer["SummaryEndline"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "FCATracking" }, new[] { "FCATracking" })" asp-controller="Report" asp-action="FCATracking">
-                            <span class="menu-icon"><i class="fas fa-crosshairs"></i></span><span class="menu-number">13</span>FCA Tracking Report
+                            <span class="menu-icon"><i class="fas fa-crosshairs"></i></span><span class="menu-number">13</span>@Localizer["FCATracking"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "FCATrackingACDate" }, new[] { "FCATrackingACDate" })" asp-controller="Report" asp-action="FCATrackingACDate">
-                            <span class="menu-icon"><i class="fas fa-calendar-check"></i></span></i></span><span class="menu-number">14</span>FCA Tracking Report AC-Date
+                            <span class="menu-icon"><i class="fas fa-calendar-check"></i></span></i></span><span class="menu-number">14</span>@Localizer["FCATrackingACDate"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "Form10BCHT" }, new[] { "RP_Form10" })" asp-controller="Report" asp-action="RP_Form10">
-                            <span class="menu-icon"><i class="fas fa-check-circle"></i></span><span class="menu-number">15</span>Báo Cáo Chất Lượng Hoàn Thiện84
+                            <span class="menu-icon"><i class="fas fa-check-circle"></i></span><span class="menu-number">15</span>@Localizer["Form10BCHT"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "SummaryBCHT" }, new[] { "SummaryBCHT" })" asp-controller="Report" asp-action="SummaryBCHT">
-                            <span class="menu-icon"><i class="fas fa-tasks"></i></span><span class="menu-number">16</span>Tổng Hợp Lỗi Hoàn Thiện 84
+                            <span class="menu-icon"><i class="fas fa-tasks"></i></span><span class="menu-number">16</span>@Localizer["SummaryBCHT"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "SummaryChecker" }, new[] { "SummaryChecker" })" asp-controller="Report" asp-action="SummaryChecker">
-                            <span class="menu-icon"><i class="fas fa-user-check"></i></span><span class="menu-number">17</span>Checker 84 Summary Report
+                            <span class="menu-icon"><i class="fas fa-user-check"></i></span><span class="menu-number">17</span>@Localizer["SummaryChecker"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "Form10OQL" }, new[] { "RP_Form10OQL" })" asp-controller="Report" asp-action="RP_Form10OQL">
-                            <span class="menu-icon"><i class="fas fa-calendar-alt"></i></span><span class="menu-number">18</span>Checker 84 Daily OQL
+                            <span class="menu-icon"><i class="fas fa-calendar-alt"></i></span><span class="menu-number">18</span>@Localizer["Form10OQL"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "FQCTracking" }, new[] { "FQCTracking" })" asp-controller="Report" asp-action="FQCTracking">
-                            <span class="menu-icon"><i class="fas fa-search-plus"></i></span><span class="menu-number">19</span>FQC Tracking Report
+                            <span class="menu-icon"><i class="fas fa-search-plus"></i></span><span class="menu-number">19</span>@Localizer["FQCTracking"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "SummaryFQC" }, new[] { "SummaryFQC" })" asp-controller="Report" asp-action="SummaryFQC">
-                            <span class="menu-icon"><i class="fas fa-clipboard-list"></i></span><span class="menu-number">20</span>Tổng Hợp Lỗi FQC
+                            <span class="menu-icon"><i class="fas fa-clipboard-list"></i></span><span class="menu-number">20</span>@Localizer["SummaryFQC"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "Form4Quality" }, new[] { "Form4_Quality" })" asp-controller="Report" asp-action="Form4_Quality">
-                            <span class="menu-icon"><i class="fas fa-chart-bar"></i></span><span class="menu-number">21</span>InLine Quality Report Summary
+                            <span class="menu-icon"><i class="fas fa-chart-bar"></i></span><span class="menu-number">21</span>@Localizer["InLineQualityReportSummary"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "TopForm4Quality" }, new[] { "TopForm4Quality" })" asp-controller="Report" asp-action="TopForm4Quality">
-                            <span class="menu-icon"><i class="fas fa-trophy"></i></span><span class="menu-number">22</span>TOP InLine Quality Report
+                            <span class="menu-icon"><i class="fas fa-trophy"></i></span><span class="menu-number">22</span>@Localizer["TopInLineQualityReport"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "TopForm6Quality" }, new[] { "TopForm6Quality" })" asp-controller="Report" asp-action="TopForm6Quality">
-                            <span class="menu-icon"><i class="fas fa-medal"></i></span><span class="menu-number">23</span>TOP EndLine Quality Report
+                            <span class="menu-icon"><i class="fas fa-medal"></i></span><span class="menu-number">23</span>@Localizer["TopEndLineQualityReport"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "EndlineReport" }, new[] { "EndlineReport" })" asp-controller="Report" asp-action="EndlineReport">
-                            <span class="menu-icon"><i class="fas fa-file-invoice"></i></span><span class="menu-number">24</span>EndLine Detail Report
+                            <span class="menu-icon"><i class="fas fa-file-invoice"></i></span><span class="menu-number">24</span>@Localizer["EndLineDetailReport"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "EndlineUnit" }, new[] { "EndlineUnit" })" asp-controller="Report" asp-action="EndlineUnit">
-                            <span class="menu-icon"><i class="fas fa-sitemap"></i></span><span class="menu-number">25</span>Báo Cáo Cuối Chuyền Theo Unit
+                            <span class="menu-icon"><i class="fas fa-sitemap"></i></span><span class="menu-number">25</span>@Localizer["EndlineUnitReport"]
                         </a>
                     </li>
                     <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "EndlineUnitEN" }, new[] { "EndlineUnitEN" })" asp-controller="Report" asp-action="EndlineUnitEN">
-                            <span class="menu-icon"><i class="fas fa-network-wired"></i></span><span class="menu-number">26</span>Report EndLine By Unit
+                            <span class="menu-icon"><i class="fas fa-network-wired"></i></span><span class="menu-number">26</span>@Localizer["EndlineUnitENReport"]
                         </a>
                     </li>
                 </ul>
@@ -181,137 +182,137 @@
         <ul class="list-unstyled sidebar-menu">
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "Form1BCCLC" }, new[] { "RP_Form1" })" asp-controller="Report" asp-action="RP_Form1">
-                    <span class="menu-number">1</span>Báo Cáo Chất Lượng Bàn Cắt
+                    <span class="menu-number">1</span>@Localizer["Form1BCCLC"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "Form2BCCPI" }, new[] { "RP_Form2" })" asp-controller="Report" asp-action="RP_Form2">
-                    <span class="menu-number">2</span>Báo Cáo Chất Lượng CPI
+                    <span class="menu-number">2</span>@Localizer["Form2BCCPI"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "Form3BCDT" }, new[] { "RP_Form3" })" asp-controller="Report" asp-action="RP_Form3">
-                    <span class="menu-number">3</span>Báo Cáo Bàn Cắt Đầu Tiên
+                    <span class="menu-number">3</span>@Localizer["Form3BCDT"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "Form4BCCLM" }, new[] { "RP_Form4","RP_Form4_Unit" })" asp-controller="Report" asp-action="RP_Form4">
-                    <span class="menu-number">4</span>Báo Cáo Chất Lượng Chuyền May
+                    <span class="menu-number">4</span>@Localizer["Form4BCCLM"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "Form6BCCC" }, new[] { "RP_Form6" })" asp-controller="Report" asp-action="RP_Form6">
-                    <span class="menu-number">5</span>Báo Cáo Chất Lượng Cuối Chuyền
+                    <span class="menu-number">5</span>@Localizer["Form6BCCC"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "SummaryKCC" }, new[] { "RP_Summary_Defects_KCC" })" asp-controller="Report" asp-action="RP_Summary_Defects_KCC">
-                    <span class="menu-number">6</span>Tổng Hợp Lỗi Cuối Chuyền
+                    <span class="menu-number">6</span>@Localizer["SummaryKCC"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "PhotoDefect" }, new[] { "RP_PhotoDefect" })" asp-controller="Report" asp-action="RP_PhotoDefect">
-                    <span class="menu-number">7</span>Hình Ảnh Lỗi
+                    <span class="menu-number">7</span>@Localizer["PhotoDefect"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "OQLEndline" }, new[] { "RP_OQLEndline" })" asp-controller="Report" asp-action="RP_OQLEndline">
-                    <span class="menu-number">8</span>Daily OQL End Line
+                    <span class="menu-number">8</span>@Localizer["OQLEndline"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "SummaryKCM" }, new[] { "RP_Summary_Defects_KCM" })" asp-controller="Report" asp-action="RP_Summary_Defects_KCM">
-                    <span class="menu-number">9</span>Tổng Hợp Lỗi Chuyền May
+                    <span class="menu-number">9</span>@Localizer["SummaryKCM"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "Form4BCCLMSUM" }, new[] { "RP_Form4_BCCLM_SUM" })" asp-controller="Report" asp-action="RP_Form4_BCCLM_SUM">
-                    <span class="menu-number">9.1</span>Lỗi Chuyền May
+                    <span class="menu-number">9.1</span>@Localizer["Form4BCCLMSUM"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "Form7BTP" }, new[] { "RP_Form7" })" asp-controller="Report" asp-action="RP_Form7">
-                    <span class="menu-number">10</span>Thông Số BTP
+                    <span class="menu-number">10</span>@Localizer["Form7BTP"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "Form8TP" }, new[] { "RP_Form8" })" asp-controller="Report" asp-action="RP_Form8">
-                    <span class="menu-number">11</span>Thông Số TP
+                    <span class="menu-number">11</span>@Localizer["Form8TP"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "SummaryEndline" }, new[] { "SummaryEndline" })" asp-controller="Report" asp-action="SummaryEndline">
-                    <span class="menu-number">12</span>End-Line Summary Report
+                    <span class="menu-number">12</span>@Localizer["SummaryEndline"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "FCATracking" }, new[] { "FCATracking" })" asp-controller="Report" asp-action="FCATracking">
-                    <span class="menu-number">13</span>FCA Tracking Report
+                    <span class="menu-number">13</span>@Localizer["FCATracking"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "FCATrackingACDate" }, new[] { "FCATrackingACDate" })" asp-controller="Report" asp-action="FCATrackingACDate">
-                    <span class="menu-number">14</span>FCA Tracking Report AC-Date
+                    <span class="menu-number">14</span>@Localizer["FCATrackingACDate"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "Form10BCHT" }, new[] { "RP_Form10" })" asp-controller="Report" asp-action="RP_Form10">
-                    <span class="menu-number">15</span>Báo Cáo Chất Lượng Hoàn Thiện84
+                    <span class="menu-number">15</span>@Localizer["Form10BCHT"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "SummaryBCHT" }, new[] { "SummaryBCHT" })" asp-controller="Report" asp-action="SummaryBCHT">
-                    <span class="menu-number">16</span>Tổng Hợp Lỗi Hoàn Thiện 84
+                    <span class="menu-number">16</span>@Localizer["SummaryBCHT"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "SummaryChecker" }, new[] { "SummaryChecker" })" asp-controller="Report" asp-action="SummaryChecker">
-                    <span class="menu-number">17</span>Checker 84 Summary Report
+                    <span class="menu-number">17</span>@Localizer["SummaryChecker"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "Form10OQL" }, new[] { "RP_Form10OQL" })" asp-controller="Report" asp-action="RP_Form10OQL">
-                    <span class="menu-number">18</span>Checker 84 Daily OQL
+                    <span class="menu-number">18</span>@Localizer["Form10OQL"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "FQCTracking" }, new[] { "FQCTracking" })" asp-controller="Report" asp-action="FQCTracking">
-                    <span class="menu-number">19</span>FQC Tracking Report
+                    <span class="menu-number">19</span>@Localizer["FQCTracking"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "SummaryFQC" }, new[] { "SummaryFQC" })" asp-controller="Report" asp-action="SummaryFQC">
-                    <span class="menu-number">20</span>Tổng Hợp Lỗi FQC
+                    <span class="menu-number">20</span>@Localizer["SummaryFQC"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "Form4Quality" }, new[] { "Form4_Quality" })" asp-controller="Report" asp-action="Form4_Quality">
-                    <span class="menu-number">21</span>InLine Quality Report Summary
+                    <span class="menu-number">21</span>@Localizer["InLineQualityReportSummary"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "TopForm4Quality" }, new[] { "TopForm4Quality" })" asp-controller="Report" asp-action="TopForm4Quality">
-                    <span class="menu-number">22</span>TOP InLine Quality Report
+                    <span class="menu-number">22</span>@Localizer["TopInLineQualityReport"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "TopForm6Quality" }, new[] { "TopForm6Quality" })" asp-controller="Report" asp-action="TopForm6Quality">
-                    <span class="menu-number">23</span>TOP EndLine Quality Report
+                    <span class="menu-number">23</span>@Localizer["TopEndLineQualityReport"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "EndlineReport" }, new[] { "EndlineReport" })" asp-controller="Report" asp-action="EndlineReport">
-                    <span class="menu-number">24</span>EndLine Detail Report
+                    <span class="menu-number">24</span>@Localizer["EndLineDetailReport"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "EndlineUnit" }, new[] { "EndlineUnit" })" asp-controller="Report" asp-action="EndlineUnit">
-                    <span class="menu-number">25</span>Báo Cáo Cuối Chuyền Theo Unit
+                    <span class="menu-number">25</span>@Localizer["EndlineUnitReport"]
                 </a>
             </li>
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "EndlineUnitEN" }, new[] { "EndlineUnitEN" })" asp-controller="Report" asp-action="EndlineUnitEN">
-                    <span class="menu-number">26</span>Report EndLine By Unit
+                    <span class="menu-number">26</span>@Localizer["ReportEndLineByUnit"]
                 </a>
             </li>
         </ul>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="MessageStatus_Mo" xml:space="preserve">
+        <value>Please enter MO to search.</value>
+    </data>
+    <data name="MessageStatus_Mo_NotF" xml:space="preserve">
+        <value>No operation found for MO</value>
+    </data>
+    <data name="MessageStatus_File" xml:space="preserve">
+        <value>Please choose file.</value>
+    </data>
+    <data name="MessageStatus_FileImp" xml:space="preserve">
+        <value>Error occurred while uploading file.</value>
+    </data>
+    <data name="Nodata" xml:space="preserve">
+        <value>No Data</value>
+    </data>
+    <data name="downloadForm" xml:space="preserve">
+        <value>Download Form</value>
+    </data>
+    <data name="F_Operaton" xml:space="preserve">
+        <value>Management Operation</value>
+    </data>
+    <data name="F_Operaton_Title" xml:space="preserve">
+        <value>Upload Operation to Excel</value>
+    </data>
+    <data name="F_Operaton_Code" xml:space="preserve">
+        <value>Operation Code</value>
+    </data>
+    <data name="F_Operaton_VN" xml:space="preserve">
+        <value>Operation VN</value>
+    </data>
+    <data name="F_Operaton_EN" xml:space="preserve">
+        <value>Operation EN</value>
+    </data>
+
+    <data name="F_Fault_Title" xml:space="preserve">
+        <value>Management Fault List</value>
+    </data>
+    <data name="F_Fault_place" xml:space="preserve">
+        <value>Search by Error Code or Vietnamese Name...</value>
+    </data>
+    <data name="F_Fault_Add" xml:space="preserve">
+        <value>Add Fault</value>
+    </data>
+    <data name="F_Fault_Code" xml:space="preserve">
+        <value>Fault Code</value>
+    </data>
+    <data name="F_Fault_Type" xml:space="preserve">
+        <value>Fault Type</value>
+    </data>
+    <data name="F_Fault_NameVN" xml:space="preserve">
+        <value>Fault Name VN</value>
+    </data>
+    <data name="F_Fault_NameEN" xml:space="preserve">
+        <value>Fault Name EN</value>
+    </data>
+    <data name="F_Fault_inLine" xml:space="preserve">
+        <value>InLine Report</value>
+    </data>
+    <data name="F_Fault_endLine" xml:space="preserve">
+        <value>EndLine Report</value>
+    </data>
+    <data name="F_Fault_edit" xml:space="preserve">
+        <value>Edit Fault</value>
+    </data>
+    <data name="F_Fault_delete" xml:space="preserve">
+        <value>Delete Fault</value>
+    </data>
+    <data name="F_Fault_deleteInfo" xml:space="preserve">
+        <value>Are you sure you want to delete the error?</value>
+    </data>
+    <data name="F_Fault_deleteCaution" xml:space="preserve">
+        <value>Note: Deletion cannot be undone.</value>
+    </data>
+    <data name="F_TP_Title" xml:space="preserve">
+        <value>Finished Product Parameter Measurement Point</value>
+    </data>
+    <data name="F_Online_Title" xml:space="preserve">
+        <value>Online Files</value>
+    </data>
+    
+
+</root>

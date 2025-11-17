@@ -146,7 +146,7 @@
                 if(!string.IsNullOrEmpty(photo))
                 {
                     @* <img src="/upload/Photos/Form6_BCCC/@photo" class="photo-thumb" onclick='Show_Photo("@photo")'/> *@
-                    <img src="@($"{imgPath}upload/Photos/Form6_BCKCC/{photo}")" class="photo-thumb" onclick='Show_Photo("@($"{imgPath}upload/Photos/Form6_BCKCC/{photo}")")'/>
+                    <img src="/upload/Photos/Form6_BCKCC/@photo" class="photo-thumb" onclick='Show_Photo("/upload/Photos/Form6_BCKCC/@photo")'/>
                 }
             }
         }

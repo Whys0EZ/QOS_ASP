@@ -122,7 +122,7 @@
                 <tbody class=" align-middle text-center">
                 @foreach(var row in Model.ReportData)
                 {
-                    <tr>
+                    <tr id="row-@row["Unit"]">
                         <td>@row["Unit"]</td>
                         <td>@row["TotalQTY"]</td>
                         <td>@row["Check_Qty"]</td>
@@ -131,7 +131,7 @@
                         <td>@row["Fault_Level_1_Sum"]</td>
                         <td>@row["Fault_Level_2_Sum"]</td>
                         <td>@row["OQL_total"] %</td>
-                        <td>View</td>
+                        <td><a href="javascript:void(0);" onclick="viewDetails('@Model.DateFrom.ToString("yyyy-MM-dd")','@Model.DateFrom.ToString("yyyy-MM-dd")','@row["Unit"]','@Model.Mo','@Model.Color','@Model.Line')">View</a></td>
                     </tr>
                 }
 
@@ -253,6 +253,19 @@
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            onClick: (evt, elements) => {
+                if (elements.length > 0) {
+                    const index = elements[0].index; // Lấy index của cột được nhấp
+                    var sewer = barChart.data.labels[index]; // Lấy Sewer tương ứng
+                    const row = document.getElementById(`row-${sewer}`); // Tìm dòng trong bảng
+
+                    if (row) {
+                        row.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Cuộn đến dòng
+                        row.style.backgroundColor = 'Orange'; // Highlight dòng GoldenRod
+                        setTimeout(() => { row.style.backgroundColor = ''; }, 2000); // Bỏ highlight sau 2 giây
+                    }
+                }
+            },
             plugins: {
                 legend: {
                     display: false
@@ -320,5 +333,24 @@
         }]
     });
 
+    function viewDetails(dateFrom, dateTo, unit, mo, color, line) {
+        var width = 1200;
+        var height = 800;
+        var left = (screen.width - width) / 2;
+        var top = (screen.height - height) / 2;
+
+        const popupUrl = `/Report/EndlineUnit/EndlineSewer?DateFrom=${dateFrom}&DateTo=${dateTo}&Unit=${unit}&MO=${mo}&Color=${color}&Line=${line}`;
+        window.open(popupUrl, '_blank');
+
+        @* window.open('/Report/EndlineUnit/EndlineSewer?DateFrom=' + dateFrom + '&DateTo=' + dateTo + '&Unit=' + unit + '&MO=' + mo + '&Color=' + color + '&Line=' + line,
+            'DetailWindow',
+            'width=' + width +
+            ',height=' + height +
+            ',left=' + left +
+            ',top=' + top +
+            ',scrollbars=yes,resizable=yes','_blank'); *@
+    }
+
+        
 
 </script>

@@ -106,7 +106,7 @@ namespace QOS.Areas.API.Controllers
                 using SqlConnection conn = new(_connectionString);
                 
                 // ✅ Xác định IsProcessed dựa trên độ dài query (giống PHP)
-                int? isProcessed = queryData.Length > 200 ? null : (int?)1;
+                int? isProcessed = queryData.Length > 160 ? null : (int?)1;
 
                 string query = @"
                     INSERT INTO SyncData_Query 

@@ -1,16 +1,18 @@
 @model QOS.Areas.Report.Models.RP_Form3ViewModel
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
 @{
-    ViewData["Title"] = "Report Page";
+    ViewData["Title"] = Localizer["Form2BCCPI"];
     Layout = "_MenuReport";
 }
 
 <partial name="_AlertMessage" />
 <div class="continer my-3">
-    <div class="row align-items-center mb-3">
+    <div class="row align-items-center mb-3 m-3">
         <!-- Bên trái -->
 
         <div class="col-md-4 d-flex flex-wrap gap-2">
-            <h3 class="text-primary fw-bold">QOS - BÁO CÁO CHẤT LƯỢNG CPI</h3>
+            <h3 class="text-primary fw-bold text-uppercase">@Localizer["Form3BCDT"]</h3>
         </div>
 
         <!-- Bên phải -->
@@ -20,7 +22,7 @@
 
                 <select class="form-control" id="Unit" name="Unit" asp-for="Unit"
                     asp-items="@(new SelectList(Model.Unit_List, "Unit", "Unit", Model.Unit))">
-                    <option value="ALL">-- Chọn Unit --</option>
+                    <option value="ALL">-- @Localizer["Unit"] --</option>
                 </select>
 
                 <input type="date" id="dateFrom" name="dateFrom" class="form-control"
@@ -29,10 +31,10 @@
                     value="@Model.DateEnd.ToString("yyyy-MM-dd")" />
 
 
-                <button class="btn btn-warning" id="Check" name="Check" type="submit"> Check</button>
-                <button class="btn btn-warning" id="Reset" name="Reset" type="reset"> Nhập&nbsp;Lại</button>
-                <button type="button" class="btn btn-primary" id="ExportExcel"
-                    name="ExportExcel">Tải&nbsp;Excel</button>
+                <button class="btn btn-warning text-nowrap" id="Check" name="Check" type="submit"> @Localizer["Check"]</button>
+                <button class="btn btn-warning text-nowrap" id="Reset" name="Reset" type="reset"> @Localizer["Reset"]</button>
+                <button type="button" class="btn btn-primary text-nowrap" id="ExportExcel"
+                    name="ExportExcel">@Localizer["ExportExcel"]</button>
             </form>
         </div>
     </div>
@@ -41,16 +43,17 @@
     <table class="table table-bordered table-hover table-striped">
         <thead class="table-light">
             <th>STT</th>
-            <th>Xưởng</th>
-            <th>Cut_Leader</th>
+            <th>@Localizer["Unit"]</th>
+            <th>@ReportLocalizer["CutLeader"]</th>
             <th>MO</th>
-            <th>Lot</th>
-            <th>Tổng SL</th>
+            <th>@ReportLocalizer["Batch"]</th>
+            <th>@ReportLocalizer["Qty"]</th>
         
-            <th>Trạng Thái</th>
-            <th>Lần Kiểm</th>
-            <th>Người Tạo</th>
-            <th>Thời Gian Kiểm</th>
+            <th>@ReportLocalizer["Status"]</th>
+            <th>@Localizer["AuditTime"]</th>
+            <th>@ReportLocalizer["ReAudit"]</th>
+            <th>@Localizer["UserUpdate"]</th>
+            <th>@Localizer["LastUpdate"]</th>
         </thead>
         <tbody>
             @if (Model.History != null)
@@ -64,7 +67,7 @@
                     {
                         bgColor = "background-color: yellow;";
                         fontColor = "color: red;";
-                        result = "Có";
+                        result = Localizer["Y"];
                         img = "/images/red_On.png";
 
                     }
@@ -72,7 +75,7 @@
                     {
                         bgColor = "";
                         fontColor = "color: green;";
-                        result = "Không";
+                        result = Localizer["N"];
                         img = "/images/green_On.png";
                     }
                     <tr style="@bgColor @fontColor">
@@ -103,7 +106,7 @@
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header bg-info text-white text-center text-uppercase">
-                <h5 class="modal-title">Chi tiết báo cáo</h5>
+                <h5 class="modal-title">@ReportLocalizer["modal-title"]</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="ModalRP_Form3">
@@ -136,7 +139,10 @@
                     $("#ModalRP_Form3").html(data);
                     var modal = new bootstrap.Modal(document.getElementById('Form3Modal'));
                     var unit = $("#ModalRP_Form3").find("#UnitField").val();
-                    $(".modal-title").text("Chi tiết báo cáo - Xưởng: " + unit);
+                    //$(".modal-title").text("Chi tiết báo cáo - Xưởng: " + unit);
+                    $(".modal-title").text(
+                        @Html.Raw(Json.Serialize($"{ReportLocalizer["modal-title"]} - {Localizer["Unit"]}: ")) + unit
+                    );
 
                     modal.show();
                 }

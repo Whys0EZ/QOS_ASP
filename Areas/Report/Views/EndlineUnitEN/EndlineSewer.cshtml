@@ -1,0 +1,377 @@
+@using System.Text.Json
+@model QOS.Areas.Report.Models.EndlineUnitViewModel
+@{
+	ViewData["Title"] = "ENDLINE REPORT";
+	@* Layout = "_MenuReport"; *@
+}
+<link rel="stylesheet" href="~/css/report.css" />
+<style>
+    tr:nth-child(even) {
+        background-color: #D6EEEE;
+    }
+    thead {
+        background-color: #00ffff!important;
+    }
+    .chart-card {
+        padding: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+</style>
+<partial name="_AlertMessage" />
+<div class="ddashboard-container">
+    <div class="container-fluid ">
+        <!-- Header -->
+        
+
+        <!-- Filter Section -->
+        <div class="filter-card p-3 shadow-sm rounded bg-white mb-3">
+            <form method="get" asp-action="EndlineSewer" id="filterForm"
+                class="filter-form d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                <!-- Left group -->
+                <div class="d-flex flex-wrap align-items-center gap-3">
+
+                    <!-- Unit -->
+                    <div class="filter-item d-flex align-items-center gap-2 flex-wrap">
+                        <label class="filter-label me-2 fw-semibold">Unit:</label>
+                        <select class="form-select form-select-sm" name="unit" id="unitSelect" style="width: 120px;">
+                            
+                            <option value="ALL" selected>--Unit--</option>
+                            @if(Model.Customer_List.Any()){
+                                foreach( var customer in Model.Customer_List)
+                                {
+                                    <option value="@customer" selected ="@(customer == Model.Unit)">@customer</option>
+                                }
+                            }
+
+                            @if(Model.Unit_List.Any()){
+                                foreach( var unit in Model.Unit_List)
+                                {
+                                    <option value="@unit.Unit" selected ="@(unit.Unit == Model.Unit)">@unit.Unit</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <!-- Line -->
+                    <div class="filter-item d-flex align-items-center gap-2 flex-wrap">
+                        <label class="filter-label me-2 fw-semibold">Line:</label>
+                        <select class="form-select form-select-sm" name="line" id="lineSelect" style="width: 120px;">
+                            
+                            <option value="ALL" selected>--Line--</option>
+                            @if(Model.Line_List.Any()){
+                                foreach( var line in Model.Line_List)
+                                {
+                                    <option value="@line.Line" selected ="@(line.Line == Model.Line)">@line.Line</option>
+                                }
+                            }
+
+                        </select>
+                    </div>
+
+                    <div class="filter-item">
+                        
+                        <input placeholder="Mo or StyleCode"  value="@(Model.Mo == "" ? "" : Model.Mo)" class="form-control" name="Mo" style="width: 150px;">
+                    </div>
+
+                    <div class="filter-item">
+                        
+                        <input placeholder="Color" type="text" value="@(Model.Color== "" ? "" : Model.Color)" class="form-control" name="Color" style="width: 150px;">
+                    </div>
+
+                    <!-- Ngày -->
+                    <div class="filter-item d-flex align-items-center gap-2 flex-wrap">
+                        <label class="filter-label fw-semibold mb-0">Ngày:</label>
+                        <input type="date" value="@Model.DateFrom.ToString("yyyy-MM-dd")" class="form-control form-control-sm" name="dateFrom" style="width: 140px;">
+                        <span class="fw-semibold">-</span>
+                        <input type="date" value="@Model.DateEnd.ToString("yyyy-MM-dd")" class="form-control form-control-sm" name="dateEnd" style="width: 140px;">
+                    </div>
+
+                </div>
+
+                <!-- Right group (buttons) -->
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="bi bi-search me-1"></i> Tìm kiếm
+                    </button>
+                    @* <button type="button" class="btn btn-success btn-sm" onclick="exportToExcel()">
+                        <i class="bi bi-file-earmark-excel me-1"></i> Tải Excel
+                    </button> *@
+                </div>
+
+            </form>
+        </div>
+
+        @* <div class="header-card">
+            <marquee behavior="alternate"><h1 class="header-title ma">
+                <i class="bi bi-clipboard-data me-2"></i>
+                ENDLINE DETAIL REPORT
+            </h1></marquee>
+        </div> *@
+
+    </div>
+    <div class="chart-card">
+        <h2 class="chart-title">REPORT ENDLINE BY EMP @Model.Unit</h2>
+        <div class="chart-container">
+            <canvas id="barChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card table-responsive">
+        @if(Model.ReportData != null && Model.ReportData.Any())
+        {
+            int stt =1;
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-info align-middle text-center">
+                    <tr>
+                        <th style="width:15px;">STT</th>
+                        <th>Unit</th>
+                        <th>Emp Name</th>
+                        <th>Qty ETS</th>
+                        <th>Check Qty</th>
+                        <th>Total Fault</th>
+                        <th>Critical Fault</th>
+                        @* <th>Serious Fault</th> *@
+                        <th>Minor Fault</th>
+                        <th>OQL</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class=" align-middle text-center">
+                @foreach(var row in Model.ReportData)
+                {
+                    <tr id="row-@row["Unit"]">
+                        <td>@stt</td>
+                        <td>@row["Unit"]</td>
+                        <td>@row["Sewer"] - @row["Sewer_Name"]</td>
+                        <td>@row["TotalQTY"]</td>
+                        <td>@row["Check_Qty"]</td>
+                        <td>@row["Total_Fault_QTY"]</td>
+                        @* <td>@row["Fault_Level_3_Sum"]</td> *@
+                        <td>@row["Fault_Level_1_Sum"]</td>
+                        <td>@row["Fault_Level_2_Sum"]</td>
+                        <td>@row["OQL_total"] %</td>
+                        <td><a href="javascript:void(0);" onclick="viewDetails('@Model.DateFrom.ToString("yyyy-MM-dd")','@Model.DateFrom.ToString("yyyy-MM-dd")','@row["Unit"]','@Model.Mo','@Model.Color','@row["Sewer"]')">View</a></td>
+                    </tr>
+                    stt++;
+                }
+
+
+                </tbody>
+            </table>
+
+        }
+        else
+        {
+            <p class="text-center text-muted">Không có dữ liệu</p>
+        }
+        
+    </div>
+</div>
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-body text-center py-4">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="fw-bold">Đang tải dữ liệu...</div>
+                <small class="text-muted">Vui lòng chờ trong giây lát</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
+<script>
+ 
+    function Submit()
+        {
+            // Show loading
+            var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+            loadingModal.show();
+            document.getElementById("filterForm").submit();
+            
+        }
+    // Show loading on form submit
+    document.getElementById('filterForm').addEventListener('submit', function() {
+        var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+        loadingModal.show();
+    });
+
+         // Export to Excel function
+    function exportToExcel() {
+        
+
+        const form = document.getElementById('filterForm');
+        const formData = new FormData(form);
+        const params = new URLSearchParams(formData);
+
+        // Nối thêm danh sách lỗi
+       
+        console.log('params:', params.toString());
+        // Gọi controller qua GET
+         window.location.href = `/Report/EndlineUnitEN/ExportExcelSewer?${params.toString()}`;
+    }
+
+
+    const defectStats = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+        (Model.ReportData ?? new List<Dictionary<string, object>>())
+            .Select(d => new { 
+                name = (d.TryGetValue("Sewer_Name", out var val) && val != null && val !="") ? val.ToString() : "Total",
+                count = d.ContainsKey("OQL_total") ? Convert.ToInt32(d["OQL_total"]) : 0
+            })
+    ));
+    const labels = defectStats.map(d => d.name);      // Tên lỗi thực tế
+    const counts = defectStats.map(d => d.count);     // Số lượng thực tế
+    console.log('defectStats:', defectStats);
+    const maxValue = Math.max(...counts);
+    const yAxisMax = maxValue + 2;
+   
+    // Bar Chart
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    const barChart = new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Số lượng lỗi (pcs)',
+                data: counts,
+                backgroundColor: [
+                    'rgba(99, 102, 241, 0.8)',
+                    'rgba(16, 185, 129, 0.8)',
+                    'rgba(239, 68, 68, 0.8)',
+                    'rgba(20, 184, 166, 0.8)',
+                    'rgba(168, 85, 247, 0.8)',
+                    '#AE4B38',
+                    '#E75936',
+                    '#505C84',
+                    '#F8D974',
+                    '#00AB78',
+                    '#42BDCB',
+                    '#FF9A90',
+                    '#708C66'
+                ],
+                borderColor: [
+                    'rgb(99, 102, 241)',
+                    'rgb(16, 185, 129)',
+                    'rgb(239, 68, 68)',
+                    'rgb(20, 184, 166)',
+                    'rgb(168, 85, 247)',
+                    '#AE4B38',
+                    '#E75936',
+                    '#505C84',
+                    '#F8D974',
+                    '#00AB78',
+                    '#42BDCB',
+                    '#FF9A90',
+                    '#708C66'
+                ],
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            onClick: (evt, elements) => {
+                if (elements.length > 0) {
+                    const index = elements[0].index; // Lấy index của cột được nhấp
+                    var sewer = barChart.data.labels[index]; // Lấy Sewer tương ứng
+                    const row = document.getElementById(`row-${sewer}`); // Tìm dòng trong bảng
+
+                    if (row) {
+                        row.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Cuộn đến dòng
+                        row.style.backgroundColor = 'Orange'; // Highlight dòng GoldenRod
+                        setTimeout(() => { row.style.backgroundColor = ''; }, 2000); // Bỏ highlight sau 2 giây
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
+                    titleFont: { size: 14, weight: 'bold' },
+                    bodyFont: { size: 13 },
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    borderWidth: 1,
+                    callbacks: {
+                        label: function(context) {
+                            return context.parsed.y.toLocaleString() + ' %';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                   suggestedMax: yAxisMax,
+
+                    title: {
+                        display: true,
+                        text: 'OQL'
+
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return value.toLocaleString() + ' %';
+                        },
+                        font: { size: 12 }
+                    },
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        font: { size: 11 }
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        },
+        plugins: [{
+            // Plugin hiển thị giá trị lên cột
+            id: 'dataLabels',
+            afterDatasetsDraw: function (chart) {
+                const ctx = chart.ctx;
+                chart.data.datasets.forEach(function (dataset, i) {
+                    const meta = chart.getDatasetMeta(i);
+                    meta.data.forEach(function (bar, index) {
+                        const value = dataset.data[index].toFixed(0) + " %";
+                        ctx.fillStyle = 'black'; // Màu chữ
+                        ctx.font = '16px Arial'; // Kiểu chữ
+                        ctx.textAlign = 'center'; // Canh giữa
+                        ctx.fillText(value, bar.x, bar.y - 10); // Hiển thị giá trị
+                    });
+                });
+            }
+        }]
+    });
+
+    function viewDetails(dateFrom, dateTo, unit, mo, color, sewer) {
+        var width = 1200;
+        var height = 800;
+        var left = (screen.width - width) / 2;
+        var top = (screen.height - height) / 2;
+        const popupUrl = `/Report/EndlineUnitEN/EndlineSewerDetail?DateFrom=${dateFrom}&DateTo=${dateTo}&Unit=${unit}&MO=${mo}&Color=${color}&Sewer=${sewer}`;
+        window.open(popupUrl, '_blank');
+
+        @* window.open('/Report/EndlineUnitEN/EndlineSewerDetail?DateFrom=' + dateFrom + '&DateTo=' + dateTo + '&Unit=' + unit + '&MO=' + mo + '&Color=' + color + '&Sewer=' + sewer,
+            'DetailWindow',
+            'width=' + width +
+            ',height=' + height +
+            ',left=' + left +
+            ',top=' + top +
+            ',scrollbars=yes,resizable=yes'); *@
+    }
+
+        
+
+</script>

@@ -185,7 +185,7 @@
                             <td>@OQL% </td>
                             <td><i class="fas fa-user me-1"></i>@row["UserUpdate"]</td>
                             <td><i class="far fa-clock me-1"></i>@row["WorkDate"]</td>
-                            <td><i class="fa-solid fa-eye"></i></td>
+                            <td onclick="showDetails('@row["ID_Result"]','@row["UserUpdate"]','@row["Audit_Time"]')"><i class="fa-solid fa-eye"></i></td>
                         </tr>
                         index++;
                     }
@@ -217,6 +217,22 @@
         </div>
     </div>
 </div>
+
+@* modal-fullscreen *@
+<div class="modal fade" id="FQCModal" tabindex="-1" >
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white text-center text-uppercase">
+                <h5 class="modal-title">Chi tiết báo cáo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="ModalRP_FQC">
+                <!-- Nội dung chi tiết sẽ load vào đây -->
+            </div>
+        </div>
+    </div>
+</div>
+
 @* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
 <script>
     // Show loading on form submit
@@ -224,6 +240,22 @@
         var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
         loadingModal.show();
     });
+
+    function showDetails(id,user,auditTime) {
+        $.get('@Url.Action("DetailFQCTracking", "FQCTracking", new { area = "Report" })',
+            { id: id , user: user, auditTime: auditTime },
+            function (data) {
+                if (data) {
+                    // inset info
+                    $("#ModalRP_FQC").html(data);
+                    var modal = new bootstrap.Modal(document.getElementById('FQCModal'));
+                    var unit = $("#ModalRP_FQC").find("#UnitField").val();
+                    $(".modal-title").text("Chi tiết báo cáo - Xưởng : " + unit);
+
+                    modal.show();
+                }
+            });
+    }
 
     $("#ExportExcel_Test").click(function () {
         var Customer = $("#Customer").val();
