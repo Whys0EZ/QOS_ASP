@@ -1,5 +1,7 @@
 @model IEnumerable<QOS.Models.User>
 @inject QOS.Services.IUserPermissionService _permissionService
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.SystemAdmin.SharedResource> SystemLocalizer
 @{
     ViewData["Title"] = "System";
     Layout = "_MenuSystem";
@@ -7,23 +9,23 @@
 @if(_permissionService.HasPermission(User.Identity?.Name, "Sys_Admin"))
 {
     <partial name="_AlertMessage" />
-<h2>Quản lý người dùng</h2>
-<a asp-action="Create" class="btn btn-primary">+ Thêm user</a>
+<h2>@SystemLocalizer["ManagementUser"]</h2>
+<a asp-action="Create" class="btn btn-primary">+ @SystemLocalizer["AddUser"]</a>
 <div class="table-container pb-5" id="tableContainer">
     <table class="table table-bordered table-striped mt-3">
         <thead class="table-dark">
             <tr>
                 <th>ID</th>
-                <th>Factory</th>
-                <th>Team</th>
-                <th>Username</th>
-                <th>FullName</th>
+                <th>@Localizer["Factory"]</th>
+                <th>@SystemLocalizer["Department"]</th>
+                <th>@Localizer["Username"]</th>
+                <th>@Localizer["FullName"]</th>
                 <th>Email</th>
-                <th>Unit Check</th>
-                <th>Line Check</th>
-                <th>User Update</th>
-                <th>Last Update</th>
-                <th>Action</th>
+                <th>@SystemLocalizer["UnitCheck"]</th>
+                <th>@SystemLocalizer["LineCheck"]</th>
+                <th>@SystemLocalizer["UserCreate"]</th>
+                <th>@SystemLocalizer["TimeCreate"]</th>
+                <th>@Localizer["Action"]</th>
             </tr>
         </thead>
         <tbody>

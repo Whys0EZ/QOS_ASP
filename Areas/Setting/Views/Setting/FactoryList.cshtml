@@ -1,24 +1,26 @@
 @model IEnumerable<QOS.Models.Factory_List>
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Setting.SharedResource> SetLocalizer
 @{
     Layout = "_MenuSetting";
     ViewData["Title"] = "DS nhà máy";
 }
 <partial name="_AlertMessage" />
 <div>
-    <h2>Danh sách nhà máy</h2>
+    <h2 class="ms-3">@Localizer["FactoryList"]</h2>
 
-    <a asp-action="CreateFactory" class="btn btn-primary">+ Tạo mới</a>
+    <a asp-action="CreateFactory" class="btn btn-primary ms-3">+ @SetLocalizer["AddNew"]</a>
     @if (Model != null && Model.Any())
     {
         <table class="table table-bordered table-striped mt-3">
             <thead class="table-dark">
                 <tr>
-                    <th>STT</th>
-                    <th>Mã nhà máy</th>
-                    <th>Tên nhà máy</th>
-                    <th>Ghi chú</th>
-                    <th>Người tạo</th>
-                    <th>Ngày tạo</th>
+                    <th>@Localizer["No"]</th>
+                    <th>@SetLocalizer["FactoryCode"]</th>
+                    <th>@Localizer["Factory"]</th>
+                    <th>@Localizer["Remark"]</th>
+                    <th>@SetLocalizer["UserCreate"]</th>
+                    <th>@SetLocalizer["DateCreate"]</th>
                 </tr>
             </thead>
             <tbody>

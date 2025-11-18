@@ -1,8 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <data name="WelcomeMessage" xml:space="preserve">
-    <value>Welcome to QOS System</value>
+  <data name="AddNew" xml:space="preserve">
+    <value>Add New</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
+  <data name="FactoryCode" xml:space="preserve">
+    <value>Factory Code</value>
   </data>
+  <data name="FactoryName" xml:space="preserve">
+    <value>Factory Name</value>
+  </data>
+  <data name="UserCreate" xml:space="preserve">
+    <value>User Create</value>
+  </data>
+  <data name="DateCreate" xml:space="preserve">
+    <value>Date Create</value>
+  </data>
+  <data name="AddFactory" xml:space="preserve">
+    <value>Add Factory</value>
+  </data>
+  <data name="DepartmentCode" xml:space="preserve">
+    <value>Department Code</value>
+  </data>
+  <data name="DepartmentName" xml:space="preserve">
+    <value>Department Name</value>
+  </data>
+  <data name="AddDepartment" xml:space="preserve">
+    <value>Add Department</value>
+  </data>
+
 </root>

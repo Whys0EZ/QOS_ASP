@@ -1,8 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <data name="WelcomeMessage" xml:space="preserve">
-    <value>Welcome to QOS System</value>
+    <data name="ManagementUser" xml:space="preserve">
+    <value>Quản lý người dùng</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
+  <data name="AddUser" xml:space="preserve">
+    <value>Thêm người dùng</value>
+  </data>
+  <data name="Department" xml:space="preserve">
+    <value>Phòng ban</value>
+  </data>
+  <data name="OldPassword" xml:space="preserve">
+    <value>Mật khẩu cũ</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>Mật khẩu mới</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Đổi mật khẩu</value>
+  </data>
+  <data name="UnitCheck" xml:space="preserve">
+    <value>Xưởng kiểm tra</value>
+  </data>
+  <data name="LineCheck" xml:space="preserve">
+    <value>Chuyền kiểm tra</value>
+  </data>
+  <data name="UserCreate" xml:space="preserve">
+    <value>Người cập nhật</value>
+  </data>
+  <data name="TimeCreate" xml:space="preserve">
+    <value>Thời gian cập nhật</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Hành động</value>
+  </data>
+  <data name="EditUserTitle" xml:space="preserve">
+    <value>Thay đổi thông tin người dùng</value>
+  </data>
+  <data name="EditUser" xml:space="preserve">
+    <value>Thông tin người dùng</value>
+  </data>
+  <data name="Decentralization" xml:space="preserve">
+    <value>Phân quyền</value>
+  </data>
+  <data name="Function" xml:space="preserve">
+    <value>Chức năng</value>
+  </data>
+  <data name="Describe" xml:space="preserve">
+    <value>Mô tả</value>
+  </data>
+  <data name="Authorization" xml:space="preserve">
+    <value>Cấp quyền</value>
   </data>
 </root>

@@ -1,8 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <data name="WelcomeMessage" xml:space="preserve">
-    <value>Welcome to QOS System</value>
+  <data name="AddNew" xml:space="preserve">
+    <value>Thêm mới</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
+  <data name="FactoryCode" xml:space="preserve">
+    <value>Mã nhà máy</value>
+  </data>
+  <data name="FactoryName" xml:space="preserve">
+    <value>Tên nhà máy</value>
+  </data>
+  <data name="UserCreate" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="DateCreate" xml:space="preserve">
+    <value>Ngày tạo</value>
+  </data>
+  <data name="AddFactory" xml:space="preserve">
+    <value>Thêm nhà máy</value>
+  </data>
+  <data name="DepartmentCode" xml:space="preserve">
+    <value>Mã phòng ban</value>
+  </data>
+  <data name="DepartmentName" xml:space="preserve">
+    <value>Tên phòng ban</value>
+  </data>
+  <data name="AddDepartment" xml:space="preserve">
+    <value>Thêm phòng ban</value>
   </data>
 </root>

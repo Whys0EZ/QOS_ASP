@@ -1,25 +1,27 @@
 @model IEnumerable<QOS.Models.Team_List>
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Setting.SharedResource> SetLocalizer
 @{
     Layout = "_MenuSetting";
-    ViewData["Title"] = "DS phòng ban";
+    ViewData["Title"] = Localizer["DepartmentList"];
 }
 
 <partial name="_AlertMessage" />
 <div>
-    <h2>Danh sách phòng ban</h2>
+    <h2>@Localizer["DepartmentList"]</h2>
 
-    <a asp-action="CreateDepartment" class="btn btn-primary">+ Tạo mới</a>
+    <a asp-action="CreateDepartment" class="btn btn-primary">+ @SetLocalizer["AddNew"]</a>
     @if (Model != null && Model.Any())
     {
         <table class="table table-bordered table-striped mt-3">
             <thead class="table-dark">
                 <tr>
-                    <th>STT</th>
-                    <th>Mã phòng ban</th>
-                    <th>Tên Phòng ban</th>
-                    <th>Ghi chú</th>
-                    <th>Người tạo</th>
-                    <th>Ngày tạo</th>
+                    <th>@Localizer["No"]</th>
+                    <th>@SetLocalizer["DepartmentCode"]</th>
+                    <th>@SetLocalizer["DepartmentName"]</th>
+                    <th>@Localizer["Remark"]</th>
+                    <th>@SetLocalizer["UserCreate"]</th>
+                    <th>@SetLocalizer["DateCreate"]</th>
                 </tr>
             </thead>
             <tbody>

@@ -266,6 +266,9 @@
 <!-- Menu Item System - End -->
 
   <!-- infomation all -->
+  <data name="Zone" xml:space="preserve">
+        <value>Zone</value>
+    </data>
   <data name="Unit" xml:space="preserve">
     <value>Unit</value>
   </data>
@@ -275,6 +278,9 @@
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="Remark" xml:space="preserve">
+        <value>Remark</value>
+    </data>
   <data name="Color" xml:space="preserve">
     <value>Color</value>
   </data>

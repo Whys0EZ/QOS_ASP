@@ -249,6 +249,9 @@
     <data name="ChangePassword" xml:space="preserve">
         <value>Đổi Mật Khẩu</value>
     </data>
+    <data name="Zone" xml:space="preserve">
+        <value>Ngành hàng</value>
+    </data>
     <data name="Unit" xml:space="preserve">
         <value>Xưởng</value>
     </data>
@@ -257,6 +260,9 @@
     </data>
     <data name="No" xml:space="preserve">
         <value>STT</value>
+    </data>
+    <data name="Remark" xml:space="preserve">
+        <value>Ghi chú</value>
     </data>
     <data name="Color" xml:space="preserve">
         <value>Màu</value>

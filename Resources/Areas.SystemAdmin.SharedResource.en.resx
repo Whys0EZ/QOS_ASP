@@ -1,8 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <data name="WelcomeMessage" xml:space="preserve">
-    <value>Welcome to QOS System</value>
+  <data name="ManagementUser" xml:space="preserve">
+    <value>Management User</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
+  <data name="AddUser" xml:space="preserve">
+    <value>Add User</value>
   </data>
+  <data name="Department" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="OldPassword" xml:space="preserve">
+    <value>Old Password</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="UnitCheck" xml:space="preserve">
+    <value>Unit Check</value>
+  </data>
+  <data name="LineCheck" xml:space="preserve">
+    <value>Line Check</value>
+  </data>
+  <data name="UserCreate" xml:space="preserve">
+    <value>User Update</value>
+  </data>
+  <data name="TimeCreate" xml:space="preserve">
+    <value>Time Update</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+
+  <data name="EditUserTitle" xml:space="preserve">
+    <value>Change user information</value>
+  </data>
+  <data name="EditUser" xml:space="preserve">
+    <value>User information</value>
+  </data>
+  <data name="Decentralization" xml:space="preserve">
+    <value>Decentralization</value>
+  </data>
+  <data name="Function" xml:space="preserve">
+    <value>Function</value>
+  </data>
+  <data name="Describe" xml:space="preserve">
+    <value>Describe</value>
+  </data>
+  <data name="Authorization" xml:space="preserve">
+    <value>Authorization</value>
+  </data>
+
+
 </root>
