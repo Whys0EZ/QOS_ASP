@@ -36,8 +36,17 @@ public class HomeController : Controller
 
             // Console.WriteLine("IsAuthenticated: " + User.Identity?.IsAuthenticated);
             // Console.WriteLine("Claims: " + string.Join(",", User.Claims.Select(c => $"{c.Type}={c.Value}")));
+            // Check detect moblie
+            bool isMobile = HttpContext.Items["IsMobile"] != null &&
+                            (bool)HttpContext.Items["IsMobile"];
 
-            return View();
+            if (isMobile)
+            {
+                return RedirectToAction("Home", "Mobile");
+            }else {
+
+                return View();
+            }
         }
     [HttpGet]
     public IActionResult Contact()

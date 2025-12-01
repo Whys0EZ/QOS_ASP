@@ -1,0 +1,240 @@
+@{
+    Layout = "_LayoutMobile";
+}
+
+<div class="container">
+    @* <div class="mobile-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;">
+            <img src="/images/qos_icon.png" alt="Logo" style="height:40px;margin-right:10px" />
+           
+        </div>
+
+        <div style="display:flex;align-items:center;gap:8px;">
+            @if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                <div style="font-size:16px;color:#333;margin-right:18px">@User.Identity.Name</div>
+
+                <form asp-controller="Account" asp-action="Logout" method="post" style="margin:0;">
+                    @Html.AntiForgeryToken()
+                    <a title="Đăng Xuất" style="position:absolute; top:14px; right:3px; z-index:150;">
+                        <img src="/images/Logout2.png" style="width:18px;height:18px;margin-right:5px" />
+                  
+                    </a>
+                </form>
+            }
+            else
+            {
+                <a class="menu-button" href="/Account/Login" style="width:auto;padding:8px 12px;border-radius:8px;">
+                    <img src="/images/icons/user.png" style="width:20px;height:20px;margin-right:8px" />
+                    <span>Login</span>
+                </a>
+            }
+        </div>
+    </div> *@
+
+    <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-text">
+                    <a href="@Url.Action("Index", "Home")" title="Home" style="display:inline-flex;align-items:center;text-decoration:none;color:inherit;">
+                        <img src="/images/qos_icon.png" alt="Logo" style="height:40px;margin-right:10px" />
+                    </a>
+                </div>
+            </div>
+            <div class="user-info">
+                @if (User?.Identity?.IsAuthenticated ?? false)
+                {
+                    <span>@User.Identity.Name</span>
+                    <button class="logout-btn" onclick="logout()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                            <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+                        </svg>
+                    </button>
+                }
+            </div>
+        </div>
+
+<!-- Title Section -->
+    <div class="title-section">
+        <h1 class="title">Tổng Hợp Báo Cáo</h1>
+    </div>
+
+    <!-- Menu Items -->
+    <div class="menu-container">
+        <div class="menu-item ripple" onclick="navigate('Form1BCCLC')">
+            <a class="menu-link">
+                <div class="menu-icon icon-scissors">✂️</div>
+                <div class="menu-content">
+                    <div class="menu-title"><span class="menu-number">1. </span> Báo Cáo Chất Lượng Cắt</div>
+                </div>
+                <div class="menu-arrow">›</div>
+            </a>
+        </div>
+
+        <div class="menu-item ripple" onclick="navigate('Form2BCCPI')">
+            <a class="menu-link">
+                <div class="menu-icon icon-chart">📊</div>
+                <div class="menu-content">
+                    <div class="menu-title"><span class="menu-number">2. </span>Báo Cáo Phúc Tra CPI</div>
+                </div>
+                <div class="menu-arrow">›</div>
+            </a>
+        </div>
+
+        <div class="menu-item ripple" onclick="navigate('Form3BCDT')">
+            <a class="menu-link">
+                <div class="menu-icon icon-fabric">🧵</div>
+                <div class="menu-content">
+                    <div class="menu-title"><span class="menu-number">3. </span>Báo Cáo Bàn Cắt Đầu Tiên</div>
+                </div>
+                <div class="menu-arrow">›</div>
+            </a>
+        </div>
+
+        <div class="menu-item ripple" onclick="navigate('Form4BCCLM')">
+            <a class="menu-link">
+                <div class="menu-icon icon-truck">🚚</div>
+                <div class="menu-content">
+                    <div class="menu-title"><span class="menu-number">4. </span>Báo Cáo Đi Chuyền</div>
+                </div>
+                <div class="menu-arrow">›</div>
+            </a>
+        </div>
+
+        <div class="menu-item ripple" onclick="navigate('Form6BCCC')">
+            <a class="menu-link">
+                <div class="menu-icon icon-search">🔍</div>
+                <div class="menu-content">
+                    <div class="menu-title"><span class="menu-number">5. </span>Báo Cáo Kiểm Cuối Chuyền</div>
+                </div>
+                <div class="menu-arrow">›</div>
+            </a>
+        </div>
+
+        <div class="menu-item ripple" onclick="navigate('SummaryKCC')">
+            <a class="menu-link">
+                <div class="menu-icon icon-error">⚠️</div>
+                <div class="menu-content">
+                    <div class="menu-title"><span class="menu-number">6. </span>Tổng Hợp Lỗi Cuối Chuyền</div>
+                </div>
+                <div class="menu-arrow">›</div>
+            </a>
+        </div>
+
+        <div class="menu-item ripple" onclick="navigate('PhotoDefect')">
+            <a class="menu-link">
+                <div class="menu-icon icon-image">📸</div>
+                <div class="menu-content">
+                    <div class="menu-title"><span class="menu-number">7. </span>Tổng Hợp Hình Ảnh Lỗi</div>
+                </div>
+                <div class="menu-arrow">›</div>
+            </a>
+        </div>
+
+        <div class="menu-item ripple" onclick="navigate('OQLEndline')">
+            <a class="menu-link">
+                <div class="menu-icon icon-quality">📋</div>
+                <div class="menu-content">
+                    <div class="menu-title"><span class="menu-number">8. </span>Tổng Hợp OQL Cuối Chuyền</div>
+                </div>
+                <div class="menu-arrow">›</div>
+            </a>
+        </div>
+
+        <div class="menu-item ripple" onclick="navigate('FQCTracking')">
+            <a class="menu-link">
+                <div class="menu-icon icon-star">⭐</div>
+                <div class="menu-content">
+                    <div class="menu-title"><span class="menu-number">9. </span>Báo Cáo FQC</div>
+                </div>
+                <div class="menu-arrow">›</div>
+            </a>
+        </div>
+
+        <div class="menu-item ripple" onclick="navigate('TopForm4Quality')">
+            <a class="menu-link">
+                <div class="menu-icon icon-report">📈</div>
+                <div class="menu-content">
+                    <div class="menu-title"><span class="menu-number">10. </span>Top Inline Quality Report</div>
+                </div>
+                <div class="menu-arrow">›</div>
+            </a>
+        </div>
+
+        <div class="menu-item ripple" onclick="navigate('EndlineUnit')">
+            <a class="menu-link">
+                <div class="menu-icon icon-report">📈</div>
+                <div class="menu-content">
+                    <div class="menu-title"><span class="menu-number">11. </span>Báo Cáo Cuối Chuyền Theo Unit</div>
+                </div>
+                <div class="menu-arrow">›</div>
+            </a>
+        </div>
+
+        <div class="menu-item ripple" onclick="navigate('Form10BCHT')">
+            <a class="menu-link">
+                <div class="menu-icon icon-report">📈</div>
+                <div class="menu-content">
+                    <div class="menu-title"><span class="menu-number">12. </span>Báo Cáo Hoàn Thiện 84</div>
+                </div>
+                <div class="menu-arrow">›</div>
+            </a>
+        </div>
+
+        <div class="menu-item ripple" onclick="navigate('SummaryBCHT')">
+            <a class="menu-link">
+                <div class="menu-icon icon-report">📈</div>
+                <div class="menu-content">
+                    <div class="menu-title"><span class="menu-number">13. </span>Tổng Hợp Lỗi Hoàn Thiện 84</div>
+                </div>
+                <div class="menu-arrow">›</div>
+            </a>
+        </div>
+
+        <div class="menu-item ripple" onclick="onlineFile('OnlineFile')">
+            <a class="menu-link">
+                <div class="menu-icon icon-report">📈</div>
+                <div class="menu-content">
+                    <div class="menu-title"><span class="menu-number">14. </span>Online File</div>
+                </div>
+                <div class="menu-arrow">›</div>
+            </a>
+        </div>
+    </div>
+</div>
+
+ <script>
+        function navigate(report) {
+            console.log('Navigating to:', report);
+            // Add your navigation logic here
+            const url = '/Report/' + report;
+            const win = window.open(url, '_blank');
+            if (win) win.opener = null;
+        }
+        function onlineFile(report) {
+           
+            // Add your navigation logic here
+            window.location.href = '/Function/' + report;
+        }
+
+        function logout() {
+            if (confirm('Bạn có chắc muốn đăng xuất?')) {
+                console.log('Logging out...');
+                // Add your logout logic here
+                window.location.href = '/Account/Logout';
+            }
+        }
+
+        // Add touch feedback
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.98)';
+            });
+            
+            item.addEventListener('touchend', function() {
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 100);
+            });
+        });
+    </script>

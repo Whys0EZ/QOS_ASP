@@ -143,6 +143,15 @@ namespace QOS.Controllers
                     });
 
                 HttpContext.Session.SetString("Username", user.Username);
+                // Check detect moblie
+                bool isMobile = HttpContext.Items["IsMobile"] != null &&
+                                (bool)HttpContext.Items["IsMobile"];
+
+                if (isMobile)
+                {
+                    return RedirectToAction("Home", "Mobile");
+                }
+
                 return RedirectToAction("Index", "Home", new { main = "Index" });
             }
             else if (actionType == "register")

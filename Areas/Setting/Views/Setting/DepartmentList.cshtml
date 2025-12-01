@@ -7,8 +7,8 @@
 }
 
 <partial name="_AlertMessage" />
-<div>
-    <h2>@Localizer["DepartmentList"]</h2>
+<div class="m-3">
+    <h2  class="text-uppercase">@Localizer["DepartmentList"]</h2>
 
     <a asp-action="CreateDepartment" class="btn btn-primary">+ @SetLocalizer["AddNew"]</a>
     @if (Model != null && Model.Any())

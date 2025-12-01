@@ -27,5 +27,18 @@
   <data name="AddDepartment" xml:space="preserve">
     <value>Add Department</value>
   </data>
+  <data name="AddUnit" xml:space="preserve">
+    <value>Add Unit</value>
+  </data>
+  <data name="FactorySuccess" xml:space="preserve">
+    <value>Add factory successfully</value>
+  </data>
+  <data name="DepartmentSuccess" xml:space="preserve">
+    <value>Department added successfully</value>
+  </data>
+  <data name="UnitSuccess" xml:space="preserve">
+    <value>Unit added successfully</value>
+  </data>
+
 
 </root>

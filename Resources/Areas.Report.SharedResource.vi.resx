@@ -21,6 +21,12 @@
   <data name="FaultQty" xml:space="preserve">
     <value>SL Lỗi</value>
   </data>
+  <data name="FaultTotal" xml:space="preserve">
+    <value>Tổng số lỗi</value>
+  </data>
+  <data name="Fault" xml:space="preserve">
+    <value>Lỗi</value>
+  </data>
   
   <data name="CutLeader" xml:space="preserve">
     <value>Quản lý cắt</value>
@@ -221,6 +227,9 @@
   <data name="circle_serious" xml:space="preserve">
     <value>Lỗi nặng</value>
   </data>
+  <data name="fatal_error" xml:space="preserve">
+    <value>Lỗi nghiêm trọng</value>
+  </data>
   <data name="line_Status" xml:space="preserve">
     <value>Trạng thái chuyền</value>
   </data>
@@ -238,6 +247,111 @@
   </data>
   <data name="HistoryInline" xml:space="preserve">
     <value>Lịch sử kiểm tra chất lượng may chuyền</value>
+  </data>
+  <data name="IDReport" xml:space="preserve">
+    <value>ID Báo cáo</value>
+  </data>
+  <data name="OperationNo" xml:space="preserve">
+    <value>Số Công đoạn</value>
+  </data>
+  <data name="Operation" xml:space="preserve">
+    <value>Công đoạn</value>
+  </data>
+  <data name="Sewer" xml:space="preserve">
+    <value>Công nhân</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Vị trí</value>
+  </data>
+  <data name="FaultList" xml:space="preserve">
+    <value>Danh sách lỗi</value>
+  </data>
+  <data name="quality_assessment" xml:space="preserve">
+    <value>Đánh giá chất lượng</value>
+  </data>
+  <data name="HistoryEndline" xml:space="preserve">
+    <value>Lịch sử kiểm tra chất lượng cuối chuyền</value>
+  </data>
+  <data name="Supervisor" xml:space="preserve">
+    <value>Chuyền trưởng</value>
+  </data>
+  <data name="Remedies" xml:space="preserve">
+    <value>Biện pháp khắc phục</value>
+  </data>
+  <data name="DeleteReport" xml:space="preserve">
+    <value>Xóa báo cáo</value>
+  </data>
+  <data name="TopDefected" xml:space="preserve">
+    <value>Top Lỗi</value>
+  </data>
+  <data name="StyleCode" xml:space="preserve">
+    <value>Kiểu dáng </value>
+  </data>
+  <data name="title_topEndLine" xml:space="preserve">
+    <value>Top Lỗi Cuối Chuyền</value>
+  </data>
+  <data name="Endline_detail" xml:space="preserve">
+    <value>Chi Tiết Lỗi Cuối Chuyền</value>
+  </data>
+  <data name="FaultCode" xml:space="preserve">
+    <value>Mã Lỗi</value>
+  </data>
+  <data name="FaultName" xml:space="preserve">
+    <value>Tên Lỗi</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Tổng </value>
+  </data>
+  <data name="Report" xml:space="preserve">
+    <value>Báo cáo</value>
+  </data>
+  <data name="Detail_Img" xml:space="preserve">
+    <value>Chi tiết hình ảnh lỗi</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Tháng</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Năm</value>
+  </data>
+  <data name="Average" xml:space="preserve">
+    <value>Trung bình</value>
+  </data>
+  <data name="Target" xml:space="preserve">
+    <value>Mục tiêu</value>
+  </data>
+  <data name="DownloadFile" xml:space="preserve">
+    <value>Tải file báo cáo</value>
+  </data>
+  <data name="title_topInLine" xml:space="preserve">
+    <value>Top Lỗi Chuyền May</value>
+  </data>
+  <data name="Inline_detail" xml:space="preserve">
+    <value>Chi Tiết Lỗi Chuyền May</value>
+  </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Chi tiết</value>
+  </data>
+  <data name="title_topChecker" xml:space="preserve">
+    <value>Top 5 Lỗi Checker 84</value>
+  </data>
+  <data name="Checker_detail" xml:space="preserve">
+    <value>Chi tiết Lỗi Checker 84</value>
+  </data>
+  <data name="NodataTime" xml:space="preserve">
+    <value>Không có dữ liệu trong khoảng thời gian này.</value>
+  </data>
+  <data name="title_topFQC" xml:space="preserve">
+    <value>Top 5 Lỗi FQC Tracking</value>
+  </data>
+  <data name="FQC_detail" xml:space="preserve">
+    <value>Chi Tiết Lỗi FQC Tracking</value>
+  </data>
+  <data name="DefectRate" xml:space="preserve">
+    <value>Tỉ lệ lỗi</value>
+  </data>
+  <data name="DefectName" xml:space="preserve">
+    <value>Tên lỗi</value>
   </data>
 
 </root>

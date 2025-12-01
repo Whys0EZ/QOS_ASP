@@ -1,7 +1,9 @@
 @using System.Text.Json
 @model QOS.Areas.Report.Models.OQLEndLineViewModel
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
 @{
-	ViewData["Title"] = "DAILY OQL CHECKER 84";
+	ViewData["Title"] = Localizer["Form10OQL"];
 	Layout = "_MenuReport";
 }
 <link rel="stylesheet" href="~/css/report.css" />
@@ -10,17 +12,17 @@
 
 <div class="oql-container">
     <div class="oql-header">
-        <h1 class="oql-title">QOS - DAILY OQL CHECKER 84</h1>
+        <h1 class="oql-title text-uppercase">QOS - @Localizer["Form10OQL"]</h1>
     </div>
     
     <a asp-action="DownloadReport" 
        asp-route-unit="@Model.SelectedUnit" 
        asp-route-month="@Model.SelectedMonth" 
        asp-route-year="@Model.SelectedYear" 
-       class="download-link">Download File Report</a>
+       class="download-link">@ReportLocalizer["DownloadFile"]</a>
     
     <form method="get" class="filter-section">
-        <label>UNIT:</label>
+        <label>@Localizer["Unit"]:</label>
         <select name="unit" asp-for="SelectedUnit">
             @if (Model.Zone.Any())
             {
@@ -39,7 +41,7 @@
             
         </select>
         
-        <label>Tháng:</label>
+        <label>@ReportLocalizer["Month"]:</label>
         <select name="month" asp-for="SelectedMonth">
             @for (int i = 1; i <= 12; i++)
             {
@@ -47,23 +49,23 @@
             }
         </select>
         
-        <label>Năm:</label>
+        <label>@ReportLocalizer["Year"]:</label>
         <select name="year" asp-for="SelectedYear">
-            @for (int i = DateTime.Now.Year; i >= 2015; i--)
+            @for (int i = DateTime.Now.Year; i >= (DateTime.Now.Year -5); i--)
             {
                 <option value="@i">@i</option>
             }
         </select>
         
         <button type="submit" class="btn-submit">🔍</button>
-        <button type="button" class="btn-download">📥 Nhập Lại</button>
+        <button type="button" class="btn-download" id="btnReset">📥 @Localizer["Reset"]</button>
     </form>
     
     <div class="oql-table-wrapper">
         <table class="oql-table">
             <thead>
                 <tr>
-                    <th colspan="2" class="date-header">Date</th>
+                    <th colspan="2" class="date-header">@Localizer["Date"]</th>
                     @for (int day = 1; day <= 31; day++)
                     {
                         var isRed = day == 5 || day == 12 || day == 19 || day == 26;
@@ -73,8 +75,8 @@
                     }
                 </tr>
                 <tr>
-                    <th  class="date-header">Line</th>
-                    <th class="date-header">Target<br/>OQL</th>
+                    <th  class="date-header">@Localizer["Line"]</th>
+                    <th class="date-header">@ReportLocalizer["Target"]<br/>OQL</th>
                     @for (int day = 1; day <= 31; day++)
                     {
                         <th class="day-header">5%</th>
@@ -100,10 +102,10 @@
                         avgValues.Add(values.Any() ? values.Average() : (double?)null);
                     }
 
-                    <!-- Tiêu đề Unit -->
+                    @* <!-- Tiêu đề Unit --> *@
                     <tr class="unit-header">
                         <td colspan="100" style="background:#1565c0;color:white;font-weight:bold;">
-                            Unit: @unitGroup.Key
+                            @Localizer["Unit"] : @unitGroup.Key
                         </td>
                     </tr>
 
@@ -122,7 +124,7 @@
                         </tr>
                     }
                     <tr style="background:#e3f2fd;">
-                        <td class="line-name" style="background:#1976d2;color:white;">Average</td>
+                        <td class="line-name" style="background:#1976d2;color:white;">@ReportLocalizer["Average"]</td>
                         <td class="target-cell"></td>
                         @foreach (var avg in avgValues)
                         {
@@ -143,5 +145,12 @@
         select.addEventListener('change', function() {
             this.form.submit();
         });
+    });
+    document.getElementById('btnReset').addEventListener('click', function () {
+        const form = this.closest('form');
+        if (!form) return;
+        // Reset all selects to their first option and submit the form
+        form.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+        form.submit();
     });
 </script>

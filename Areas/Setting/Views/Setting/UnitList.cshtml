@@ -1,24 +1,26 @@
 @model IEnumerable<QOS.Models.Unit_List>
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Setting.SharedResource> SetLocalizer
 @{
     Layout ="_MenuSetting";
-    ViewData["Title"] ="DS xưởng";
+    ViewData["Title"] = Localizer["UnitList"];
 }
 
 <partial name="_AlertMessage" />
-<div>
-    <h2>Danh sách Xưởng</h2>
+<div class=" m-3">
+    <h2  class="text-uppercase">@Localizer["UnitList"]</h2>
 
-    <a asp-action="CreateUnit" class="btn btn-primary">+ Tạo mới</a>
+    <a asp-action="CreateUnit" class="btn btn-primary">+ @SetLocalizer["AddNew"]</a>
     @if (Model != null && Model.Any())
     {
         <table class="table table-bordered table-striped mt-3">
             <thead class="table-dark">
                 <tr>
-                    <th>STT</th>
-                    <th>Factory</th>
-                    <th>Zone</th>
+                    <th>@Localizer["No"]</th>
+                    <th>@Localizer["Factory"]</th>
+                    <th>@Localizer["Zone"]</th>
                     <th>Block</th>
-                    <th>Unit</th>
+                    <th>@Localizer["Unit"]</th>
                     <th>Act</th>
                     <th>Date_From</th>
                     <th>ETS_SUB</th>

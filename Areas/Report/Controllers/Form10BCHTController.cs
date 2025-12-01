@@ -11,6 +11,7 @@ using System.Data;
 using System.Text.Json;
 using QOS.Areas.Function.Filters;
 using System.Linq;
+using System.Globalization;
 
 namespace QOS.Areas.Report.Controllers
 {
@@ -44,8 +45,8 @@ namespace QOS.Areas.Report.Controllers
         [HttpGet]
         public IActionResult RP_Form10(string? Unit, DateTime? dateFrom, DateTime? dateEnd)
         {
-            _logger.LogInformation("=== RP_Form10 GET Request ===");
-            _logger.LogInformation($"Parameters - Unit: '{Unit}', DateFrom: {dateFrom}, DateEnd: {dateEnd}");
+            // _logger.LogInformation("=== RP_Form10 GET Request ===");
+            // _logger.LogInformation($"Parameters - Unit: '{Unit}', DateFrom: {dateFrom}, DateEnd: {dateEnd}");
             try
             {
                 var model = new RP_Form6ViewModel
@@ -57,10 +58,10 @@ namespace QOS.Areas.Report.Controllers
                     ReportData = new List<Dictionary<string, object>>()
                     
                 };
-                _logger.LogInformation($"Model created - Units available: {model.Unit_List.Count}");
+                // _logger.LogInformation($"Model created - Units available: {model.Unit_List.Count}");
 
                 LoadReportData(model); // đã viết
-                _logger.LogInformation($"Model created - ReportData available: {model.ReportData.Count}");
+                // _logger.LogInformation($"Model created - ReportData available: {model.ReportData.Count}");
                 return View(model);
             }
             catch (Exception ex)
@@ -79,7 +80,7 @@ namespace QOS.Areas.Report.Controllers
                     .OrderBy(u => u.Unit)
                     .ToList();
 
-                _logger.LogInformation($"Loaded {units.Count} units from database");
+                // _logger.LogInformation($"Loaded {units.Count} units from database");
                 return units;
             }
             catch (Exception ex)
@@ -148,10 +149,13 @@ namespace QOS.Areas.Report.Controllers
                             if (parts?.Length < 4) continue;
 
                             var color = parts?[0];   // red / green / yellow
-    #pragma warning disable CS8602 // Dereference of a possibly null reference.
-                            var value = double.Parse(parts[1]); // số %
-    #pragma warning restore CS8602 // Dereference of a possibly null reference.
-                            var target = double.Parse(parts[2]); // target
+
+                            // var value = double.Parse(parts[1]); // số %
+                            // var target = double.Parse(parts[2]); // target
+
+                            var value = double.Parse(parts[1], NumberStyles.Any, CultureInfo.InvariantCulture);
+                            var target = double.Parse(parts[2], NumberStyles.Any, CultureInfo.InvariantCulture);
+
                             var code = parts[3];   // ví dụ 201S11
 
                             model.DataPointsREG.Add(new ChartPoint
@@ -173,12 +177,12 @@ namespace QOS.Areas.Report.Controllers
         [HttpGet]
         public IActionResult GetLineHistory(string lineCode, DateTime dateFrom, DateTime dateEnd)
         {
-            _logger.LogInformation($"=== Get Line History - Line: '{lineCode}', From: {dateFrom:yyyy-MM-dd}, To: {dateEnd:yyyy-MM-dd} ===");
+            // _logger.LogInformation($"=== Get Line History - Line: '{lineCode}', From: {dateFrom:yyyy-MM-dd}, To: {dateEnd:yyyy-MM-dd} ===");
 
             try
             {
                 var historyData = GetLineHistoryData(lineCode, dateFrom, dateEnd);
-                _logger.LogInformation($"Line history loaded - {historyData.Count} records");
+                // _logger.LogInformation($"Line history loaded - {historyData.Count} records");
                 
                 if (historyData == null || !historyData.Any())
                 {
@@ -273,7 +277,7 @@ namespace QOS.Areas.Report.Controllers
                 return NotFound("Không tìm thấy báo cáo với ID đã chọn.");
             }
 
-            _logger.LogInformation($"id - {id} report");
+            // _logger.LogInformation($"id - {id} report");
             // Lấy danh sách lỗi từ bảng FaultCode
             string sqlFault = @"SELECT Fault_Code AS FaultCode,
                                     Fault_Name_VN AS FaultNameVN,

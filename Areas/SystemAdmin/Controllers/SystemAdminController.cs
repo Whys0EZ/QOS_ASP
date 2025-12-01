@@ -41,6 +41,12 @@ namespace QOS.Controllers
             var users = _context.Users
                 .OrderByDescending(u => u.LastUpdate)
                 .ToList();
+                
+                // foreach (var u in users)
+                // {
+                //     _logger.LogInformation($"User: {u.Username},  LastUpdate: {u.LastUpdate}");
+                // }
+
             return View(users);
         }
 

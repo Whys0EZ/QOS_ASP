@@ -5,9 +5,19 @@
     Layout = "_MenuSetting";
     ViewData["Title"] = SetLocalizer["AddDepartment"];
 }
+<style>
+    .contents{
+        display: grid;
+        justify-content: center;
+    }
+    .mb-3 {
+        width:1000px;
+        
+    }
+</style>
 
-<div class=" me-3 ">
-    <h2>@SetLocalizer["AddDepartment"]</h2>
+<div class=" contents me-3 mt-5 ">
+    <h2  class="text-uppercase">@SetLocalizer["AddDepartment"]</h2>
 
     <form asp-action="CreateDepartment" method="post" class="mb-3">
         <div class="form-group mb-2">

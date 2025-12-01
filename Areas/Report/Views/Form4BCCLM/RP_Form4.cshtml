@@ -2,7 +2,7 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
 @{
-    ViewData["Title"] = Localizer["Form3BCDT"];
+    ViewData["Title"] = Localizer["Form4BCCLM"];
     Layout = "_MenuReport";
 }
 
@@ -26,7 +26,7 @@
                 <div class="col-12 col-sm-6 col-md-2 visually-hidden">
                     <select class="form-select" id="Unit" name="Unit" asp-for="Unit"
                         asp-items="@(new SelectList(Model.Unit_List, "Unit", "Unit", Model.Unit))">
-                        <option value="ALL">--Unit--</option>
+                        <option value="ALL">--@Localizer["Unit"]--</option>
                     </select>
                 </div>
 
@@ -95,7 +95,7 @@
                                 <tr>
                                     <td class="text-center">
                                         <a href="@Url.Action("RP_Form4_Unit", "Form4BCCLM", new { Unit = unit.Unit, DateFrom = Model.DateFrom.ToString("yyyy-MM-dd"), DateEnd = Model.DateEnd.ToString("yyyy-MM-dd") })" 
-                                           target="_blank" 
+                                           target="_self" 
                                            class="btn btn-link text-primary fw-bold text-decoration-none fs-5">
                                             @unit.Unit
                                         </a>

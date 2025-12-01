@@ -1,20 +1,22 @@
 @model IEnumerable<QOS.Areas.Report.Models.LineHistoryDataForm6>
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
 
 <div class="alert">
     <table class="table  table-sm table-bordered mt-2">
         <thead class="table-dark">
             <tr>
-                <th >STT</th>
-                <th >ID Báo Cáo</th>
+                <th >@Localizer["No"]</th>
+                <th >@ReportLocalizer["IDReport"]</th>
                 <th >MO</th>
-                <th >Màu</th>
-                <th>AQL</th>
-                <th>Tổng SL</th>
-                <th >SL Lỗi/SL Kiểm</th>
-                <th >Lần kiểm</th>
+                <th >@Localizer["Color"]</th>
+                <th >AQL</th>
+                <th >@ReportLocalizer["Qty"]</th>
+                <th >@ReportLocalizer["FaultQty"]/ @ReportLocalizer["CheckQty"]</th>
+                <th >@Localizer["AuditTime"]</th>
                 <th >OQL</th>
-                <th >Người tạo</th>
-                <th>Thời gian kiểm</th>
+                <th >@Localizer["UserUpdate"]</th>
+                <th >@Localizer["LastUpdate"]</th>
             </tr>
         </thead>
         <tbody>
@@ -46,7 +48,7 @@
         {
             <tr>
                 <td colspan="9" class="text-center text-warning">
-                    Không có dữ liệu cho line này.
+                    @Localizer["Nodata"]
                 </td>
             </tr>
         }
@@ -58,7 +60,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-info text-white text-center text-uppercase">
-                <h5 class="modal-title">Chi tiết báo cáo</h5>
+                <h5 class="modal-titles">@ReportLocalizer["modal-title"]</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="ModalRP_Form6">
@@ -78,7 +80,10 @@ function showDetails(id) {
                 $("#ModalRP_Form6").html(data);
                 var modal = new bootstrap.Modal(document.getElementById('Form6Modal'));
                 var unit = $("#ModalRP_Form6").find("#UnitField").val();
-                $(".modal-title").text("Chi tiết báo cáo - Chuyền : " + unit);
+                // $(".modal-titles").text("Chi tiết báo cáo - Chuyền : " + unit);
+                $(".modal-titles").text(
+                    @Html.Raw(Json.Serialize($"{ReportLocalizer["modal-title"]} - {Localizer["Line"]}: ")) + unit
+                );
 
                 modal.show();
             }

@@ -1,7 +1,9 @@
 @model QOS.Areas.Report.Models.SummaryFQCViewModel
 @using System.Text.Json
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
 @{
-    ViewData["Title"] = "Báo Cáo FQC";
+    ViewData["Title"] = Localizer["SummaryFQC"];
     Layout = "_MenuReport";
 }
 <link rel="stylesheet" href="~/css/report.css" />
@@ -13,7 +15,7 @@
         <div class="header-card">
             <marquee behavior="alternate"><h1 class="header-title ma">
                 <i class="bi bi-clipboard-data me-2"></i>
-                QOS - TỔNG HỢP LỖI FQC
+                QOS - @Localizer["SummaryFQC"]
             </h1></marquee>
         </div>
 
@@ -22,7 +24,7 @@
             <form method="get" asp-action="SummaryFQC" id="filterForm">
                 <div class="filter-group">
                     <div class="filter-item">
-                        <label class="filter-label">Top Defected:</label>
+                        <label class="filter-label">@ReportLocalizer["TopDefected"]:</label>
                         <select class="form-select" name="topDefected" style="width: 80px;">
                             <option value="5" selected="@(Model.TopDefected == "5")">5</option>
                             <option value="10" selected="@(Model.TopDefected == "10")">10</option>
@@ -36,17 +38,17 @@
                         <label class="filter-label">Type:</label>
                         <select class="form-select" name="typeCode" style="width: 120px;">
                             <option value="ALL" selected="@(Model.TypeCode == "ALL")">ALL</option>
-                            <option value="1" selected="@(Model.TypeCode == "1")">Lỗi Nhẹ</option>
-                            <option value="2" selected="@(Model.TypeCode == "2")">Lỗi Nặng</option>
-                            <option value="3" selected="@(Model.TypeCode == "3")">Lỗi Nghiêm Trọng</option>
+                            <option value="1" selected="@(Model.TypeCode == "1")">@ReportLocalizer["circle_minor"]</option>
+                            <option value="2" selected="@(Model.TypeCode == "2")">@ReportLocalizer["circle_serious"]</option>
+                            <option value="3" selected="@(Model.TypeCode == "3")">@ReportLocalizer["fatal_error"]</option>
                             
                         </select>
                     </div>
 
                     <div class="filter-item">
-                        <label class="filter-label">Unit:</label>
+                        <label class="filter-label">@Localizer["Unit"]:</label>
                         <select class="form-select" name="unit" id="unitSelect" style="width: 100px;" >
-                            <option value="ALL" selected>--Unit--</option>
+                            <option value="ALL" selected>--@Localizer["Unit"]--</option>
                             @foreach (var unit in Model.Unit_List)
                                 {
                                     <option value="@unit" selected="@(unit == Model.Unit)">
@@ -58,7 +60,7 @@
 
 
                     <div class="filter-item">
-                        <label class="filter-label">StyleCode:</label>
+                        <label class="filter-label">@Localizer["Style"]:</label>
                         <input type="text" value="@(Model.StyleCode== "" ? "" : Model.StyleCode) " class="form-control" name="styleCode" style="width: 150px;">
                     </div>
 
@@ -68,7 +70,7 @@
                     </div>
 
                     <div class="filter-item">
-                        <label class="filter-label">Ngày:</label>
+                        <label class="filter-label">@Localizer["Date"]:</label>
                         <input type="date" class="form-control" name="dateFrom" 
                                 value="@Model.DateFrom.ToString("yyyy-MM-dd")" style="width: 130px;">
                     </div>
@@ -85,15 +87,15 @@
 
                     <div class="filter-item mt-auto">
                         <label class="filter-label">&nbsp;</label>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-search me-1"></i> Tìm kiếm
+                        <button type="submit" class="btn btn-primary text-nowrap">
+                            <i class="bi bi-search me-1"></i> @Localizer["Search"]
                         </button>
                     </div>
 
                     <div class="filter-item mt-auto">
                         <label class="filter-label">&nbsp;</label>
                         <button type="button" class="btn btn-success" onclick="exportToExcel()">
-                            <i class="bi bi-file-earmark-excel me-1"></i> Tải excel
+                            <i class="bi bi-file-earmark-excel me-1"></i> @Localizer["ExportExcel"]
                         </button>
                     </div>
                 </div>
@@ -105,7 +107,7 @@
         @if (Model.ReportData != null && Model.ReportData.Any())
         {
             <div >
-                <div><h2 class="chart-title">TOP 5 LỖI FQC</h2> </div>
+                <div><h2 class="chart-title">@ReportLocalizer["title_topFQC"]</h2> </div>
                 <div class="stats-grid">
                     @{
                         var colors = new[] { "stat-card-1", "stat-card-2", "stat-card-3", "stat-card-4", "stat-card-5" };
@@ -129,16 +131,16 @@
             </div>
             @* <!-- Detailed Table --> *@
             <div class="chart-card">
-                <h2 class="chart-title">CHI TIẾT LỖI FQC</h2>
+                <h2 class="chart-title">@ReportLocalizer["FQC_detail"]</h2>
                 <div class="table-responsive">
                     <table class="table table-hover table-striped">
                         <thead class="table-primary">
                             <tr>
-                                <th>STT</th>
-                                <th>Mã Lỗi</th>
-                                <th>Tên Lỗi (EN)</th>
-                                <th>Tên Lỗi (VN)</th>
-                                <th>Số Lượng</th>
+                                <th>@Localizer["No"]</th>
+                                <th>@ReportLocalizer["FaultCode"]</th>
+                                <th>@ReportLocalizer["FaultName"] (EN)</th>
+                                <th>@ReportLocalizer["FaultName"] (VN)</th>
+                                <th>@ReportLocalizer["Qty"]</th>
                                 <th>Level</th>
                             </tr>
                         </thead>
@@ -162,7 +164,7 @@
                         </tbody>
                         <tfoot class="table-secondary">
                             <tr>
-                                <th colspan="4" class="text-end">TỔNG CỘNG:</th>
+                                <th colspan="4" class="text-end text-uppercase">@ReportLocalizer["Total"]:</th>
                                 <th class="text-left">@Model.TotalDefects.ToString("N0")</th>
                                 <th></th>
                             </tr>
@@ -196,7 +198,7 @@
         {
             <div class="alert alert-info">
                 <i class="bi bi-info-circle me-2"></i>
-                Không có dữ liệu trong thời gian để xem báo cáo.
+                @ReportLocalizer["NodataTime"].
             </div>
         }
     </div>
@@ -207,10 +209,10 @@
         <div class="modal-content border-0 shadow">
             <div class="modal-body text-center py-4">
                 <div class="spinner-border text-primary mb-3" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden">@ReportLocalizer["Loading"]</span>
                 </div>
-                <div class="fw-bold">Đang tải dữ liệu...</div>
-                <small class="text-muted">Vui lòng chờ trong giây lát</small>
+                <div class="fw-bold">@ReportLocalizer["Loadingdata"]</div>
+                <small class="text-muted">@ReportLocalizer["Loadingplease"]</small>
             </div>
         </div>
     </div>
@@ -307,9 +309,22 @@
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    top: 40,   // tăng khoảng trống trên
+                    right:30
+                }
+            },
             plugins: {
                 legend: {
                     display: false
+                },
+                datalabels: {
+                    color: 'red',
+                    anchor: 'end',
+                    align: 'top',
+                    font: { weight: 'bold', size: 12 },
+                    formatter: (value) => value + ''
                 },
                 tooltip: {
                     backgroundColor: 'rgba(0, 0, 0, 0.8)',
@@ -347,7 +362,8 @@
                     }
                 }
             }
-        }
+        },
+        plugins: [ChartDataLabels]
     });
 
     // Pie Chart
@@ -390,6 +406,13 @@
                         pointStyle: 'circle'
                     }
                 },
+                datalabels: {
+                    color: 'rgba(255, 255, 255, 1)',
+                    // anchor: 'end',
+                    // align: 'top',
+                    font: { weight: 'bold', size: 12 },
+                    formatter: (value) => value + '%'
+                },
                 tooltip: {
                     backgroundColor: 'rgba(0, 0, 0, 0.8)',
                     padding: 12,
@@ -404,7 +427,8 @@
                     }
                 }
             },
-            cutout: '60%'
-        }
+            cutout: '40%'
+        },
+        plugins: [ChartDataLabels]
     });
 </script>

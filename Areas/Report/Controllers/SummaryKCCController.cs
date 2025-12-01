@@ -12,6 +12,7 @@ using System.Text.Json;
 using QOS.Areas.Function.Filters;
 using OfficeOpenXml.Style;
 using System.Drawing;
+using System.Globalization;
 
 
 namespace QOS.Areas.Report.Controllers
@@ -200,7 +201,9 @@ namespace QOS.Areas.Report.Controllers
                     reportDataList.Add(rowData);
 
                     // Aggregate by Fault_Name_VN for statistics
-                    var defectKey = faultNameVN;
+                    string currentLang = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+                    var defectKey = (currentLang == "en") ? faultNameEN : faultNameVN;
+                    // var defectKey = faultNameVN;
                     if (!string.IsNullOrEmpty(defectKey))
                     {
                         if (defectSummary.ContainsKey(defectKey))
@@ -220,7 +223,7 @@ namespace QOS.Areas.Report.Controllers
                 }
                 reader.Close();
 
-                _logger.LogInformation($"SP returned {reportDataList.Count} records");
+                // _logger.LogInformation($"SP returned {reportDataList.Count} records");
 
                 // Calculate total and percentages
                 model.TotalDefects = defectSummary.Sum(d => d.Value.Count);
@@ -251,7 +254,7 @@ namespace QOS.Areas.Report.Controllers
 
                 model.ReportData = reportDataList;
 
-                _logger.LogInformation($"Statistics calculated - Total: {model.TotalDefects}, Defect Types: {model.DefectStats.Count}");
+                // _logger.LogInformation($"Statistics calculated - Total: {model.TotalDefects}, Defect Types: {model.DefectStats.Count}");
                 
                 // Log sample data for debugging
                 // if (model.DefectStats.Any())

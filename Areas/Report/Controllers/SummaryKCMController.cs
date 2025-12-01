@@ -12,6 +12,7 @@ using System.Text.Json;
 using QOS.Areas.Function.Filters;
 using OfficeOpenXml.Style;
 using System.Drawing;
+using System.Globalization;
 
 
 namespace QOS.Areas.Report.Controllers
@@ -234,7 +235,9 @@ namespace QOS.Areas.Report.Controllers
                     reportDataList.Add(rowData);
 
                     // Aggregate by Fault_Name_VN for statistics
-                    var defectKey = faultNameVN;
+                    string currentLang = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+                    var defectKey = (currentLang == "en") ? faultNameEN : faultNameVN;
+                    // var defectKey = faultNameVN;
                     if (!string.IsNullOrEmpty(defectKey))
                     {
                         if (defectSummary.ContainsKey(defectKey))

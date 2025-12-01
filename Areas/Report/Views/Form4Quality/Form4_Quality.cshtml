@@ -1,7 +1,9 @@
 @using System.Text.Json
 @model QOS.Areas.Report.Models.Form4QualityViewModel
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
 @{
-	ViewData["Title"] = "Tổng hợp lỗi chuyền may";
+	ViewData["Title"] = Localizer["Form4Quality"];
 	Layout = "_MenuReport";
 }
 <link rel="stylesheet" href="~/css/report.css" />
@@ -12,7 +14,7 @@
         <div class="header-card">
             <marquee behavior="alternate"><h1 class="header-title ma">
                 <i class="bi bi-clipboard-data me-2"></i>
-                QOS - TỔNG HỢP LỖI CHUYỀN MAY
+                QOS - @Localizer["Form4Quality"]
             </h1></marquee>
         </div>
 
@@ -26,9 +28,9 @@
 
                     <!-- Unit -->
                     <div class="filter-item d-flex align-items-center gap-2 flex-wrap">
-                        <label class="filter-label me-2 fw-semibold">Unit:</label>
+                        <label class="filter-label me-2 fw-semibold">@Localizer["Unit"]:</label>
                         <select class="form-select form-select-sm" name="unit" id="unitSelect" style="width: 120px;">
-                            <option value="ALL" selected>--Unit--</option>
+                            <option value="ALL" selected>--@Localizer["Unit"]--</option>
                             
                             @if(Model.Unit_List.Any()){
                                 foreach( var unit in Model.Unit_List)
@@ -41,7 +43,7 @@
 
                     <!-- Ngày -->
                     <div class="filter-item d-flex align-items-center gap-2 flex-wrap">
-                        <label class="filter-label fw-semibold mb-0">Ngày:</label>
+                        <label class="filter-label fw-semibold mb-0">@Localizer["Date"]:</label>
                         <input type="date" value="@Model.DateFrom.ToString("yyyy-MM-dd")" class="form-control form-control-sm" name="dateFrom" style="width: 140px;">
                         <span class="fw-semibold">-</span>
                         <input type="date" value="@Model.DateEnd.ToString("yyyy-MM-dd")" class="form-control form-control-sm" name="dateEnd" style="width: 140px;">
@@ -52,10 +54,10 @@
                 <!-- Right group (buttons) -->
                 <div class="d-flex flex-wrap gap-2">
                     <button type="submit" class="btn btn-primary btn-sm">
-                        <i class="bi bi-search me-1"></i> Tìm kiếm
+                        <i class="bi bi-search me-1"></i> @Localizer["Search"]
                     </button>
                     <button type="button" class="btn btn-success btn-sm" onclick="exportToExcel()">
-                        <i class="bi bi-file-earmark-excel me-1"></i> Tải Excel
+                        <i class="bi bi-file-earmark-excel me-1"></i> @Localizer["ExportExcel"]
                     </button>
                 </div>
 
@@ -70,18 +72,18 @@
             <div class="table-responsive">
                 <table class="table table-bordered table-sm text-center align-middle table-striped">
                     <thead class="bg-primary bg-gradient bg-opacity-75 text-center align-middle">
-                        <th>STT</th>
-                        <th>Unit</th>
-                        <th>Line</th>
-                        <th>Ngày</th>
-                        <th>Đơn Hàng</th>
-                        <th>Style</th>
-                        <th>Số công đoạn</th>
-                        <th>Công đoạn</th>
-                        <th>Số lượng kiểm</th>
-                        <th>Số lượng lỗi</th>
-                        <th>Defect Rate</th>
-                        <th>Defect Name</th>
+                        <th>@Localizer["No"]</th>
+                        <th>@Localizer["Unit"]</th>
+                        <th>@Localizer["Line"]</th>
+                        <th>@Localizer["Date"]</th>
+                        <th>MO</th>
+                        <th>@Localizer["Style"]</th>
+                        <th>@ReportLocalizer["OperationNo"]</th>
+                        <th>@ReportLocalizer["Operation"]</th>
+                        <th>@ReportLocalizer["CheckQty"]</th>
+                        <th>@ReportLocalizer["FaultQty"]</th>
+                        <th>@ReportLocalizer["DefectRate"]</th>
+                        <th>@ReportLocalizer["DefectName"]</th>
                     </thead>
                     <tbody>
                         @foreach(var row in Model.ReportData)
@@ -115,7 +117,7 @@
         } 
         else 
         {
-            <p class="text-center text-muted">Không có dữ liệu</p>
+            <p class="text-center text-muted">@ReportLocalizer["NodataTime"]</p>
         }
         
     </div>
@@ -126,10 +128,10 @@
         <div class="modal-content border-0 shadow">
             <div class="modal-body text-center py-4">
                 <div class="spinner-border text-primary mb-3" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden">@ReportLocalizer["Loading"]</span>
                 </div>
-                <div class="fw-bold">Đang tải dữ liệu...</div>
-                <small class="text-muted">Vui lòng chờ trong giây lát</small>
+                <div class="fw-bold">@ReportLocalizer["Loadingdata"]</div>
+                <small class="text-muted">@ReportLocalizer["Loadingplease"]</small>
             </div>
         </div>
     </div>
@@ -141,7 +143,7 @@
     // Auto refresh page every 60 seconds
     setInterval(function() {
         Submit();
-    }, 60000);
+    }, 600000);
  
     function Submit()
         {

@@ -45,7 +45,7 @@ namespace QOS.Areas.Report.Controllers
         [HttpGet]
         public IActionResult RP_PhotoDefect(string? report_Type, string? Unit, string? Sewer, string? Mo, DateTime? dateFrom, DateTime? dateEnd)
         {
-            _logger.LogInformation($"Parameters - Unit: '{Unit}', DateFrom: {dateFrom}, DateEnd: {dateEnd}, Sewer: '{Sewer}', Mo: '{Mo}',  Report_Type: '{report_Type}'");
+            // _logger.LogInformation($"Parameters - Unit: '{Unit}', DateFrom: {dateFrom}, DateEnd: {dateEnd}, Sewer: '{Sewer}', Mo: '{Mo}',  Report_Type: '{report_Type}'");
             var model = new RP_PhotoDefectViewModel
             {
                 Unit_List = _context.Unit_List.ToList(),
@@ -72,7 +72,7 @@ namespace QOS.Areas.Report.Controllers
                 var units = connection.Query<Unit_FQC>(" SELECT DISTINCT Unit FROM FQC_UQ_Result_SUM_MO order by Unit ").ToList();
 
 
-                _logger.LogInformation($"Loaded {units.Count} units from database");
+                // _logger.LogInformation($"Loaded {units.Count} units from database");
                 return units;
             }
             catch (Exception ex)
@@ -108,7 +108,7 @@ namespace QOS.Areas.Report.Controllers
 
                 
 
-                _logger.LogInformation($"Executing stored procedure: {storedProcedure} with parameters: {JsonSerializer.Serialize(parameters.ParameterNames.ToDictionary(name => name, name => parameters.Get<object>(name)))}");
+                // _logger.LogInformation($"Executing stored procedure: {storedProcedure} with parameters: {JsonSerializer.Serialize(parameters.ParameterNames.ToDictionary(name => name, name => parameters.Get<object>(name)))}");
 
                 var result = connection.Query(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
 
@@ -116,7 +116,7 @@ namespace QOS.Areas.Report.Controllers
                                         .Select(dict => dict.ToDictionary(kv => kv.Key, kv => kv.Value ?? ""))
                                         .ToList();
 
-                _logger.LogInformation($"Retrieved {model.ReportData.Count} records for report type {model.Report_Type}");
+                // _logger.LogInformation($"Retrieved {model.ReportData.Count} records for report type {model.Report_Type}");
             }
             catch (Exception ex)
             {

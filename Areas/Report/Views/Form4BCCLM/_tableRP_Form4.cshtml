@@ -101,7 +101,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 80px;
+        gap: 200px;
         margin: 20px 0;
     }
     
@@ -220,7 +220,7 @@
     
     .modal-body {
         padding: 30px;
-        text-align: center;
+        @* text-align: center; *@
     }
     
     .modal-body img {
@@ -377,16 +377,18 @@
 </style>
 
 @model QOS.Areas.Report.Models.Form4DetailViewModel
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
 
 <form id="Form4Report" method="post" asp-action="CreateReport_Form4" asp-controller="Report" asp-area="Report">
     <input type="hidden" id="ReportID" name="ReportID" value="@Model.Detail.ID"/>
     
     <table class="table">
         <tr>
-            <td><label>Unit</label></td>
-            <td><label>Công nhân</label></td>
-            <td><label>Vị trí</label></td>
-            <td><label>Chuyền trưởng</label></td>     
+            <td><label>@Localizer["Unit"]</label></td>
+            <td><label>@ReportLocalizer["Sewer"]</label></td>
+            <td><label>@ReportLocalizer["Position"]</label></td>
+            <td><label>@ReportLocalizer["Supervisor"]</label></td>     
         </tr>
         <tr>
             <td><input value="@Model.Detail.Unit"/> <input id="UnitField" value="@Model.Detail.Line"/></td>
@@ -396,8 +398,8 @@
         </tr>
         <tr>
             <td><label>MO</label></td>
-            <td><label>Màu </label></td>
-            <td><label>Size </label></td>
+            <td><label>@Localizer["Color"] </label></td>
+            <td><label>@Localizer["Size"] </label></td>
             <td><label></label></td>     
         </tr>
         <tr>
@@ -407,8 +409,8 @@
             <td></td>
         </tr>
         <tr>
-            <td><label>Công đoạn kiểm </label></td>
-            <td><label>Số lượng kiểm </label></td>
+            <td><label>@ReportLocalizer["Operation"] </label></td>
+            <td><label>@ReportLocalizer["CheckQty"]</label></td>
             <td><label></label></td>
             <td><label> </label></td>     
         </tr>
@@ -422,8 +424,8 @@
     
     <table style="width: 100%; margin-top: -10px;" name="tblFault" id="tblFault">
         <tr style="text-align: left;">
-            <td><label>Lỗi</label></td>
-            <td><label>Số lượng lỗi</label></td>
+            <td><label>@ReportLocalizer["FaultList"]</label></td>
+            <td><label>@ReportLocalizer["FaultQty"]</label></td>
         </tr>
         @for (int i = 0; i < Model.SelectedFaults.Count; i++)
         {
@@ -456,11 +458,11 @@
         }
     </table>
 
-    <p class="section-header"><span>*</span> Ghi chú:</p>
+    <p class="section-header"><span>*</span> @ReportLocalizer["Remedies"]:</p>
     <textarea rows="4" name="Remark" id="Remark" onClick="this.select();">@(string.IsNullOrEmpty(Model.Detail.Remark) ? "" : Model.Detail.Remark)</textarea>
 
     <div class="quality-section">
-        <p class="section-header"><span>*</span> Đánh giá chất lượng:</p>
+        <p class="section-header"><span>*</span> @ReportLocalizer["quality_assessment"]:</p>
         <div class="led-container">
             <div class="led-item">
                 <img id="Led_Green" src="~/images/green_@(Model.Detail.Led == "green" ? "On" : "Off").png" alt="Green">
@@ -478,7 +480,7 @@
     </div>
 
     <div class="photo-section">
-        <p class="section-header"><span>*</span> Hình ảnh lỗi:</p>
+        <p class="section-header"><span>*</span> @ReportLocalizer["ImgError"]:</p>
         @if(!string.IsNullOrEmpty(Model.Detail.Photo_URL))
         {
             var imgPath = "https://qos.crystal-regent.com.vn/";
@@ -497,15 +499,15 @@
 
     <div class="reaudit-section">
         <p style="font-weight: bold; margin: 0;">
-            <span style="color: red;">*</span> Kiểm lại:
+            <span style="color: red;">*</span> @ReportLocalizer["ReAudit"]:
         </p>
         <input type="checkbox" name="Re_Audit" id="Re_Audit" value="true" @(Model.Detail.Re_Audit == true ? "checked" : "") autocomplete="on" />   
     </div>
 
     <div class="action-buttons">
         @* <img src="~/images/delete.png" style="width: 95px;" onClick="Delete_Click1();" title="Delete this report"> *@
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick="Delete_Click1();" title="Delete this report">Delete</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick="Delete_Click1();" title="Delete this report">@ReportLocalizer["DeleteReport"]</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
     </div>
 </form>
 
@@ -514,7 +516,7 @@
     <div class="modal-content">
         <div class="modal-header bg-success">
             <span class="close" id="close_Modal_Photo">&times;</span>
-            <h2 style="text-align: center; text-transform: uppercase; margin: 0;">Hình ảnh lỗi</h2> 
+            <h2 style="text-align: center; text-transform: uppercase; margin: 0;">@ReportLocalizer["ImgError"]</h2> 
         </div>
         <div class="modal-body">
             <img src="" id="Fault_Photo" alt="Fault Image">

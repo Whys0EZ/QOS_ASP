@@ -11,6 +11,7 @@ using System.Data;
 using System.Text.Json;
 using QOS.Areas.Function.Filters;
 using System.Linq;
+using System.Globalization;
 
 namespace QOS.Areas.Report.Controllers
 {
@@ -121,7 +122,7 @@ namespace QOS.Areas.Report.Controllers
                     {
                         var unit_v = row.ContainsKey("Unit") ? row["Unit"]?.ToString() : null;
 
-                        if (row.ContainsKey("OQL_TT") && row["OQL_TT"] != null &&  double.TryParse(row["OQL_TT"]?.ToString(), out var oqlTT))
+                        if (row.ContainsKey("OQL_TT") && row["OQL_TT"] != null &&  double.TryParse(row["OQL_TT"]?.ToString() , out var oqlTT))
                         {
                             model.DataPointsREG.Add(new ChartPoint { Label = unit_v ?? "", Y = Math.Round(oqlTT * 100.0, 2) });
                         }
@@ -148,10 +149,12 @@ namespace QOS.Areas.Report.Controllers
                             if (parts?.Length < 4) continue;
 
                             var color = parts?[0];   // red / green / yellow
-    #pragma warning disable CS8602 // Dereference of a possibly null reference.
-                            var value = double.Parse(parts[1]); // số %
-    #pragma warning restore CS8602 // Dereference of a possibly null reference.
-                            var target = double.Parse(parts[2]); // target
+
+                            // var value = double.Parse(parts[1]); // số %
+
+                            var value = double.Parse(parts[1], NumberStyles.Any, CultureInfo.InvariantCulture);
+
+                            var target = double.Parse(parts[2], NumberStyles.Any, CultureInfo.InvariantCulture); // target
                             var code = parts[3];   // ví dụ 201S11
 
                             model.DataPointsREG.Add(new ChartPoint

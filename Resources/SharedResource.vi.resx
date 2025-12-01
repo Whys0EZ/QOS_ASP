@@ -16,7 +16,7 @@
         <value>Chào mừng bạn đến với hệ thống QOS</value>
     </data>
     <data name="LoginTitle" xml:space="preserve">
-    <value>Chào mừng trỏ lại !</value>
+    <value>Chào mừng trở lại !</value>
   </data>
   <data name="LoginTitleSub" xml:space="preserve">
     <value>Để kết nối với chúng tôi, vui lòng đăng nhập bằng thông tin cá nhân của bạn.</value>

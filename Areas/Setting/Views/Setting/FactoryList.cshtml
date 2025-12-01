@@ -6,10 +6,10 @@
     ViewData["Title"] = "DS nhà máy";
 }
 <partial name="_AlertMessage" />
-<div>
-    <h2 class="ms-3">@Localizer["FactoryList"]</h2>
+<div class="m-3">
+    <h2 class="text-uppercase">@Localizer["FactoryList"]</h2>
 
-    <a asp-action="CreateFactory" class="btn btn-primary ms-3">+ @SetLocalizer["AddNew"]</a>
+    <a asp-action="CreateFactory" class="btn btn-primary ">+ @SetLocalizer["AddNew"]</a>
     @if (Model != null && Model.Any())
     {
         <table class="table table-bordered table-striped mt-3">

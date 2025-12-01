@@ -57,7 +57,7 @@ namespace QOS.Areas.Report.Controllers
                     Unit = string.IsNullOrEmpty(Unit) ? "ALL" : Unit,
                     Mo = Mo ?? "",
                     StyleCode = styleCode ?? "",
-                    DateFrom = dateFrom ?? DateTime.Now,
+                    DateFrom = dateFrom ?? DateTime.Now.Date.AddDays(-7),
                     DateEnd = dateEnd ?? DateTime.Now.Date.AddDays(1).AddTicks(-1),
                     ReportData = new List<Dictionary<string, object>>(),
                     DefectStats = new Dictionary<string, DefectStat_FQC>()

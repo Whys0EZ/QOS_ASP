@@ -1,8 +1,9 @@
 @removeTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.OptionTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
-
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
 @model QOS.Areas.Report.Models.RP_PhotoDefectViewModel
 @{
-    ViewData["Title"] = "Báo Cáo Cuối Chuyền";
+    ViewData["Title"] = Localizer["PhotoDefect"];
     Layout = "_MenuReport";
 }
 <link rel="stylesheet" href="~/css/report.css" />
@@ -13,7 +14,7 @@
         <div class="header-card ">
             <marquee direction="down" behavior="alternate" scrolldelay="500"><h1 class="header-title  text-center">
                 <i class="bi bi-clipboard-data me-2"></i>
-                QOS - TỔNG HỢP HÌNH ẢNH LỖI
+                QOS - @Localizer["PhotoDefect"]
             </h1></marquee>
         </div>
 
@@ -22,21 +23,21 @@
             <form method="get" asp-action="RP_PhotoDefect" id="filterForm">
                 <div class="filter-group">
                     <div class="filter-item">
-                        <label class="filter-label">Báo Cáo:</label>
+                        <label class="filter-label">@ReportLocalizer["Report"] :</label>
                         <select class="form-select" name="Report_Type" style="width: auto;">
-                            <option value="Form1_BCCLC"   @(Model.Report_Type?.Trim() == "Form1_BCCLC" ? "selected" : "")  >1-Báo Cáo Chất Lượng Cắt</option>
-                            <option value="Form2_BCCPI"   @(Model.Report_Type?.Trim() == "Form2_BCCPI" ? "selected" : "")  >2-Báo Cáo Kiểm CPI</option>
-                            <option value="Form3_BCDT"    @(Model.Report_Type?.Trim() == "Form3_BCDT" ? "selected" : "")   >3-Báo Cáo Bàn Cắt Đầu Tiên</option>
-                            <option value="Form4_BCCLM"   @(Model.Report_Type?.Trim() == "Form4_BCCLM" ? "selected" : "")  >4-Báo Cáo Đi Chuyền</option>
-                            <option value="Form6_BCKCC"   @(Model.Report_Type?.Trim() == "Form6_BCKCC" ? "selected" : "")  >5-Báo Cáo Cuối Chuyền</option>
-                            <option value="FQC_UQ_Result" @(Model.Report_Type?.Trim() == "FQC_UQ_Result" ? "selected" : "")>6-Báo Cáo FQC Tracking</option>
+                            <option value="Form1_BCCLC"   @(Model.Report_Type?.Trim() == "Form1_BCCLC" ? "selected" : "")  >1-@Localizer["Form1BCCLC"]</option>
+                            <option value="Form2_BCCPI"   @(Model.Report_Type?.Trim() == "Form2_BCCPI" ? "selected" : "")  >2-@Localizer["Form2BCCPI"]</option>
+                            <option value="Form3_BCDT"    @(Model.Report_Type?.Trim() == "Form3_BCDT" ? "selected" : "")   >3-@Localizer["Form3BCDT"]</option>
+                            <option value="Form4_BCCLM"   @(Model.Report_Type?.Trim() == "Form4_BCCLM" ? "selected" : "")  >4-@Localizer["Form4BCCLM"]</option>
+                            <option value="Form6_BCKCC"   @(Model.Report_Type?.Trim() == "Form6_BCKCC" ? "selected" : "")  >5-@Localizer["Form6BCCC"]</option>
+                            <option value="FQC_UQ_Result" @(Model.Report_Type?.Trim() == "FQC_UQ_Result" ? "selected" : "")>6-@Localizer["FQCTracking"]</option>
                         </select>
                     </div>
 
                     <div class="filter-item">
-                        <label class="filter-label">Unit:</label>
+                        <label class="filter-label">@Localizer["Unit"]:</label>
                         <select class="form-select" name="unit" id="unitSelect" style="width: 100px;" >
-                            <option value="ALL" selected>--Unit--</option>
+                            <option value="ALL" selected>--@Localizer["Unit"]--</option>
                             @if(Model.Report_Type == "FQC_UQ_Result")
                             {
                                 foreach (var unit in Model.Unit_FQC_Unit)
@@ -56,7 +57,7 @@
                         </select>
                     </div>
                     <div class="filter-item">
-                        <label class="filter-label">Công nhân:</label>
+                        <label class="filter-label">@ReportLocalizer["Sewer"]:</label>
                         <input type="text" value="@(Model.Sewer == "" ? "" : Model.Sewer) " class="form-control" name="sewer" style="width: 150px;">
                     </div>
 
@@ -66,7 +67,7 @@
                     </div>
 
                     <div class="filter-item">
-                        <label class="filter-label">Ngày:</label>
+                        <label class="filter-label">@Localizer["Date"]:</label>
                         <input type="date" class="form-control" name="dateFrom" 
                                 value="@(Model.DateFrom.ToString("yyyy-MM-dd"))" style="width: 130px;">
                     </div>
@@ -84,14 +85,14 @@
                     <div class="filter-item mt-auto">
                         <label class="filter-label">&nbsp;</label>
                         <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-search me-1"></i> Tìm kiếm
+                            <i class="bi bi-search me-1"></i> @Localizer["Search"]
                         </button>
                     </div>
 
                     <div class="filter-item mt-auto">
                         <label class="filter-label">&nbsp;</label>
                         <button type="button" class="btn btn-success" onClick="Export2Excel_Click();">
-                            <i class="bi bi-file-earmark-excel me-1"></i> Tải excel
+                            <i class="bi bi-file-earmark-excel me-1"></i> @Localizer["ExportExcel"]
                         </button>
                     </div>
                 </div>
@@ -103,52 +104,52 @@
              var imgPath = "/upload/Photos/";
             if (Model.Report_Type?.Trim() == "Form1_BCCLC")
             {
-                reportName = "BÁO CÁO CHẤT LƯỢNG CẮT";
+                reportName = Localizer["Form1BCCLC"];
                 imgPath += "Form1_BCCLC/";
             } 
             else if (Model.Report_Type == "Form2_BCCPI")
             {
-                reportName = "BÁO CÁO KIỂM CPI";
+                reportName = Localizer["Form2BCCPI"];
                 imgPath += "Form2_CPI/";
             } 
             else if (Model.Report_Type == "Form3_BCDT")
             {
-                reportName = "BÁO CÁO BÀN CẮT ĐẦU TIÊN";
+                reportName = Localizer["Form3BCDT"];
                 imgPath += "Form3_BCDT/";
             }
             else if (Model.Report_Type == "Form4_BCCLM")
             {
-                reportName = "BÁO CÁO ĐI CHUYỀN";
+                reportName = Localizer["Form4BCCLM"];
                 imgPath += "Form4_BCCLM/";
             }
             else if (Model.Report_Type == "Form6_BCKCC")
             {
-                reportName = "BÁO CÁO CUỐI CHUYỀN";
+                reportName = Localizer["Form6BCCC"];
                 imgPath += "Form6_BCKCC/";
             }
             else if (Model.Report_Type == "FQC_UQ_Result")
             {
-                reportName = "BÁO CÁO FQC TRACKING";
+                reportName = Localizer["FQCTracking"];
                 imgPath += "FQC/";
             }
             <div class="chart-card">
-                <h2 class="chart-title">CHI TIẾT HÌNH ẢNH LỖI @reportName</h2>
+                <h2 class="chart-title">@ReportLocalizer["Detail_Img"] @reportName</h2>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover table-striped" id='headerTable'>
-                        <thead class="table-primary">
-                            <th>STT</th>
-                            <th>ID</th>
-                            <th>Unit</th>
+                        <thead class="table-primary text-center align-middle">
+                            <th>@Localizer["No"]</th>
+                            <th>@ReportLocalizer["IDReport"]</th>
+                            <th>@Localizer["Unit"]</th>
                             <th>MO</th>
-                            <th>Check_Qty / Qty</th>
-                            <th>Tổng lỗi</th>
-                            <th>Trạng Thái</th>
-                            <th>Lần Kiểm</th>
-                            <th>Ảnh Lỗi</th>
-                            <th>Lỗi</th>
-                            <th>Sewer/Leader_Cut</th>
-                            <th>Người Kiểm</th>
-                            <th>Thời Gian Kiểm</th>
+                            <th>@ReportLocalizer["CheckQty"] / @ReportLocalizer["Qty"]</th>
+                            <th>@ReportLocalizer["FaultTotal"]</th>
+                            <th>@ReportLocalizer["Status"]</th>
+                            <th>@Localizer["AuditTime"]</th>
+                            <th>@ReportLocalizer["ImgError"]</th>
+                            <th>@ReportLocalizer["Fault"]</th>
+                            <th>@ReportLocalizer["Sewer"]/ @ReportLocalizer["CutLeader"]</th>
+                            <th>@Localizer["UserUpdate"]</th>
+                            <th>@Localizer["LastUpdate"]</th>
                         </thead>
                         <tbody>
                             @{
@@ -204,7 +205,7 @@
         else {
             <div class="alert alert-info">
                 <i class="bi bi-info-circle me-2"></i>
-                Không có dữ liệu trong thời gian để xem báo cáo.
+                @Localizer["Nodata"]
             </div>
         }
 
@@ -217,7 +218,7 @@
         <div class="modal-content">
             <div class="modal-header bg-success text-center">
                 <span class="close" id="close_Modal_Photo" style="font-size:2rem;cursor:pointer;">&times;</span>
-                <h2 class="modal-title w-100" style="text-align: center; text-transform: uppercase;">Hình ảnh lỗi</h2>
+                <h2 class="modal-title w-100" style="text-align: center; text-transform: uppercase;">@ReportLocalizer["ImgError"]</h2>
             </div>
             <div class="modal-body" style="text-align: center;">
                 <img src="" style="width: 90%" id="Fault_Photo" align="center">
@@ -231,7 +232,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-info text-white text-center text-uppercase">
-                <h5 class="modal-title">Chi tiết báo cáo</h5>
+                <h5 class="modal-title">@ReportLocalizer["modal-title"]</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="ModalRP_Form6">
@@ -314,7 +315,10 @@
                         $("#ModalRP_Form6").html(data);
                         var modal = new bootstrap.Modal(document.getElementById('Form6Modal'));
                         var unit = $("#ModalRP_Form6").find("#UnitField").val();
-                        $(".modal-title").text("Chi tiết báo cáo - Chuyền : " + unit);
+                        //$(".modal-title").text("Chi tiết báo cáo - Chuyền : " + unit);
+                        $(".modal-title").text(
+                            @Html.Raw(Json.Serialize($"{ReportLocalizer["modal-title"]} - {Localizer["Line"]}: ")) + unit
+                        );
 
                         modal.show();
                     }
@@ -330,7 +334,10 @@
                         $("#ModalRP_Form6").html(data);
                         var modal = new bootstrap.Modal(document.getElementById('Form6Modal'));
                         var unit = $("#ModalRP_Form6").find("#UnitField").val();
-                        $(".modal-title").text("Chi tiết báo cáo - Chuyền : " + unit);
+                        //$(".modal-title").text("Chi tiết báo cáo - Chuyền : " + unit);
+                        $(".modal-title").text(
+                            @Html.Raw(Json.Serialize($"{ReportLocalizer["modal-title"]} - {Localizer["Line"]}: ")) + unit
+                        );
 
                         modal.show();
                     }
@@ -346,7 +353,10 @@
                         $("#ModalRP_Form6").html(data);
                         var modal = new bootstrap.Modal(document.getElementById('Form6Modal'));
                         var unit = $("#ModalRP_Form6").find("#UnitField").val();
-                        $(".modal-title").text("Chi tiết báo cáo - Chuyền : " + unit);
+                        //$(".modal-title").text("Chi tiết báo cáo - Chuyền : " + unit);
+                        $(".modal-title").text(
+                            @Html.Raw(Json.Serialize($"{ReportLocalizer["modal-title"]} - {Localizer["Line"]}: ")) + unit
+                        );
 
                         modal.show();
                     }
@@ -362,7 +372,10 @@
                         $("#ModalRP_Form6").html(data);
                         var modal = new bootstrap.Modal(document.getElementById('Form6Modal'));
                         var unit = $("#ModalRP_Form6").find("#UnitField").val();
-                        $(".modal-title").text("Chi tiết báo cáo - Chuyền : " + unit);
+                        //$(".modal-title").text("Chi tiết báo cáo - Chuyền : " + unit);
+                        $(".modal-title").text(
+                            @Html.Raw(Json.Serialize($"{ReportLocalizer["modal-title"]} - {Localizer["Line"]}: ")) + unit
+                        );
 
                         modal.show();
                     }
@@ -377,7 +390,10 @@
                         $("#ModalRP_Form6").html(data);
                         var modal = new bootstrap.Modal(document.getElementById('Form6Modal'));
                         var unit = $("#ModalRP_Form6").find("#UnitField").val();
-                        $(".modal-title").text("Chi tiết báo cáo - Chuyền : " + unit);
+                        //$(".modal-title").text("Chi tiết báo cáo - Chuyền : " + unit);
+                        $(".modal-title").text(
+                            @Html.Raw(Json.Serialize($"{ReportLocalizer["modal-title"]} - {Localizer["Line"]}: ")) + unit
+                        );
 
                         modal.show();
                     }

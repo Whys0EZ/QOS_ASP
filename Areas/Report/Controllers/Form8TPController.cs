@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Dapper;
 using System.Text.Json;
 using System.Drawing;
+using System.Globalization;
 
 namespace QOS.Controllers
 {
@@ -72,7 +73,7 @@ namespace QOS.Controllers
                     .OrderBy(u => u.Unit)
                     .ToList();
 
-                _logger.LogInformation($"Loaded {units.Count} units from database");
+                // _logger.LogInformation($"Loaded {units.Count} units from database");
                 return units;
             }
             catch (Exception ex)
@@ -85,7 +86,7 @@ namespace QOS.Controllers
         {
             try
             {
-                _logger.LogInformation("=== LoadReportData Start ===");
+                // _logger.LogInformation("=== LoadReportData Start ===");
                 
                 // Prepare parameters for stored procedure
                 var dateFrom = model.DateFrom.ToString("yyyy-MM-dd");
@@ -97,7 +98,7 @@ namespace QOS.Controllers
                
                 var search = model.Search;
 
-                _logger.LogInformation($"SP Parameters: DateFrom={dateFrom}, DateTo={dateEnd}, unit={unit}, Page_No={Page_No}, Rows_page={Rows_page}, search={search} ");
+                // _logger.LogInformation($"SP Parameters: DateFrom={dateFrom}, DateTo={dateEnd}, unit={unit}, Page_No={Page_No}, Rows_page={Rows_page}, search={search} ");
 
                 // Execute stored procedure
                 var sql = @"EXEC RP_ThongSo_TP_SUM_OQL @Date_F, @Date_T,@Search,@Page_No,@Rows_page, @Unit";
@@ -295,7 +296,7 @@ namespace QOS.Controllers
         public IActionResult RP_Form8_ThongSo_TP_SUM_Detail_New(string? ID)
         {
             Base64Helper.Decode(ID);
-            Console.WriteLine("id : "+ Base64Helper.Decode(ID));
+            // Console.WriteLine("id : "+ Base64Helper.Decode(ID));
             if (string.IsNullOrEmpty(ID))
             {
                 return RedirectToAction("RP_Form8");
@@ -550,7 +551,9 @@ namespace QOS.Controllers
                                         // Phần xử lý dữ liệu chi tiết
                                         var baseValue = reader["Base_Value"]?.ToString() ?? "";
                                         var actValue = reader["ActValue"]?.ToString() ?? "";
+                                        // _logger.LogInformation($"Statistics calculated - baseValue: {baseValue} - actValue: {actValue}");
                                         string sumValue = CalculateSum(baseValue, actValue);
+                                        // _logger.LogInformation($"Statistics sumValue - sumValue: {sumValue} ");
 
                                         ticketGroup.Measurements.Add(new MeasurementItem
                                         {
@@ -572,28 +575,39 @@ namespace QOS.Controllers
 
         private string CalculateSum(string baseValue, string actValue)
         {
+            // _logger.LogInformation($"Statistics input - baseValue: {baseValue} - actValue: {actValue}");
             try
             {
                 if (string.IsNullOrWhiteSpace(baseValue) && string.IsNullOrWhiteSpace(actValue))
                     return "";
 
-                baseValue = baseValue ?? "0";
-                actValue = actValue ?? "0";
+                baseValue = CleanNumber(baseValue);
+                actValue = CleanNumber(actValue);
 
                 // Kiểm tra có phải phân số hay hỗn số không
                 if (IsMixedFraction(baseValue) || IsMixedFraction(actValue))
                 {
                     var result = PerformOperation(baseValue, actValue);
+                    
                     return string.IsNullOrEmpty(result) || result == "0" ? "" : result;
                 }
                 else
                 {
+                    // _logger.LogInformation($"Statistics calculated - baseValue: {baseValue} - actValue: {actValue}");
                     // Số thập phân hoặc số nguyên
-                    if (double.TryParse(baseValue, out double baseNum) && 
-                        double.TryParse(actValue, out double actNum))
+                    // if (double.TryParse(baseValue, out double baseNum) && 
+                    //     double.TryParse(actValue, out double actNum))
+                    // {
+                    //     var sum = baseNum + actNum;
+                    //     // _logger.LogInformation($"Statistics calculated - baseNum: {baseNum} - actNum: {actNum}");
+                    //     return sum == 0 ? "" : sum.ToString();
+                    // }
+                    if (decimal.TryParse(baseValue, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal baseNum) &&
+                        decimal.TryParse(actValue, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal actNum))
                     {
                         var sum = baseNum + actNum;
-                        return sum == 0 ? "" : sum.ToString();
+                        // _logger.LogInformation($"Statistics calculated - sum: {sum} - baseNum: {baseNum} - actNum: {actNum}");
+                        return sum == 0 ? "" : sum.ToString(CultureInfo.InvariantCulture);
                     }
                 }
             }
@@ -603,6 +617,41 @@ namespace QOS.Controllers
             }
 
             return "";
+        }
+        private string CleanNumber(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s))
+                return "0";
+
+            s = s.Trim();
+
+            // Loại dấu "+"
+            if (s.StartsWith("+"))
+                s = s.Substring(1);
+
+            // Chuẩn hóa thousands separator
+            // Nếu có cả ',' và '.'
+            if (s.Contains(",") && s.Contains("."))
+            {
+                // Nếu dấu , ở cuối => nó là decimal
+                if (s.LastIndexOf(',') > s.LastIndexOf('.'))
+                {
+                    s = s.Replace(".", "");     // remove thousands
+                    s = s.Replace(",", ".");    // decimal separator
+                }
+                else
+                {
+                    s = s.Replace(",", "");     // remove thousands
+                }
+            }
+            else
+            {
+                // Nếu chỉ có ',' → coi như decimal VN → chuyển sang "."
+                if (s.Contains(",") && !s.Contains("."))
+                    s = s.Replace(",", ".");
+            }
+
+            return s;
         }
 
         #region Fraction Conversion Methods

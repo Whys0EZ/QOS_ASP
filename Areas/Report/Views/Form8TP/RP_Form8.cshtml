@@ -1,23 +1,25 @@
 
 @model QOS.Areas.Report.Models.Form8TPViewModel
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
 @{
-	ViewData["Title"] = "Thông số TP";
+	ViewData["Title"] = Localizer["Form8TP"];
 	Layout = "_MenuReport";
 }
 <style>
 	table {
-    width: 100%;
-    border-collapse: collapse;
-	
-    table-layout: fixed; /* ép cột tự giãn đều */
-}
+		width: 100%;
+		border-collapse: collapse;
+		
+		table-layout: fixed; /* ép cột tự giãn đều */
+	}
 
-th, td {
-    word-wrap: break-word; /* xuống dòng khi quá dài */
-    white-space: normal;
-    text-align: left;
-    padding: 8px;
-}
+	th, td {
+		word-wrap: break-word; /* xuống dòng khi quá dài */
+		white-space: normal;
+		text-align: left;
+		padding: 8px;
+	}
 </style>
 <partial name="_AlertMessage" />
 <div class="continer my-3">
@@ -26,35 +28,28 @@ th, td {
         	
 			<!-- Bên trái -->
 			<div class="col-md-5 d-flex flex-wrap gap-2">
-				<h3 class="text-primary fw-bold ms-3">BÁO CÁO THÔNG SỐ THÀNH PHẨM</h3>
+				<h3 class="text-primary fw-bold ms-3 text-uppercase">BÁO CÁO THÔNG SỐ THÀNH PHẨM</h3>
 			</div>
 
 			<!-- Bên phải -->
 			<div class="col-md-7 d-flex  align-items-center gap-2 mb-0">
 				<select class="form-control " id="Unit" name="Unit" asp-for="Unit"
 					asp-items="@(new SelectList(Model.Unit_List, "Unit", "Unit", Model.Unit))">
-					<option value="ALL">-- Chọn Unit --</option>
+					<option value="ALL">-- ALL --</option>
 				</select>
-
 				<input type="date" id="dateFrom" name="dateFrom" class="form-control"
 					value="@Model.DateFrom.ToString("yyyy-MM-dd")" />
 				<input type="date" id="dateEnd" name="dateEnd" class="form-control"
 					value="@Model.DateEnd.ToString("yyyy-MM-dd")" />
-
-
-				<button class="btn btn-warning" id="Check" name="Check" type="submit"> Check</button>
-				
-				<button type="button" class="btn btn-primary" id="ExportExcel"
-					name="ExportExcel">Tải&nbsp;Excel</button>
-				
+				<button class="btn btn-warning text-nowrap" id="Check" name="Check" type="submit"> @Localizer["Check"]</button>
+				<button type="button" class="btn btn-primary text-nowrap" id="ExportExcel"
+					name="ExportExcel">@Localizer["ExportExcel"]</button>				
 			</div>
 		</div>
-
-				
+		
 		<!-- Phân trang -->
 		@{
 			var totalRows = 0;
-			
 			var pageNo = Model.Page_No > 0 ? Model.Page_No : 1;
 			foreach (var t_row in Model.ReportData)
 			{
@@ -67,8 +62,6 @@ th, td {
 			{
 				pageNo = totalPages;
 			}
-			
-
 			<div class="table-responsive">
 				<table class="table table-borderless align-middle">
 					<tr>
@@ -114,22 +107,22 @@ th, td {
 <div id="TableContainer" >
     <table class="table table-bordered table-hover table-striped align-middle text-center">
         <thead class="table-dark align-middle">
-            <th>No</th>
-            <th>Ngày</th>
-            <th>Line</th>
-            <th>Style</th>
+            <th>@Localizer["No"]</th>
+            <th>@Localizer["Date"]</th>
+            <th>@Localizer["Line"]</th>
+            <th>@Localizer["Style"]</th>
             <th>MO</th>
             <th>Item</th>
-            <th>Công đoạn</th>
-            <th>Màu</th>
-            <th>Rập</th>
-            <th>Bàn cắt</th>
-			<th style="width:300px;">Size</th>
-            <th>Fault / Qty</th>
+            <th>@ReportLocalizer["Operation"]</th>
+            <th>@Localizer["Color"]</th>
+            <th>@ReportLocalizer["Rap"]</th>
+            <th>@ReportLocalizer["CutTable"]</th>
+			<th style="width:300px;">@Localizer["Size"]</th>
+            <th>@ReportLocalizer["Fault"] / @ReportLocalizer["Qty"]</th>
 			<th>OQL</th>
-			<th>Người kiểm</th>
-			<th>Trạng thái</th>
-			<th>Chi tiết</th>
+			<th>@Localizer["UserUpdate"]</th>
+			<th>@ReportLocalizer["Status"]</th>
+			<th>@ReportLocalizer["Detail"]</th>
 			<th></th>
         </thead>
         <tbody class="align-middle text-center">
@@ -181,7 +174,7 @@ th, td {
 			}else
 			{
 				<tr>
-					<td colspan="16" class="text-center">Không có dữ liệu</td>
+					<td colspan="16" class="text-center">@Localizer["Nodata"]</td>
 				</tr>
 			}
 		</tbody>

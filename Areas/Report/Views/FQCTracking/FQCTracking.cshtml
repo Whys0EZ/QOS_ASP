@@ -1,6 +1,8 @@
 @model QOS.Areas.Report.Models.FQCTrackingViewModel
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
 @{
-    ViewData["Title"] = "Report Page";
+    ViewData["Title"] = Localizer["FQCTracking"];
     Layout = "_MenuReport";
 }
 <link rel="stylesheet" href="~/css/report.css" />
@@ -30,7 +32,7 @@
         font-weight: 600;
         @* text-transform: uppercase; *@
         font-size: 0.85rem;
-        padding: 1rem;
+        padding: 0.5rem;
     }
     .table tbody tr:hover {
         background-color: rgba(0,123,255,0.05) !important;
@@ -43,6 +45,7 @@
     .badge {
         padding: 0.5em 0.75em;
     }
+    
 
     /* Mobile responsive adjustments */
     @@media (max-width: 768px) {
@@ -82,7 +85,7 @@
         <!-- Bên trái -->
 
         <div class="col-md-4 d-flex flex-wrap gap-2">
-            <h3 class="text-primary fw-bold ms-3">FQC Tracking Report</h3>
+            <h3 class="text-primary fw-bold ms-3 text-uppercase">@Localizer["FQCTracking"]</h3>
         </div>
 
         <!-- Bên phải -->
@@ -116,10 +119,10 @@
                     value="@Model.DateEnd.ToString("yyyy-MM-dd")" />
 
 
-                <button class="btn btn-warning" id="Check" name="Check" type="submit"> Check</button>
+                <button class="btn btn-warning text-nowrap" id="Check" name="Check" type="submit"> @Localizer["Check"]</button>
                
-                <button onClick="Export2Excel_Click();" type="button" class="btn btn-primary" id="ExportExcel"
-                    name="ExportExcel">Tải&nbsp;Excel</button>
+                <button onClick="Export2Excel_Click();" type="button" class="btn btn-primary text-nowrap" id="ExportExcel"
+                    name="ExportExcel">@Localizer["ExportExcel"]</button>
             </form>
         </div>
     </div>
@@ -182,7 +185,7 @@
                             <td>@row["Audit_Time"]</td>
                             <td>@row["Total_Fault_QTY"]</td>
                             <td>@row["Check_Qty"]</td>
-                            <td>@OQL% </td>
+                            <td>@OQL % </td>
                             <td><i class="fas fa-user me-1"></i>@row["UserUpdate"]</td>
                             <td><i class="far fa-clock me-1"></i>@row["WorkDate"]</td>
                             <td onclick="showDetails('@row["ID_Result"]','@row["UserUpdate"]','@row["Audit_Time"]')"><i class="fa-solid fa-eye"></i></td>
@@ -197,7 +200,7 @@
     {
         <div class="no-data">
             <i class="fa-solid fa-inbox"></i>
-            <p>Không có dữ liệu trong khoảng thời gian này</p>
+            <p>@ReportLocalizer["NodataTime"]</p>
         </div>
     }
 </div>
@@ -209,10 +212,10 @@
         <div class="modal-content border-0 shadow">
             <div class="modal-body text-center py-4">
                 <div class="spinner-border text-primary mb-3" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden">@ReportLocalizer["Loading"]</span>
                 </div>
-                <div class="fw-bold">Đang tải dữ liệu...</div>
-                <small class="text-muted">Vui lòng chờ trong giây lát</small>
+                <div class="fw-bold">@ReportLocalizer["Loadingdata"]</div>
+                <small class="text-muted">@ReportLocalizer["Loadingplease"]</small>
             </div>
         </div>
     </div>
@@ -223,7 +226,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-info text-white text-center text-uppercase">
-                <h5 class="modal-title">Chi tiết báo cáo</h5>
+                <h5 class="modal-titles">@ReportLocalizer["modal-title"]</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="ModalRP_FQC">
@@ -250,7 +253,10 @@
                     $("#ModalRP_FQC").html(data);
                     var modal = new bootstrap.Modal(document.getElementById('FQCModal'));
                     var unit = $("#ModalRP_FQC").find("#UnitField").val();
-                    $(".modal-title").text("Chi tiết báo cáo - Xưởng : " + unit);
+                    // $(".modal-title").text("Chi tiết báo cáo - Xưởng : " + unit);
+                    $(".modal-titles").text(
+                        @Html.Raw(Json.Serialize($"{ReportLocalizer["modal-title"]} - {Localizer["Line"]}: ")) + unit
+                    );
 
                     modal.show();
                 }

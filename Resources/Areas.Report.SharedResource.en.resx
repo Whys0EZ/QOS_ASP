@@ -21,6 +21,12 @@
   <data name="FaultQty" xml:space="preserve">
     <value>Fault Qty</value>
   </data>
+  <data name="FaultTotal" xml:space="preserve">
+    <value>Fault Total</value>
+  </data>
+  <data name="Fault" xml:space="preserve">
+    <value>Fault</value>
+  </data>
 
   <data name="CutLeader" xml:space="preserve">
     <value>Cut Leader</value>
@@ -217,10 +223,13 @@
     <value>Not Error</value>
   </data>
   <data name="circle_minor" xml:space="preserve">
-    <value>minor error</value>
+    <value>Minor error</value>
   </data>
   <data name="circle_serious" xml:space="preserve">
-    <value>serious error</value>
+    <value>Serious error</value>
+  </data>
+  <data name="fatal_error" xml:space="preserve">
+    <value>Fatal error</value>
   </data>
   <data name="line_Status" xml:space="preserve">
     <value>Line Status</value>
@@ -238,9 +247,113 @@
     <value>Please wait a moment</value>
   </data>
   <data name="HistoryInline" xml:space="preserve">
-    <value>History of factory quality inspection</value>
+    <value>History of Inline quality inspection</value>
   </data>
-  
 
+  <data name="IDReport" xml:space="preserve">
+    <value>ID Report</value>
+  </data>
+  <data name="OperationNo" xml:space="preserve">
+    <value>Operation No</value>
+  </data>
+  <data name="Operation" xml:space="preserve">
+    <value>Operation</value>
+  </data>
+  <data name="Sewer" xml:space="preserve">
+    <value>Sewer</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="FaultList" xml:space="preserve">
+    <value>Fault List</value>
+  </data>
+  <data name="quality_assessment" xml:space="preserve">
+    <value>Quality assessment</value>
+  </data>
+  <data name="HistoryEndline" xml:space="preserve">
+    <value>End line quality control history</value>
+  </data>
+  <data name="Supervisor" xml:space="preserve">
+    <value>Supervisor</value>
+  </data>
+  <data name="Remedies" xml:space="preserve">
+    <value>Remedies</value>
+  </data>
+  <data name="DeleteReport" xml:space="preserve">
+    <value>Delete Report</value>
+  </data>
+  <data name="TopDefected" xml:space="preserve">
+    <value>Top Defected</value>
+  </data>
+  <data name="StyleCode" xml:space="preserve">
+    <value>StyleCode </value>
+  </data>
+  <data name="title_topEndLine" xml:space="preserve">
+    <value>Top End Line Defected</value>
+  </data>
+  <data name="Endline_detail" xml:space="preserve">
+    <value>END LINE ERROR DETAILS</value>
+  </data>
+  <data name="FaultCode" xml:space="preserve">
+    <value>Fault Code</value>
+  </data>
+  <data name="FaultName" xml:space="preserve">
+    <value>Fault Name</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Report" xml:space="preserve">
+    <value>Report</value>
+  </data>
+  <data name="Detail_Img" xml:space="preserve">
+    <value>Error Image Details</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="Average" xml:space="preserve">
+    <value>Average</value>
+  </data>
+  <data name="Target" xml:space="preserve">
+    <value>Target</value>
+  </data>
+  <data name="DownloadFile" xml:space="preserve">
+    <value>Download File Report</value>
+  </data>
+  <data name="title_topInLine" xml:space="preserve">
+    <value>Top In Line Defected</value>
+  </data>
+  <data name="Inline_detail" xml:space="preserve">
+    <value>IN LINE ERROR DETAILS</value>
+  </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="title_topChecker" xml:space="preserve">
+    <value>Top 5 Error Checker 84</value>
+  </data>
+  <data name="Checker_detail" xml:space="preserve">
+    <value>Checker 84 Error Details</value>
+  </data>
+  <data name="NodataTime" xml:space="preserve">
+    <value>No data for this time.</value>
+  </data>
+  <data name="title_topFQC" xml:space="preserve">
+    <value>Top 5 Error FQC Tracking</value>
+  </data>
+  <data name="FQC_detail" xml:space="preserve">
+    <value>FQC Tracking Error Details</value>
+  </data>
+  <data name="DefectRate" xml:space="preserve">
+    <value>Defect Rate</value>
+  </data>
+  <data name="DefectName" xml:space="preserve">
+    <value>DefectName</value>
+  </data>
 
 </root>

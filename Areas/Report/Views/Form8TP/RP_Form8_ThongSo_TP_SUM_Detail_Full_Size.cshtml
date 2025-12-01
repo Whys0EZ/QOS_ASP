@@ -8,13 +8,14 @@
     .table_size {
         border-collapse: collapse;
         width: 100%;
-        margin-bottom: 20px;
+        font-size: 10px;
+        font-weight: bold;
     }
 
     .info_td {
         border: 1px solid black;
-        padding: 5px;
-        font-size: 12px;
+        padding: auto;
+        
     }
 
     .table-break {
@@ -52,7 +53,7 @@
         vertical-align: top;
         padding-right: 10px;
         padding-top: 20px;
-        width: 48%;
+        @* width: 48%; *@
     }
 
     .ticket-spacer {
@@ -61,7 +62,7 @@
     }
 </style>
 
-<div class="container my-3">
+<div class="my-3">
     <div class="no-print mb-3">
         <button type="button" class="btn btn-primary" onclick="window.print();">
             <i class="fa-solid fa-print"></i> Print
@@ -85,7 +86,7 @@
                     @:<div class="ticket-row">
                 }
 
-                <!-- Ticket cell -->
+                @* <!-- Ticket cell --> *@
                 <div class="ticket-cell">
                     <table class="table_size">
                         <thead>
@@ -120,10 +121,8 @@
                                         @measurement.Base_Value
                                     </td>
                                     <td class="info_td" style="width: 50px; text-align:center;">
-                                        @* @(Math.Round(Convert.ToDouble(measurement.Sum_Value), 1)) *@
-                                        @(string.IsNullOrWhiteSpace(measurement?.Sum_Value?.ToString())
-                                        ? ""
-                                        : Math.Round(Convert.ToDouble(measurement.Sum_Value), 1).ToString())
+                                        @* @(string.IsNullOrWhiteSpace(measurement?.Sum_Value?.ToString()) ? "" : Math.Round(Convert.ToDouble(measurement.Sum_Value), 1).ToString()) *@
+                                        @(measurement?.Sum_Value is null ? "" : $"{measurement.Sum_Value:0.0}")
                                     </td>
                                 </tr>
                             }

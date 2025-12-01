@@ -2,15 +2,17 @@
 @inject QOS.Services.IUserPermissionService _permissionService
 @inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.SystemAdmin.SharedResource> SystemLocalizer
+
 @{
     ViewData["Title"] = "System";
     Layout = "_MenuSystem";
 }
+
 @if(_permissionService.HasPermission(User.Identity?.Name, "Sys_Admin"))
 {
-    <partial name="_AlertMessage" />
-<h2>@SystemLocalizer["ManagementUser"]</h2>
-<a asp-action="Create" class="btn btn-primary">+ @SystemLocalizer["AddUser"]</a>
+<partial name="_AlertMessage" />
+<h2 class="m-3">@SystemLocalizer["ManagementUser"]</h2>
+<a asp-action="Create" class="btn btn-primary ms-3">+ @SystemLocalizer["AddUser"]</a>
 <div class="table-container pb-5" id="tableContainer">
     <table class="table table-bordered table-striped mt-3">
         <thead class="table-dark">
@@ -43,9 +45,9 @@
                     <td>@user.UserUpdate</td>
                     <td>@user.LastUpdate</td>
                     <td>
-                        <a asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-sm btn-warning">Sửa</a>
+                        <a asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-sm btn-warning">@Localizer["Edit"]</a>
                         <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-sm btn-danger"
-                        onclick="return confirm('Xóa user này?')">Xóa</a>
+                        onclick="return confirm('Xóa user này?')">@Localizer["Delete"]</a>
                     </td>
                 </tr>
             }

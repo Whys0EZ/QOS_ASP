@@ -111,6 +111,8 @@ localizationOptions.RequestCultureProviders.Insert(0, new QueryStringRequestCult
 localizationOptions.RequestCultureProviders.Insert(1, new CookieRequestCultureProvider());
 
 app.UseRequestLocalization(localizationOptions);
+// Detect Device
+app.UseMiddleware<QOS.Middlewares.DeviceDetectionMiddleware>();
 
 app.UseStaticFiles();
 app.UseRouting();

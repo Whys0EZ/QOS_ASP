@@ -12,6 +12,7 @@ using System.Text.Json;
 using QOS.Areas.Function.Filters;
 using OfficeOpenXml.Style;
 using System.Drawing;
+using System.Globalization;
 
 
 namespace QOS.Areas.Report.Controllers
@@ -46,9 +47,9 @@ namespace QOS.Areas.Report.Controllers
         [HttpGet]
         public IActionResult SummaryBCHT(string? topDefected, string? typeCode, string? Unit, string? Line, string? Mo, string? styleCode, DateTime? dateFrom, DateTime? dateEnd)
         {
-            _logger.LogInformation("=== SummaryBCHT GET Request ===");
-            _logger.LogInformation($"Parameters - Unit: '{Unit}', DateFrom: {dateFrom}, DateEnd: {dateEnd}" +
-                $", Line: '{Line}', Mo: '{Mo}', StyleCode: '{styleCode}', TypeCode: '{typeCode}', TopDefected: '{topDefected}'");
+            // _logger.LogInformation("=== SummaryBCHT GET Request ===");
+            // _logger.LogInformation($"Parameters - Unit: '{Unit}', DateFrom: {dateFrom}, DateEnd: {dateEnd}" +
+            //     $", Line: '{Line}', Mo: '{Mo}', StyleCode: '{styleCode}', TypeCode: '{typeCode}', TopDefected: '{topDefected}'");
             try
             {
                 var model = new SummaryKCCViewModel
@@ -60,13 +61,13 @@ namespace QOS.Areas.Report.Controllers
                     Line = Line ?? "ALL",
                     Mo = Mo ?? "",
                     StyleCode = styleCode ?? "",
-                    DateFrom = dateFrom ?? DateTime.Now,
+                    DateFrom = dateFrom ?? DateTime.Now.Date.AddDays(-7).AddTicks(-1),
                     DateEnd = dateEnd ?? DateTime.Now.Date.AddDays(1).AddTicks(-1),
                     ReportData = new List<Dictionary<string, object>>(),
                     DefectStats = new Dictionary<string, DefectStat>()
                     
                 };
-                _logger.LogInformation($"Model created - Units available: {model.Unit_List.Count}");
+                // _logger.LogInformation($"Model created - Units available: {model.Unit_List.Count}");
                 LoadReportData(model);
                 return View(model);
             }
@@ -86,7 +87,7 @@ namespace QOS.Areas.Report.Controllers
                     .OrderBy(u => u.Unit)
                     .ToList();
 
-                _logger.LogInformation($"Loaded {units.Count} units from database");
+                // _logger.LogInformation($"Loaded {units.Count} units from database");
                 return units;
             }
             catch (Exception ex)
@@ -100,7 +101,7 @@ namespace QOS.Areas.Report.Controllers
         [HttpGet]
         public JsonResult GetLinesByUnit(string unitId)
         {
-            _logger.LogInformation($"GetLinesByUnit called with unitId: {unitId}");
+            // _logger.LogInformation($"GetLinesByUnit called with unitId: {unitId}");
             
             try
             {
@@ -119,7 +120,7 @@ namespace QOS.Areas.Report.Controllers
                     })
                     .ToList();
 
-                _logger.LogInformation($"Found {lines.Count} lines for unit {unitId}");
+                // _logger.LogInformation($"Found {lines.Count} lines for unit {unitId}");
                 return Json(lines);
             }
             catch (Exception ex)
@@ -133,7 +134,7 @@ namespace QOS.Areas.Report.Controllers
         {
             try
             {
-                _logger.LogInformation("=== LoadReportData Start ===");
+                // _logger.LogInformation("=== LoadReportData Start ===");
                 
                 // Prepare parameters for stored procedure
                 var dateFrom = model.DateFrom.ToString("yyyy-MM-dd");
@@ -146,7 +147,7 @@ namespace QOS.Areas.Report.Controllers
                 var top = model.TopDefected.ToString();
                 var search = "";
 
-                _logger.LogInformation($"SP Parameters: DateFrom={dateFrom}, DateTo={dateEnd}, Unit={unit}, Line={line}, MO={mo}, StyleCode={styleCode}, Type={defectedType}, Top={top}");
+                // _logger.LogInformation($"SP Parameters: DateFrom={dateFrom}, DateTo={dateEnd}, Unit={unit}, Line={line}, MO={mo}, StyleCode={styleCode}, Type={defectedType}, Top={top}");
 
                 // Execute stored procedure
                 var sql = @"EXEC RP_TonghoploiChecker84_MO @Date_From, @Date_To, @Unit, @Line, @MO, @StyleCode, @Defected_Type, @Top_Defected, @Search";
@@ -200,7 +201,10 @@ namespace QOS.Areas.Report.Controllers
                     reportDataList.Add(rowData);
 
                     // Aggregate by Fault_Name_VN for statistics
-                    var defectKey = faultNameVN;
+                    // var defectKey = faultNameVN;
+                    string currentLang = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+                    var defectKey = (currentLang == "en") ? faultNameEN : faultNameVN;
+
                     if (!string.IsNullOrEmpty(defectKey))
                     {
                         if (defectSummary.ContainsKey(defectKey))
@@ -220,7 +224,7 @@ namespace QOS.Areas.Report.Controllers
                 }
                 reader.Close();
 
-                _logger.LogInformation($"SP returned {reportDataList.Count} records");
+                // _logger.LogInformation($"SP returned {reportDataList.Count} records");
 
                 // Calculate total and percentages
                 model.TotalDefects = defectSummary.Sum(d => d.Value.Count);
@@ -251,7 +255,7 @@ namespace QOS.Areas.Report.Controllers
 
                 model.ReportData = reportDataList;
 
-                _logger.LogInformation($"Statistics calculated - Total: {model.TotalDefects}, Defect Types: {model.DefectStats.Count}");
+                // _logger.LogInformation($"Statistics calculated - Total: {model.TotalDefects}, Defect Types: {model.DefectStats.Count}");
                 
                 // Log sample data for debugging
                 // if (model.DefectStats.Any())
@@ -305,10 +309,10 @@ namespace QOS.Areas.Report.Controllers
             string[] codes = faultCodes.Split(',');
             int col = 0;
 
-            _logger.LogInformation(" Fault Code: " + faultCodes);
+            // _logger.LogInformation(" Fault Code: " + faultCodes);
             
-            _logger.LogInformation($"Parameters - Unit: '{Unit}', DateFrom: {dateFrom}, DateEnd: {dateEnd}" +
-                $", Line: '{Line}', Mo: '{Mo}', StyleCode: '{styleCode}', TypeCode: '{typeCode}', TopDefected: '{topDefected}' ,' Fault Code: ' + '{faultCodes}'");
+            // _logger.LogInformation($"Parameters - Unit: '{Unit}', DateFrom: {dateFrom}, DateEnd: {dateEnd}" +
+            //     $", Line: '{Line}', Mo: '{Mo}', StyleCode: '{styleCode}', TypeCode: '{typeCode}', TopDefected: '{topDefected}' ,' Fault Code: ' + '{faultCodes}'");
 
             // Tạo Excel file (ví dụ với ClosedXML hoặc EPPlus)
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;

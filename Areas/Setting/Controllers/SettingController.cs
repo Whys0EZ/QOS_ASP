@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using QOS.Data;
 using QOS.Models;
 using QOS.Areas.Function.Filters;
+using QOS.Areas.Setting;
+using QOS;
+using Microsoft.Extensions.Localization;
 
 namespace QOS.Controllers
 {
@@ -13,12 +16,18 @@ namespace QOS.Controllers
         private readonly ILogger<SettingController> _logger;
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _env;
+        private readonly IStringLocalizer<QOS.SharedResource> _sharedLocalizer;
+        private readonly IStringLocalizer<QOS.Areas.Setting.SharedResource> _setingLocalizer;
 
-        public SettingController(ILogger<SettingController> logger, AppDbContext context, IWebHostEnvironment env)
+        public SettingController(ILogger<SettingController> logger, AppDbContext context, IWebHostEnvironment env,
+        IStringLocalizer<QOS.SharedResource> sharedLocalizer,
+        IStringLocalizer<QOS.Areas.Setting.SharedResource> setingLocalizer)
         {
             _logger = logger;
             _context = context;
             _env = env;
+            _sharedLocalizer = sharedLocalizer;
+            _setingLocalizer = setingLocalizer;
         }
         [TempData]
         public string? MessageStatus { get; set; }
@@ -53,7 +62,7 @@ namespace QOS.Controllers
                 model.LastUpdate = DateTime.Now;
                 _context.Factory_List.Add(model);
                 _context.SaveChanges();
-                MessageStatus = "Thêm nhà máy thành công";
+                MessageStatus = _setingLocalizer["FactorySuccess"];
                 return RedirectToAction("FactoryList");
             }
             return View(model);
@@ -83,7 +92,7 @@ namespace QOS.Controllers
                 model.LastUpdate = DateTime.Now;
                 _context.Team_List.Add(model);
                 _context.SaveChanges();
-                MessageStatus = "Thêm phòng ban thành công";
+                MessageStatus = _setingLocalizer["DepartmentSuccess"];
                 return RedirectToAction("DepartmentList");
             }
             return View(model);
@@ -116,7 +125,7 @@ namespace QOS.Controllers
                 model.ETS_SUB = model.ETS_SUB;
                 _context.Unit_List.Add(model);
                 _context.SaveChanges();
-                MessageStatus = "Thêm xưởng thành công";
+                MessageStatus = _setingLocalizer["UnitSuccess"];
                 return RedirectToAction("UnitList");
             }
             return View(model);

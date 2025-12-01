@@ -139,7 +139,14 @@
                             defect_rate_2 = Math.Round(defect_rate_2, 2);
 
                             <tr>
-                                <td>@row["defectName"] / <span style="color:blue;">@row["defectNameEN"]</span></td>
+                                @* <td>@row["defectName"] / <span style="color:blue;">@row["defectNameEN"]</span></td> *@
+                                @if(row["defectName"].ToString() != "")
+                                {
+                                    <td>@row["defectName"] / <span style="color:blue;">@row["defectNameEN"]</span></td>
+                                } else 
+                                {
+                                    <td></td>
+                                }
                                 <td>@row["Total_Fault_Qty"]</td>
                                 <td>@defect_rate_2 %</td>
                             </tr>
@@ -171,7 +178,14 @@
                                     <td>@row["FullName"]</td>
                                     <td>@row["Qty"]</td>
                                     <td>@row["Total_Fault_Qty"]</td>
-                                    <td>@row["defectName"] / <span style="color:blue;">@row["defectNameEN"]</span></td>
+                                    @* <td>@row["defectName"] / <span style="color:blue;">@row["defectNameEN"]</span></td> *@
+                                    @if(row["defectName"].ToString() != "")
+                                    {
+                                        <td>@row["defectName"] / <span style="color:blue;">@row["defectNameEN"]</span></td>
+                                    } else 
+                                    {
+                                        <td></td>
+                                    }
                                 </tr>
 
                             }
@@ -210,7 +224,7 @@
 // Auto refresh page every 60 seconds
     setInterval(function() {
         Submit();
-    }, 60000);
+    }, 600000);
  
     function Submit()
         {

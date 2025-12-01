@@ -1,5 +1,7 @@
 @using System.Text.Json
 @model QOS.Areas.Report.Models.EndlineUnitViewModel
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
 @{
 	ViewData["Title"] = "ENDLINE REPORT";
 	@* Layout = "_MenuReport"; *@
@@ -34,10 +36,10 @@
 
                     <!-- Unit -->
                     <div class="filter-item d-flex align-items-center gap-2 flex-wrap">
-                        <label class="filter-label me-2 fw-semibold">Unit:</label>
+                        <label class="filter-label me-2 fw-semibold">@Localizer["Unit"]:</label>
                         <select class="form-select form-select-sm" name="unit" id="unitSelect" style="width: 120px;">
                             
-                            <option value="ALL" selected>--Unit--</option>
+                            <option value="ALL" selected>--@Localizer["Unit"]--</option>
                             @if(Model.Customer_List.Any()){
                                 foreach( var customer in Model.Customer_List)
                                 {
@@ -55,10 +57,10 @@
                     </div>
                     <!-- Line -->
                     <div class="filter-item d-flex align-items-center gap-2 flex-wrap">
-                        <label class="filter-label me-2 fw-semibold">Line:</label>
+                        <label class="filter-label me-2 fw-semibold">@Localizer["Line"]:</label>
                         <select class="form-select form-select-sm" name="line" id="lineSelect" style="width: 120px;">
                             
-                            <option value="ALL" selected>--Line--</option>
+                            <option value="ALL" selected>--@Localizer["Line"]--</option>
                             @if(Model.Line_List.Any()){
                                 foreach( var line in Model.Line_List)
                                 {
@@ -81,7 +83,7 @@
 
                     <!-- Ngày -->
                     <div class="filter-item d-flex align-items-center gap-2 flex-wrap">
-                        <label class="filter-label fw-semibold mb-0">Ngày:</label>
+                        <label class="filter-label fw-semibold mb-0">@Localizer["Date"]:</label>
                         <input type="date" value="@Model.DateFrom.ToString("yyyy-MM-dd")" class="form-control form-control-sm" name="dateFrom" style="width: 140px;">
                         <span class="fw-semibold">-</span>
                         <input type="date" value="@Model.DateEnd.ToString("yyyy-MM-dd")" class="form-control form-control-sm" name="dateEnd" style="width: 140px;">
@@ -92,10 +94,10 @@
                 <!-- Right group (buttons) -->
                 <div class="d-flex flex-wrap gap-2">
                     <button type="submit" class="btn btn-primary btn-sm">
-                        <i class="bi bi-search me-1"></i> Tìm kiếm
+                        <i class="bi bi-search me-1"></i> @Localizer["Search"]
                     </button>
                     <button type="button" class="btn btn-success btn-sm" onclick="exportToExcel()">
-                        <i class="bi bi-file-earmark-excel me-1"></i> Tải Excel
+                        <i class="bi bi-file-earmark-excel me-1"></i> @Localizer["ExportExcel"]
                     </button>
                 </div>
 
@@ -124,15 +126,15 @@
             <table class="table table-bordered table-striped table-hover">
                 <thead class="table-info align-middle text-center">
                     <tr>
-                        <th style="width:15px;">STT</th>
-                        <th>Unit</th>
-                        <th>Emp Name</th>
+                        <th style="width:15px;">@Localizer["No"]</th>
+                        <th>@Localizer["Unit"]</th>
+                        <th>@ReportLocalizer["Sewer"]</th>
                         <th>Qty ETS</th>
-                        <th>Check Qty</th>
-                        <th>Total Fault</th>
-                        <th>Critical Fault</th>
-                        <th>Serious Fault</th>
-                        <th>Minor Fault</th>
+                        <th>@ReportLocalizer["CheckQty"]</th>
+                        <th>@ReportLocalizer["FaultTotal"]</th>
+                        <th>@ReportLocalizer["fatal_error"]</th>
+                        <th>@ReportLocalizer["circle_serious"]</th>
+                        <th>@ReportLocalizer["circle_minor"]</th>
                         <th>OQL</th>
                         <th></th>
                     </tr>
@@ -140,7 +142,7 @@
                 <tbody class=" align-middle text-center">
                 @foreach(var row in Model.ReportData)
                 {
-                    <tr id="row-@row["Unit"]">
+                    <tr id="row-@row["Sewer_Name"]">
                         <td>@stt</td>
                         <td>@row["Unit"]</td>
                         <td>@row["Sewer"] - @row["Sewer_Name"]</td>
@@ -163,7 +165,7 @@
         }
         else
         {
-            <p class="text-center text-muted">Không có dữ liệu</p>
+            <p class="text-center text-muted">@ReportLocalizer["NodataTime"]</p>
         }
         
     </div>
@@ -174,10 +176,10 @@
         <div class="modal-content border-0 shadow">
             <div class="modal-body text-center py-4">
                 <div class="spinner-border text-primary mb-3" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden">@ReportLocalizer["Loading"]</span>
                 </div>
-                <div class="fw-bold">Đang tải dữ liệu...</div>
-                <small class="text-muted">Vui lòng chờ trong giây lát</small>
+                <div class="fw-bold">@ReportLocalizer["Loadingdata"]</div>
+                <small class="text-muted">@ReportLocalizer["Loadingplease"]</small>
             </div>
         </div>
     </div>

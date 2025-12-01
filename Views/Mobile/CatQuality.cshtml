@@ -1,0 +1,158 @@
+@model QOS.Areas.Report.Models.RP_Form1ViewModel
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
+@{
+    ViewData["Title"] = Localizer["Form1BCCLC"];
+}
+
+<partial name="_AlertMessage" />
+<div class="continer my-3 m-3">
+    <div class="row align-items-center mb-3">
+        <!-- Bên trái -->
+
+        <div class="col-md-4 d-flex flex-wrap gap-2">
+            <h3 class="text-primary fw-bold text-uppercase">@Localizer["Form1BCCLC"]</h3>
+        </div>
+
+        <!-- Bên phải -->
+        <div class="col-md-8 d-flex justify-content-end flex-wrap gap-2">
+            <form id="SearchForm" asp-area="Report" asp-action="RP_Form1" asp-controller="Form1BCCLC" method="get"
+                class="d-flex align-items-center gap-2 mb-0">
+
+                <select class="form-control" id="Unit" name="Unit" asp-for="Unit"
+                    asp-items="@(new SelectList(Model.Unit_List, "Unit", "Unit", Model.Unit))">
+                    <option value="ALL">-- Unit --</option>
+                </select>
+
+                <input type="date" id="dateFrom" name="dateFrom" class="form-control"
+                    value="@Model.DateFrom.ToString("yyyy-MM-dd")" />
+                <input type="date" id="dateEnd" name="dateEnd" class="form-control"
+                    value="@Model.DateEnd.ToString("yyyy-MM-dd")" />
+
+
+                <button class="btn btn-warning text-nowrap" id="Check" name="Check" type="submit"> @Localizer["Check"]</button>
+                <button class="btn btn-warning text-nowrap" id="Reset" name="Reset" type="reset"> @Localizer["Reset"]</button>
+                <button type="button" class="btn btn-primary text-nowrap" id="ExportExcel"
+                    name="ExportExcel">@Localizer["ExportExcel"]</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="TableContainer">
+    <table class="table table-bordered table-hover table-striped align-middle text-center">
+        <thead class="table-light align-middle">
+            <th>STT</th>
+            <th>ID</th>
+            <th>@Localizer["Unit"]</th>
+            <th>MO</th>
+            <th>@ReportLocalizer["CutTable"]</th>
+            <th>@ReportLocalizer["ReAudit"]</th>
+            <th>@ReportLocalizer["Status"]</th>
+            <th>@Localizer["AuditTime"]</th>
+            <th>@ReportLocalizer["Remark"]</th>
+            <th>@Localizer["UserUpdate"]</th>
+            <th>@Localizer["LastUpdate"]</th>
+        </thead>
+        <tbody>
+            @if (Model.History != null)
+            {
+                var i = 1;
+
+                foreach (var item in Model.History)
+                {
+                    string bgColor, fontColor, result, img;
+                    if (item.Re_Audit == true)
+                    {
+                        bgColor = "background-color: yellow;";
+                        fontColor = "color: red;";
+                        result = Localizer["Y"];
+                        img = "/images/red_On.png";
+
+                    }
+                    else
+                    {
+                        bgColor = "";
+                        fontColor = "color: green;";
+                        result = Localizer["N"];
+                        img = "/images/green_On.png";
+                    }
+                    <tr style="@bgColor @fontColor">
+                        <td>@i</td>
+                        <td>@item.ID</td>
+                        <td>@item.Unit</td>
+                        <td><span style="text-decoration: underline; cursor: pointer; color:blue;"
+                                onclick="showDetails('@item.ID')">@item.MO - @item.Color</span></td>
+                        <td>@item.CutTableName</td>
+                        <td>@result</td>
+                        <td><img style="width: 30px; height:30px; text-align:center;" src="@img" alt="@result"></td>
+                        <td>@item.Audit_Time</td>
+                        <td>@item.Remark</td>
+                        <td>@item.UserUpdate - @item.FullName</td>
+                        <td>@item.LastUpdate</td>
+                    </tr>
+                    i++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="Form1Modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white text-center text-uppercase">
+                <h5 class="modal-title">@ReportLocalizer["modal-title"]</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="ModalRP_Form1">
+                <!-- Nội dung chi tiết sẽ load vào đây -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script>
+    $("#Check").click(function () {
+        var Unit = $("#Unit").val();
+        var dateFrom = $("#dateFrom").val();
+
+        $.get("@Url.Action("RP_Form1", "Form1BCCLC", new { area = "Report" })",
+            { Unit: Unit, dateFrom: dateFrom, dateEnd: dateEnd },
+            function (data) {
+                // render lại phần bảng thôi
+                $("#TableContainer").html($(data).find("#TableContainer").html());
+            });
+    });
+
+    function showDetails(id) {
+        $.get('@Url.Action("DetailForm1", "Form1BCCLC", new { area = "Report" })',
+            { id: id },
+            function (data) {
+                if (data) {
+                    // inset info
+                    $("#ModalRP_Form1").html(data);
+                    var modal = new bootstrap.Modal(document.getElementById('Form1Modal'));
+                    var unit = $("#ModalRP_Form1").find("#UnitField").val();
+                    // $(".modal-title").text("@ReportLocalizer["modal-title"] - @Localizer["Unit"]: " + unit);
+                    $(".modal-title").text(
+                        @Html.Raw(Json.Serialize($"{ReportLocalizer["modal-title"]} - {Localizer["Unit"]}: ")) + unit
+                    );
+
+                    modal.show();
+                }
+            });
+    }
+
+    $("#ExportExcel").click(function () {
+        var Unit = $("#Unit").val();
+        var dateFrom = $("#dateFrom").val();
+        var dateEnd = $("#dateEnd").val();
+
+        var url = '@Url.Action("ExportExcel", "Form1BCCLC", new { area = "Report" })'
+        + "?Unit=" + encodeURIComponent(Unit)
+        + "&dateFrom=" + encodeURIComponent(dateFrom)
+        + "&dateEnd=" + encodeURIComponent(dateEnd);
+
+        window.location.href = url; // tự động download file
+    });
+</script>
