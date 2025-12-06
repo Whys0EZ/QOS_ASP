@@ -139,7 +139,7 @@ namespace QOS.Controllers
                         IsPersistent = vm.Login.RememberMe,   // 👈 Dùng giá trị người dùng chọn
                         ExpiresUtc = vm.Login.RememberMe
                             ? DateTimeOffset.UtcNow.AddDays(7)   // Nếu có “Ghi nhớ đăng nhập” → giữ 7 ngày
-                            : DateTimeOffset.UtcNow.AddHours(12) // Nếu không có thì giữ trong 12h
+                            : DateTimeOffset.UtcNow.AddHours(48) // Nếu không có thì giữ trong 30h
                     });
 
                 HttpContext.Session.SetString("Username", user.Username);

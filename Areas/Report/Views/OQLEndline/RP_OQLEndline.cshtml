@@ -20,6 +20,67 @@
        asp-route-month="@Model.SelectedMonth" 
        asp-route-year="@Model.SelectedYear" 
        class="download-link">@ReportLocalizer["DownloadFile"]</a>
+    <!-- Filter Card -->
+        @* <div class="filter-card">
+            <form method="get" class="filter-section" id="filterForm">
+                <!-- Unit -->
+                <div class="form-group">
+                    <label class="filter-label">
+                        @Localizer["Unit"]:
+                    </label>
+                    <select name="unit" id="unitSelect" class="form-select" asp-for="SelectedUnit">
+                        @if (Model.Zone.Any())
+                        {
+                            foreach (var zone in Model.Zone)
+                            {
+                                <option value="@($"Z{zone}")" selected="@($"Z{zone}" == Model.SelectedUnit)">@zone</option>
+                            }
+                        }
+                        @if (Model.DistinctUnits.Any())
+                        {
+                            foreach (var u in Model.DistinctUnits)
+                            {
+                                <option value="@u.Unit" selected="@(u.Unit == Model.SelectedUnit)">@u.Unit</option>
+                            }
+                        }
+                        
+                    </select>
+                </div>
+
+                <!-- Month -->
+                <div class="form-group">
+                    <label class="filter-label">@ReportLocalizer["Month"]:</label>
+                    <select name="month" id="monthSelect" class="form-select" asp-for="SelectedMonth">
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Year -->
+                <div class="form-group">
+                    <label class="filter-label">
+                        @ReportLocalizer["Year"]:
+                    </label>
+                    <select name="year" id="yearSelect" class="form-select"asp-for="SelectedMonth">
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="button-group">
+                    <button type="submit" class="btn btn-submit">
+                        <span>🔍</span>
+                        <span class="btn-text">Tìm kiếm</span>
+                    </button>
+                    <button type="button" class="btn-download" id="btnReset">📥 @Localizer["Reset"]</button>
+                </div>
+            </form>
+        </div> *@
     
     <form method="get" class="filter-section">
         <label>@Localizer["Unit"]:</label>

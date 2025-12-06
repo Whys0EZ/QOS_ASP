@@ -5,16 +5,16 @@
 }
 <link rel="stylesheet" href="~/css/menu_left.css" />
 <div class="container-fluid p-0">
-    <div class="row g-0">
+    <div class="row ">
         <!-- Mobile Menu Button -->
-        <div class="col-12 d-md-none p-3">
+        <div class="col-12 d-lg-none p-3">
             <button class="btn mobile-menu-btn w-100" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuSidebar">
                 ☰ Menu 
             </button>
         </div>
 
         <!-- Desktop Sidebar -->
-        <div class="col-md-2 d-none d-md-block modern-sidebar" id="desktopSidebar">
+        <div class="col-lg-2 d-none d-lg-block modern-sidebar" id="desktopSidebar">
         <!-- Toggle Button -->
             <button class="toggle-sidebar-btn" id="toggleBtn" title="Thu nhỏ/Mở rộng menu">
                 <i class="fas fa-chevron-left"></i>
@@ -22,87 +22,87 @@
             <div class="sidebar-header">
                 <h3><span class="feature-icon">⚙️</span>@Localizer["Function"]</h3>
             </div>
-
-            <ul class=" list-unstyled list-group list-group-flush">
-                <li class=" menu-item">
-                    <a class="menu-link @Html.IsActive(new[] { "ManageOperation" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ManageOperation" ><span class="menu-number">1</span>@Localizer["ManageOperation"]</a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link @Html.IsActive(new[] { "ManageFault" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ManageFault"><span class="menu-number">2</span>@Localizer["ManageFault"]</a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link @Html.IsActive(new[] { "ThongSoBTP" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoBTP"><span class="menu-number">3</span>@Localizer["ThongSoBTP"]</a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link @Html.IsActive(new[] { "ThongSoTP" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoTP"><span class="menu-number">4</span>@Localizer["ThongSoTP"]</a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link @Html.IsActive(new[] { "ThongSoDo" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoDo"><span class="menu-number">5</span>@Localizer["ThongSoDo"]</a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link @Html.IsActive(new[] { "ETSMoStyle" }, new[] { "Index" })" asp-controller="Function" asp-action="F_MOStyleSize"><span class="menu-number">6</span>@Localizer["ETSMoStyle"]</a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link @Html.IsActive(new[] { "TrackingContact" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingContact"><span class="menu-number">7</span>@Localizer["TrackingContact"]</a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link @Html.IsActive(new[] { "TrackingSetup" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingSetup"><span class="menu-number">8</span>@Localizer["TrackingSetup"]</a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link @Html.IsActive(new[] { "TrackingUpload" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingUpload"><span class="menu-number">9</span>@Localizer["TrackingUpload"]</a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link @Html.IsActive(new[] { "OnlineFile" }, new[] { "Index" })" asp-controller="Function" asp-action="F_OnlineFiles"><span class="menu-number">10</span>@Localizer["OnlineFile"]</a>
-                </li>
-            </ul>
-            <hr/>
+            <div class="sidebar-content">
+                <ul class=" list-unstyled list-group list-group-flush">
+                    <li class=" menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "ManageOperation" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ManageOperation" ><span class="menu-number">1</span>@Localizer["ManageOperation"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "ManageFault" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ManageFault"><span class="menu-number">2</span>@Localizer["ManageFault"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "ThongSoBTP" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoBTP"><span class="menu-number">3</span>@Localizer["ThongSoBTP"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "ThongSoTP" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoTP"><span class="menu-number">4</span>@Localizer["ThongSoTP"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "ThongSoDo" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoDo"><span class="menu-number">5</span>@Localizer["ThongSoDo"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "ETSMoStyle" }, new[] { "Index" })" asp-controller="Function" asp-action="F_MOStyleSize"><span class="menu-number">6</span>@Localizer["ETSMoStyle"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "TrackingContact" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingContact"><span class="menu-number">7</span>@Localizer["TrackingContact"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "TrackingSetup" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingSetup"><span class="menu-number">8</span>@Localizer["TrackingSetup"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "TrackingUpload" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingUpload"><span class="menu-number">9</span>@Localizer["TrackingUpload"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "OnlineFile" }, new[] { "Index" })" asp-controller="Function" asp-action="F_OnlineFiles"><span class="menu-number">10</span>@Localizer["OnlineFile"]</a>
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <!-- Nội dung chính -->
-        <div class="col-md-10 content-area pb-5" id="contentArea">
+        <div class="col-lg-10 main-content content-area pb-5" id="contentArea">
             @RenderBody()
         </div>
     </div>
 </div>
 
 <!-- Offcanvas cho mobile -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="menuSidebar">
+<div class="offcanvas offcanvas-start offcanvas-modern" tabindex="-1" id="menuSidebar">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title">TÍNH NĂNG</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body">
-        <ul class="list-group list-group-flush">
-            <li class="menu-item">
-                <a asp-controller="Function" asp-action="F_ManageOperation">1- @Localizer["ManageOperation"]</a>
-            </li>
-            <li class="menu-item">
-                <a asp-controller="Function" asp-action="F_ManageFault">2- @Localizer["ManageFault"]</a>
-            </li>
-            <li class="menu-item">
-                <a asp-controller="Function" asp-action="F_ThongSoBTP">3- @Localizer["ThongSoBTP"]</a>
-            </li>
-            <li class="menu-item">
-                <a asp-controller="Function" asp-action="F_ThongSoTP">4- @Localizer["ThongSoTP"]</a>
-            </li>
-            <li class="menu-item">
-                <a asp-controller="Function" asp-action="F_ThongSoDo">5- @Localizer["ThongSoDo"]</a>
-            </li>
-            <li class="menu-item">
-                <a asp-controller="Function" asp-action="F_MOStyleSize">6- @Localizer["ETSMoStyle"]</a>
-            </li>
-            <li class="menu-item">
-                <a asp-controller="Function" asp-action="F_TrackingContact">7- @Localizer["TrackingContact"]</a>
-            </li>
-            <li class="menu-item">
-                <a asp-controller="Function" asp-action="F_TrackingSetup">8- @Localizer["TrackingSetup"]</a>
-            </li>
-            <li class="menu-item">
-                <a asp-controller="Function" asp-action="F_TrackingUpload">9- @Localizer["TrackingUpload"]</a>
-            </li>
-            <li class="menu-item">
-                <a asp-controller="Function" asp-action="F_OnlineFiles">10- @Localizer["OnlineFile"]</a>
-            </li>
+        <ul class="list-unstyled sidebar-menu">
+            <li class=" menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "ManageOperation" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ManageOperation" ><span class="menu-number">1</span>@Localizer["ManageOperation"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "ManageFault" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ManageFault"><span class="menu-number">2</span>@Localizer["ManageFault"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "ThongSoBTP" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoBTP"><span class="menu-number">3</span>@Localizer["ThongSoBTP"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "ThongSoTP" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoTP"><span class="menu-number">4</span>@Localizer["ThongSoTP"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "ThongSoDo" }, new[] { "Index" })" asp-controller="Function" asp-action="F_ThongSoDo"><span class="menu-number">5</span>@Localizer["ThongSoDo"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "ETSMoStyle" }, new[] { "Index" })" asp-controller="Function" asp-action="F_MOStyleSize"><span class="menu-number">6</span>@Localizer["ETSMoStyle"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "TrackingContact" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingContact"><span class="menu-number">7</span>@Localizer["TrackingContact"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "TrackingSetup" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingSetup"><span class="menu-number">8</span>@Localizer["TrackingSetup"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "TrackingUpload" }, new[] { "Index" })" asp-controller="Function" asp-action="F_TrackingUpload"><span class="menu-number">9</span>@Localizer["TrackingUpload"]</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "OnlineFile" }, new[] { "Index" })" asp-controller="Function" asp-action="F_OnlineFiles"><span class="menu-number">10</span>@Localizer["OnlineFile"]</a>
+                    </li>
         </ul>
     </div>
 </div>

@@ -210,3 +210,44 @@ table th {
     font-weight: 600;
     background-color: #f1f1f1;
 }
+
+@media (max-width: 991px) {
+    .filter-section {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        
+        background: white;
+        padding: 5px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-section label {
+        font-weight: 200;
+        color: #333;
+        margin: 0;
+    }
+
+    .filter-section select {
+       
+        border: 2px solid #003d82;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: bold;
+        min-width: 50px;
+    }
+    .btn-download {
+        background: #28a745;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        font-size: 14px;;
+        
+    }
+}

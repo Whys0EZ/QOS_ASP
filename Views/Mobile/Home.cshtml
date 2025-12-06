@@ -3,34 +3,6 @@
 }
 
 <div class="container">
-    @* <div class="mobile-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-        <div style="display:flex;align-items:center;">
-            <img src="/images/qos_icon.png" alt="Logo" style="height:40px;margin-right:10px" />
-           
-        </div>
-
-        <div style="display:flex;align-items:center;gap:8px;">
-            @if (User?.Identity?.IsAuthenticated ?? false)
-            {
-                <div style="font-size:16px;color:#333;margin-right:18px">@User.Identity.Name</div>
-
-                <form asp-controller="Account" asp-action="Logout" method="post" style="margin:0;">
-                    @Html.AntiForgeryToken()
-                    <a title="Đăng Xuất" style="position:absolute; top:14px; right:3px; z-index:150;">
-                        <img src="/images/Logout2.png" style="width:18px;height:18px;margin-right:5px" />
-                  
-                    </a>
-                </form>
-            }
-            else
-            {
-                <a class="menu-button" href="/Account/Login" style="width:auto;padding:8px 12px;border-radius:8px;">
-                    <img src="/images/icons/user.png" style="width:20px;height:20px;margin-right:8px" />
-                    <span>Login</span>
-                </a>
-            }
-        </div>
-    </div> *@
 
     <!-- Header -->
         <div class="header">
@@ -208,7 +180,7 @@
             console.log('Navigating to:', report);
             // Add your navigation logic here
             const url = '/Report/' + report;
-            const win = window.open(url, '_blank');
+            const win = window.open(url, '_self');
             if (win) win.opener = null;
         }
         function onlineFile(report) {

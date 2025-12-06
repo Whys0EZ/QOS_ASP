@@ -8,14 +8,14 @@
 <div class="container-fluid p-0">
     <div class="row g-0">
         <!-- Mobile Menu Button -->
-        <div class="col-12 d-md-none p-3">
+        <div class="col-12 d-lg-none p-3">
             <button class="btn mobile-menu-btn w-100" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuSidebar">
                 ☰ Menu 
             </button>
         </div>
 
         <!-- Desktop Sidebar -->
-        <div class="col-md-2 d-none d-md-block modern-sidebar" id="desktopSidebar">
+        <div class="col-lg-2 d-none d-lg-block modern-sidebar" id="desktopSidebar">
             <!-- Toggle Button -->
             <button class="toggle-sidebar-btn" id="toggleBtn" title="Thu nhỏ/Mở rộng menu">
                 <i class="fas fa-chevron-left"></i>
@@ -51,20 +51,20 @@
         </div>
 
         <!-- Content Area -->
-        <div class="col-md-10 content-area pd-3 mb-5" id="contentArea">
+        <div class="col-lg-10 content-area pd-3 mb-5" id="contentArea">
             @RenderBody()
         </div>
     </div>
 </div>
 
 <!-- Offcanvas cho mobile -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="menuSidebar">
+<div class="offcanvas offcanvas-start offcanvas-modern" tabindex="-1" id="menuSidebar">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title">@Localizer["Setting"]</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body">
-        <ul class="list-group list-group-flush">
+        <ul class="list-group sidebar-menu">
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "Setting" }, new[] { "FactoryList" })" 
                    asp-controller="Setting" 

@@ -4,16 +4,94 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
 @{
     ViewData["Title"] = Localizer["SummaryKCC"];
-    Layout = "_MenuReport";
+    var ua = Context.Request.Headers["User-Agent"].ToString().ToLower();
+    bool isMobile = ua.Contains("android") || ua.Contains("iphone") || ua.Contains("ipad") || ua.Contains("mobile");
+    Layout = isMobile ? "_LayoutMobile" : "_MenuReport";
 }
 <link rel="stylesheet" href="~/css/report.css" />
+<style>
+
+    /* Filter Group */
+    .filter-group {
+        display: grid;
+        
+    }
+    @@media (max-width: 480px) {
+        .filter-group {
+            grid-template-columns: auto auto ;
+        }
+        .header-card .header-title {
+            font-size: 12px;
+        }
+        .header-card {
+            margin: 5px;
+        }
+        .header-card marquee {
+            behavior: none;
+        }
+    }
+    /* Tablet - 2 columns */
+    @@media (min-width: 576px) {
+        .filter-group {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .filter-item.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .button-group {
+            grid-column: 1 / -1;
+        }
+
+        .date-separator {
+            padding-top: 28px;
+        }
+    }
+
+    /* Desktop - 3 columns */
+    @@media (min-width: 768px) {
+        .filter-card {
+            padding: 24px;
+        }
+
+        .filter-group {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .button-group {
+            grid-template-columns: auto auto;
+            justify-content: flex-start;
+            gap: 12px;
+        }
+
+        .btn {
+            width: auto;
+            min-width: 140px;
+        }
+    }
+
+    /* Large Desktop - 4 columns */
+    @@media (min-width: 992px) {
+        .filter-group {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+    @@media (min-width: 1400px) {
+        .filter-group {
+            grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto;
+        }
+    }
+
+</style>
 <partial name="_AlertMessage" />
 
 <div class="ddashboard-container">
     <div class="container-fluid">
         <!-- Header -->
         <div class="header-card">
-            <marquee behavior="alternate"><h1 class="header-title ma">
+            <marquee ><h1 class="header-title">
                 <i class="bi bi-clipboard-data me-2"></i>
                 QOS - @Localizer["SummaryKCC"]
             </h1></marquee>
@@ -25,7 +103,7 @@
                 <div class="filter-group">
                     <div class="filter-item">
                         <label class="filter-label">@ReportLocalizer["TopDefected"] :</label>
-                        <select class="form-select" name="topDefected" style="width: 80px;">
+                        <select class="form-select" name="topDefected">
                             <option value="5" selected="@(Model.TopDefected == "5")">5</option>
                             <option value="10" selected="@(Model.TopDefected == "10")">10</option>
                             <option value="15" selected="@(Model.TopDefected == "15")">15</option>
@@ -36,7 +114,7 @@
 
                     <div class="filter-item">
                         <label class="filter-label">Type:</label>
-                        <select class="form-select" name="typeCode" style="width: 120px;">
+                        <select class="form-select" name="typeCode" >
                             <option value="ALL" selected="@(Model.TypeCode == "ALL")">ALL</option>
                             <option value="1" selected="@(Model.TypeCode == "1")">@ReportLocalizer["circle_minor"]</option>
                             <option value="2" selected="@(Model.TypeCode == "2")">@ReportLocalizer["circle_serious"]</option>
@@ -47,7 +125,7 @@
 
                     <div class="filter-item">
                         <label class="filter-label">@Localizer["Unit"] :</label>
-                        <select class="form-select" name="unit" id="unitSelect" style="width: 100px;" >
+                        <select class="form-select" name="unit" id="unitSelect" >
                             <option value="ALL" selected>--@Localizer["Unit"]--</option>
                             @foreach (var unit in Model.Unit_List)
                                 {
@@ -63,7 +141,7 @@
                             @Localizer["Line"] :
                             <span class="loading-spinner" id="lineLoadingSpinner"></span>
                         </label>
-                        <select class="form-select" name="line" id="lineSelect" style="width: 120px;" >
+                        <select class="form-select" name="line" id="lineSelect" >
                             <option value="ALL">--@Localizer["Line"]--</option>
                         </select>
                     </div>
@@ -71,28 +149,28 @@
 
                     <div class="filter-item">
                         <label class="filter-label">@ReportLocalizer["StyleCode"] :</label>
-                        <input type="text" value="@(Model.StyleCode== "" ? "" : Model.StyleCode) " class="form-control" name="styleCode" style="width: 150px;">
+                        <input type="text" value="@(Model.StyleCode== "" ? "" : Model.StyleCode) " class="form-control" name="styleCode" >
                     </div>
 
                     <div class="filter-item">
                         <label class="filter-label">MO:</label>
-                        <input type="text" value="@(Model.Mo== "" ? "" : Model.Mo) " class="form-control" name="mo" style="width: 150px;">
+                        <input type="text" value="@(Model.Mo== "" ? "" : Model.Mo) " class="form-control" name="mo" >
                     </div>
 
                     <div class="filter-item">
                         <label class="filter-label">@Localizer["Date"] :</label>
                         <input type="date" class="form-control" name="dateFrom" 
-                                value="@Model.DateFrom.ToString("yyyy-MM-dd")" style="width: 130px;">
+                                value="@Model.DateFrom.ToString("yyyy-MM-dd")" >
                     </div>
 
-                    <div class="filter-item" style="margin-top: 20px;">
+                    @* <div class="filter-item" style="margin-top: 20px;">
                         <span>-</span>
-                    </div>
+                    </div> *@
 
                     <div class="filter-item">
                         <label class="filter-label">&nbsp;</label>
                         <input type="date" class="form-control" name="dateEnd" 
-                                value="@Model.DateEnd.ToString("yyyy-MM-dd")" style="width: 130px;">
+                                value="@Model.DateEnd.ToString("yyyy-MM-dd")" >
                     </div>
 
                     <div class="filter-item mt-auto">

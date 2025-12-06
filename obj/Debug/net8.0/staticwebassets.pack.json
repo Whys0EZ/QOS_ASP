@@ -85,6 +85,10 @@
       "PackagePath": "staticwebassets\\css\\all.min.css"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\home_mobile.css",
+      "PackagePath": "staticwebassets\\css\\home_mobile.css"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\css\\layout_custom.css",
       "PackagePath": "staticwebassets\\css\\layout_custom.css"
     },

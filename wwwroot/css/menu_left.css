@@ -292,3 +292,18 @@
         padding-left: 0 !important;
     }
 }
+/* Màn hình nhỏ (mobile < 900px) */
+@media (max-width: 991px) {
+    .content-area.expanded {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* Màn hình lớn (desktop >= 900px) */
+@media (min-width: 992px) {
+    .content-area.expanded {
+        flex: 0 0 calc(100% - 60px);
+        max-width: calc(100% - 60px);
+    }
+}

@@ -36,3 +36,8 @@ dotnet add package MimeKit
 ==========Excel=============
 
 dotnet add package EPPlus
+
+---------- package log
+
+dotnet add package Serilog.AspNetCore --version 8.0.0
+dotnet add package Serilog.Sinks.File
