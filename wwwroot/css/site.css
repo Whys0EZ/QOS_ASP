@@ -63,21 +63,7 @@ body {
 }
 
 /* Back to top button */
-#btnTop {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 100;
-    border: none;
-    outline: none;
-    background: #0d6efd;
-    color: white;
-    cursor: pointer;
-    padding: 12px 16px;
-    border-radius: 50%;
-    font-size: 18px;
-    display: none; /* mặc định ẩn */
-}
+
 [data-bs-theme="dark"] #btnTop {
     background: #ffc107;
     color: black;
@@ -164,7 +150,9 @@ a {
   /* màu xanh bootstrap */
   color: white;
   cursor: pointer;
-  padding: 6px 16px;
+  width: 50px;
+  height: 50px;
+  padding: 6px 10px;
   border-radius: 90%;
   font-size: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);

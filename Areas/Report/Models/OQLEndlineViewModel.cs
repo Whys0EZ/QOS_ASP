@@ -4,8 +4,8 @@ namespace QOS.Areas.Report.Models
 	public class OQLEndLineViewModel
 	{
 		public string SelectedUnit { get; set; } = "1U01";
-        public int SelectedMonth { get; set; }
-        public int SelectedYear { get; set; }
+        public int SelectedMonth { get; set; } = DateTime.Now.Month;
+        public int SelectedYear { get; set; } = DateTime.Now.Year;
         public List<OQLLineData> Lines { get; set; } = new List<OQLLineData>();
         public List<double?> AverageValues { get; set; } = new List<double?>();
         public List<Unit_List> DistinctUnits { get; set; } = new List<Unit_List>();

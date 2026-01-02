@@ -110,7 +110,10 @@
                 @foreach (var row in Model.ReportData)
                 {
                     var unit = row["Unit"]?.ToString();
-                    var oqlTT = row["OQL_TT"] != null ? Convert.ToDouble(row["OQL_TT"]) : 0;
+                    @* var oqlTT = row["OQL_TT"] != null ? Convert.ToDouble(row["OQL_TT"]) : 0; *@
+                    @* var oqlTT = row["OQL_TT"] != DBNull.Value ? Convert.ToDouble(row["OQL_TT"]) : 0; *@
+                    double oqlTT;
+                    double.TryParse(row["OQL_TT"]?.ToString(), out oqlTT);
 
                     <tr>
                         <td style="text-align:center;">

@@ -22,6 +22,8 @@
     @* <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"> *@
     <script src="~/js/jquery-3.6.0.min.js"></script>
     <script src="~/js/chart.js"></script>
+    <script src="~/js/canvasjs/canvasjs.min.js"></script>
+    <script src="~/js/function.js"></script>
     <script src="~/js/chartjs-plugin-datalabels.js"></script>
 
 </head>
@@ -286,9 +288,16 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/jquery-3.6.0.min.js"></script>
     <script>
-        setInterval (() => {
-            clock.innerText = new Date().toLocaleTimeString();
-        },100)
+        // Real-time clock
+        const clock = document.getElementById('clock');
+        clock_date = new Date().toDateString();
+        
+        
+        setInterval(() => {
+            clock_time = new Date().toLocaleTimeString();
+            clock.innerHTML = `${clock_date} ${clock_time}`;
+        }, 100);
+        
     </script>
     <script>
         

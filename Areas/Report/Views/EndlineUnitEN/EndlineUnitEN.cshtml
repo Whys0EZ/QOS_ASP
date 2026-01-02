@@ -1,5 +1,7 @@
 @using System.Text.Json
 @model QOS.Areas.Report.Models.EndlineUnitViewModel
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
 @{
 	ViewData["Title"] = "ENDLINE REPORT";
 	Layout = "_MenuReport";
@@ -65,7 +67,7 @@
 
                     <!-- Ngày -->
                     <div class="filter-item d-flex align-items-center gap-2 flex-wrap">
-                        <label class="filter-label fw-semibold mb-0">Ngày:</label>
+                        <label class="filter-label fw-semibold mb-0">@Localizer["Date"]:</label>
                         <input type="date" value="@Model.DateFrom.ToString("yyyy-MM-dd")" class="form-control form-control-sm" name="dateFrom" style="width: 140px;">
                         <span class="fw-semibold">-</span>
                         <input type="date" value="@Model.DateEnd.ToString("yyyy-MM-dd")" class="form-control form-control-sm" name="dateEnd" style="width: 140px;">
@@ -76,7 +78,7 @@
                 <!-- Right group (buttons) -->
                 <div class="d-flex flex-wrap gap-2">
                     <button type="submit" class="btn btn-primary btn-sm">
-                        <i class="bi bi-search me-1"></i> Tìm kiếm
+                        <i class="bi bi-search me-1"></i> @Localizer["Search"]
                     </button>
                     @* <button type="button" class="btn btn-success btn-sm" onclick="exportToExcel()">
                         <i class="bi bi-file-earmark-excel me-1"></i> Tải Excel
@@ -141,7 +143,7 @@
         }
         else
         {
-            <p class="text-center text-muted">Không có dữ liệu</p>
+            <p class="text-center text-muted align-middle">@Localizer["Nodata"]</p>
         }
         
     </div>
@@ -152,10 +154,10 @@
         <div class="modal-content border-0 shadow">
             <div class="modal-body text-center py-4">
                 <div class="spinner-border text-primary mb-3" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden">@ReportLocalizer["Loading"]</span>
                 </div>
-                <div class="fw-bold">Đang tải dữ liệu...</div>
-                <small class="text-muted">Vui lòng chờ trong giây lát</small>
+                <div class="fw-bold">@ReportLocalizer["Loadingdata"]</div>
+                <small class="text-muted">@ReportLocalizer["Loadingplease"]</small>
             </div>
         </div>
     </div>
@@ -210,6 +212,8 @@
 
     const maxValue = Math.max(...counts);
     const yAxisMax = maxValue + 2;
+    // Color array for bars
+    const bgColors = labels.map(() => randomRGBA());
    
     // Bar Chart
     const barCtx = document.getElementById('barChart').getContext('2d');
@@ -220,21 +224,7 @@
             datasets: [{
                 label: 'Số lượng lỗi (pcs)',
                 data: counts,
-                backgroundColor: [
-                    'rgba(99, 102, 241, 0.8)',
-                    'rgba(16, 185, 129, 0.8)',
-                    'rgba(239, 68, 68, 0.8)',
-                    'rgba(20, 184, 166, 0.8)',
-                    'rgba(168, 85, 247, 0.8)',
-                    '#AE4B38',
-                    '#E75936',
-                    '#505C84',
-                    '#F8D974',
-                    '#00AB78',
-                    '#42BDCB',
-                    '#FF9A90',
-                    '#708C66'
-                ],
+                backgroundColor: bgColors,
                 borderColor: [
                     'rgb(99, 102, 241)',
                     'rgb(16, 185, 129)',

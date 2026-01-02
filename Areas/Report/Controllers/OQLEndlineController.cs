@@ -35,8 +35,8 @@ namespace QOS.Areas.Report.Controllers
         }
         
         public ActionResult RP_OQLEndLine(string unit = "1U01", int month = 0, int year = 0)
-            {
-                if (month == 0) month = DateTime.Now.Month;
+        {
+            if (month == 0) month = DateTime.Now.Month;
             if (year == 0) year = DateTime.Now.Year;
 
             var model = new OQLEndLineViewModel

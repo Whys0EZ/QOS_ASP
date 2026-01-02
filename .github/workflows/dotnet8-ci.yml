@@ -1,0 +1,50 @@
+name: ASP.NET Core 8 CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore packages
+      run: dotnet restore
+
+    - name: Build project
+      run: dotnet build -c Release --no-restore
+
+    - name: Run tests
+      run: dotnet test -c Release --no-build --verbosity normal
+
+    # # Upload source lên IIS
+    # - name: Upload to IIS
+    #   uses: appleboy/scp-action@v0.1.7
+    #   with:
+    #     host: ${{ secrets.IIS_HOST }}
+    #     username: ${{ secrets.IIS_USER }}
+    #     key: ${{ secrets.IIS_SSH_KEY }}
+    #     source: "publish/*"
+    #     target: "C:/inetpub/wwwroot/MyApp"
+
+    # # Restart AppPool
+    # - name: Restart IIS AppPool
+    #   uses: appleboy/ssh-action@v1.0.0
+    #   with:
+    #     host: ${{ secrets.IIS_HOST }}
+    #     username: ${{ secrets.IIS_USER }}
+    #     key: ${{ secrets.IIS_SSH_KEY }}
+    #     script: |
+    #       Import-Module WebAdministration
+    #       Restart-WebAppPool "MyAppPool"

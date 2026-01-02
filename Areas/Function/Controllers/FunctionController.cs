@@ -28,7 +28,7 @@ namespace QOS.Controllers
             // return View("ManageOperation/F_ManageOperation");
             return RedirectToAction("Index", "ManageOperation");
         }
-
+        [Permission("A_F2")]
         public IActionResult F_ManageFault()
         {
             // return View();

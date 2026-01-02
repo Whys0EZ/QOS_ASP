@@ -54,13 +54,13 @@ namespace QOS.Controllers
             return RedirectToAction("RP_Form3", "Form3BCDT", new { area = "Report" });
         }
 
-        [Permission("B_F4")]
+        [Permission("B_F5")]
         public IActionResult RP_Form4()
         {
             // return View("ManageOperation/F_ManageOperation");
             return RedirectToAction("RP_Form4", "Form4BCCLM", new { area = "Report" });
         }
-        [Permission("B_F6")]
+        [Permission("B_F4")]
         public IActionResult RP_Form6()
         {
             // return View("ManageOperation/F_ManageOperation");

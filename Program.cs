@@ -149,6 +149,8 @@ app.MapAreaControllerRoute(
     areaName: "API",
     pattern: "api/{controller}/{action}/{id?}"
 );
+app.MapGet("/health", () => "OK");
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

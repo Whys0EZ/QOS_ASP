@@ -106,7 +106,7 @@
         <select name="month" asp-for="SelectedMonth">
             @for (int i = 1; i <= 12; i++)
             {
-                <option value="@i">@i</option>
+                <option value="@i" selected="@(i == (Model.SelectedMonth == 0 ? DateTime.Now.Month : Model.SelectedMonth) ? "selected" : null)">@i</option>
             }
         </select>
         
@@ -211,8 +211,21 @@
     document.getElementById('btnReset').addEventListener('click', function () {
         const form = this.closest('form');
         if (!form) return;
-        // Reset all selects to their first option and submit the form
-        form.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+        const now = new Date();
+        
+        const currentMonth = now.getMonth() + 1; // 1-12
+
+        form.querySelectorAll('select').forEach(s => {
+            if (s.name === 'month') {
+                // try to select by value matching current month, fallback to index
+                const opt = Array.from(s.options).find(o => o.value === String(currentMonth) || o.text === String(currentMonth));
+                if (opt) s.value = opt.value;
+                else s.selectedIndex = Math.max(0, currentMonth - 1);
+            } else {
+                s.selectedIndex = 0;
+            }
+        });
+
         form.submit();
     });
 </script>

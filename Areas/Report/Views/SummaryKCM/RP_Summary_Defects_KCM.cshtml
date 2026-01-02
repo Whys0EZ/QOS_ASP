@@ -66,7 +66,7 @@
 
         .btn {
             width: auto;
-            min-width: 140px;
+            
         }
     }
 
@@ -221,6 +221,29 @@
                     }
                 </div>
             </div>
+
+            @* <!-- Charts --> *@
+            <div class="row">
+                <div class="mb-1">
+                    <div class="chart-card">
+                        <h2 class="chart-title">TOP DEFECTS: @Model.Unit</h2>
+                        <div class="chart-container">
+                            <canvas id="barChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-1">
+                    <div class="chart-card">
+                        <h2 class="chart-title">DEFECTS RATIO: @Model.Unit</h2>
+                        <div class="chart-container">
+                            @* <canvas id="pieChart"></canvas> *@
+                            <div id="pieChart" style="height:400px;width:100%"> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             @* <!-- Detailed Table --> *@
             <div class="chart-card">
                 <h2 class="chart-title">@ReportLocalizer["Inline_detail"]</h2>
@@ -262,27 +285,6 @@
                             </tr>
                         </tfoot>
                     </table>
-                </div>
-            </div>
-
-            @* <!-- Charts --> *@
-            <div class="row">
-                <div class="col-lg-8 mb-4">
-                    <div class="chart-card">
-                        <h2 class="chart-title">TOP DEFECTS: @Model.Unit</h2>
-                        <div class="chart-container">
-                            <canvas id="barChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 mb-4">
-                    <div class="chart-card">
-                        <h2 class="chart-title">DEFECTS RATIO: @Model.Unit</h2>
-                        <div class="chart-container">
-                            <canvas id="pieChart"></canvas>
-                        </div>
-                    </div>
                 </div>
             </div>
         }
@@ -434,6 +436,8 @@
     const labels = defectStats.map(d => d.name);      // Tên lỗi thực tế
     const counts = defectStats.map(d => d.count);     // Số lượng thực tế
     const percentages = defectStats.map(d => d.percentage); // % thực tế
+    // color 
+    const bgColors = generateColors(labels.length);
     // Bar Chart
     const barCtx = document.getElementById('barChart').getContext('2d');
     const barChart = new Chart(barCtx, {
@@ -443,20 +447,8 @@
             datasets: [{
                 label: 'Số lượng lỗi (pcs)',
                 data: counts,
-                backgroundColor: [
-                    'rgba(99, 102, 241, 0.8)',
-                    'rgba(16, 185, 129, 0.8)',
-                    'rgba(239, 68, 68, 0.8)',
-                    'rgba(20, 184, 166, 0.8)',
-                    'rgba(168, 85, 247, 0.8)'
-                ],
-                borderColor: [
-                    'rgb(99, 102, 241)',
-                    'rgb(16, 185, 129)',
-                    'rgb(239, 68, 68)',
-                    'rgb(20, 184, 166)',
-                    'rgb(168, 85, 247)'
-                ],
+                backgroundColor: bgColors,
+                borderColor: bgColors.map(c => c.replace('0.6', '1')),
                 borderWidth: 2,
                 borderRadius: 8
             }]
@@ -527,53 +519,44 @@
     });
 
     // Pie Chart
-    const pieCtx = document.getElementById('pieChart').getContext('2d');
-    const pieChart = new Chart(pieCtx, {
-        type: 'doughnut',
-        data: {
-            labels: labels,
-            datasets: [{
-                data: percentages,
-                backgroundColor: [
-                    'rgba(99, 102, 241, 0.8)',
-                    'rgba(16, 185, 129, 0.8)',
-                    'rgba(239, 68, 68, 0.8)',
-                    'rgba(20, 184, 166, 0.8)',
-                    'rgba(168, 85, 247, 0.8)'
-                ],
-                borderColor: 'white',
-                borderWidth: 3
-            }]
+    const dataPoints = labels.map((label, i) => ({
+        y: percentages[i],
+        label: label,
+        color: bgColors[i % bgColors.length]
+    }));
+
+    const pieChart = new CanvasJS.Chart("pieChart", {
+        animationEnabled: true,
+        maintainAspectRatio: false,
+
+        legend: {
+            verticalAlign: "bottom",
+            horizontalAlign: "center",
+            fontSize: 11
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        padding: 15,
-                        font: { size: 11 },
-                        usePointStyle: true,
-                        pointStyle: 'circle'
-                    }
-                },
-                
-                tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    padding: 12,
-                    titleFont: { size: 13, weight: 'bold' },
-                    bodyFont: { size: 12 },
-                    borderColor: 'rgba(255, 255, 255, 0.2)',
-                    borderWidth: 1,
-                    callbacks: {
-                        label: function(context) {
-                            return context.label + ': ' + context.parsed + '%';
-                        }
-                    }
-                }
-            },
-            cutout: '60%'
-        }
+
+        data: [{
+            type: "doughnut",
+            innerRadius: "45%",
+            startAngle: 270,
+
+            // 👇 Label ngoài + %
+            indexLabel: "{label}: {y}%",
+            indexLabelFontSize: 12,
+            indexLabelPlacement: "outside",
+
+            // 👇 Leader line
+            indexLabelLineLength: 25,
+            indexLabelLineThickness: 1,
+            indexLabelLineColor: "auto",
+
+            toolTipContent: "<b>{label}</b>: {y}%",
+            showInLegend: true,
+            legendText: "{label}: {y}%",
+
+            dataPoints: dataPoints
+        }]
     });
+
+    pieChart.render();
 </script>

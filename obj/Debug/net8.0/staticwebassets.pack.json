@@ -189,12 +189,424 @@
       "PackagePath": "staticwebassets\\images\\yellow_On.png"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\canvasjs.min.js",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\canvasjs.min.js"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\canvasjs.react.js",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\canvasjs.react.js"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\01-overview\\animated-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\01-overview\\animated-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\01-overview\\chart-from-json-data.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\01-overview\\chart-from-json-data.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\01-overview\\chart-with-axis-scale-breaks.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\01-overview\\chart-with-axis-scale-breaks.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\01-overview\\chart-with-crosshair.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\01-overview\\chart-with-crosshair.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\01-overview\\chart-with-custom-legend-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\01-overview\\chart-with-custom-legend-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\01-overview\\chart-with-image-overlay.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\01-overview\\chart-with-image-overlay.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\01-overview\\chart-with-index-data-label.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\01-overview\\chart-with-index-data-label.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\01-overview\\chart-with-inverted-reversed-axis.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\01-overview\\chart-with-inverted-reversed-axis.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\01-overview\\chart-with-logarithmic-axis.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\01-overview\\chart-with-logarithmic-axis.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\01-overview\\chart-with-secondary-axis.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\01-overview\\chart-with-secondary-axis.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\01-overview\\chart-with-zoom-pan.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\01-overview\\chart-with-zoom-pan.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\01-overview\\dynamic-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\01-overview\\dynamic-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\01-overview\\interactive-draggable-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\01-overview\\interactive-draggable-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\01-overview\\multi-series-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\01-overview\\multi-series-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\01-overview\\null-data-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\01-overview\\null-data-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\01-overview\\performance-demo.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\01-overview\\performance-demo.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\dashed-line-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\dashed-line-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\dynamic-spline-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\dynamic-spline-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\line-chart-with-axis-scale-breaks.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\line-chart-with-axis-scale-breaks.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\line-chart-with-data-markers.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\line-chart-with-data-markers.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\line-chart-with-logarithmic-axis.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\line-chart-with-logarithmic-axis.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\line-chart-with-multiple-axis.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\line-chart-with-multiple-axis.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\line-chart-with-zoom-pan.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\line-chart-with-zoom-pan.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\line-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\line-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\multi-series-line-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\multi-series-line-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\multi-series-spline-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\multi-series-spline-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\multi-series-step-line-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\multi-series-step-line-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\spline-chart-with-legends.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\spline-chart-with-legends.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\spline-chart-with-secondary-axis.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\spline-chart-with-secondary-axis.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\spline-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\spline-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\step-line-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\02-line-spline-step-line-charts\\step-line-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\area-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\area-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\multi-series-area-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\multi-series-area-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\multi-series-range-area-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\multi-series-range-area-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\multi-series-spline-area-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\multi-series-spline-area-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\range-area-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\range-area-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\range-spline-area-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\range-spline-area-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\spline-area-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\spline-area-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\stacked-area-100-chart-with-date-time-axis.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\stacked-area-100-chart-with-date-time-axis.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\stacked-area-100-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\stacked-area-100-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\stacked-area-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\stacked-area-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\step-area-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\03-stacked-spline-range-area-charts\\step-area-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\bar-chart-with-axis-scale-break.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\bar-chart-with-axis-scale-break.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\bar-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\bar-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\column-chart-with-multiple-axis.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\column-chart-with-multiple-axis.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\column-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\column-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\multi-series-bar-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\multi-series-bar-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\multi-series-range-column-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\multi-series-range-column-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\multi-series-waterfall-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\multi-series-waterfall-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\range-bar-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\range-bar-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\range-column-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\range-column-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\stacked-bar-100-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\stacked-bar-100-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\stacked-bar-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\stacked-bar-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\stacked-column-100-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\stacked-column-100-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\stacked-column-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\stacked-column-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\waterfall-chart-with-custom-color.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\waterfall-chart-with-custom-color.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\waterfall-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\04-column-stacked-range-waterfall-charts\\waterfall-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\doughnut-Chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\doughnut-Chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\doughnut-chart-with-custom-inner-radius.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\doughnut-chart-with-custom-inner-radius.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\funnel-chart-with-custom-neck.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\funnel-chart-with-custom-neck.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\funnel-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\funnel-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\inverted-reversed-funnel-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\inverted-reversed-funnel-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\pie-chart-with-custom-radius.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\pie-chart-with-custom-radius.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\pie-chart-with-legends.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\pie-chart-with-legends.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\pie-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\pie-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\pyramid-chart-where-area-represents-value.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\pyramid-chart-where-area-represents-value.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\pyramid-chart-with-index-label-placed-Inside.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\pyramid-chart-with-index-label-placed-Inside.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\pyramid-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\05-pie-doughnut-funnel-pyramid-charts\\pyramid-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\06-candlestick-ohlc-charts\\candlestick-line-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\06-candlestick-ohlc-charts\\candlestick-line-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\06-candlestick-ohlc-charts\\multi-series-candlestick-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\06-candlestick-ohlc-charts\\multi-series-candlestick-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\06-candlestick-ohlc-charts\\ohlc-chart-from-json-data.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\06-candlestick-ohlc-charts\\ohlc-chart-from-json-data.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\06-candlestick-ohlc-charts\\ohlc-stock-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\06-candlestick-ohlc-charts\\ohlc-stock-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\07-scatter-bubble-charts\\bubble-chart-with-data-marker.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\07-scatter-bubble-charts\\bubble-chart-with-data-marker.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\07-scatter-bubble-charts\\bubble-chart-with-zoom-pan.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\07-scatter-bubble-charts\\bubble-chart-with-zoom-pan.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\07-scatter-bubble-charts\\bubble-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\07-scatter-bubble-charts\\bubble-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\07-scatter-bubble-charts\\multi-series-scatter-point-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\07-scatter-bubble-charts\\multi-series-scatter-point-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\07-scatter-bubble-charts\\scatter-point-chart-with-custom-marker.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\07-scatter-bubble-charts\\scatter-point-chart-with-custom-marker.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\07-scatter-bubble-charts\\scatter-point-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\07-scatter-bubble-charts\\scatter-point-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\08-box-and-whisker-charts\\box-and-whisker-chart-with-custom-color.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\08-box-and-whisker-charts\\box-and-whisker-chart-with-custom-color.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\08-box-and-whisker-charts\\box-and-whisker-chart-with-outliers.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\08-box-and-whisker-charts\\box-and-whisker-chart-with-outliers.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\08-box-and-whisker-charts\\box-and-whisker-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\08-box-and-whisker-charts\\box-and-whisker-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\09-combination-charts\\column-line-area-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\09-combination-charts\\column-line-area-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\09-combination-charts\\error-bar-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\09-combination-charts\\error-bar-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\09-combination-charts\\error-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\09-combination-charts\\error-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\09-combination-charts\\error-line-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\09-combination-charts\\error-line-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\09-combination-charts\\ohlc-line-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\09-combination-charts\\ohlc-line-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\09-combination-charts\\pareto-chart-with-index-data-label.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\09-combination-charts\\pareto-chart-with-index-data-label.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\09-combination-charts\\pareto-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\09-combination-charts\\pareto-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\09-combination-charts\\range-area-line-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\09-combination-charts\\range-area-line-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\10-dynamic-charts\\dynamic-column-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\10-dynamic-charts\\dynamic-column-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\10-dynamic-charts\\dynamic-line-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\10-dynamic-charts\\dynamic-line-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\10-dynamic-charts\\dynamic-multi-series-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\10-dynamic-charts\\dynamic-multi-series-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\11-integration\\jquery-charts.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\11-integration\\jquery-charts.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\11-integration\\jquery-line-chart-with-zoom-pan.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\11-integration\\jquery-line-chart-with-zoom-pan.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\11-integration\\jquery-resizable-chart.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\11-integration\\jquery-resizable-chart.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\11-integration\\jquery-spline-area-chart-in-tab.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\11-integration\\jquery-spline-area-chart-in-tab.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\examples\\11-integration\\jquery-spline-chart-with-image-export.html",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\examples\\11-integration\\jquery-spline-chart-with-image-export.html"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\instruction.txt",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\instruction.txt"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\jquery.canvasjs.min.js",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\jquery.canvasjs.min.js"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\canvasjs\\license.txt",
+      "PackagePath": "staticwebassets\\js\\canvasjs\\license.txt"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\chart.js",
       "PackagePath": "staticwebassets\\js\\chart.js"
     },
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\chartjs-plugin-datalabels.js",
       "PackagePath": "staticwebassets\\js\\chartjs-plugin-datalabels.js"
+    },
+    {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\function.js",
+      "PackagePath": "staticwebassets\\js\\function.js"
     },
     {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\js\\jquery-3.6.0.min.js",
