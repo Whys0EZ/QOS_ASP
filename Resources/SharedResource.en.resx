@@ -187,6 +187,9 @@
   <data name="OQLEndline" xml:space="preserve">
     <value>Daily OQL End Line</value>
   </data>
+  <data name="OQLInline" xml:space="preserve">
+    <value>Daily OQL In Line</value>
+  </data>
   <data name="SummaryKCM" xml:space="preserve">
     <value>In Line Defecteds Summary</value>
   </data>
@@ -365,6 +368,96 @@
   </data>
   <data name="loadingMsg" xml:space="preserve">
     <value>Uploading and processing data...</value>
+  </data>
+
+  <data name="GoodMorning" xml:space="preserve">
+    <value>Good Morning</value>
+  </data>
+  <data name="GoodAfternoon" xml:space="preserve">
+    <value>Good Afternoon</value>
+  </data>
+  <data name="GoodEvening" xml:space="preserve">
+    <value>Good Evening</value>
+  </data>
+
+  <data name="gotoReport" xml:space="preserve">
+    <value>Go to Reports</value>
+  </data>
+  <data name="keyFeatures" xml:space="preserve">
+    <value>Features</value>
+  </data>
+  <data name="IntelligentReport" xml:space="preserve">
+    <value>Intelligent reporting</value>
+  </data>
+  <data name="IntelligentReport_p" xml:space="preserve">
+    <value>Monitor and analyze quality data in real time with intuitive charts and automated reports.</value>
+  </data>
+  <data name="ProcessManagement" xml:space="preserve">
+    <value>Process management</value>
+  </data>
+  <data name="ProcessManagement_p" xml:space="preserve">
+    <value>Optimize operational processes with standardized management tools and effective quality control.</value>
+  </data>
+  <data name="Teamwork" xml:space="preserve">
+    <value>Teamwork</value>
+  </data>
+  <data name="Teamwork_p" xml:space="preserve">
+    <value>Work effectively in a team with information-sharing tools and clear task assignments.</value>
+  </data>
+  <data name="HighSecurity" xml:space="preserve">
+    <value>High security</value>
+  </data>
+  <data name="HighSecurity_p" xml:space="preserve">
+    <value>Data security is ensured with advanced encryption systems and detailed user access control.</value>
+  </data>
+  <data name="Multi-platform" xml:space="preserve">
+    <value>Multi-platform</value>
+  </data>
+  <data name="Multi-platform_p" xml:space="preserve">
+    <value>Access anytime, anywhere on your computer, tablet, and mobile phone with a user-friendly interface.</value>
+  </data>
+
+  <data name="Uptime" xml:space="preserve">
+    <value>Uptime</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="AboutSystem" xml:space="preserve">
+    <value>About the QoS system</value>
+  </data>
+  <data name="AboutSystem_p1" xml:space="preserve">
+    <value>QOS (Quality Operations System) is a comprehensive quality management system designed to help businesses monitor, control, and improve their operational processes.</value>
+  </data>
+  <data name="AboutSystem_p2" xml:space="preserve">
+    <value>With its intuitive interface and powerful analytical tools, QoS helps you make smart decisions based on real-world data.</value>
+  </data>
+  <data name="AboutSystem_p3" xml:space="preserve">
+    <value>The system was developed by ISD TEAM, focusing on creating modern, user-friendly technology solutions that meet the needs of businesses.</value>
+  </data>
+  <data name="Mainfunctions" xml:space="preserve">
+    <value>Main functions</value>
+  </data>
+  <data name="Report_p" xml:space="preserve">
+    <value>Detailed report and trend analysis</value>
+  </data>
+  <data name="Setting_p" xml:space="preserve">
+    <value>Configure the system according to your needs.</value>
+  </data>
+  <data name="Function_p" xml:space="preserve">
+    <value>Management and operation tools</value>
+  </data>
+  <data name="System_p" xml:space="preserve">
+    <value>System administration and maintenance</value>
+  </data>
+  <data name="ReadyBegin" xml:space="preserve">
+    <value>Ready to begin?</value>
+  </data>
+  <data name="DiscoverQOS" xml:space="preserve">
+    <value>Discover the QoS system and experience effective quality management.</value>
   </data>
 
 </root>

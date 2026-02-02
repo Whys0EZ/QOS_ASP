@@ -220,7 +220,7 @@
     background-clip: padding-box;
 }
 
-.modern-sidebar.collapsed .sidebar-header h3 span:not(.feature-icon) {
+.modern-sidebar.collapsed .sidebar-header h3 span:not(.function-icon) {
     display: none;
 }
 

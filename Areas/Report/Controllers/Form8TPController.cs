@@ -69,7 +69,7 @@ namespace QOS.Controllers
             try
             {
                 var units = _context.Set<QOS.Models.Unit_List>()
-                    .Where(u => u.Factory == _factoryName)
+                    //.Where(u => u.Factory == _factoryName)
                     .OrderBy(u => u.Unit)
                     .ToList();
 

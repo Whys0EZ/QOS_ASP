@@ -39,4 +39,40 @@
   <data name="UnitSuccess" xml:space="preserve">
     <value>Thêm xưởng thành công.</value>
   </data>
+  <data name="FactoryUpdateSuccess" xml:space="preserve">
+    <value>Cập nhật nhà máy thành công.</value>
+  </data>
+  <data name="FactoryDeleteFail" xml:space="preserve">
+    <value>Xóa nhà máy thất bại.</value>
+  </data>
+  <data name="FactoryDeleteSuccess" xml:space="preserve">
+    <value>Xóa nhà máy thành công.</value>
+  </data>
+  <data name="DepartmentUpdateSuccess" xml:space="preserve">
+    <value>Cập nhật phòng ban thành công.</value>
+  </data>
+  <data name="DepartmentDeleteFail" xml:space="preserve">
+    <value>Xóa phòng ban thất bại.</value>
+  </data>
+  <data name="DepartmentDeleteSuccess" xml:space="preserve">
+    <value>Xóa phòng ban thành công.</value>
+  </data>
+  <data name="UnitUpdateSuccess" xml:space="preserve">
+    <value>Cập nhật xưởng thành công.</value>
+  </data>
+  <data name="UnitDeleteFail" xml:space="preserve">
+    <value>Xóa xưởng thất bại.</value>
+  </data>
+  <data name="UnitDeleteSuccess" xml:space="preserve">
+    <value>Xóa xưởng thành công.</value>
+  </data>
+  <data name="EditDepartment" xml:space="preserve">
+    <value>Sửa thông tin phòng ban</value>
+  </data>
+  <data name="EditFactory" xml:space="preserve">
+    <value>Sửa thông tin nhà máy</value>
+  </data>
+  <data name="EditUnit" xml:space="preserve">
+    <value>Sửa thông tin xưởng</value>
+  </data>
 </root>

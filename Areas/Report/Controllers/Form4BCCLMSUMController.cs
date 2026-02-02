@@ -21,6 +21,7 @@ namespace QOS.Areas.Report.Controllers
         private readonly string _connectionString;
         private readonly AppDbContext _context;
         private readonly string _factoryName;
+        private string factoryName => User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
 
         public Form4BCCLMSUMController(ILogger<Form4BCCLMSUMController> logger, IWebHostEnvironment environment, IConfiguration configuration, AppDbContext context)
         {
@@ -51,15 +52,38 @@ namespace QOS.Areas.Report.Controllers
 
         private List<QOS.Models.Unit_List> GetUnitList()
         {
+            // string FactoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
+            List<Unit_List> UnitList;
+            // _logger.LogInformation("User Name: {UserName}", User.Identity?.Name);
+            if(User.Identity?.Name == "admin")
+            {
+                // Lấy danh sách Unit cho Factory "ALL"
+                UnitList = _context.Set<Unit_List>().OrderBy(u => u.Unit).ToList();
+            } else {
+                string FactoryName = User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
+                UnitList = _context.Set<Unit_List>().Where(u => u.Factory == FactoryName).OrderBy(u => u.Unit).ToList();
+            }
+
             try
             {
-                var units = _context.Set<QOS.Models.Unit_List>()
-                    .Where(u => u.Factory == _factoryName)
-                    .OrderBy(u => u.Unit)
-                    .ToList();
+                if(User.Identity?.Name == "admin")
+                {
+                    // Lấy danh sách Unit cho Factory "ALL"
+                    var units = _context.Set<QOS.Models.Unit_List>()
+                        .OrderBy(u => u.Unit)
+                        .ToList();
+                    
+                    // _logger.LogInformation($"Loaded {units.Count} units from database (admin)");
+                    return units;
+                } else {
+                    string FactoryName = User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
+                    var units = _context.Set<QOS.Models.Unit_List>()
+                        .Where(u => u.Factory == FactoryName)
+                        .OrderBy(u => u.Unit)
+                        .ToList();
+                    return units;
+                }
 
-                _logger.LogInformation($"Loaded {units.Count} units from database");
-                return units;
             }
             catch (Exception ex)
             {

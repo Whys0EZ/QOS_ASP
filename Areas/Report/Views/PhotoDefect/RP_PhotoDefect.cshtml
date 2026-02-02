@@ -4,7 +4,9 @@
 @model QOS.Areas.Report.Models.RP_PhotoDefectViewModel
 @{
     ViewData["Title"] = Localizer["PhotoDefect"];
-    Layout = "_MenuReport";
+    var ua = Context.Request.Headers["User-Agent"].ToString().ToLower();
+    bool isMobile = ua.Contains("android") || ua.Contains("iphone") || ua.Contains("ipad") || ua.Contains("mobile");
+    Layout = isMobile ? "_LayoutMobile" : "_MenuReport";
 }
 <link rel="stylesheet" href="~/css/report.css" />
 <partial name="_AlertMessage" />

@@ -177,6 +177,9 @@
     <data name="OQLEndline" xml:space="preserve">
         <value>Daily OQL End Line</value>
     </data>
+    <data name="OQLInline" xml:space="preserve">
+        <value>Daily OQL In Line</value>
+    </data>
     <data name="SummaryKCM" xml:space="preserve">
         <value>Tổng Hợp Lỗi Chuyền May</value>
     </data>
@@ -343,11 +346,101 @@
       <value>Tạo mới</value>
     </data>
     <data name="Close" xml:space="preserve">
-    <value>Đóng</value>
-  </data>
+        <value>Đóng</value>
+    </data>
     <data name="loadingMsg" xml:space="preserve">
       <value>Đang upload và xử lý dữ liệu...</value>
     </data>
+    <data name="GoodMorning" xml:space="preserve">
+        <value>Chào buổi sáng</value>
+    </data>
+    <data name="GoodAfternoon" xml:space="preserve">
+        <value>Chào buổi chiều</value>
+    </data>
+    <data name="GoodEvening" xml:space="preserve">
+        <value>Chào buổi tối</value>
+    </data>
+
+    <data name="gotoReport" xml:space="preserve">
+    <value>Đi đến Báo Cáo</value>
+  </data>
+  <data name="keyFeatures" xml:space="preserve">
+    <value>Tính năng nổi bật</value>
+  </data>
+  <data name="IntelligentReport" xml:space="preserve">
+    <value>Báo cáo thông minh</value>
+  </data>
+  <data name="IntelligentReport_p" xml:space="preserve">
+    <value>Theo dõi và phân tích dữ liệu chất lượng theo thời gian thực với các biểu đồ trực quan và báo cáo tự động.</value>
+  </data>
+  <data name="ProcessManagement" xml:space="preserve">
+    <value>Quản lý quy trình</value>
+  </data>
+  <data name="ProcessManagement_p" xml:space="preserve">
+    <value>Tối ưu hóa quy trình vận hành với công cụ quản lý tiêu chuẩn hóa và kiểm soát chất lượng hiệu quả.</value>
+  </data>
+  <data name="Teamwork" xml:space="preserve">
+    <value>Cộng tác nhóm</value>
+  </data>
+  <data name="Teamwork_p" xml:space="preserve">
+    <value>Làm việc nhóm hiệu quả với công cụ chia sẻ thông tin và phân công nhiệm vụ rõ ràng.</value>
+  </data>
+  <data name="HighSecurity" xml:space="preserve">
+    <value>Bảo mật cao</value>
+  </data>
+  <data name="HighSecurity_p" xml:space="preserve">
+    <value>Đảm bảo an toàn dữ liệu với hệ thống mã hóa tiên tiến và phân quyền người dùng chi tiết.</value>
+  </data>
+  <data name="Multi-platform" xml:space="preserve">
+    <value>Đa nền tảng</value>
+  </data>
+  <data name="Multi-platform_p" xml:space="preserve">
+    <value>Truy cập mọi lúc mọi nơi trên máy tính, tablet và điện thoại di động với giao diện thân thiện.</value>
+  </data>
+
+  <data name="Uptime" xml:space="preserve">
+    <value>Thời gian hoạt động</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Hỗ trợ</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>người dùng</value>
+  </data>
+  <data name="AboutSystem" xml:space="preserve">
+    <value>Về hệ thống QOS</value>
+  </data>
+  <data name="AboutSystem_p1" xml:space="preserve">
+    <value>QOS (Quality Operations System) là hệ thống quản lý chất lượng toàn diện, được thiết kế để giúp doanh nghiệp theo dõi, kiểm soát và cải thiện các quy trình vận hành.</value>
+  </data>
+  <data name="AboutSystem_p2" xml:space="preserve">
+    <value>Với giao diện trực quan và các công cụ phân tích mạnh mẽ, QOS giúp bạn đưa ra quyết định thông minh dựa trên dữ liệu thực tế.</value>
+  </data>
+  <data name="AboutSystem_p3" xml:space="preserve">
+    <value>Hệ thống được phát triển bởi ISD TEAM, tập trung vào việc tạo ra giải pháp công nghệ hiện đại, dễ sử dụng và phù hợp với nhu cầu của doanh nghiệp.</value>
+  </data>
+  <data name="Mainfunctions" xml:space="preserve">
+    <value>Các chức năng chính</value>
+  </data>
+  <data name="Report_p" xml:space="preserve">
+    <value>Báo cáo chi tiết và phân tích xu hướng</value>
+  </data>
+  <data name="Setting_p" xml:space="preserve">
+    <value>Cấu hình hệ thống theo nhu cầu</value>
+  </data>
+  <data name="Function_p" xml:space="preserve">
+    <value>Công cụ quản lý và vận hành</value>
+  </data>
+  <data name="System_p" xml:space="preserve">
+    <value>Quản trị và bảo trì hệ thống</value>
+  </data>
+  <data name="ReadyBegin" xml:space="preserve">
+    <value>Sẵn sàng bắt đầu?</value>
+  </data>
+  <data name="DiscoverQOS" xml:space="preserve">
+    <value>Khám phá hệ thống QOS và trải nghiệm quản lý chất lượng hiệu quả.</value>
+  </data>
+
     <!-- Menu Functions -->
     <!-- Menu Reports -->
     <!-- Menu Reports - End -->

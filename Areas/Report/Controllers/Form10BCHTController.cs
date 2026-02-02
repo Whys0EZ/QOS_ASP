@@ -25,6 +25,7 @@ namespace QOS.Areas.Report.Controllers
         private readonly string _connectionString;
         private readonly AppDbContext _context;
         private readonly string _factoryName;
+        private string factoryName => User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
 
         public Form10BCHTController(ILogger<Form10BCHTController> logger, IWebHostEnvironment env, IConfiguration configuration, AppDbContext context)
         {
@@ -34,6 +35,18 @@ namespace QOS.Areas.Report.Controllers
             _configuration =configuration;
             _context = context;
             _factoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
+        }
+        protected string FactoryName
+        {
+            get
+            {
+                // ADMIN → dùng factory mặc định (ALL)
+                if (User.Identity?.Name == "admin")
+                    return _factoryName;
+
+                // USER → dùng factory từ claim
+                return factoryName;
+            }
         }
         public IActionResult Index()
         {
@@ -76,7 +89,7 @@ namespace QOS.Areas.Report.Controllers
             try
             {
                 var units = _context.Set<QOS.Models.Unit_List>()
-                    .Where(u => u.Factory == _factoryName)
+                    .Where(u => u.Factory == FactoryName)
                     .OrderBy(u => u.Unit)
                     .ToList();
 
@@ -97,7 +110,7 @@ namespace QOS.Areas.Report.Controllers
             cmd.Parameters.AddWithValue("@Date_F", model.DateFrom);
             cmd.Parameters.AddWithValue("@Date_T", model.DateEnd);
             cmd.Parameters.AddWithValue("@Unit", model.Unit ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("@Factory", _factoryName);
+            cmd.Parameters.AddWithValue("@Factory", FactoryName);
 
             conn.Open();
             using var reader = cmd.ExecuteReader();
@@ -411,7 +424,7 @@ namespace QOS.Areas.Report.Controllers
             cmd.Parameters.AddWithValue("@Date_F", dateFrom);
             cmd.Parameters.AddWithValue("@Date_T", dateEnd);
             cmd.Parameters.AddWithValue("@Unit", Unit);
-            cmd.Parameters.AddWithValue("@Factory", _factoryName);
+            cmd.Parameters.AddWithValue("@Factory", FactoryName);
 
             conn.Open();
             using (var reader = cmd.ExecuteReader())
@@ -476,7 +489,8 @@ namespace QOS.Areas.Report.Controllers
 
             worksheet2.Cells["A2"].Value = (dateFrom ?? DateTime.Now).ToString("dd-MMM-yyyy");
             worksheet2.Cells["B2"].Value = (dateEnd ?? DateTime.Now).ToString("dd-MMM-yyyy");
-
+            var units = GetUnitList().Select(u => $"'{u.Unit}'").ToList();
+            string unitString = string.Join(",", units);
             string sqlDetail;
             if (string.IsNullOrEmpty(Unit) || Unit == "ALL")
             {
@@ -488,7 +502,7 @@ namespace QOS.Areas.Report.Controllers
                 LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
                 WHERE CAST(t1.LastUpdate as DATE) >= @DateF
                     AND CAST(t1.LastUpdate as DATE) <= @DateT
-                    
+                    AND t1.Unit IN (" + unitString + @")
                 ORDER BY t1.LastUpdate DESC";
             }
             else

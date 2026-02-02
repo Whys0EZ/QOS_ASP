@@ -14,6 +14,9 @@ namespace QOS.Areas.Report.Models
         public DateTime DateEnd { get; set; } = DateTime.Now;
         public List<Dictionary<string, object>> ReportData { get; set; } = new List<Dictionary<string, object>>();
         public Dictionary<string, DefectStat> DefectStats { get; set; } = new Dictionary<string, DefectStat>();
+        
+        public List<string> Zone { get; set; } = new List<string>();
+        public List<string> Block {get; set; } = new List<string>();
         public int TotalDefects { get; set; }
     }
 

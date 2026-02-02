@@ -59,14 +59,33 @@ namespace QOS.Controllers
         [HttpPost]
         public IActionResult Create(User model)
         {
+            _logger.LogInformation("Creating user: {Username}", model.Username);
+            _logger.LogInformation("LoginLevel: {LoginLevel}", model.LoginLevel);
+
             if (ModelState.IsValid)
             {
+                // 1.Check trùng username
+                var existingUser = _context.Users.FirstOrDefault(u => u.Username == model.Username && u.FactoryID == model.FactoryID);
+                if (existingUser != null)
+                {
+                    _logger.LogWarning("Username {Username} already exists.", model.Username);
+                    MessageStatus = "Username already exists.";
+
+                    return View(model);
+                }
+                // 2. Tạo user mới
+
                 model.Pass = HashPassword(model.Pass); // hash mật khẩu
                 model.LastUpdate = DateTime.Now;
                 model.Act = true; // mặc định active
                 model.UserLevel = 9;
                 model.Fac_per = "";
                 model.LoginLevel = 0;
+                // if(model.LoginLevel < 0 || model.LoginLevel > 9 || model.LoginLevel == null) {
+                //     model.LoginLevel = 0;
+                // } else {
+                //     model.LoginLevel = model.LoginLevel;
+                // }
                 model.UserUpdate = User.Identity?.Name;
                 _context.Users.Add(model);
                 _context.SaveChanges();
@@ -80,12 +99,35 @@ namespace QOS.Controllers
                     UserUpdate = User.Identity?.Name,
                     LastUpdate = DateTime.Now,
 
+                    
                     // Gán quyền mặc định
-                    A_F1 = true,
+                    A_F1 = false,
                     A_F2 = false,
-                    B_F1 = false,
+                    B_F0 = true,
+                    B_F01 = true,
+                    B_F1 = true,
+                    B_F2 = true,
+                    B_F3 = true,
+                    B_F4 = true,
+                    B_F5 = true,
+                    B_F6 = true,
+                    B_F7 = true,
+                    B_F8 = true,
+                    B_F9 = true,
+                    Q_F0 = true,
+                    Q_F1 = true,
+                    Q_F2 = true,
+                    Q_F3 = true,
+                    Q_F4 = true,
+                    Q_F5 = true,
+                    Q_F6 = true,
+                    Q_F7 = true,
+                    Q_F8 = true,
+                    Q_F9 = true,
+
                     // ...
                 };
+                
 
                 _context.UserPermissions.Add(permission);
                 _context.SaveChanges();
@@ -185,11 +227,12 @@ namespace QOS.Controllers
             var user = _context.Users.FirstOrDefault(u => u.Id == id);
             if (user == null) return NotFound();
             // Cập nhật thông tin cá nhân
-            user.FactoryID = model.FactoryID;
+            // user.FactoryID = model.FactoryID;
             user.TeamID = model.TeamID;
             user.FullName = model.FullName;
             user.Email = model.Email;
-            user.Act = true; // mặc định active
+            // user.Act = true; // mặc định active
+            user.Act = model.Act;
             user.UserLevel = 9;
             user.Fac_per = "";
             user.LoginLevel = 0;
@@ -198,10 +241,17 @@ namespace QOS.Controllers
             user.LastUpdate = DateTime.Now;
             user.Unit_Check = model.Unit_Check;
             user.Line_Check = model.Line_Check;
+            // 🔐 SET LẠI PASSWORD NẾU CÓ NHẬP
+            if (!string.IsNullOrWhiteSpace(model.NewPassword))
+            {
+                user.Pass = HashPassword(model.NewPassword);
+            }
 
              // Update bảng User_Per
             var per = _context.UserPermissions.FirstOrDefault(p => p.UserName == model.Username && p.FactoryID == model.FactoryID);
+            //  var per = _context.UserPermissions.FirstOrDefault(p => p.UserName == model.Username);
             if (per == null) return NotFound();
+            
             per.SYS_Admin = model.SYS_Admin;
             per.A_F1 = model.A_F1;
             per.A_F2 = model.A_F2;
@@ -353,6 +403,40 @@ namespace QOS.Controllers
         {
             return RedirectToAction("Index", "LEDTest", new { area = "SystemAdmin" });
         }
+
+        private UserPermission CreateBasePermission(User model)
+        {
+            return new UserPermission
+            {
+                FactoryID = model.FactoryID,
+                UserName = model.Username,
+                UserUpdate = User.Identity?.Name,
+                LastUpdate = DateTime.Now
+            };
+        }
+
+        private void SetAllPermissions(UserPermission p, bool value)
+        {
+            p.SYS_Admin = value;
+            p.SYS_LED = value;
+
+            p.A_F1 = value; p.A_F2 = value; p.A_F3 = value; p.A_F4 = value;
+            p.A_F5 = value; p.A_F6 = value; p.A_F7 = value; p.A_F8 = value;
+            p.A_F9 = value; p.A_F10 = value;
+
+            p.B_F0 = value; p.B_F01 = value;
+            p.B_F1 = value; p.B_F2 = value; p.B_F3 = value; p.B_F4 = value;
+            p.B_F5 = value; p.B_F6 = value; p.B_F7 = value; p.B_F8 = value; p.B_F9 = value;
+
+            p.C_F1 = value; p.C_F2 = value; p.C_F3 = value;
+
+            p.S_F1 = value; p.S_F2 = value;
+
+            p.Q_F0 = value; p.Q_F1 = value; p.Q_F2 = value; p.Q_F3 = value;
+            p.Q_F4 = value; p.Q_F5 = value; p.Q_F6 = value;
+            p.Q_F7 = value; p.Q_F8 = value; p.Q_F9 = value;
+        }
+
     }
 
     

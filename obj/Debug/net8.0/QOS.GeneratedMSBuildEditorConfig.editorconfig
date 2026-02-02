@@ -254,6 +254,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXE9RTEVuZGxpbmVcUlBfT1FMRW5kbGluZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/C_Sharp/QOS/Areas/Report/Views/OQLInLine/RP_OQLInLine.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXE9RTEluTGluZVxSUF9PUUxJbkxpbmUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/C_Sharp/QOS/Areas/Report/Views/PhotoDefect/RP_PhotoDefect.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUmVwb3J0XFZpZXdzXFBob3RvRGVmZWN0XFJQX1Bob3RvRGVmZWN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -320,6 +324,18 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/C_Sharp/QOS/Areas/Setting/Views/Setting/DepartmentList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcU2V0dGluZ1xWaWV3c1xTZXR0aW5nXERlcGFydG1lbnRMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Setting/Views/Setting/EditDepartment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcU2V0dGluZ1xWaWV3c1xTZXR0aW5nXEVkaXREZXBhcnRtZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Setting/Views/Setting/EditFactory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcU2V0dGluZ1xWaWV3c1xTZXR0aW5nXEVkaXRGYWN0b3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/C_Sharp/QOS/Areas/Setting/Views/Setting/EditUnit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcU2V0dGluZ1xWaWV3c1xTZXR0aW5nXEVkaXRVbml0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/C_Sharp/QOS/Areas/Setting/Views/Setting/FactoryList.cshtml]

@@ -67,6 +67,59 @@ namespace QOS.Controllers
             }
             return View(model);
         }
+        [Permission("C_F1")]
+        public IActionResult EditFactory(string id)
+        {
+            var factory = _context.Factory_List.FirstOrDefault(fac => fac.FactoryID == id);
+            if (factory == null)
+            {
+                return NotFound();
+            }
+            var model = new Factory_List
+            {
+                FactoryID = factory.FactoryID,
+                FactoryName = factory.FactoryName,
+                Remark = factory.Remark
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult EditFactory(Factory_List model)
+        {
+            if (ModelState.IsValid)
+            {
+                var factory = _context.Factory_List.FirstOrDefault(fac => fac.FactoryID == model.FactoryID);
+                if (factory == null)
+                {
+                    return NotFound();
+                }
+                factory.FactoryName = model.FactoryName;
+                factory.Remark = model.Remark;
+                factory.UserUpdate = User.Identity?.Name;
+                factory.LastUpdate = DateTime.Now;
+                _context.SaveChanges();
+                MessageStatus = _setingLocalizer["FactoryUpdateSuccess"];
+                return RedirectToAction("FactoryList");
+            }
+            return View(model);
+        }
+        [HttpPost]
+    
+        public IActionResult DeleteFactory(string FactoryID)
+        {
+            // Console.WriteLine("ID DELETE: " + FactoryID);
+            var factory = _context.Factory_List.FirstOrDefault(fac => fac.FactoryID == FactoryID);
+            if (factory == null)
+            {
+                // Console.WriteLine("Factory not found for deletion.");
+                MessageStatus = _setingLocalizer["FactoryDeleteFail"];
+                return RedirectToAction("FactoryList");
+            }
+            _context.Factory_List.Remove(factory);
+            _context.SaveChanges();
+            MessageStatus = _setingLocalizer["FactoryDeleteSuccess"];
+            return RedirectToAction("FactoryList");
+        }
 
         // DepartmentList
         [Permission("C_F2")]
@@ -96,6 +149,58 @@ namespace QOS.Controllers
                 return RedirectToAction("DepartmentList");
             }
             return View(model);
+        }
+        [Permission("C_F2")]
+        public IActionResult EditDepartment(string id)
+        {
+            var department = _context.Team_List.FirstOrDefault(dep => dep.TeamID == id);
+            if (department == null)
+            {
+                return NotFound();
+            }
+            var model = new Team_List
+            {
+                TeamID = department.TeamID,
+                TeamName = department.TeamName,
+                Remark = department.Remark
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult EditDepartment(Team_List model)
+        {
+            if (ModelState.IsValid)
+            {
+                var department = _context.Team_List.FirstOrDefault(dep => dep.TeamID == model.TeamID);
+                if (department == null)
+                {
+                    return NotFound();
+                }
+                department.TeamName = model.TeamName;
+                department.Remark = model.Remark;
+                department.UserUpdate = User.Identity?.Name;
+                department.LastUpdate = DateTime.Now;
+                _context.SaveChanges();
+                MessageStatus = _setingLocalizer["DepartmentUpdateSuccess"];
+                return RedirectToAction("DepartmentList");
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult DeleteDepartment(string TeamID)
+        {
+            // Console.WriteLine("ID DELETE: " + FactoryID);
+            var department = _context.Team_List.FirstOrDefault(dep => dep.TeamID == TeamID);
+            if (department == null)
+            {
+                // Console.WriteLine("Factory not found for deletion.");
+                MessageStatus = _setingLocalizer["DepartmentDeleteFail"];
+                return RedirectToAction("DepartmentList");
+            }
+            _context.Team_List.Remove(department);
+            _context.SaveChanges();
+            MessageStatus = _setingLocalizer["DepartmentDeleteSuccess"];
+            return RedirectToAction("DepartmentList");
         }
 
         // Unit List
@@ -129,6 +234,62 @@ namespace QOS.Controllers
                 return RedirectToAction("UnitList");
             }
             return View(model);
+        }
+        [Permission("C_F3")]
+        public IActionResult EditUnit(string id)
+        {
+            var unit = _context.Unit_List.FirstOrDefault(u => u.Unit == id);
+            if (unit == null)
+            {
+                return NotFound();
+            }
+            var model = new Unit_List
+            {
+                Factory = unit.Factory,
+                Zone =  unit.Zone,
+                Block = unit.Block,
+                Unit = unit.Unit,
+                Act = unit.Act,
+                ETS_SUB = unit.ETS_SUB
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult EditUnit(Unit_List model)
+        {
+            if (ModelState.IsValid)
+            {
+                var unit = _context.Unit_List.FirstOrDefault(u => u.Unit == model.Unit);
+                if (unit == null)
+                {
+                    return NotFound();
+                }
+                unit.Factory = model.Factory;
+                unit.Zone = model.Zone;
+                unit.Block = model.Block;
+                unit.Act = model.Act;
+                unit.ETS_SUB = model.ETS_SUB;
+                _context.SaveChanges();
+                MessageStatus = _setingLocalizer["UnitUpdateSuccess"];
+                return RedirectToAction("UnitList");
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult DeleteUnit(string Unit)
+        {
+            // Console.WriteLine("ID DELETE: " + FactoryID);
+            var unit = _context.Unit_List.FirstOrDefault(u => u.Unit == Unit);
+            if (unit == null)
+            {
+                // Console.WriteLine("Factory not found for deletion.");
+                MessageStatus = _setingLocalizer["UnitDeleteFail"];
+                return RedirectToAction("UnitList");
+            }
+            _context.Unit_List.Remove(unit);
+            _context.SaveChanges();
+            MessageStatus = _setingLocalizer["UnitDeleteSuccess"];
+            return RedirectToAction("UnitList");
         }
         public IActionResult AccessDenied()
         {

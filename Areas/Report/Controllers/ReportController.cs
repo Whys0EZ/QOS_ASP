@@ -97,6 +97,12 @@ namespace QOS.Controllers
             return RedirectToAction("RP_Form4_BCCLM_SUM", "Form4BCCLMSUM", new { area = "Report" });
         }
         [Permission("B_F6")]
+        public IActionResult RP_OQLInLine()
+        {
+            // return View("ManageOperation/F_ManageOperation");
+            return RedirectToAction("RP_OQLInLine", "OQLInLine", new { area = "Report" });
+        }
+        [Permission("B_F6")]
         public IActionResult RP_Form7()
         {
             return RedirectToAction("RP_Form7", "Form7BTP", new { area = "Report" });

@@ -2,7 +2,9 @@
 @model QOS.Areas.Report.Models.TopForm4QualityViewModel
 @{
 	ViewData["Title"] = "TOP INLINE QUALITY";
-	Layout = "_MenuReport";
+	var ua = Context.Request.Headers["User-Agent"].ToString().ToLower();
+    bool isMobile = ua.Contains("android") || ua.Contains("iphone") || ua.Contains("ipad") || ua.Contains("mobile");
+    Layout = isMobile ? "_LayoutMobile" : "_MenuReport";
 }
 <link rel="stylesheet" href="~/css/report.css" />
 <partial name="_AlertMessage" />
@@ -86,7 +88,7 @@
             var Style="";
             
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <table class="table table-bordered table-striped">
                         
                         @foreach(var row in Model.ReportData)
@@ -104,7 +106,7 @@
                         }
                         <tbody>
                             <tr>
-                                <td rowspan="3" style="font-weight:bold;"> INLINE<br>@Model.Line <br> Style: @Style <br> @Model.DateFrom.ToString("yyyy-MM-dd") - @Model.DateEnd.ToString("yyyy-MM-dd")</td>
+                                <td rowspan="3" style="font-weight:bold;"> INLINE<br>@Model.Line <br> Style: @Style <br> @Model.DateFrom.ToString("yyyy-MM-dd") -> @Model.DateEnd.ToString("yyyy-MM-dd")</td>
                                 <td>Số hàng kiểm / Check QTY</td>
                                 <td>@Total_Qty</td>
                             </tr>
@@ -121,7 +123,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <table class="table table-bordered table-striped">
                         
                         

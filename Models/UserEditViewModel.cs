@@ -15,6 +15,8 @@ namespace QOS.Models
         public string? TeamID { get; set; } = "";
         
         public string Pass { get; set; } = "";
+        // KHÔNG bind password cũ
+        public string? NewPassword { get; set; }
         [DataType(DataType.Password)]
         [Compare("Pass", ErrorMessage = "Mật khẩu xác nhận không khớp")]
         public string ConfirmPassword { get; set; } = "";

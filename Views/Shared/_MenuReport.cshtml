@@ -77,6 +77,11 @@
                         </a>
                     </li>
                     <li class="menu-item">
+                        <a class="menu-link @Html.IsActive(new[] { "OQLInline" }, new[] { "RP_OQLInline" })" asp-controller="Report" asp-action="RP_OQLInline">
+                            <span class="menu-icon"><i class="fas fa-bug"></i></span><span class="menu-number">9.2</span>@Localizer["OQLInline"]
+                        </a>
+                    </li>
+                    <li class="menu-item">
                         <a class="menu-link @Html.IsActive(new[] { "Form7BTP" }, new[] { "RP_Form7" })" asp-controller="Report" asp-action="RP_Form7">
                             <span class="menu-icon"><i class="fas fa-cogs"></i></span><span class="menu-number">10</span>@Localizer["Form7BTP"]
                         </a>
@@ -228,6 +233,11 @@
             <li class="menu-item">
                 <a class="menu-link @Html.IsActive(new[] { "Form4BCCLMSUM" }, new[] { "RP_Form4_BCCLM_SUM" })" asp-controller="Report" asp-action="RP_Form4_BCCLM_SUM">
                     <span class="menu-number">9.1</span>@Localizer["Form4BCCLMSUM"]
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link @Html.IsActive(new[] { "OQLInline" }, new[] { "RP_OQLInline" })" asp-controller="Report" asp-action="RP_OQLInline">
+                    <span class="menu-icon"><i class="fas fa-bug"></i></span><span class="menu-number">9.2</span>@Localizer["OQLInline"]
                 </a>
             </li>
             <li class="menu-item">

@@ -347,7 +347,7 @@
                 lineSelect.disabled = true;
                 
                 // Fetch lines from server
-                const response = await fetch(`/Report/SummaryKCC/GetLinesByUnit?unitId=${encodeURIComponent(selectedUnit)}`);
+                const response = await fetch(`/Report/SummaryKCM/GetLinesByUnit?unitId=${encodeURIComponent(selectedUnit)}`);
                 
                 if (!response.ok) {
                     throw new Error('Failed to fetch lines');
@@ -423,7 +423,7 @@
         console.log('faultCodes:', faultCodes);
         console.log('params:', params.toString());
         // Gọi controller qua GET
-         window.location.href = `/Report/SummaryKCC/ExportToExcel?${params.toString()}`;
+         window.location.href = `/Report/SummaryKCM/ExportToExcel?${params.toString()}`;
     }
 
     const defectStats = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(

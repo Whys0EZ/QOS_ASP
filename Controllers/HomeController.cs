@@ -19,11 +19,13 @@ namespace QOS.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly AppDbContext _context;
     private readonly string _connectionString;
 
-    public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
+    public HomeController(ILogger<HomeController> logger,AppDbContext context, IConfiguration configuration)
     {
         _logger = logger;
+        _context = context;
         _connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Missing connection string: DefaultConnection");
     }
 
@@ -33,6 +35,7 @@ public class HomeController : Controller
             //     return RedirectToAction("Login", "Account");
 
             ViewData["MainMenu"] = string.IsNullOrEmpty(main) ? "" : main;
+            var user = _context.Users.FirstOrDefault(u => u.Username == User.Identity.Name);
 
             // Console.WriteLine("IsAuthenticated: " + User.Identity?.IsAuthenticated);
             // Console.WriteLine("Claims: " + string.Join(",", User.Claims.Select(c => $"{c.Type}={c.Value}")));
@@ -45,7 +48,7 @@ public class HomeController : Controller
                 return RedirectToAction("Home", "Mobile");
             }else {
 
-                return View();
+                return View(user);
             }
         }
     [HttpGet]

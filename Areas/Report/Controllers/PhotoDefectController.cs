@@ -26,6 +26,7 @@ namespace QOS.Areas.Report.Controllers
         private readonly IConfiguration _configuration;
         private readonly string _connectionString;
         private readonly AppDbContext _context;
+       
 
         public PhotoDefectController(ILogger<PhotoDefectController> logger, IWebHostEnvironment env, IConfiguration configuration, AppDbContext context)
         {
@@ -35,6 +36,7 @@ namespace QOS.Areas.Report.Controllers
             _configuration =configuration;
             _context = context;
         }
+        
         public IActionResult Index()
         {
             // return View();

@@ -26,6 +26,7 @@ namespace QOS.Areas.Report.Controllers
         private readonly string _connectionString;
         private readonly AppDbContext _context;
         private readonly string _factoryName;
+        private string factoryName => User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
 
         public SummaryCheckerController(ILogger<SummaryCheckerController> logger, IWebHostEnvironment env, IConfiguration configuration, AppDbContext context)
         {
@@ -35,6 +36,18 @@ namespace QOS.Areas.Report.Controllers
             _configuration =configuration;
             _context = context;
             _factoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
+        }
+        protected string FactoryName
+        {
+            get
+            {
+                // ADMIN → dùng factory mặc định (ALL)
+                if (User.Identity?.Name == "admin")
+                    return _factoryName;
+
+                // USER → dùng factory từ claim
+                return factoryName;
+            }
         }
         public IActionResult Index()
         {
@@ -63,7 +76,8 @@ namespace QOS.Areas.Report.Controllers
                     DateFrom = dateFrom ?? DateTime.Now,
                     DateEnd = dateEnd ?? DateTime.Now.Date.AddDays(1).AddTicks(-1),
                     ReportData = new List<Dictionary<string, object>>(),
-                    DefectStats = new Dictionary<string, DefectStat>()
+                    DefectStats = new Dictionary<string, DefectStat>(),
+                    Zone = GetZone()
                     
                 };
                 _logger.LogInformation($"Model created - Units available: {model.Unit_List.Count}");
@@ -82,7 +96,7 @@ namespace QOS.Areas.Report.Controllers
             try
             {
                 var units = _context.Set<Unit_List>()
-                    .Where(u => u.Factory == _factoryName)
+                    .Where(u => u.Factory == FactoryName)
                     .OrderBy(u => u.Unit)
                     .ToList();
 
@@ -93,6 +107,42 @@ namespace QOS.Areas.Report.Controllers
             {
                 _logger.LogError(ex, "Error loading unit list");
                 return new List<Unit_List>();
+            }
+        }
+        private List<string> GetZone()
+        {
+            try {
+                var zones = new List<string>();
+                string connStr = _configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Missing connection string: DefaultConnection");
+                
+                using (SqlConnection conn = new SqlConnection(connStr) )
+                {
+                    conn.Open();
+                    string sql = @" SELECT DISTINCT Zone
+                                        FROM Unit
+                                        WHERE Act='Y' AND Factory = @Factory
+                                        order by  Zone ASC";
+                    
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Factory", FactoryName);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                // Kiểm tra NULL
+                                if (!reader.IsDBNull(0))
+                                    zones.Add(reader.GetString(0));
+                            }
+                        }
+                    }
+                }
+                return zones;
+            } catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error getting lines for block table");
+                return new List<string>();
+                
             }
         }
 
@@ -111,7 +161,7 @@ namespace QOS.Areas.Report.Controllers
 
                 // Assuming you have a Line_List table with Unit field
                 var lines = _context.Set<Line_List>()
-                    .Where(l => l.Unit == unitId && l.Factory == _factoryName)
+                    .Where(l => l.Unit == unitId && l.Factory == FactoryName)
                     .OrderBy(l => l.Line)
                     .Select(l => new { 
                         value = l.Line, 
@@ -301,7 +351,13 @@ namespace QOS.Areas.Report.Controllers
                     
                 };
                
-                LoadReportData(model);
+            LoadReportData(model);
+            if (model.ReportData == null || !model.ReportData.Any())
+            {
+                _logger.LogInformation("Không có dữ liệu để xuất báo cáo, quay về trang SummaryChecker.");
+                MessageStatus = "Không có dữ liệu để xuất báo cáo.";
+                return RedirectToAction("SummaryChecker");
+            }
 
             int countfaultCodes = faultCodes.Split(',').Length;
             string[] codes = faultCodes.Split(',');
@@ -361,8 +417,8 @@ namespace QOS.Areas.Report.Controllers
             cmd.Parameters.AddWithValue("@Date_To", dateEnd);
             cmd.Parameters.AddWithValue("@Unit", Unit);
             cmd.Parameters.AddWithValue("@Line", Line);
-            cmd.Parameters.AddWithValue("@MO", Mo);
-            cmd.Parameters.AddWithValue("@StyleCode", styleCode);
+            cmd.Parameters.AddWithValue("@MO", Mo?? "");
+            cmd.Parameters.AddWithValue("@StyleCode", styleCode ?? "");
             cmd.Parameters.AddWithValue("@Defected_Type", typeCode);
             cmd.Parameters.AddWithValue("@Top_Defected", topDefected);
             cmd.Parameters.AddWithValue("@DefectList", faultCodes);
@@ -470,6 +526,8 @@ namespace QOS.Areas.Report.Controllers
             {
                 worksheet.Cells["G2"].Value = $"StyleCode = {styleCode}";
             }
+            // var formula = worksheet.Cells["G77"].Formula;
+            // _logger.LogError("Formula G77 = {Formula}", formula);
             // Cập nhật công thức
             // hiện giá trị ngay cả khi chưa Enable Editing
             package.Workbook.Calculate();
@@ -481,7 +539,7 @@ namespace QOS.Areas.Report.Controllers
             stream.Position = 0;
             return File(stream.ToArray(),
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                $"Report_EndLine_{DateTime.Now:yyyyMMddHHmmss}.xlsx");
+                $"Report_Checker_{DateTime.Now:yyyyMMddHHmmss}.xlsx");
         }
             
         private static string GetExcelColumnName(int columnNumber)

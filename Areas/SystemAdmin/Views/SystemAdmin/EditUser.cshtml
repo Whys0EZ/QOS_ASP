@@ -9,7 +9,11 @@
 
 <div class="d-flex flex-row justify-content-between align-items-center">
     <h2>@SystemLocalizer["EditUserTitle"]</h2>
-    <a asp-action="Index" class="btn btn-secondary me-3">@Localizer["Back"]</a>
+    <div class="me-3">
+        @* <button type="submit" class="btn btn-primary">@Localizer["Save"]</button> *@
+        <a asp-action="Index" class="btn btn-secondary">@Localizer["Back"]</a>
+    </div>
+    @* <a asp-action="Index" class="btn btn-secondary me-3">@Localizer["Back"]</a> *@
 </div>
 
 
@@ -24,12 +28,12 @@
         { "A_F2", "A2 - Cập nhật thông tin lỗi" },
         { "A_F3", "A3 - Điểm đo thống số BTP" },
         { "A_F4", "A4 - Điểm đo thống số TP" },
-        { "A_F5", "A5 - Thông tin MO trên ETS" },
-        { "A_F6", "A6 - Group Contact List" },
+        { "A_F5", "A5 - Thông số đo" },
+        { "A_F6", "A6 - Thông tin MO trên ETS" },
         { "A_F7", "A7 - Group Contact List" },
-        { "A_F8", "A8 - Group Contact List" },
-        { "A_F9", "A9 - Group Contact List" },
-        { "A_F10", "A10 - Group Contact List" },
+        { "A_F8", "A8 - Tracking Infor Setup" },
+        { "A_F9", "A9 - Tracking - Upload data" },
+        { "A_F10", "A10 - Online File" },
 
         { "B_F0", "B0 - Sửa Báo Cáo" },
         { "B_F01", "B01 - Xóa Báo Cáo" },
@@ -71,10 +75,21 @@
     <input type="hidden" asp-for="Username" />
     <div class="row" style="padding:30px;">
         <div class="col-md-6 ">
+            @* <h4>@SystemLocalizer["EditUser"]</h4> *@
+            <div class="mb-3">
             <h4>@SystemLocalizer["EditUser"]</h4>
+                <div class="float-end">
+                    <label class="form-label">Action</label>
+                    <select asp-for="Act" class="">
+                        <option value="true">Enable</option>
+                        <option value="false">Disable</option>
+                        
+                    </select>
+                </div>
+            </div>
             <div class="mb-3">
                 <label class="form-label">@Localizer["Factory"]</label>
-                <input asp-for="FactoryID" class="form-control" />
+                <input asp-for="FactoryID" class="form-control" readonly />
             </div>
 
             <div class="mb-3">
@@ -101,6 +116,15 @@
                 <label class="form-label">@SystemLocalizer["LineCheck"]</label>
                 <input asp-for="Line_Check" class="form-control" />
             </div>
+            <div class="mb-3">
+                <label class="form-label">@SystemLocalizer["NewPassword"]</label>
+                <input asp-for="NewPassword"
+                    class="form-control"
+                    type="password"
+                    autocomplete="new-password"
+                    placeholder="Để trống nếu không đổi" />
+            </div>
+           
         </div>
         <div class="col-md-6">
             <h4>@SystemLocalizer["Decentralization"]</h4>

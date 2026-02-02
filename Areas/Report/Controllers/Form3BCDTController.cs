@@ -36,10 +36,20 @@ namespace QOS.Areas.Report.Controllers
 
         public IActionResult RP_Form3(string? Unit, DateTime? dateFrom, DateTime? dateEnd)
         {
-            string FactoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
+            // string FactoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
+            List<Unit_List> UnitList;
+            // _logger.LogInformation("User Name: {UserName}", User.Identity?.Name);
+            if(User.Identity?.Name == "admin")
+            {
+                // Lấy danh sách Unit cho Factory "ALL"
+                UnitList = _context.Set<Unit_List>().OrderBy(u => u.Unit).ToList();
+            } else {
+                string FactoryName = User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
+                UnitList = _context.Set<Unit_List>().Where(u => u.Factory == FactoryName).OrderBy(u => u.Unit).ToList();
+            }
             var model = new RP_Form3ViewModel
             {
-                Unit_List = _context.Set<Unit_List>().Where(u => u.Factory == FactoryName).OrderBy(u => u.Unit).ToList(),
+                Unit_List = UnitList,
                 Unit = Unit,
                 DateFrom = dateFrom ?? DateTime.Now.AddDays(-7),
                 DateEnd = dateEnd ?? DateTime.Now.Date.AddDays(1).AddTicks(-1)
@@ -47,6 +57,9 @@ namespace QOS.Areas.Report.Controllers
             };
             using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             string sql;
+
+            var units = UnitList.Select(u => u.Unit).ToList();
+            string unitString = string.Join(",", units);
 
             if (!string.IsNullOrEmpty(Unit) && Unit != "ALL")
             {
@@ -65,11 +78,12 @@ namespace QOS.Areas.Report.Controllers
                 FROM Form3_BCDT t1
                 LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
                 WHERE CAST(t1.LastUpdate AS DATE) >= CAST(@dateF AS DATE) AND CAST(t1.LastUpdate AS DATE) <= CAST(@dateT AS DATE)
+                AND t1.Unit IN (SELECT value FROM STRING_SPLIT(@unitString , ','))
                 ORDER BY t1.LastUpdate DESC";
             }
             ;
             // Console.WriteLine("DateEnd: " + model.DateEnd + " Unit: " + model.DateFrom);
-            var history = conn.Query<Form3_BCDT>(sql, new { Unit, dateF = model.DateFrom, dateT = model.DateEnd }).ToList();
+            var history = conn.Query<Form3_BCDT>(sql, new { Unit, unitString, dateF = model.DateFrom, dateT = model.DateEnd }).ToList();
 
             model.History = history; // đưa thẳng vào Model
 

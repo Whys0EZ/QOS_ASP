@@ -123,6 +123,12 @@
                         <label class="filter-label">Unit:</label>
                         <select class="form-select" name="unit" id="unitSelect" style="width: 100px;" >
                             <option value="ALL" selected>--Unit--</option>
+                            @foreach (var zone in Model.Zone)
+                            {
+                                <option value="@($"Z{zone}")" selected="@($"Z{zone}" == Model.Unit)">
+                                    @($"*{zone}")
+                                </option> 
+                            }
                             @foreach (var unit in Model.Unit_List)
                                 {
                                     <option value="@unit.Unit" selected="@(unit.Unit == Model.Unit)">

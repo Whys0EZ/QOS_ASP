@@ -241,7 +241,7 @@ namespace QOS.Areas.Report.Controllers
                         Fault_Name_VN AS FaultNameVN,
                         Fault_Level AS FaultLevel
                     FROM Fault_Code
-                    WHERE Form2_Active = 1
+                    WHERE Form2_Active = 1 and Factory ='REG2'
                     ORDER BY Fault_Level ASC, Fault_Name_VN ASC";
 
                 faults = connection.Query<FQCTrackingFaultViewModel>(sqlFault).ToList();

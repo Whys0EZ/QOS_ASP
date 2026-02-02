@@ -39,6 +39,42 @@
   <data name="UnitSuccess" xml:space="preserve">
     <value>Unit added successfully</value>
   </data>
+  <data name="FactoryUpdateSuccess" xml:space="preserve">
+    <value>Factory Update successfully</value>
+  </data>
+  <data name="FactoryDeleteFail" xml:space="preserve">
+    <value>Factory Delete failed</value>
+  </data>
+  <data name="FactoryDeleteSuccess" xml:space="preserve">
+    <value>Factory Delete successfully</value>
+  </data>
+  <data name="DepartmentUpdateSuccess" xml:space="preserve">
+    <value>Department Update successfully</value>
+  </data>
+  <data name="DepartmentDeleteFail" xml:space="preserve">
+    <value>Department Delete failed</value>
+  </data>
+  <data name="DepartmentDeleteSuccess" xml:space="preserve">
+    <value>Department Delete successfully</value>
+  </data>
+  <data name="UnitUpdateSuccess" xml:space="preserve">
+    <value>Unit Update successfully</value>
+  </data>
+  <data name="UnitDeleteFail" xml:space="preserve">
+    <value>Unit Delete failed</value>
+  </data>
+  <data name="UnitDeleteSuccess" xml:space="preserve">
+    <value>Unit Delete successfully</value>
+  </data>
+  <data name="EditDepartment" xml:space="preserve">
+    <value>Edit Information Department</value>
+  </data>
+  <data name="EditFactory" xml:space="preserve">
+    <value>Edit Information Factory</value>
+  </data>
+  <data name="EditUnit" xml:space="preserve">
+    <value>Edit Information Unit</value>
+  </data>
 
 
 </root>

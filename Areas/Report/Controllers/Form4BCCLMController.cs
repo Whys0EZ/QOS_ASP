@@ -23,6 +23,7 @@ namespace QOS.Areas.Report.Controllers
         private readonly string _connectionString;
         private readonly AppDbContext _context;
         private readonly string _factoryName;
+        private string factoryName => User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
 
         public Form4BCCLMController(ILogger<Form4BCCLMController> logger, IWebHostEnvironment env, IConfiguration configuration, AppDbContext context)
         {
@@ -33,6 +34,20 @@ namespace QOS.Areas.Report.Controllers
             _context = context;
             _factoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
         }
+        // private string factoryname => User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
+        protected string FactoryName
+        {
+            get
+            {
+                // ADMIN → dùng factory mặc định (ALL)
+                if (User.Identity?.Name == "admin")
+                    return _factoryName;
+
+                // USER → dùng factory từ claim
+                return factoryName;
+            }
+        }
+
         public IActionResult Index()
         {
             // return View();
@@ -43,8 +58,8 @@ namespace QOS.Areas.Report.Controllers
         [HttpGet]
         public IActionResult RP_Form4(string? Unit, DateTime? dateFrom, DateTime? dateEnd)
         {
-            _logger.LogInformation("=== RP_Form4 GET Request ===");
-            _logger.LogInformation($"Parameters - Unit: '{Unit}', DateFrom: {dateFrom}, DateEnd: {dateEnd}");
+            // _logger.LogInformation("=== RP_Form4 GET Request ===");
+            // _logger.LogInformation($"Parameters - Unit: '{Unit}', DateFrom: {dateFrom}, DateEnd: {dateEnd}");
 
             try
             {
@@ -56,7 +71,7 @@ namespace QOS.Areas.Report.Controllers
                     DateEnd = dateEnd ?? DateTime.Now.Date.AddDays(1).AddTicks(-1)
                 };
 
-                _logger.LogInformation($"Model created - Units available: {model.Unit_List.Count}");
+                // _logger.LogInformation($"Model created - Units available: {model.Unit_List.Count}");
                 LoadReportData(model);
                 // Load data if parameters provided
                 // if (HasSearchParameters(Unit, dateFrom, dateEnd))
@@ -223,12 +238,12 @@ namespace QOS.Areas.Report.Controllers
         [HttpGet]
         public IActionResult GetLineHistory(string lineCode, DateTime dateFrom, DateTime dateEnd)
         {
-            _logger.LogInformation($"=== Get Line History - Line: '{lineCode}', From: {dateFrom:yyyy-MM-dd}, To: {dateEnd:yyyy-MM-dd} ===");
+            // _logger.LogInformation($"=== Get Line History - Line: '{lineCode}', From: {dateFrom:yyyy-MM-dd}, To: {dateEnd:yyyy-MM-dd} ===");
 
             try
             {
                 var historyData = GetLineHistoryData(lineCode, dateFrom, dateEnd);
-                _logger.LogInformation($"Line history loaded - {historyData.Count} records");
+                // _logger.LogInformation($"Line history loaded - {historyData.Count} records");
                 
                 // _logger.LogInformation("Line history data: {Json}", 
                 //     JsonSerializer.Serialize(historyData, new JsonSerializerOptions
@@ -299,7 +314,7 @@ namespace QOS.Areas.Report.Controllers
                         DateFrom = dateFrom.Value.ToString("yyyy-MM-dd HH:mm:ss"),
                         DateEnd = dateEnd.Value.ToString("yyyy-MM-dd HH:mm:ss"),
                         Unit = unit,
-                        FactoryID = _factoryName
+                        FactoryID = FactoryName
                     }
                 };
 
@@ -316,15 +331,38 @@ namespace QOS.Areas.Report.Controllers
 
         private List<QOS.Models.Unit_List> GetUnitList()
         {
+            // string FactoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
+            List<Unit_List> UnitList;
+            // _logger.LogInformation("User Name: {UserName}", User.Identity?.Name);
+            // if(User.Identity?.Name == "admin")
+            // {
+            //     // Lấy danh sách Unit cho Factory "ALL"
+            //     UnitList = _context.Set<Unit_List>().OrderBy(u => u.Unit).ToList();
+            // } else {
+            //     // string FactoryName = User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
+            //     UnitList = _context.Set<Unit_List>().Where(u => u.Factory == FactoryName).OrderBy(u => u.Unit).ToList();
+            // }
+
             try
             {
-                var units = _context.Set<QOS.Models.Unit_List>()
-                    .Where(u => u.Factory == _factoryName)
-                    .OrderBy(u => u.Unit)
-                    .ToList();
+                if(User.Identity?.Name == "admin")
+                {
+                    // Lấy danh sách Unit cho Factory "ALL"
+                    var units = _context.Set<QOS.Models.Unit_List>()
+                        .OrderBy(u => u.Unit)
+                        .ToList();
+                    
+                    // _logger.LogInformation($"Loaded {units.Count} units from database (admin)");
+                    return units;
+                } else {
+                    // string FactoryName = User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
+                    var units = _context.Set<QOS.Models.Unit_List>()
+                        .Where(u => u.Factory == FactoryName)
+                        .OrderBy(u => u.Unit)
+                        .ToList();
+                    return units;
+                }
 
-                _logger.LogInformation($"Loaded {units.Count} units from database");
-                return units;
             }
             catch (Exception ex)
             {
@@ -335,7 +373,7 @@ namespace QOS.Areas.Report.Controllers
 
         private bool HasSearchParameters(string? unit, DateTime? dateFrom, DateTime? dateEnd)
         {
-            _logger.LogInformation($"HasSearchParameters - Unit: '{unit}', DateFrom: {dateFrom}, DateEnd: {dateEnd}");
+            // _logger.LogInformation($"HasSearchParameters - Unit: '{unit}', DateFrom: {dateFrom}, DateEnd: {dateEnd}");
             return !string.IsNullOrEmpty(unit) || dateFrom.HasValue || dateEnd.HasValue;
         }
 
@@ -357,7 +395,7 @@ namespace QOS.Areas.Report.Controllers
                 command.Parameters.AddWithValue("@Date_From", dateFStr);
                 command.Parameters.AddWithValue("@Date_To", dateTStr);
                 command.Parameters.AddWithValue("@Line_Type", model.Unit == "ALL" ? "" : model.Unit);
-                command.Parameters.AddWithValue("@Factory", _factoryName);
+                command.Parameters.AddWithValue("@Factory", FactoryName);
 
                 using var reader = command.ExecuteReader();
                 var reportUnits = new List<ReportUnit>();
@@ -788,7 +826,7 @@ namespace QOS.Areas.Report.Controllers
                 command.Parameters.AddWithValue("@DateF", dateFrom);
                 command.Parameters.AddWithValue("@DateT", dateEnd);
                 command.Parameters.AddWithValue("@Unit", unit == "ALL" ? "" : unit);
-                command.Parameters.AddWithValue("@FactoryID", _factoryName);
+                command.Parameters.AddWithValue("@FactoryID", FactoryName);
 
                 var results = new List<object>();
                 using var reader = command.ExecuteReader();

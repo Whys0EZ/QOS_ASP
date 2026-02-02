@@ -32,7 +32,7 @@
                 }
                 @foreach (var u in Model)
                 {
-                    <tr>
+                    <tr onclick="location.href='@Url.Action("EditUnit", "Setting", new { id = u.Unit })'" style="cursor:pointer">
                         <td>@i</td>
                         <td>@u.Factory</td>
                         <td>@u.Zone</td>

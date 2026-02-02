@@ -26,6 +26,7 @@ namespace QOS.Areas.Report.Controllers
         private readonly string _connectionString;
         private readonly AppDbContext _context;
         private readonly string _factoryName;
+        private string factoryName => User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
 
         public SummaryEndLineController(ILogger<SummaryEndLineController> logger, IWebHostEnvironment env, IConfiguration configuration, AppDbContext context)
         {
@@ -35,6 +36,18 @@ namespace QOS.Areas.Report.Controllers
             _configuration =configuration;
             _context = context;
             _factoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
+        }
+        protected string FactoryName
+        {
+            get
+            {
+                // ADMIN → dùng factory mặc định (ALL)
+                if (User.Identity?.Name == "admin")
+                    return _factoryName;
+
+                // USER → dùng factory từ claim
+                return factoryName;
+            }
         }
         public IActionResult Index()
         {
@@ -63,7 +76,8 @@ namespace QOS.Areas.Report.Controllers
                     DateFrom = dateFrom ?? DateTime.Now,
                     DateEnd = dateEnd ?? DateTime.Now.Date.AddDays(1).AddTicks(-1),
                     ReportData = new List<Dictionary<string, object>>(),
-                    DefectStats = new Dictionary<string, DefectStat>()
+                    DefectStats = new Dictionary<string, DefectStat>(),
+                    Zone = GetZone()
                     
                 };
                 _logger.LogInformation($"Model created - Units available: {model.Unit_List.Count}");
@@ -82,7 +96,7 @@ namespace QOS.Areas.Report.Controllers
             try
             {
                 var units = _context.Set<Unit_List>()
-                    .Where(u => u.Factory == _factoryName)
+                    .Where(u => u.Factory == FactoryName)
                     .OrderBy(u => u.Unit)
                     .ToList();
 
@@ -93,6 +107,42 @@ namespace QOS.Areas.Report.Controllers
             {
                 _logger.LogError(ex, "Error loading unit list");
                 return new List<Unit_List>();
+            }
+        }
+        private List<string> GetZone()
+        {
+            try {
+                var zones = new List<string>();
+                string connStr = _configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Missing connection string: DefaultConnection");
+                
+                using (SqlConnection conn = new SqlConnection(connStr) )
+                {
+                    conn.Open();
+                    string sql = @" SELECT DISTINCT Zone
+                                        FROM Unit
+                                        WHERE Act='Y' AND Factory = @Factory
+                                        order by  Zone ASC";
+                    
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Factory", FactoryName);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                // Kiểm tra NULL
+                                if (!reader.IsDBNull(0))
+                                    zones.Add(reader.GetString(0));
+                            }
+                        }
+                    }
+                }
+                return zones;
+            } catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error getting lines for block table");
+                return new List<string>();
+                
             }
         }
 
@@ -111,7 +161,7 @@ namespace QOS.Areas.Report.Controllers
 
                 // Assuming you have a Line_List table with Unit field
                 var lines = _context.Set<Line_List>()
-                    .Where(l => l.Unit == unitId && l.Factory == _factoryName)
+                    .Where(l => l.Unit == unitId && l.Factory == FactoryName)
                     .OrderBy(l => l.Line)
                     .Select(l => new { 
                         value = l.Line, 

@@ -1,6 +1,38 @@
-﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+﻿@model QOS.Models.User
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
 @{
     ViewData["Title"] = "Home";
+    
+    var now = DateTime.Now;
+    var hour = now.Hour;
+    string greeting;
+    if (hour < 12)
+    {
+        greeting = Localizer["GoodMorning"];
+    }
+    else if (hour < 18)
+    {
+        greeting = Localizer["GoodAfternoon"];
+    }
+    else
+    {
+        greeting = Localizer["GoodEvening"];
+    }
+
+    // Fallback to English if localization key is missing
+    if (string.IsNullOrWhiteSpace(greeting) || greeting == $"[{nameof(Localizer)}]")
+    {
+        if (hour < 12) greeting = "Good morning";
+        else if (hour < 18) greeting = "Good afternoon";
+        else greeting = "Good evening";
+    }
+
+    var GreetingMessage = (User?.Identity != null && User.Identity.IsAuthenticated)
+        ? $"{greeting} {Model.FullName}"
+        : greeting;
+
+    ViewData["GreetingMessage"] = GreetingMessage;
+    
 }
 @{
     var successMessage = TempData["SuccessMessage"] as string;
@@ -22,310 +54,34 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
-<style>
-    .hero-section {
-        background: linear-gradient(135deg, #667eea 0%, #00f1fd 100%);
-        border-radius: 20px;
-        padding: 2rem 2rem;
-        text-align: center;
-        color: white;
-        margin-bottom: 3rem;
-        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
-    }
 
-    .hero-section h1 {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        font-weight: 700;
-    }
 
-    .hero-section p {
-        font-size: 1.3rem;
-        margin-bottom: 2rem;
-        opacity: 0.95;
-    }
-
-    .hero-button {
-        background: white;
-        color: #667eea;
-        padding: 1rem 2.5rem;
-        border: none;
-        border-radius: 50px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: transform 0.3s, box-shadow 0.3s;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    .hero-button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        color: #667eea;
-    }
-
-    .section-title {
-        text-align: center;
-        font-size: 2.5rem;
-        margin-bottom: 3rem;
-        color: #667eea;
-        font-weight: 700;
-    }
-
-    .features-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-        margin-bottom: 4rem;
-    }
-
-    .feature-card {
-        background: white;
-        padding: 2rem;
-        border-radius: 15px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        transition: transform 0.3s, box-shadow 0.3s;
-        border: 1px solid #f0f0f0;
-    }
-
-    .feature-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
-        border-color: #667eea;
-    }
-
-    .feature-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        display: block;
-    }
-
-    .feature-card h3 {
-        color: #667eea;
-        margin-bottom: 1rem;
-        font-size: 1.5rem;
-        font-weight: 600;
-    }
-
-    .feature-card p {
-        color: #666;
-        line-height: 1.6;
-        font-size: 1rem;
-    }
-
-    .about-section {
-        background: linear-gradient(135deg, #f5f7fa 0%, #e8eaf6 100%);
-        border-radius: 20px;
-        padding: 3rem;
-        margin: 4rem 0;
-    }
-
-    .about-grid {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 3rem;
-        align-items: center;
-    }
-
-    .about-text h2 {
-        color: #667eea;
-        font-size: 2.5rem;
-        margin-bottom: 1.5rem;
-        font-weight: 700;
-    }
-
-    .about-text p {
-        margin-bottom: 1rem;
-        font-size: 1.1rem;
-        line-height: 1.8;
-        color: #555;
-    }
-
-    .stats-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .stat-card {
-        background: white;
-        padding: 1.5rem;
-        border-radius: 15px;
-        text-align: center;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-    }
-
-    .stat-number {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #667eea;
-        margin-bottom: 0.5rem;
-    }
-
-    .stat-label {
-        color: #666;
-        font-size: 1rem;
-    }
-
-    .modules-section {
-        margin: 4rem 0;
-    }
-
-    .modules-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
-    }
-
-    .module-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 2rem;
-        border-radius: 15px;
-        text-align: center;
-        transition: transform 0.3s, box-shadow 0.3s;
-        cursor: pointer;
-    }
-
-    .module-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-    }
-
-    .module-card h3 {
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
-    }
-
-    .module-card p {
-        opacity: 0.9;
-        font-size: 0.95rem;
-    }
-
-    .cta-section {
-        background: linear-gradient(135deg, #667eea 0%, #13b3ff  100%);
-        border-radius: 20px;
-        padding: 3rem;
-        text-align: center;
-        color: white;
-        margin: 4rem 0 6rem 0;
-    }
-
-    .cta-section h2 {
-        font-size: 2rem;
-        margin-bottom: 1rem;
-    }
-
-    .cta-section p {
-        font-size: 1.2rem;
-        margin-bottom: 2rem;
-        opacity: 0.95;
-    }
-
-    .cta-buttons {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .btn-primary-custom {
-        background: white;
-        color: #667eea;
-        padding: 1rem 2rem;
-        border-radius: 50px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: transform 0.3s, box-shadow 0.3s;
-        display: inline-block;
-    }
-
-    .btn-primary-custom:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        color: #667eea;
-        text-decoration: none;
-    }
-
-    .btn-secondary-custom {
-        background: transparent;
-        color: white;
-        padding: 1rem 2rem;
-        border: 2px solid white;
-        border-radius: 50px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.3s;
-        display: inline-block;
-    }
-
-    .btn-secondary-custom:hover {
-        background: white;
-        color: #667eea;
-        text-decoration: none;
-    }
-
-    @@media (max-width: 768px) {
-        .hero-section h1 {
-            font-size: 2rem;
-        }
-
-        .hero-section p {
-            font-size: 1.1rem;
-        }
-
-        .about-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .features-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .section-title {
-            font-size: 2rem;
-        }
-    }
-
-    .fade-in {
-        animation: fadeInUp 0.6s ease-out;
-    }
-
-    @@keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-</style>
-
-<!-- Hero Section -->
+@* <!-- Hero Section --> *@
 <div class="hero-section fade-in">
     @* <h1>Welcome to QOS Dashboard</h1> *@
-    <h1>@Localizer["WelcomeMessage"]</h1>
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <h1>@ViewData["GreetingMessage"]</h1>
+    } else {
+        <h1>@Localizer["WelcomeMessage"] </h1>
+    }
     <p>Your Quality Operations System at a glance</p>
-    <a href="/Report" class="hero-button">Go to Reports</a>
+    <a href="/Report" class="hero-button">@Localizer["gotoReport"]</a>
 </div>
 
-<!-- Features Section -->
+@* <!-- Features Section --> *@
 <div class="features-section">
-    <h2 class="section-title">Tính năng nổi bật</h2>
+    <h2 class="section-title">@Localizer["keyFeatures"]</h2>
     <div class="features-grid">
         <div class="feature-card">
             <span class="feature-icon">📊</span>
-            <h3>Báo cáo thông minh</h3>
-            <p>Theo dõi và phân tích dữ liệu chất lượng theo thời gian thực với các biểu đồ trực quan và báo cáo tự động.</p>
+            <h3>@Localizer["IntelligentReport"]</h3>
+            <p>@Localizer["IntelligentReport_p"]</p>
         </div>
         <div class="feature-card">
             <span class="feature-icon">⚙️</span>
-            <h3>Quản lý quy trình</h3>
-            <p>Tối ưu hóa quy trình vận hành với công cụ quản lý tiêu chuẩn hóa và kiểm soát chất lượng hiệu quả.</p>
+            <h3>@Localizer["ProcessManagement"]</h3>
+            <p>@Localizer["ProcessManagement_p"]</p>
         </div>
         @* <div class="feature-card">
             <span class="feature-icon">🔔</span>
@@ -334,78 +90,78 @@
         </div> *@
         <div class="feature-card">
             <span class="feature-icon">👥</span>
-            <h3>Cộng tác nhóm</h3>
-            <p>Làm việc nhóm hiệu quả với công cụ chia sẻ thông tin và phân công nhiệm vụ rõ ràng.</p>
+            <h3>@Localizer["Teamwork"]</h3>
+            <p>@Localizer["Teamwork_p"]</p>
         </div>
         <div class="feature-card">
             <span class="feature-icon">🔒</span>
-            <h3>Bảo mật cao</h3>
-            <p>Đảm bảo an toàn dữ liệu với hệ thống mã hóa tiên tiến và phân quyền người dùng chi tiết.</p>
+            <h3>@Localizer["HighSecurity"]</h3>
+            <p>@Localizer["HighSecurity_p"]</p>
         </div>
         <div class="feature-card">
             <span class="feature-icon">📱</span>
-            <h3>Đa nền tảng</h3>
-            <p>Truy cập mọi lúc mọi nơi trên máy tính, tablet và điện thoại di động với giao diện thân thiện.</p>
+            <h3>@Localizer["Multi-platform"]</h3>
+            <p>@Localizer["Multi-platform_p"]</p>
         </div>
     </div>
 </div>
 
-<!-- About Section -->
+@* <!-- About Section --> *@
 <div class="about-section">
     <div class="about-grid">
         <div class="about-text">
-            <h2>Về hệ thống QOS</h2>
-            <p>QOS (Quality Operations System) là hệ thống quản lý chất lượng toàn diện, được thiết kế để giúp doanh nghiệp theo dõi, kiểm soát và cải thiện các quy trình vận hành.</p>
-            <p>Với giao diện trực quan và các công cụ phân tích mạnh mẽ, QOS giúp bạn đưa ra quyết định thông minh dựa trên dữ liệu thực tế.</p>
-            <p>Hệ thống được phát triển bởi ISD TEAM, tập trung vào việc tạo ra giải pháp công nghệ hiện đại, dễ sử dụng và phù hợp với nhu cầu của doanh nghiệp.</p>
+            <h2>@Localizer["AboutSystem"]</h2>
+            <p>@Localizer["AboutSystem_p1"]</p>
+            <p>@Localizer["AboutSystem_p2"]</p>
+            <p>@Localizer["AboutSystem_p3"]</p>
         </div>
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-number">99.9%</div>
-                <div class="stat-label">Uptime</div>
+                <div class="stat-label">@Localizer["Uptime"]</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">24/7</div>
-                <div class="stat-label">Hỗ trợ</div>
+                <div class="stat-number">12/7</div>
+                <div class="stat-label">@Localizer["Support"]</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number">1000+</div>
-                <div class="stat-label">Người dùng</div>
+                <div class="stat-label">@Localizer["Users"]</div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modules Section -->
+@* <!-- Modules Section --> *@
 <div class="modules-section">
-    <h2 class="section-title">Các chức năng chính</h2>
+    <h2 class="section-title">@Localizer["Mainfunctions"]</h2>
     <div class="modules-grid">
         <div class="module-card" onclick="location.href='/Report';" style="cursor: pointer;">
-            <h3>📈 Báo cáo</h3>
-            <p>Báo cáo chi tiết và phân tích xu hướng</p>
+            <h3>📈 @Localizer["Report"]</h3>
+            <p>@Localizer["Report_p"]</p>
         </div>
         <div class="module-card" onclick="location.href='/Function';" style="cursor: pointer;">
-            <h3>📋 Thiết lập</h3>
-            <p>Cấu hình hệ thống theo nhu cầu</p>
+            <h3>📋 @Localizer["Setting"]</h3>
+            <p>@Localizer["Setting_p"]</p>
         </div>
         <div class="module-card" onclick="location.href='/Setting';" style="cursor: pointer;">
-            <h3>🎯 Chức năng</h3>
-            <p>Công cụ quản lý và vận hành</p>
+            <h3>🎯 @Localizer["Function"]</h3>
+            <p>@Localizer["Function_p"]</p>
         </div>
         <div class="module-card" onclick="location.href='/SystemAdmin';" style="cursor: pointer;">
-            <h3>⚙️ Hệ thống</h3>
-            <p>Quản trị và bảo trì hệ thống</p>
+            <h3>⚙️ @Localizer["System"]</h3>
+            <p>@Localizer["System_p"]</p>
         </div>
     </div>
 </div>
 
-<!-- CTA Section -->
+@* <!-- CTA Section --> *@
 <div class="cta-section">
-    <h2>Sẵn sàng bắt đầu?</h2>
-    <p>Khám phá hệ thống QOS và trải nghiệm quản lý chất lượng hiệu quả</p>
+    <h2>@Localizer["ReadyBegin"]</h2>
+    <p>@Localizer["DiscoverQOS"]</p>
     <div class="cta-buttons">
-        <a href="/Report" class="btn-primary-custom">Xem báo cáo</a>
-        <a href="/Setting" class="btn-secondary-custom">Cài đặt hệ thống</a>
+        <a href="/Report" class="btn-primary-custom">@Localizer["gotoReport"]</a>
+        <a href="/Setting" class="btn-secondary-custom">@Localizer["Setting"]</a>
     </div>
 </div>
 
@@ -432,5 +188,27 @@
                 observer.observe(card);
             });
         });
+
+        // Refresh the page when the hour changes (keeps greeting/time-sensitive UI up to date)
+        (function() {
+            const initialHour = new Date().getHours();
+
+            function checkHourAndReload() {
+                const currentHour = new Date().getHours();
+                // console.log("currentHour: " + currentHour + " initialHour: " + initialHour)
+                if (currentHour !== initialHour) {
+                    // reload to re-evaluate server-side greeting/localization
+                    location.reload();
+                }
+            }
+
+            // Align first check to the start of the next minute, then check every minute
+            const now = new Date();
+            const msToNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+            setTimeout(() => {
+                checkHourAndReload();
+                setInterval(checkHourAndReload, 60 * 1000);
+            }, msToNextMinute);
+        })();
     </script>
 }

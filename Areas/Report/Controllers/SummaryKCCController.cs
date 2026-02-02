@@ -27,6 +27,7 @@ namespace QOS.Areas.Report.Controllers
         private readonly string _connectionString;
         private readonly AppDbContext _context;
         private readonly string _factoryName;
+        private string factoryName => User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
 
         public SummaryKCCController(ILogger<SummaryKCCController> logger, IWebHostEnvironment env, IConfiguration configuration, AppDbContext context)
         {
@@ -36,6 +37,18 @@ namespace QOS.Areas.Report.Controllers
             _configuration =configuration;
             _context = context;
             _factoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
+        }
+        protected string FactoryName
+        {
+            get
+            {
+                // ADMIN → dùng factory mặc định (ALL)
+                if (User.Identity?.Name == "admin")
+                    return _factoryName;
+
+                // USER → dùng factory từ claim
+                return factoryName;
+            }
         }
         public IActionResult Index()
         {
@@ -64,7 +77,8 @@ namespace QOS.Areas.Report.Controllers
                     DateFrom = dateFrom ?? DateTime.Now,
                     DateEnd = dateEnd ?? DateTime.Now.Date.AddDays(1).AddTicks(-1),
                     ReportData = new List<Dictionary<string, object>>(),
-                    DefectStats = new Dictionary<string, DefectStat>()
+                    DefectStats = new Dictionary<string, DefectStat>(),
+                    Zone = GetZone()
                     
                 };
                 _logger.LogInformation($"Model created - Units available: {model.Unit_List.Count}");
@@ -83,7 +97,7 @@ namespace QOS.Areas.Report.Controllers
             try
             {
                 var units = _context.Set<Unit_List>()
-                    .Where(u => u.Factory == _factoryName)
+                    .Where(u => u.Factory == FactoryName)
                     .OrderBy(u => u.Unit)
                     .ToList();
 
@@ -94,6 +108,42 @@ namespace QOS.Areas.Report.Controllers
             {
                 _logger.LogError(ex, "Error loading unit list");
                 return new List<Unit_List>();
+            }
+        }
+        private List<string> GetZone()
+        {
+            try {
+                var zones = new List<string>();
+                string connStr = _configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Missing connection string: DefaultConnection");
+                
+                using (SqlConnection conn = new SqlConnection(connStr) )
+                {
+                    conn.Open();
+                    string sql = @" SELECT DISTINCT Zone
+                                        FROM Unit
+                                        WHERE Act='Y' AND Factory = @Factory
+                                        order by  Zone ASC";
+                    
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Factory", FactoryName);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                // Kiểm tra NULL
+                                if (!reader.IsDBNull(0))
+                                    zones.Add(reader.GetString(0));
+                            }
+                        }
+                    }
+                }
+                return zones;
+            } catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error getting lines for block table");
+                return new List<string>();
+                
             }
         }
 
@@ -112,7 +162,7 @@ namespace QOS.Areas.Report.Controllers
 
                 // Assuming you have a Line_List table with Unit field
                 var lines = _context.Set<Line_List>()
-                    .Where(l => l.Unit == unitId && l.Factory == _factoryName)
+                    .Where(l => l.Unit == unitId && l.Factory == FactoryName)
                     .OrderBy(l => l.Line)
                     .Select(l => new { 
                         value = l.Line, 
@@ -147,10 +197,10 @@ namespace QOS.Areas.Report.Controllers
                 var top = model.TopDefected.ToString();
                 var search = "";
 
-                _logger.LogInformation($"SP Parameters: DateFrom={dateFrom}, DateTo={dateEnd}, Unit={unit}, Line={line}, MO={mo}, StyleCode={styleCode}, Type={defectedType}, Top={top}");
+                // _logger.LogInformation($"SP Parameters: DateFrom={dateFrom}, DateTo={dateEnd}, Unit={unit}, Line={line}, MO={mo}, StyleCode={styleCode}, Type={defectedType}, Top={top}");
 
                 // Execute stored procedure
-                var sql = @"EXEC RP_ThongHopLoiCuoiChuyen_MO @Date_From, @Date_To, @Unit, @Line, @MO, @StyleCode, @Defected_Type, @Top_Defected, @Search";
+                var sql = @"EXEC RP_ThongHopLoiCuoiChuyen_MO @Date_From, @Date_To, @Unit, @Line, @MO, @StyleCode, @Defected_Type, @Top_Defected, @Search, @Factory";
                 
                 var parameters = new[]
                 {
@@ -162,7 +212,8 @@ namespace QOS.Areas.Report.Controllers
                     new Microsoft.Data.SqlClient.SqlParameter("@StyleCode", styleCode),
                     new Microsoft.Data.SqlClient.SqlParameter("@Defected_Type", defectedType),
                     new Microsoft.Data.SqlClient.SqlParameter("@Top_Defected", top),
-                    new Microsoft.Data.SqlClient.SqlParameter("@Search", search)
+                    new Microsoft.Data.SqlClient.SqlParameter("@Search", search),
+                    new Microsoft.Data.SqlClient.SqlParameter("@Factory", FactoryName)
                 };
 
                 // Get raw data from stored procedure
@@ -308,10 +359,10 @@ namespace QOS.Areas.Report.Controllers
             string[] codes = faultCodes.Split(',');
             int col = 0;
 
-            _logger.LogInformation(" Fault Code: " + faultCodes);
+            // _logger.LogInformation(" Fault Code: " + faultCodes);
             
-            _logger.LogInformation($"Parameters - Unit: '{Unit}', DateFrom: {dateFrom}, DateEnd: {dateEnd}" +
-                $", Line: '{Line}', Mo: '{Mo}', StyleCode: '{styleCode}', TypeCode: '{typeCode}', TopDefected: '{topDefected}' ,' Fault Code: ' + '{faultCodes}'");
+            // _logger.LogInformation($"Parameters - Unit: '{Unit}', DateFrom: {dateFrom}, DateEnd: {dateEnd}" +
+            //     $", Line: '{Line}', Mo: '{Mo}', StyleCode: '{styleCode}', TypeCode: '{typeCode}', TopDefected: '{topDefected}' ,' Fault Code: ' + '{faultCodes}'");
 
             // Tạo Excel file (ví dụ với ClosedXML hoặc EPPlus)
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -367,6 +418,7 @@ namespace QOS.Areas.Report.Controllers
             cmd.Parameters.AddWithValue("@Defected_Type", typeCode);
             cmd.Parameters.AddWithValue("@Top_Defected", topDefected);
             cmd.Parameters.AddWithValue("@DefectList", faultCodes);
+            cmd.Parameters.AddWithValue("@Factory", FactoryName);
             
 
             conn.Open();

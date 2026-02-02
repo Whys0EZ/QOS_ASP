@@ -1,0 +1,233 @@
+@using System.Text.Json
+@model QOS.Areas.Report.Models.OQLInLineViewModel
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
+@{
+	ViewData["Title"] = Localizer["OQLInline"];
+	var ua = Context.Request.Headers["User-Agent"].ToString().ToLower();
+    bool isMobile = ua.Contains("android") || ua.Contains("iphone") || ua.Contains("ipad") || ua.Contains("mobile");
+    Layout = isMobile ? "_LayoutMobile" : "_MenuReport";
+}
+<link rel="stylesheet" href="~/css/report.css" />
+<link rel="stylesheet" href="~/css/oql.css" />
+<partial name="_AlertMessage" />
+
+<div class="oql-container">
+    <div class="oql-header">
+        <h1 class="oql-title text-uppercase">QOS - @Localizer["OQLInline"]</h1>
+    </div>
+    
+    <a asp-action="DownloadReport" 
+       asp-route-unit="@Model.SelectedUnit" 
+       asp-route-month="@Model.SelectedMonth" 
+       asp-route-year="@Model.SelectedYear" 
+       class="download-link">@ReportLocalizer["DownloadFile"]</a>
+    <!-- Filter Card -->
+        @* <div class="filter-card">
+            <form method="get" class="filter-section" id="filterForm">
+                <!-- Unit -->
+                <div class="form-group">
+                    <label class="filter-label">
+                        @Localizer["Unit"]:
+                    </label>
+                    <select name="unit" id="unitSelect" class="form-select" asp-for="SelectedUnit">
+                        @if (Model.Zone.Any())
+                        {
+                            foreach (var zone in Model.Zone)
+                            {
+                                <option value="@($"Z{zone}")" selected="@($"Z{zone}" == Model.SelectedUnit)">@zone</option>
+                            }
+                        }
+                        @if (Model.DistinctUnits.Any())
+                        {
+                            foreach (var u in Model.DistinctUnits)
+                            {
+                                <option value="@u.Unit" selected="@(u.Unit == Model.SelectedUnit)">@u.Unit</option>
+                            }
+                        }
+                        
+                    </select>
+                </div>
+
+                <!-- Month -->
+                <div class="form-group">
+                    <label class="filter-label">@ReportLocalizer["Month"]:</label>
+                    <select name="month" id="monthSelect" class="form-select" asp-for="SelectedMonth">
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Year -->
+                <div class="form-group">
+                    <label class="filter-label">
+                        @ReportLocalizer["Year"]:
+                    </label>
+                    <select name="year" id="yearSelect" class="form-select"asp-for="SelectedMonth">
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="button-group">
+                    <button type="submit" class="btn btn-submit">
+                        <span>🔍</span>
+                        <span class="btn-text">Tìm kiếm</span>
+                    </button>
+                    <button type="button" class="btn-download" id="btnReset">📥 @Localizer["Reset"]</button>
+                </div>
+            </form>
+        </div> *@
+    
+    <form method="get" class="filter-section">
+        <label>@Localizer["Unit"]:</label>
+        <select name="unit" asp-for="SelectedUnit">
+            @if (Model.Zone.Any())
+            {
+                foreach (var zone in Model.Zone)
+                {
+                    <option value="@($"Z{zone}")" selected="@($"Z{zone}" == Model.SelectedUnit)">@zone</option>
+                }
+            }
+            @if (Model.DistinctUnits.Any())
+            {
+                foreach (var u in Model.DistinctUnits)
+                {
+                    <option value="@u.Unit" selected="@(u.Unit == Model.SelectedUnit)">@u.Unit</option>
+                }
+            }
+            
+        </select>
+        
+        <label>@ReportLocalizer["Month"]:</label>
+        <select name="month" asp-for="SelectedMonth">
+            @for (int i = 1; i <= 12; i++)
+            {
+                <option value="@i" selected="@(i == (Model.SelectedMonth == 0 ? DateTime.Now.Month : Model.SelectedMonth) ? "selected" : null)">@i</option>
+            }
+        </select>
+        
+        <label>@ReportLocalizer["Year"]:</label>
+        <select name="year" asp-for="SelectedYear">
+            @for (int i = DateTime.Now.Year; i >= 2015; i--)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+        
+        <button type="submit" class="btn-submit">🔍</button>
+        <button type="button" class="btn-download" id="btnReset">📥 @Localizer["Reset"]</button>
+       
+    </form>
+    
+    <div class="oql-table-wrapper">
+        <table class="oql-table">
+            <thead>
+                <tr>
+                    <th colspan="2" class="date-header">@Localizer["Date"]</th>
+                    @for (int day = 1; day <= 31; day++)
+                    {
+                        var isRed = day == 5 || day == 12 || day == 19 || day == 26;
+                        var isEmpty = day == 4 || day == 11 || day == 18 || day == 25;
+                        var headerClass = isRed ? "red-header" : (isEmpty ? "empty-header" : "");
+                        <th class="day-header @headerClass">@day.ToString("D2")</th>
+                    }
+                </tr>
+                <tr>
+                    <th  class="date-header">@Localizer["Line"]</th>
+                    <th class="date-header">@ReportLocalizer["Target"]<br/>OQL</th>
+                    @for (int day = 1; day <= 31; day++)
+                    {
+                        <th class="day-header">5%</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+               
+                @foreach (var unitGroup in Model.Lines.GroupBy(l => l.LineName.Substring(0, 3)))
+                {
+                    
+                    var dayCount = unitGroup.First().DailyValues.Count;
+                    var avgValues = new List<double?>();
+
+                    for (int i = 0; i < dayCount; i++)
+                    {
+                        var values = unitGroup
+                            .Select(x => x.DailyValues[i])
+                            .Where(v => v.HasValue)
+                            .Select(v => v.Value)
+                            .ToList();
+
+                        avgValues.Add(values.Any() ? values.Average() : (double?)null);
+                    }
+
+                    @* <!-- Tiêu đề Unit --> *@
+                    <tr class="unit-header">
+                        <td colspan="100" style="background:#1565c0;color:white;font-weight:bold;">
+                            @Localizer["Unit"] : @unitGroup.Key
+                        </td>
+                    </tr>
+
+                    
+                    @foreach (var line in unitGroup)
+                    {
+                        <tr>
+                            <td colspan="2" class="line-name">@line.LineName</td>
+                            @foreach (var value in line.DailyValues)
+                            {
+                                var cellClass = value == null ? "empty-cell" : "value-cell";
+                                <td class="@cellClass">
+                                    @(value == null ? "" : value.Value.ToString("F1") + "%")
+                                </td>
+                            }
+                        </tr>
+                    }
+                    <tr style="background:#e3f2fd;">
+                        <td class="line-name" style="background:#1976d2;color:white;">@ReportLocalizer["Average"]</td>
+                        <td class="target-cell"></td>
+                        @foreach (var avg in avgValues)
+                        {
+                            <td class="avg-cell">@(avg == null ? "" : avg.Value.ToString("F1") + "%")</td>
+                        }
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    // Tự động submit form khi thay đổi select
+    document.querySelectorAll('.filter-section select').forEach(select => {
+        select.addEventListener('change', function() {
+            this.form.submit();
+        });
+    });
+    document.getElementById('btnReset').addEventListener('click', function () {
+        const form = this.closest('form');
+        if (!form) return;
+        const now = new Date();
+        
+        const currentMonth = now.getMonth() + 1; // 1-12
+
+        form.querySelectorAll('select').forEach(s => {
+            if (s.name === 'month') {
+                // try to select by value matching current month, fallback to index
+                const opt = Array.from(s.options).find(o => o.value === String(currentMonth) || o.text === String(currentMonth));
+                if (opt) s.value = opt.value;
+                else s.selectedIndex = Math.max(0, currentMonth - 1);
+            } else {
+                s.selectedIndex = 0;
+            }
+        });
+
+        form.submit();
+    });
+</script>

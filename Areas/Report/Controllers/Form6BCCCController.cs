@@ -25,6 +25,7 @@ namespace QOS.Areas.Report.Controllers
         private readonly string _connectionString;
         private readonly AppDbContext _context;
         private readonly string _factoryName;
+        private string factoryName => User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
 
         public Form6BCCCController(ILogger<Form6BCCCController> logger, IWebHostEnvironment env, IConfiguration configuration, AppDbContext context)
         {
@@ -34,6 +35,18 @@ namespace QOS.Areas.Report.Controllers
             _configuration =configuration;
             _context = context;
             _factoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
+        }
+        protected string FactoryName
+        {
+            get
+            {
+                // ADMIN → dùng factory mặc định (ALL)
+                if (User.Identity?.Name == "admin")
+                    return _factoryName;
+
+                // USER → dùng factory từ claim
+                return factoryName;
+            }
         }
         public IActionResult Index()
         {
@@ -73,15 +86,38 @@ namespace QOS.Areas.Report.Controllers
         }
         private List<QOS.Models.Unit_List> GetUnitList()
         {
+            // // string FactoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
+            // List<Unit_List> UnitList;
+            // // _logger.LogInformation("User Name: {UserName}", User.Identity?.Name);
+            // if(User.Identity?.Name == "admin")
+            // {
+            //     // Lấy danh sách Unit cho Factory "ALL"
+            //     UnitList = _context.Set<Unit_List>().OrderBy(u => u.Unit).ToList();
+            // } else {
+            //     // string FactoryName = User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
+            //     UnitList = _context.Set<Unit_List>().Where(u => u.Factory == FactoryName).OrderBy(u => u.Unit).ToList();
+            // }
+
             try
             {
-                var units = _context.Set<QOS.Models.Unit_List>()
-                    .Where(u => u.Factory == _factoryName)
-                    .OrderBy(u => u.Unit)
-                    .ToList();
+                if(User.Identity?.Name == "admin")
+                {
+                    // Lấy danh sách Unit cho Factory "ALL"
+                    var units = _context.Set<QOS.Models.Unit_List>()
+                        .OrderBy(u => u.Unit)
+                        .ToList();
+                    
+                    // _logger.LogInformation($"Loaded {units.Count} units from database (admin)");
+                    return units;
+                } else {
+                    // string FactoryName = User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
+                    var units = _context.Set<QOS.Models.Unit_List>()
+                        .Where(u => u.Factory == FactoryName)
+                        .OrderBy(u => u.Unit)
+                        .ToList();
+                    return units;
+                }
 
-                _logger.LogInformation($"Loaded {units.Count} units from database");
-                return units;
             }
             catch (Exception ex)
             {
@@ -97,7 +133,7 @@ namespace QOS.Areas.Report.Controllers
             cmd.Parameters.AddWithValue("@Date_F", model.DateFrom);
             cmd.Parameters.AddWithValue("@Date_T", model.DateEnd);
             cmd.Parameters.AddWithValue("@Unit", model.Unit ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("@Factory", _factoryName);
+            cmd.Parameters.AddWithValue("@Factory", FactoryName);
 
             conn.Open();
             using var reader = cmd.ExecuteReader();
@@ -373,7 +409,7 @@ namespace QOS.Areas.Report.Controllers
             cmd.Parameters.AddWithValue("@Date_F", dateFrom);
             cmd.Parameters.AddWithValue("@Date_T", dateEnd);
             cmd.Parameters.AddWithValue("@Unit", Unit);
-            cmd.Parameters.AddWithValue("@Factory", _factoryName);
+            cmd.Parameters.AddWithValue("@Factory", FactoryName);
 
             conn.Open();
             using (var reader = cmd.ExecuteReader())

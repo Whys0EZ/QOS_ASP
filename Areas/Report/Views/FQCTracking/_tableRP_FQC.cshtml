@@ -116,6 +116,12 @@
                                 bool sel = (fault.FaultCode == selected.FaultCode );
                                 <option value="@fault.FaultCode-@fault.FaultLevel" selected="@(sel)">@fault.FaultNameVN</option>
                             }
+                            <option value="" disabled>--Lỗi Nghiêm Trọng--</option>
+                            @foreach (var fault in Model.Faults.Where(f => f.FaultLevel == 3))
+                            {
+                                bool sel = (fault.FaultCode == selected.FaultCode );
+                                <option value="@fault.FaultCode-@fault.FaultLevel" selected="@(sel)">@fault.FaultNameVN</option>
+                            }
                         </select>
                     </td>
                     <td>

@@ -102,7 +102,7 @@ namespace QOS.Controllers
                     ViewBag.ActiveForm  = "login";
                     return View(vm);
                 }
-                Console.WriteLine(vm.Login.Password);
+                // Console.WriteLine(vm.Login.Password);
 
                 var hash = HashPassword(vm.Login.Password);
                 var user = _context.Users
@@ -117,12 +117,20 @@ namespace QOS.Controllers
                     ViewBag.ActiveForm  = "login";
                     return View(vm);
                 }
+                if(user.Act == false)
+                {
+                    ViewBag.Error = _sharedLocalizer["AccountDisabled"];
+                    ViewBag.ActiveForm  = "login";
+                    return View(vm);
+                }
+
 
                 // Claims + Cookie
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.Username)
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim("FactoryName", user.FactoryID ?? ""),
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

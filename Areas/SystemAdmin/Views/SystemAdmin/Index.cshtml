@@ -33,7 +33,7 @@
         <tbody>
             @foreach (var user in Model)
             {
-                <tr>
+                <tr class="@(user.Act == false ? "table-danger" : "")">
                     <td>@user.Id</td>
                     <td>@user.FactoryID</td>
                     <td>@user.TeamID</td>

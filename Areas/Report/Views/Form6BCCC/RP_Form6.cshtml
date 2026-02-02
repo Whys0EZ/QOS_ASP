@@ -168,7 +168,7 @@
 <!-- CHART -->
 @if (Model.ReportData != null && Model.ReportData.Any())
 {
-    <div class="col-md-12">
+    <div class="col-md-12 px-4 mb-5">
         <canvas id="chartOQL" height="100" ></canvas>
     </div>
 }
@@ -267,6 +267,7 @@
                     font: {
                         weight: 'bold'
                     }
+                    
                 },
                 tooltip: {
                     callbacks: {

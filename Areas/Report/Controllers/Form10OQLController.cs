@@ -18,6 +18,7 @@ namespace QOS.Areas.Report.Controllers
         private readonly string _connectionString;
         private readonly AppDbContext _context;
         private readonly string _factoryName;
+        private string factoryName => User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
 
         public Form10OQLController(ILogger<Form10OQLController> logger, IWebHostEnvironment environment, IConfiguration configuration, AppDbContext context)
         {
@@ -28,6 +29,18 @@ namespace QOS.Areas.Report.Controllers
             _connectionString = configuration.GetConnectionString("DefaultConnection") ?? "";
             _factoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
 
+        }
+        protected string FactoryName
+        {
+            get
+            {
+                // ADMIN → dùng factory mặc định (ALL)
+                if (User.Identity?.Name == "admin")
+                    return _factoryName;
+
+                // USER → dùng factory từ claim
+                return factoryName;
+            }
         }
         public ActionResult Index()
         {
@@ -173,7 +186,7 @@ namespace QOS.Areas.Report.Controllers
 			try
 			{
 				var units = _context.Set<Unit_List>()
-					.Where(u => u.Factory == _factoryName)
+					.Where(u => u.Factory == FactoryName)
 					.OrderBy(u => u.Unit)
 					.ToList();
 
@@ -191,7 +204,7 @@ namespace QOS.Areas.Report.Controllers
 			try
 			{
 				var units  = _context.Set<Unit_List>()
-					.Where(u => u.Factory == _factoryName && u.Zone == zone)
+					.Where(u => u.Factory == FactoryName && u.Zone == zone)
 					.OrderBy(u => u.Unit)
                     .Select(u => u.Unit)
 					.ToList();
@@ -215,17 +228,20 @@ namespace QOS.Areas.Report.Controllers
                     conn.Open();
                     string sql = @" SELECT DISTINCT Zone
                                         FROM Unit
-                                        WHERE Act='Y' 
+                                        WHERE Act='Y' AND Factory = @Factory
                                         order by  Zone ASC";
                     
                     using (SqlCommand cmd = new SqlCommand(sql, conn))
-                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        while (reader.Read())
+                        cmd.Parameters.AddWithValue("@Factory", FactoryName);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            // Kiểm tra NULL
-                            if (!reader.IsDBNull(0))
-                                zones.Add(reader.GetString(0));
+                            while (reader.Read())
+                            {
+                                // Kiểm tra NULL
+                                if (!reader.IsDBNull(0))
+                                    zones.Add(reader.GetString(0));
+                            }
                         }
                     }
                 }
