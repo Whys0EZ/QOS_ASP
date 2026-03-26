@@ -144,6 +144,14 @@ namespace QOS.Areas.Report.Controllers
                 }
                 
                 worksheet.Cells.AutoFitColumns();
+
+                // Format cột A về ngày tháng
+                worksheet.Column(1).Style.Numberformat.Format = "dd/MM/yyyy";
+                // Format cột OQL về phần trăm (cột 6)
+                worksheet.Column(6).Style.Numberformat.Format = "0.00%";
+
+                worksheet.Column(8).Style.Numberformat.Format = "0.00%";
+
                 
                 var stream = new System.IO.MemoryStream(package.GetAsByteArray());
                 return File(stream, 

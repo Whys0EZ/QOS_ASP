@@ -94,7 +94,7 @@
         {
             var dataPoint = new List<string>();
             var firstRow = Model.ReportData.First();
-            var columns = firstRow.Keys.Where(k => k != "Unit" && k != "OQL_TT" && k != "OQL_Target" && k != "CL").ToList();
+            var columns = firstRow.Keys.Where(k => k != "Unit" && k != "OQL_TT" && k != "OQL_Target" && k != "CL").OrderBy(k => k).ToList();
 
             <table class="table-fixed table table-bordered table-hover align-middle" width="100%">
                 <thead class="table-primary">

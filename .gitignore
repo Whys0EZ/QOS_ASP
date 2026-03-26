@@ -4,6 +4,7 @@
 ## Get latest from `dotnet new gitignore`
 # Bỏ qua thư mục publish
 out/
+bin/Debug/net8.0/
 appsettings.json
 # dotenv files
 .env

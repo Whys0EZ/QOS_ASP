@@ -25,6 +25,8 @@ namespace QOS.Areas.Function.Controllers
         private readonly IConfiguration _configuration;
         private readonly IStringLocalizer<QOS.SharedResource> _sharedLocalizer;
         private readonly IStringLocalizer<QOS.Areas.Function.SharedResource> _funcLocalizer;
+        private readonly string _factoryName;
+        private string factoryName => User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
 
         public ThongSoTPController(ILogger<ThongSoTPController> logger, AppDbContext context, IWebHostEnvironment env, IConfiguration configuration,
         IStringLocalizer<QOS.SharedResource> sharedLocalizer,
@@ -36,6 +38,19 @@ namespace QOS.Areas.Function.Controllers
             _configuration = configuration;
             _sharedLocalizer = sharedLocalizer;
             _funcLocalizer = funcLocalizer;
+            _factoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
+        }
+        protected string FactoryName
+        {
+            get
+            {
+                // ADMIN → dùng factory mặc định (ALL)
+                if (User.Identity?.Name == "admin")
+                    return _factoryName;
+
+                // USER → dùng factory từ claim
+                return factoryName;
+            }
         }
         [TempData]
         public string? MessageStatus { get; set; } = "";
@@ -50,6 +65,36 @@ namespace QOS.Areas.Function.Controllers
         {
             
             return View();
+        }
+
+        private List<QOS.Models.Factory_List> GetFactoryList()
+        {
+            try
+            {
+                if(User.Identity?.Name == "admin")
+                {
+                    // Lấy danh sách Unit cho Factory "ALL"
+                    var factorys = _context.Set<QOS.Models.Factory_List>()
+                        .OrderBy(u => u.FactoryID)
+                        .ToList();
+                    
+                    // _logger.LogInformation($"Loaded {units.Count} units from database (admin)");
+                    return factorys;
+                } else {
+
+                    var factories = _context.Set<QOS.Models.Factory_List>()
+                        .Where(u => u.FactoryID == FactoryName)
+                        .OrderBy(u => u.FactoryID)
+                        .ToList();
+                    return factories;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading factory list");
+                return new List<QOS.Models.Factory_List>();
+            }
         }
 
 
@@ -466,6 +511,37 @@ namespace QOS.Areas.Function.Controllers
             tb_string.AppendLine("</tbody></table>");
             // return View("Index", tb_string.ToString());
             return PartialView("_ResultTable", tb_string.ToString());
+        }
+
+        public IActionResult Delete(string FactoryID, string Search_V)
+        {
+            // 1. Kết nối DB
+            string? connString = _configuration.GetConnectionString("DefaultConnection");
+            if (string.IsNullOrEmpty(connString))
+            {
+                throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
+            }
+            using (var conn = new SqlConnection(connString))
+            {
+                conn.Open();
+                using (var cmd = new SqlCommand("Frm8_ThongSo_TP_Delete", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@FactoryID", FactoryID);
+                    cmd.Parameters.AddWithValue("@StyleName", Search_V);
+                    cmd.Parameters.AddWithValue("@UserDelete", User.Identity?.Name ?? "system");
+                    int result = cmd.ExecuteNonQuery();
+                    if (result > 0)
+                    {
+                        MessageStatus = "Delete success!";
+                    }
+                    else
+                    {
+                        MessageStatus = "Delete failed!";
+                    }
+                }
+            }
+            return Json(new { success = true, message = MessageStatus });
         }
 
 

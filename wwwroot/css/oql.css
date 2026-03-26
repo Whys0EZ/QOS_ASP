@@ -128,7 +128,7 @@
 }
 
 .oql-table td.line-name {
-    text-align: left;
+    /* text-align: left; */
     font-weight: bold;
     background: #f0f0f0;
     position: sticky;

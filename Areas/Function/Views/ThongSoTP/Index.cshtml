@@ -8,7 +8,7 @@
 }
 
 <partial name="_AlertMessage" />
-<div class="continer my-3 m-5">
+<div class="continer my-3 m-3">
     <h3 class="text-primary fw-bold">@FuncLocalizer["F_TP_Title"]</h3>
 
     <div class="row align-items-center mb-3">
@@ -39,10 +39,13 @@
             <form id="SearchForm" asp-area="Function" asp-action="Search" asp-controller="ThongSoTP" method="post"
                 class="d-flex align-items-center gap-2 mb-0">
                 <select class="form-select w-auto" id="FactoryID" name="FactoryID">
+                    
                     <option>REG2</option>
                     <option>REG1</option>
                     <option>REG3</option>
+                    <option>REG5</option>
                 </select>
+               
 
                 <select class="form-select w-auto" id="TypeName" name="TypeName">
                     <option>ÁO</option>
@@ -57,6 +60,9 @@
                     <i class="bi bi-search"></i> @Localizer["Check"]
                 </button>
             </form>
+            <button type="button" id="btnDelete" class="btn btn-danger text-nowrap">
+                <i class="bi bi-trash"></i> @Localizer["Delete"]
+            </button>
         </div>
     </div>
 </div>
@@ -146,6 +152,40 @@
 
         // Tải file từ thư mục wwwroot/Report/
         window.location.href = "/Report/" + fileName;
+    });
+
+    document.getElementById("btnDelete").addEventListener("click", function () {
+        if (!document.getElementById("Search_V").value) {
+            alert("Vui lòng nhập Search_V để xóa!");
+            return;
+        }
+        if (!confirm("Bạn có chắc muốn xóa không?")) return;
+
+        const factory = document.getElementById("FactoryID").value;
+        const type = document.getElementById("TypeName").value;
+        const search = document.getElementById("Search_V").value;
+
+        fetch('/Function/ThongSoTP/Delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                FactoryID: factory, 
+                TypeName: type, 
+                Search_V: search 
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert("Xóa thành công");
+            // reload hoặc update UI
+            location.reload();
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Có lỗi xảy ra");
+        });
     });
 
 </script>

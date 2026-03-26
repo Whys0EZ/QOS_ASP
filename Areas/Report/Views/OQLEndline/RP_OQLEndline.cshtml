@@ -188,8 +188,8 @@
                         </tr>
                     }
                     <tr style="background:#e3f2fd;">
-                        <td class="line-name" style="background:#1976d2;color:white;">@ReportLocalizer["Average"]</td>
-                        <td class="target-cell"></td>
+                        <td colspan="2" class="line-name" style="background:#1976d2;color:white;">@ReportLocalizer["Average"]</td>
+                        @* <td class="target-cell"></td> *@
                         @foreach (var avg in avgValues)
                         {
                             <td class="avg-cell">@(avg == null ? "" : avg.Value.ToString("F1") + "%")</td>

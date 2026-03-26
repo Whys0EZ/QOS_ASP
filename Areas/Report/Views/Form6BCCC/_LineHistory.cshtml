@@ -2,7 +2,7 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
 
-<div class="alert">
+<div class="alerts">
     <table class="table  table-sm table-bordered mt-2">
         <thead class="table-dark">
             <tr>
@@ -26,10 +26,10 @@
             var idx = 1;
             foreach (var item in Model)
             {
-                
-                <tr class="@(item.Status == "green" ? "table-success" : item.Status == "red" ? "table-danger" : item.Status == "yellow" ? "table-warning" : "")">
+
+                <tr class="@(item.Status == "green" ? "table-success text-success" : item.Status == "red" ? "table-danger text-danger" : item.Status == "yellow" ? "table-warning text-warning" : "")">
                     <td>@idx</td>
-                    <td> <span style="text-decoration: underline; cursor: pointer; color:blue;"
+                    <td> <span style="text-decoration: underline; cursor: pointer;"
                                 onclick="showDetails('@item.ID')">@item.ID</span></td>
                     <td>@item.MO</td>
                     <td>@item.Color</td>
