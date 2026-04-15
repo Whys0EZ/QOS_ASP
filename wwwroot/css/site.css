@@ -47,7 +47,15 @@ body {
 [data-bs-theme="dark"] .navbar {
     background-color: #1e1e2f !important;
 }
+[data-bs-theme="light"] .navbar-nav .nav-link {
 
+    color: #606464 !important;
+}
+
+[data-bs-theme="dark"] .navbar-nav .nav-link {
+
+    color: #ffffff !important;
+}
 /* Footer */
 .footer {
     padding: 1rem 0;

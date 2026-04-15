@@ -141,6 +141,10 @@
       "PackagePath": "staticwebassets\\images\\avatars\\406860.png"
     },
     {
+      "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\avatars\\admin.png",
+      "PackagePath": "staticwebassets\\images\\avatars\\admin.png"
+    },
+    {
       "Id": "D:\\C_Sharp\\QOS\\wwwroot\\images\\avatars\\avatar_default.png",
       "PackagePath": "staticwebassets\\images\\avatars\\avatar_default.png"
     },

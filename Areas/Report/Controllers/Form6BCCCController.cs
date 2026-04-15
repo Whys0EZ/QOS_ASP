@@ -26,13 +26,15 @@ namespace QOS.Areas.Report.Controllers
         private readonly AppDbContext _context;
         private readonly string _factoryName;
         private string factoryName => User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
+        private readonly CacheService _cacheService;
 
-        public Form6BCCCController(ILogger<Form6BCCCController> logger, IWebHostEnvironment env, IConfiguration configuration, AppDbContext context)
+        public Form6BCCCController(ILogger<Form6BCCCController> logger, IWebHostEnvironment env, IConfiguration configuration, AppDbContext context, CacheService cacheService)
         {
             _logger = logger;
             _env = env;
             _connectionString = configuration.GetConnectionString("DefaultConnection") ?? "";
             _configuration =configuration;
+            _cacheService = cacheService;
             _context = context;
             _factoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
         }
@@ -56,32 +58,49 @@ namespace QOS.Areas.Report.Controllers
         [TempData]
         public string? MessageStatus { get; set;}
         [HttpGet]
-        public IActionResult RP_Form6(string? Unit, DateTime? dateFrom, DateTime? dateEnd)
+        // public IActionResult RP_Form6(string? Unit, DateTime? dateFrom, DateTime? dateEnd)
+        public async Task<IActionResult> RP_Form6(string? Unit, DateTime? dateFrom, DateTime? dateEnd)
         {
             _logger.LogInformation("=== RP_Form6 GET Request ===");
             _logger.LogInformation($"Parameters - Unit: '{Unit}', DateFrom: {dateFrom}, DateEnd: {dateEnd}");
             try
             {
+                var df = (dateFrom ?? DateTime.Now).Date;
+                var dt = (dateEnd ?? DateTime.Now).Date.AddDays(1).AddTicks(-1); ;
                 var model = new RP_Form6ViewModel
                 {
-                    Unit_List = GetUnitList(),
+                    // Unit_List = GetUnitList(),
+                    Unit_List = await GetUnitListAsync(),
                     Unit = Unit ?? "ALL",
-                    DateFrom = dateFrom ?? DateTime.Now,
-                    DateEnd = dateEnd ?? DateTime.Now.Date.AddDays(1).AddTicks(-1),
+                    DateFrom = df,
+                    DateEnd = dt,
                     ReportData = new List<Dictionary<string, object>>()
                     
                 };
-                _logger.LogInformation($"Model created - Units available: {model.Unit_List.Count}");
+                // _logger.LogInformation($"Model created - Units available: {model.Unit_List.Count}");
 
-                LoadReportData(model); // đã viết
-                _logger.LogInformation($"Model created - ReportData available: {model.ReportData.Count}");
+                // LoadReportData(model); // đã viết
+                // _logger.LogInformation($"Model created - ReportData available: {model.ReportData.Count}");
+                // 🔥 Cache key chuẩn hóa
+                var cacheKey = $"QOS:form6:{FactoryName}:{model.Unit}:{df:yyyyMMdd}:{dt:yyyyMMdd}";
+
+                // 🔥 Lấy dữ liệu từ cache hoặc DB
+                model.ReportData = await _cacheService.GetOrSetAsync(
+                    cacheKey,
+                    async () => await Task.FromResult(GetReportData(model.Unit, df, dt)),
+                    10, // cache 10 phút
+                    "report_form6"
+                );
+
+                // 🔥 Xử lý chart (rất quan trọng)
+                ProcessChart(model);
                 return View(model);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error in RP_Form6 GET");
                 TempData["ErrorMessage"] = $"Có lỗi xảy ra: {ex.Message}";
-                return View(new RP_Form6ViewModel { Unit_List = GetUnitList() });
+                return View(new RP_Form6ViewModel { Unit_List = await GetUnitListAsync() });
             }
         }
         private List<QOS.Models.Unit_List> GetUnitList()
@@ -118,6 +137,47 @@ namespace QOS.Areas.Report.Controllers
                     return units;
                 }
 
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading unit list");
+                return new List<QOS.Models.Unit_List>();
+            }
+        }
+
+        private async Task<List<QOS.Models.Unit_List>> GetUnitListAsync()
+        {
+            try
+            {
+                string cacheKey;
+
+                if (User.Identity?.Name == "admin")
+                {
+                    cacheKey = "unit_list_all";
+
+                    return await _cacheService.GetOrSetAsync(
+                        cacheKey,
+                        async () => await _context.Set<QOS.Models.Unit_List>()
+                            .OrderBy(u => u.Unit)
+                            .ToListAsync(),
+                        60,
+                        "unit_list"
+                    );
+                }
+                else
+                {
+                    cacheKey = $"unit_list_{FactoryName}";
+
+                    return await _cacheService.GetOrSetAsync(
+                        cacheKey,
+                        async () => await _context.Set<QOS.Models.Unit_List>()
+                            .Where(u => u.Factory == FactoryName)
+                            .OrderBy(u => u.Unit)
+                            .ToListAsync(),
+                        60,
+                        "unit_list"
+                    );
+                }
             }
             catch (Exception ex)
             {
@@ -207,6 +267,76 @@ namespace QOS.Areas.Report.Controllers
                         }
                     }
                 }
+        }
+        private List<Dictionary<string, object>> GetReportData(string? Unit, DateTime dateFrom, DateTime dateEnd)
+        {
+            var tempModel = new RP_Form6ViewModel
+            {
+                Unit = Unit,
+                DateFrom = dateFrom,
+                DateEnd = dateEnd
+            };
+
+            LoadReportData(tempModel);
+            return tempModel.ReportData;
+        }
+
+        private void ProcessChart(RP_Form6ViewModel model)
+        {
+            if (model.Unit == "ALL" || string.IsNullOrEmpty(model.Unit))
+            {
+                foreach (var row in model.ReportData)
+                {
+                    var unit_v = row.ContainsKey("Unit") ? row["Unit"]?.ToString() : null;
+
+                    if (row.ContainsKey("OQL_TT") && double.TryParse(row["OQL_TT"]?.ToString(), out var oqlTT))
+                    {
+                        model.DataPointsREG.Add(new ChartPoint
+                        {
+                            Label = unit_v ?? "",
+                            Y = Math.Round(oqlTT * 100.0, 2)
+                        });
+                    }
+
+                    if (row.ContainsKey("OQL_Target") && double.TryParse(row["OQL_Target"]?.ToString(), out var oqlTarget))
+                    {
+                        model.DataPointsUnitTarget.Add(new ChartPoint
+                        {
+                            Label = unit_v ?? "",
+                            Y = Math.Round(oqlTarget * 100.0, 2)
+                        });
+                    }
+                }
+            }
+            else
+            {
+                var row = model.ReportData.FirstOrDefault();
+                if (row != null)
+                {
+                    foreach (var kvp in row)
+                    {
+                        if (kvp.Key == "Unit" || kvp.Key == "OQL_TT" || kvp.Key == "OQL_Target") continue;
+
+                        var parts = kvp.Value?.ToString()?.Split('_');
+                        if (parts?.Length < 4) continue;
+
+                        var value = double.Parse(parts[1], System.Globalization.CultureInfo.InvariantCulture);
+                        var target = double.Parse(parts[2], System.Globalization.CultureInfo.InvariantCulture);
+
+                        model.DataPointsREG.Add(new ChartPoint
+                        {
+                            Label = kvp.Key,
+                            Y = Math.Round(value * 100, 2)
+                        });
+
+                        model.DataPointsUnitTarget.Add(new ChartPoint
+                        {
+                            Label = kvp.Key,
+                            Y = Math.Round(target * 100, 2)
+                        });
+                    }
+                }
+            }
         }
 
         [HttpGet]

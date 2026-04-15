@@ -8,7 +8,9 @@ using Serilog;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using System.Globalization;
-
+using Microsoft.AspNetCore.DataProtection;
+using System.IO;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 // Configure Serilog
@@ -61,11 +63,39 @@ builder.Services.Configure<QOS.Models.AppSettings>(builder.Configuration.GetSect
 // 
 builder.Services.AddScoped<QOS.Services.CommonDataService>();
 // Thêm Session
-builder.Services.AddDistributedMemoryCache();
+// Theo dõi session bằng Redis (dùng cho production, hỗ trợ scale-out và không bị mất session khi app restart)
+var redisConnection = builder.Configuration["Redis:Connection"];
+
+// 🔥 thêm config 1 lần
+var redisConnectionSafe = redisConnection + ",abortConnect=false";
+
+// 🔹 tạo connection dùng chung
+var redis = StackExchange.Redis.ConnectionMultiplexer.Connect(redisConnectionSafe);
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(redis);
+
+// 🔹 cache
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = redisConnectionSafe;
+    // options.InstanceName = "QOS:session:";
+});
+
+// 🔹 DataProtection
+builder.Services.AddDataProtection()
+    .PersistKeysToStackExchangeRedis(redis, "QOS:dp:keys")
+    .SetApplicationName("QOS_App");
+
+// bỏ comment nếu muốn dùng session in-memory (dùng cho dev, không khuyến khích cho production vì không share session giữa các instance và dễ bị mất session khi app restart)
+// builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromDays(1);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
 });
+
+builder.Services.AddScoped<CacheService>();
 
 // Thêm Authentication cookie
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -76,7 +106,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Account/AccessDenied";
         options.ExpireTimeSpan = TimeSpan.FromDays(1);   // Cookie sống 1 ngày
         options.SlidingExpiration = true; // reset lại thời gian khi user thao tác
+        options.Cookie.Name = ".QOS.Auth";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SameSite = SameSiteMode.Lax;
     });
+
+
 
 // ✅ Đặt license cho EPPlus 1 lần toàn app
 // ExcelPackage.License = new LicenseContext(LicenseType.NonCommercial);
@@ -120,10 +155,10 @@ app.UseRouting();
 app.UseAuthentication();  // phải trước Authorization
 app.UseAuthorization();   // sau Authentication
 
-app.MapControllers(); // ✅ cho API
-
 app.UseSession(); 
 // app.UseClearSessionMiddleware(); // Middleware xóa session khi chưa đăng nhập
+app.MapControllers(); // ✅ cho API
+
 app.MapAreaControllerRoute(
     name: "function",
     areaName: "Function",
