@@ -1,9 +1,7 @@
+using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using System.Data;
 using QOS.Areas.API.Models;
-
-
 
 namespace QOS.Areas.API.Controllers
 {
@@ -19,7 +17,8 @@ namespace QOS.Areas.API.Controllers
         public Get_SQLite_2_Server_BC_DiChuyen_DEL_PhotoController(
             IConfiguration config,
             IWebHostEnvironment environment,
-            ILogger<Get_SQLite_2_Server_BC_DiChuyen_DEL_PhotoController> logger)
+            ILogger<Get_SQLite_2_Server_BC_DiChuyen_DEL_PhotoController> logger
+        )
         {
             _config = config;
             _environment = environment;
@@ -30,7 +29,8 @@ namespace QOS.Areas.API.Controllers
         [HttpDelete] // Hỗ trợ cả POST và DELETE
         public IActionResult Get_SQLite_2_Server_BC_DiChuyen_DEL_Photo(
             [FromQuery] string? Code_G,
-            [FromForm] DeletePhotoRequest? request)
+            [FromForm] DeletePhotoRequest? request
+        )
         {
             if (string.IsNullOrEmpty(Code_G))
                 return BadRequest(new { KQ = "NG: Code_G is required" });
@@ -52,10 +52,13 @@ namespace QOS.Areas.API.Controllers
 
                 // ✅ Xóa ảnh
                 string imagePath = Path.Combine(
-                    _environment.WebRootPath, 
-                    "upload", 
-                    "Photos", 
-                    "Form4_BCCLM");
+                    _environment.ContentRootPath,
+                    "..",
+                    "QOS",
+                    "upload",
+                    "Photos",
+                    "Form4_BCCLM"
+                );
 
                 string textCut = "_###_";
 
@@ -63,7 +66,8 @@ namespace QOS.Areas.API.Controllers
                     request.Img_Name,
                     imagePath,
                     textCut,
-                    _logger);
+                    _logger
+                );
 
                 return Ok(new { KQ = result });
             }

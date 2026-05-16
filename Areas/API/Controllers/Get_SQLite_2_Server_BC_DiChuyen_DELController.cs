@@ -1,6 +1,6 @@
+using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using System.Data;
 using QOS.Areas.API.Models;
 
 namespace QOS.Areas.API.Controllers
@@ -15,7 +15,11 @@ namespace QOS.Areas.API.Controllers
         private readonly IWebHostEnvironment _environment;
         private readonly ILogger<Get_SQLite_2_Server_BC_DiChuyen_DELController> _logger;
 
-        public Get_SQLite_2_Server_BC_DiChuyen_DELController(IConfiguration config,IWebHostEnvironment environment, ILogger<Get_SQLite_2_Server_BC_DiChuyen_DELController> logger)
+        public Get_SQLite_2_Server_BC_DiChuyen_DELController(
+            IConfiguration config,
+            IWebHostEnvironment environment,
+            ILogger<Get_SQLite_2_Server_BC_DiChuyen_DELController> logger
+        )
         {
             _config = config;
             _environment = environment;
@@ -28,7 +32,8 @@ namespace QOS.Areas.API.Controllers
             [FromQuery] string? Code_G,
             [FromQuery] string? Report_ID,
             [FromQuery] string? Audit_Time_V,
-            [FromForm] DeletePhotoRequest? request)
+            [FromForm] DeletePhotoRequest? request
+        )
         {
             var results = new List<object>();
             if (string.IsNullOrEmpty(Code_G))
@@ -46,7 +51,17 @@ namespace QOS.Areas.API.Controllers
                 if (!isValid)
                 {
                     _logger.LogWarning($"Authentication failed: {errorMsg}");
-                    results.Add(new { KQ = "NG2" + factoryID + "_" + (request?.Img_Name ?? "") + "_" + facCode });
+                    results.Add(
+                        new
+                        {
+                            KQ = "NG2"
+                                + factoryID
+                                + "_"
+                                + (request?.Img_Name ?? "")
+                                + "_"
+                                + facCode,
+                        }
+                    );
                     return Ok(results);
                 }
 
@@ -57,12 +72,11 @@ namespace QOS.Areas.API.Controllers
 
                 var rs = DeleteReportFromDatabase(Report_ID, Audit_Time_V ?? "", loginID);
                 results.Add(new { KQ = rs });
-                
+
                 // ✅ Xóa ảnh nếu có
                 if (!string.IsNullOrEmpty(request?.Img_Name))
                 {
-                    
-                    string photoResult  = DeleteImageList(request.Img_Name);
+                    string photoResult = DeleteImageList(request.Img_Name);
                     results.Add(new { KQ = photoResult });
                 }
 
@@ -88,9 +102,9 @@ namespace QOS.Areas.API.Controllers
                     cmd.Parameters.AddWithValue("@UserUpdate", loginID);
 
                     conn.Open();
-                    
+
                     using SqlDataReader dr = cmd.ExecuteReader();
-                    
+
                     // Đọc kết quả từ stored procedure
                     string result = "";
                     while (dr.Read())
@@ -103,7 +117,9 @@ namespace QOS.Areas.API.Controllers
                         result = "OK: Report deleted successfully";
                     }
 
-                    _logger.LogInformation($"Report deleted - Report_ID: {reportID}, LoginID: {loginID}, Result: {result}");
+                    _logger.LogInformation(
+                        $"Report deleted - Report_ID: {reportID}, LoginID: {loginID}, Result: {result}"
+                    );
 
                     return result;
                 }
@@ -119,19 +135,23 @@ namespace QOS.Areas.API.Controllers
                 return $"NG: {ex.Message}";
             }
         }
-        private string DeleteImageList( string Img_Name )
+
+        private string DeleteImageList(string Img_Name)
         {
             // ✅ Xóa ảnh
-                string imagePath = Path.Combine(
-                    _environment.WebRootPath, 
-                    "upload", 
-                    "Photos", 
-                    "Form4_BCCLM");
+            string imagePath = Path.Combine(
+                _environment.ContentRootPath,
+                "..",
+                "QOS",
+                "upload",
+                "Photos",
+                "Form4_BCCLM"
+            );
 
-                string textCut = "_###_";
+            string textCut = "_###_";
 
-                string result = Functions.DeleteImgList(Img_Name,imagePath,textCut,_logger);
-                return result;
+            string result = Functions.DeleteImgList(Img_Name, imagePath, textCut, _logger);
+            return result;
         }
     }
 }

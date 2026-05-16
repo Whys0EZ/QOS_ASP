@@ -51,9 +51,11 @@ namespace QOS.Areas.API.Controllers
 
                 // ✅ Xóa ảnh
                 string imagePath = Path.Combine(
-                    _environment.WebRootPath, 
-                    "upload", 
-                    "Photos", 
+                    _environment.ContentRootPath,
+                    "..",
+                    "QOS",
+                    "upload",
+                    "Photos",
                     "FQC");
 
                 string textCut = "_###_";

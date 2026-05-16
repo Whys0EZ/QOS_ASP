@@ -1,7 +1,8 @@
+using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using System.Data;
 using QOS.Areas.API.Models;
+
 namespace QOS.Areas.API.Controllers
 {
     [Area("API")]
@@ -12,7 +13,10 @@ namespace QOS.Areas.API.Controllers
         private readonly ILogger<QA_FCA_VN_androidController> _logger;
         private readonly string _connectionString;
 
-        public QA_FCA_VN_androidController(IConfiguration config, ILogger<QA_FCA_VN_androidController> logger)
+        public QA_FCA_VN_androidController(
+            IConfiguration config,
+            ILogger<QA_FCA_VN_androidController> logger
+        )
         {
             _logger = logger;
             _connectionString = config.GetConnectionString("DefaultConnection")!;
@@ -23,13 +27,15 @@ namespace QOS.Areas.API.Controllers
         {
             try
             {
-                _logger.LogInformation($"Received FCA data: {System.Text.Json.JsonSerializer.Serialize(data)}");
+                _logger.LogInformation(
+                    $"Received FCA data: {System.Text.Json.JsonSerializer.Serialize(data)}"
+                );
 
                 if (data.Act != "Insert")
                 {
                     return BadRequest(new { KQ = "NG: Invalid Act" });
                 }
-                else 
+                else
                 {
                     string result = "";
                     result = InsertFCAData(data);
@@ -38,10 +44,7 @@ namespace QOS.Areas.API.Controllers
                         return Ok(new { message = "success" });
                     else
                         return StatusCode(500, new { error = result });
-                    
                 }
-
-                
             }
             catch (Exception ex)
             {
@@ -54,7 +57,8 @@ namespace QOS.Areas.API.Controllers
         {
             using (SqlConnection conn = new(_connectionString))
             {
-                string query = @"
+                string query =
+                    @"
                     INSERT INTO TRACKINIG_Result(
 							  [ID_Result]
 							  ,[Customer]
@@ -90,13 +94,26 @@ namespace QOS.Areas.API.Controllers
                 using (SqlCommand cmd = new(query, conn))
                 {
                     AddBCCPIParameters(cmd, request);
-                 
-                    cmd.Parameters.AddWithValue("@ID_Result", request.ID_Data + "_" + request.ModuleName + "_" + request.Infor_01 + "_" + request.Infor_02 + "_" + request.Infor_04 + "_" + request.ResultStatus);
+
+                    cmd.Parameters.AddWithValue(
+                        "@ID_Result",
+                        request.ID_Data
+                            + "_"
+                            + request.ModuleName
+                            + "_"
+                            + request.Infor_01
+                            + "_"
+                            + request.Infor_02
+                            + "_"
+                            + request.Infor_04
+                            + "_"
+                            + request.ResultStatus
+                    );
                     cmd.Parameters.AddWithValue("@WorkDate", DateTime.Now);
 
                     conn.Open();
                     int rowsAffected = cmd.ExecuteNonQuery();
-                    
+
                     return rowsAffected > 0 ? "success" : "error";
                 }
             }
@@ -104,7 +121,6 @@ namespace QOS.Areas.API.Controllers
 
         private void AddBCCPIParameters(SqlCommand cmd, FCAModel request)
         {
-            
             cmd.Parameters.AddWithValue("@Customer", request.Customer ?? "");
             // cmd.Parameters.AddWithValue("@WorkDate", request.WorkDate ?? "");
             cmd.Parameters.AddWithValue("@ModuleName", request.ModuleName ?? "");

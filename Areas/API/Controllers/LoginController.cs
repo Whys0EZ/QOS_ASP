@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace QOS.Areas.API.Controllers
 {
@@ -75,11 +75,11 @@ namespace QOS.Areas.API.Controllers
                     string status = "";
                     string act = dr["Act"].ToString() ?? "";
                     string pass = dr["Pass"].ToString() ?? "";
-                    
+
                     // Lưu các giá trị cần dùng sau này
                     string userFactoryID = dr["FactoryID"].ToString() ?? "";
                     string userName = dr["UserName"].ToString() ?? "";
-                    
+
                     var userInfo = new
                     {
                         LoginID = dr["UserName"],
@@ -109,7 +109,7 @@ namespace QOS.Areas.API.Controllers
                         Q_F8 = dr["Q_F8"],
                         Ver_No = dr["Ver_No"],
                         Ver_Name = dr["Ver_Name"],
-                        DB_Ver = dr["DB_Ver"]
+                        DB_Ver = dr["DB_Ver"],
                     };
 
                     // _logger.LogInformation("=== act GET Request === " + act);
@@ -125,7 +125,7 @@ namespace QOS.Areas.API.Controllers
                     else if (password_G == pass.ToUpper())
                     {
                         status = "Login_OK";
-                        
+
                         // ✅ Bây giờ dùng biến đã lưu thay vì dr["FactoryID"]
                         using (SqlCommand log = new("Insert_Login_Log", conn))
                         {
@@ -145,38 +145,42 @@ namespace QOS.Areas.API.Controllers
                     }
 
                     // ✅ Tạo lại object với status đã update
-                    return Ok(new[]
-                    {new {
-                            userInfo.LoginID,
-                            userInfo.FactoryID,
-                            userInfo.Fac_Name_Line1,
-                            userInfo.Fac_Name_Line2,
-                            userInfo.TeamID,
-                            userInfo.FullName,
-                            userInfo.Phone_Num,
-                            userInfo.Email,
-                            Status = status, // Status đã được cập nhật
-                            userInfo.Password,
-                            userInfo.Unit_Check,
-                            userInfo.Line_Check,
-                            userInfo.SMS_F,
-                            userInfo.SMS_EN,
-                            userInfo.SMS_LC,
-                            userInfo.SyncTime,
-                            userInfo.KeepDataTime,
-                            userInfo.Q_F1,
-                            userInfo.Q_F2,
-                            userInfo.Q_F3,
-                            userInfo.Q_F4,
-                            userInfo.Q_F5,
-                            userInfo.Q_F6,
-                            userInfo.Q_F7,
-                            userInfo.Q_F8,
-                            userInfo.Ver_No,
-                            userInfo.Ver_Name,
-                            userInfo.DB_Ver
+                    return Ok(
+                        new[]
+                        {
+                            new
+                            {
+                                userInfo.LoginID,
+                                userInfo.FactoryID,
+                                userInfo.Fac_Name_Line1,
+                                userInfo.Fac_Name_Line2,
+                                userInfo.TeamID,
+                                userInfo.FullName,
+                                userInfo.Phone_Num,
+                                userInfo.Email,
+                                Status = status, // Status đã được cập nhật
+                                userInfo.Password,
+                                userInfo.Unit_Check,
+                                userInfo.Line_Check,
+                                userInfo.SMS_F,
+                                userInfo.SMS_EN,
+                                userInfo.SMS_LC,
+                                userInfo.SyncTime,
+                                userInfo.KeepDataTime,
+                                userInfo.Q_F1,
+                                userInfo.Q_F2,
+                                userInfo.Q_F3,
+                                userInfo.Q_F4,
+                                userInfo.Q_F5,
+                                userInfo.Q_F6,
+                                userInfo.Q_F7,
+                                userInfo.Q_F8,
+                                userInfo.Ver_No,
+                                userInfo.Ver_Name,
+                                userInfo.DB_Ver,
+                            },
                         }
-                    });
+                    );
                 }
             }
         }

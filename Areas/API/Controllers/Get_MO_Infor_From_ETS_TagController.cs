@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace QOS.Areas.API.Controllers
 {
@@ -16,12 +16,16 @@ namespace QOS.Areas.API.Controllers
         private readonly string _connectionString;
         private readonly ILogger<Get_MO_Infor_From_ETS_TagController> _logger;
 
-        public Get_MO_Infor_From_ETS_TagController(IConfiguration config, ILogger<Get_MO_Infor_From_ETS_TagController> logger)
+        public Get_MO_Infor_From_ETS_TagController(
+            IConfiguration config,
+            ILogger<Get_MO_Infor_From_ETS_TagController> logger
+        )
         {
             _config = config;
             _logger = logger;
             _connectionString = _config.GetConnectionString("DefaultConnection")!;
         }
+
         [HttpGet]
         public IActionResult Get_MO_Infor_From_ETS_Tag(string? Code_G)
         {
@@ -32,13 +36,12 @@ namespace QOS.Areas.API.Controllers
             {
                 // Parse Code_G - Dùng "_____" (5 gạch dưới) giống PHP
                 string[] txt = Code_G.Split("_____");
-                
+
                 string codeGs = txt.Length > 0 ? txt[0] : "";
                 string myDeviceName = txt.Length > 1 ? txt[1] : "";
                 string myMAC = txt.Length > 2 ? txt[2] : "";
                 string CardNo = txt.Length > 3 ? Functions.Cut_Zero(txt[3]) : "";
                 string Unit = txt.Length > 4 ? txt[4] : "";
-
 
                 // Decode Code_G
                 string tmp1 = codeGs.Length >= 32 ? codeGs.Substring(0, 32) : "";
@@ -48,13 +51,16 @@ namespace QOS.Areas.API.Controllers
                 string tmp5 = tmp4.Length > 32 ? tmp4.Substring(0, tmp4.Length - 32) : "";
                 string FactoryID = tmp5;
 
-                _logger.LogInformation(" Get MO_Infor: CardNo " + CardNo + "  Unit: " + Unit + "  FactoryID : " + FactoryID );
-                var response = new
-                {
-                    MO_Infor = MO_Infor(CardNo, Unit, FactoryID)
-                };
+                _logger.LogInformation(
+                    " Get MO_Infor: CardNo "
+                        + CardNo
+                        + "  Unit: "
+                        + Unit
+                        + "  FactoryID : "
+                        + FactoryID
+                );
+                var response = new { MO_Infor = MO_Infor(CardNo, Unit, FactoryID) };
                 return Ok(response);
-
             }
             catch (Exception ex)
             {
@@ -63,38 +69,44 @@ namespace QOS.Areas.API.Controllers
             }
         }
 
-        private List<object> MO_Infor(string CardNo , string Unit, string FactoryID)
+        private List<object> MO_Infor(string CardNo, string Unit, string FactoryID)
         {
             List<object> list = new();
             int i = 0;
 
-            if(int.TryParse(CardNo, out _))
+            if (int.TryParse(CardNo, out _))
             {
                 using (SqlConnection conn = new(_connectionString))
-                using (SqlCommand cmd = new("select top 1 * from ETS_Data_TagList where CardNo = @CardNo  ", conn))
+                using (
+                    SqlCommand cmd = new(
+                        "select top 1 * from ETS_Data_TagList where CardNo = @CardNo  ",
+                        conn
+                    )
+                )
                 {
-                
                     cmd.Parameters.AddWithValue("@CardNo", CardNo);
 
                     conn.Open();
                     using SqlDataReader dr = cmd.ExecuteReader();
-                    
+
                     while (dr.Read())
                     {
-                        list.Add(new
-                        {
-                            MO = dr["MO"]?.ToString() ?? "",
-                            SizeCode = dr["SizeCode"]?.ToString() ?? "",
-                            ColorCode = dr["ColorCode"]?.ToString() ?? "",
-                            StyleCode = dr["StyleCode"]?.ToString() ?? "",
-                            Lot_Batch = dr["Lot_Batch"]?.ToString() ?? "",
-                            Qty = dr["Qty"]?.ToString() ?? "",
-                        });
-                        i ++;
+                        list.Add(
+                            new
+                            {
+                                MO = dr["MO"]?.ToString() ?? "",
+                                SizeCode = dr["SizeCode"]?.ToString() ?? "",
+                                ColorCode = dr["ColorCode"]?.ToString() ?? "",
+                                StyleCode = dr["StyleCode"]?.ToString() ?? "",
+                                Lot_Batch = dr["Lot_Batch"]?.ToString() ?? "",
+                                Qty = dr["Qty"]?.ToString() ?? "",
+                            }
+                        );
+                        i++;
                     }
                 }
 
-                if(i == 0)
+                if (i == 0)
                 {
                     using (SqlConnection conn = new(_connectionString))
                     using (SqlCommand cmd = new("Json_Get_MO_Infor_from_ETS_SUB_Card", conn))
@@ -106,49 +118,62 @@ namespace QOS.Areas.API.Controllers
 
                         conn.Open();
                         using SqlDataReader dr = cmd.ExecuteReader();
-                        
+
                         while (dr.Read())
                         {
-                            list.Add(new
-                            {
-                                MO = dr["MO"]?.ToString() ?? "",
-                                SizeCode = dr["SizeCode"]?.ToString() ?? "",
-                                ColorCode = dr["ColorCode"]?.ToString() ?? "",
-                                StyleCode = dr["StyleCode"]?.ToString() ?? "",
-                                Lot_Batch = dr["Lot_Batch"]?.ToString() ?? "",
-                                CutQty = dr["CutQty"]?.ToString() ?? "",
-                            });
-                           
+                            list.Add(
+                                new
+                                {
+                                    MO = dr["MO"]?.ToString() ?? "",
+                                    SizeCode = dr["SizeCode"]?.ToString() ?? "",
+                                    ColorCode = dr["ColorCode"]?.ToString() ?? "",
+                                    StyleCode = dr["StyleCode"]?.ToString() ?? "",
+                                    Lot_Batch = dr["Lot_Batch"]?.ToString() ?? "",
+                                    CutQty = dr["CutQty"]?.ToString() ?? "",
+                                }
+                            );
                         }
                     }
                 }
             }
             else
             {
-                _logger.LogInformation(" Get MO_Infor else: CardNo " + CardNo + "  Unit: " + Unit + "  FactoryID : " + FactoryID );
+                _logger.LogInformation(
+                    " Get MO_Infor else: CardNo "
+                        + CardNo
+                        + "  Unit: "
+                        + Unit
+                        + "  FactoryID : "
+                        + FactoryID
+                );
                 using (SqlConnection conn = new(_connectionString))
-                using (SqlCommand cmd = new("select  top 1 * from ETS_Data_MO_Infor where MO= @CardNo  ", conn))
+                using (
+                    SqlCommand cmd = new(
+                        "select  top 1 * from ETS_Data_MO_Infor where MO= @CardNo  ",
+                        conn
+                    )
+                )
                 {
-                
                     cmd.Parameters.AddWithValue("@CardNo", CardNo);
 
                     conn.Open();
                     using SqlDataReader dr = cmd.ExecuteReader();
-                    
+
                     while (dr.Read())
                     {
-                        list.Add(new
-                        {
-                            MO = dr["MO"]?.ToString() ?? "",
-                            SizeCode = dr["SizeCode"]?.ToString() ?? "",
-                            ColorCode = dr["ColorCode"]?.ToString() ?? "",
-                            StyleCode = dr["StyleCode"]?.ToString() ?? "",
-                            Lot_Batch =  "",
-                            Qty =  "",
-                        });
+                        list.Add(
+                            new
+                            {
+                                MO = dr["MO"]?.ToString() ?? "",
+                                SizeCode = dr["SizeCode"]?.ToString() ?? "",
+                                ColorCode = dr["ColorCode"]?.ToString() ?? "",
+                                StyleCode = dr["StyleCode"]?.ToString() ?? "",
+                                Lot_Batch = "",
+                                Qty = "",
+                            }
+                        );
                     }
                 }
-
             }
 
             return list;
@@ -167,6 +192,5 @@ namespace QOS.Areas.API.Controllers
             // Nếu toàn 0, trả "0" thay vì rỗng
             return i == a.Length ? "0" : a.Substring(i);
         }
-
     }
 }

@@ -8,7 +8,7 @@ using Serilog;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using System.Globalization;
-
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 // Configure Serilog
@@ -115,6 +115,13 @@ app.UseRequestLocalization(localizationOptions);
 app.UseMiddleware<QOS.Middlewares.DeviceDetectionMiddleware>();
 
 app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "..", "QOS", "upload")),
+    RequestPath = "/upload"
+});
+
 app.UseRouting();
 
 app.UseAuthentication();  // phải trước Authorization

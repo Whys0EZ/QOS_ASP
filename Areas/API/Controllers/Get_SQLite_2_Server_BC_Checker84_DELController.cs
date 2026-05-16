@@ -1,8 +1,7 @@
+using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using System.Data;
 using QOS.Areas.API.Models;
-
 
 namespace QOS.Areas.API.Controllers
 {
@@ -15,7 +14,10 @@ namespace QOS.Areas.API.Controllers
         private readonly string _connectionString;
         private readonly ILogger<Get_SQLite_2_Server_BC_Checker84_DELController> _logger;
 
-        public Get_SQLite_2_Server_BC_Checker84_DELController(IConfiguration config, ILogger<Get_SQLite_2_Server_BC_Checker84_DELController> logger)
+        public Get_SQLite_2_Server_BC_Checker84_DELController(
+            IConfiguration config,
+            ILogger<Get_SQLite_2_Server_BC_Checker84_DELController> logger
+        )
         {
             _config = config;
             _logger = logger;
@@ -27,7 +29,8 @@ namespace QOS.Areas.API.Controllers
             [FromQuery] string? Code_G,
             [FromQuery] string? Report_ID,
             [FromQuery] string? Audit_Time_V,
-            [FromForm] DeletePhotoRequest? request)
+            [FromForm] DeletePhotoRequest? request
+        )
         {
             if (string.IsNullOrEmpty(Code_G))
                 return BadRequest(new { KQ = "NG: Code_G is required" });
@@ -75,9 +78,9 @@ namespace QOS.Areas.API.Controllers
                     cmd.Parameters.AddWithValue("@UserUpdate", loginID);
 
                     conn.Open();
-                    
+
                     using SqlDataReader dr = cmd.ExecuteReader();
-                    
+
                     // Đọc kết quả từ stored procedure
                     string result = "";
                     while (dr.Read())
@@ -90,7 +93,9 @@ namespace QOS.Areas.API.Controllers
                         result = "OK: Report deleted successfully";
                     }
 
-                    _logger.LogInformation($"Report deleted - Report_ID: {reportID}, LoginID: {loginID}, Result: {result}");
+                    _logger.LogInformation(
+                        $"Report deleted - Report_ID: {reportID}, LoginID: {loginID}, Result: {result}"
+                    );
 
                     return result;
                 }

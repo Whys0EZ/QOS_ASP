@@ -16,7 +16,8 @@ namespace QOS.Areas.API.Controllers
         public Get_SQLite_2_Server_BC_DiChuyen_Upload_IMGController(
             IConfiguration config,
             IWebHostEnvironment environment,
-            ILogger<Get_SQLite_2_Server_BC_DiChuyen_Upload_IMGController> logger)
+            ILogger<Get_SQLite_2_Server_BC_DiChuyen_Upload_IMGController> logger
+        )
         {
             _config = config;
             _environment = environment;
@@ -26,10 +27,11 @@ namespace QOS.Areas.API.Controllers
         [HttpPost]
         public IActionResult Get_SQLite_2_Server_BC_DiChuyen_Upload_IMG(
             [FromQuery] string? Code_G,
-            [FromForm] string? Form_Data,      // ✅ Thay đổi: nhận trực tiếp từ Form
+            [FromForm] string? Form_Data, // ✅ Thay đổi: nhận trực tiếp từ Form
             [FromForm] string? Folder,
             [FromForm] string? Img_Name,
-            [FromForm] string? Image)
+            [FromForm] string? Image
+        )
         {
             _logger.LogInformation("===== UPLOAD REQUEST =====");
             _logger.LogInformation($"Code_G: {Code_G}");
@@ -37,7 +39,6 @@ namespace QOS.Areas.API.Controllers
             _logger.LogInformation($"Folder: {Folder}");
             _logger.LogInformation($"Img_Name: {Img_Name}");
             _logger.LogInformation($"Image length: {Image?.Length ?? 0}");
-
 
             if (string.IsNullOrEmpty(Code_G))
                 return BadRequest(new { KQ = "NG: Code_G is required" });
@@ -59,30 +60,43 @@ namespace QOS.Areas.API.Controllers
 
                 // ✅ XỬ LÝ UPLOAD
                 string formID = "Form4_BCCLM";
-                string imagePath = Path.Combine(_environment.WebRootPath, "upload", "Photos", "Form4_BCCLM");
+                string imagePath = Path.Combine(
+                    _environment.ContentRootPath,
+                    "..",
+                    "QOS",
+                    "upload",
+                    "Photos",
+                    "Form4_BCCLM"
+                );
                 string textCut = "_###_";
                 // ✅ Tự động thêm folder theo tháng nếu Img_Name không có path
                 string processedImgName = Img_Name;
                 if (!Img_Name.Contains("/"))
                 {
-                    string monthFolder = DateTime.Now.ToString("yyyy-MMM", 
-                        new System.Globalization.CultureInfo("en-US"));
-                    
+                    string monthFolder = DateTime.Now.ToString(
+                        "yyyy-MMM",
+                        new System.Globalization.CultureInfo("en-US")
+                    );
+
                     if (Img_Name.Contains(textCut))
                     {
-                        string[] names = Img_Name.Split(textCut, StringSplitOptions.RemoveEmptyEntries);
-                        processedImgName = string.Join(textCut, 
-                            names.Select(n => $"{monthFolder}/{n.Trim()}"));
+                        string[] names = Img_Name.Split(
+                            textCut,
+                            StringSplitOptions.RemoveEmptyEntries
+                        );
+                        processedImgName = string.Join(
+                            textCut,
+                            names.Select(n => $"{monthFolder}/{n.Trim()}")
+                        );
                     }
                     else
                     {
                         processedImgName = $"{monthFolder}/{Img_Name}";
                     }
                 }
-                _logger.LogInformation($"Original Img_Name: {Img_Name}");
-                _logger.LogInformation($"Processed Img_Name: {processedImgName}");
-                _logger.LogInformation($"Image path: {imagePath}");
-                
+                // _logger.LogInformation($"Original Img_Name: {Img_Name}");
+                // _logger.LogInformation($"Processed Img_Name: {processedImgName}");
+                // _logger.LogInformation($"Image path: {imagePath}");
 
                 // ✅ SỬ DỤNG HELPER DECODE IMAGE
                 string result = Functions.DecodeImgListAdd(
@@ -91,7 +105,8 @@ namespace QOS.Areas.API.Controllers
                     imagePath,
                     textCut,
                     formID,
-                    _logger);
+                    _logger
+                );
 
                 return Ok(new { KQ = result });
             }
@@ -102,5 +117,4 @@ namespace QOS.Areas.API.Controllers
             }
         }
     }
-
 }

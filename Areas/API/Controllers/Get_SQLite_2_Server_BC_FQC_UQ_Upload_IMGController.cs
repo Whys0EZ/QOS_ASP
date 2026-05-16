@@ -16,7 +16,8 @@ namespace QOS.Areas.API.Controllers
         public Get_SQLite_2_Server_BC_FQC_UQ_Upload_IMGController(
             IConfiguration config,
             IWebHostEnvironment environment,
-            ILogger<Get_SQLite_2_Server_BC_FQC_UQ_Upload_IMGController> logger)
+            ILogger<Get_SQLite_2_Server_BC_FQC_UQ_Upload_IMGController> logger
+        )
         {
             _config = config;
             _environment = environment;
@@ -26,12 +27,17 @@ namespace QOS.Areas.API.Controllers
         [HttpPost]
         public IActionResult Get_SQLite_2_Server_BC_FQC_UQ_Upload_IMG(
             [FromQuery] string? Code_G,
-            [FromForm] PhotoUploadRequest request)
+            [FromForm] PhotoUploadRequest request
+        )
         {
             if (string.IsNullOrEmpty(Code_G))
                 return BadRequest(new { KQ = "NG: Code_G is required" });
 
-            if (request == null || string.IsNullOrEmpty(request.Img_Name) || string.IsNullOrEmpty(request.Image))
+            if (
+                request == null
+                || string.IsNullOrEmpty(request.Img_Name)
+                || string.IsNullOrEmpty(request.Image)
+            )
                 return BadRequest(new { KQ = "NG: Img_Name and Image are required" });
 
             try
@@ -48,7 +54,14 @@ namespace QOS.Areas.API.Controllers
 
                 // ✅ XỬ LÝ UPLOAD
                 string formID = "FQC";
-                string imagePath = Path.Combine(_environment.WebRootPath, "upload", "Photos", "FQC");
+                string imagePath = Path.Combine(
+                    _environment.ContentRootPath,
+                    "..",
+                    "QOS",
+                    "upload",
+                    "Photos",
+                    "FQC"
+                );
                 string textCut = "_###_";
 
                 // ✅ SỬ DỤNG HELPER DECODE IMAGE
@@ -58,7 +71,8 @@ namespace QOS.Areas.API.Controllers
                     imagePath,
                     textCut,
                     formID,
-                    _logger);
+                    _logger
+                );
 
                 return Ok(new { KQ = result });
             }
@@ -69,5 +83,4 @@ namespace QOS.Areas.API.Controllers
             }
         }
     }
-
 }

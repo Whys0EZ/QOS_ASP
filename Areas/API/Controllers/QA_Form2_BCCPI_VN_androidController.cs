@@ -1,6 +1,6 @@
+using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using System.Data;
 using QOS.Areas.API.Models;
 
 namespace QOS.Areas.API.Controllers
@@ -14,7 +14,10 @@ namespace QOS.Areas.API.Controllers
         private readonly string _connectionString;
         private readonly ILogger<QA_Form2_BCCPI_VN_androidController> _logger;
 
-        public QA_Form2_BCCPI_VN_androidController(IConfiguration config, ILogger<QA_Form2_BCCPI_VN_androidController> logger)
+        public QA_Form2_BCCPI_VN_androidController(
+            IConfiguration config,
+            ILogger<QA_Form2_BCCPI_VN_androidController> logger
+        )
         {
             _config = config;
             _logger = logger;
@@ -47,7 +50,9 @@ namespace QOS.Areas.API.Controllers
                         result = DeleteBCCPI(request);
                         break;
                     default:
-                        return BadRequest(new { error = "Invalid action. Use 'Insert', 'Update', or 'Delete'" });
+                        return BadRequest(
+                            new { error = "Invalid action. Use 'Insert', 'Update', or 'Delete'" }
+                        );
                 }
 
                 if (result == "success")
@@ -71,7 +76,8 @@ namespace QOS.Areas.API.Controllers
         {
             using (SqlConnection conn = new(_connectionString))
             {
-                string query = @"
+                string query =
+                    @"
                     INSERT INTO Form2_BCCPI
                     (
                         [Report_ID]
@@ -130,12 +136,12 @@ namespace QOS.Areas.API.Controllers
                 using (SqlCommand cmd = new(query, conn))
                 {
                     AddBCCPIParameters(cmd, request);
-                 
+
                     cmd.Parameters.AddWithValue("@LastUpdate", DateTime.Now);
 
                     conn.Open();
                     int rowsAffected = cmd.ExecuteNonQuery();
-                    
+
                     return rowsAffected > 0 ? "success" : "error";
                 }
             }
@@ -145,7 +151,8 @@ namespace QOS.Areas.API.Controllers
         {
             using (SqlConnection conn = new(_connectionString))
             {
-                string query = @"
+                string query =
+                    @"
                     UPDATE Form1_BCCPI SET
                         [Unit] = @Unit,
                         [Cut_Leader] = @Cut_Leader,
@@ -194,7 +201,7 @@ namespace QOS.Areas.API.Controllers
 
                     conn.Open();
                     int rowsAffected = cmd.ExecuteNonQuery();
-                    
+
                     return rowsAffected > 0 ? "success" : "error";
                 }
             }
@@ -210,7 +217,8 @@ namespace QOS.Areas.API.Controllers
                     try
                     {
                         // Insert vào bảng backup
-                        string insertBackupQuery = @"
+                        string insertBackupQuery =
+                            @"
                             INSERT INTO Form2_BCCPI_Delete
                             SELECT * , @UserDelete AS User_Delete, @TimeDelete AS Time_Delete
                                 
@@ -220,7 +228,10 @@ namespace QOS.Areas.API.Controllers
                         using (SqlCommand cmdBackup = new(insertBackupQuery, conn, transaction))
                         {
                             cmdBackup.Parameters.AddWithValue("@ID", request.ID);
-                            cmdBackup.Parameters.AddWithValue("@UserDelete", request.User_Edit ?? "");
+                            cmdBackup.Parameters.AddWithValue(
+                                "@UserDelete",
+                                request.User_Edit ?? ""
+                            );
                             cmdBackup.Parameters.AddWithValue("@TimeDelete", DateTime.Now);
                             cmdBackup.ExecuteNonQuery();
                         }
@@ -231,7 +242,7 @@ namespace QOS.Areas.API.Controllers
                         {
                             cmdDelete.Parameters.AddWithValue("@ID", request.ID);
                             int rowsAffected = cmdDelete.ExecuteNonQuery();
-                            
+
                             if (rowsAffected > 0)
                             {
                                 transaction.Commit();
@@ -272,7 +283,7 @@ namespace QOS.Areas.API.Controllers
 
             // cmd.Parameters.AddWithValue("@CutTableRatio", request.CutTableRatio ?? "");
             cmd.Parameters.AddWithValue("@Batch", request.Batch ?? "");
-            
+
             cmd.Parameters.AddWithValue("@QTY", request.QTY);
             cmd.Parameters.AddWithValue("@Check_QTY", request.Check_QTY);
             cmd.Parameters.AddWithValue("@Fault_AQL_QTY", request.Fault_AQL_QTY);
@@ -284,12 +295,12 @@ namespace QOS.Areas.API.Controllers
             cmd.Parameters.AddWithValue("@Yarn", request.Yarn);
             cmd.Parameters.AddWithValue("@Slub", request.Slub);
             cmd.Parameters.AddWithValue("@Dirty", request.Dirty);
-            
+
             cmd.Parameters.AddWithValue("@DS_L_Min", request.DS_L_Min ?? "");
             cmd.Parameters.AddWithValue("@DS_L_Max", request.DS_L_Max ?? "");
             cmd.Parameters.AddWithValue("@DS_W_Min", request.DS_W_Min ?? "");
             cmd.Parameters.AddWithValue("@DS_W_Max", request.DS_W_Max ?? "");
-            
+
             cmd.Parameters.AddWithValue("@Size_Parameter", request.Size_Parameter ?? "");
 
             cmd.Parameters.AddWithValue("@Notch", request.Notch ?? "");
