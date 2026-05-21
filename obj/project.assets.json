@@ -767,10 +767,10 @@
           }
         }
       },
-      "MailKit/4.13.0": {
+      "MailKit/4.16.0": {
         "type": "package",
         "dependencies": {
-          "MimeKit": "4.13.0",
+          "MimeKit": "4.16.0",
           "System.Formats.Asn1": "8.0.1"
         },
         "compile": {
@@ -2755,7 +2755,7 @@
           }
         }
       },
-      "MimeKit/4.15.1": {
+      "MimeKit/4.16.0": {
         "type": "package",
         "dependencies": {
           "BouncyCastle.Cryptography": "2.6.2",
@@ -4910,10 +4910,10 @@
         "lib/netstandard2.1/K4os.Hash.xxHash.xml"
       ]
     },
-    "MailKit/4.13.0": {
-      "sha512": "GsepEHKkaQvbAuBizlhz93yc0ihJWzVCfoerfnpCeqiKLeS6gsTKInYy3/U2wqgkGE62TKs5OKS1a90pyc+j4g==",
+    "MailKit/4.16.0": {
+      "sha512": "trJ82DOpAmo8i1jO1vNE+dGn4mPRyeYfy4swRcAGgMJhPoI1Kohf4OFJJf0+YIj4iUxgxPn8W+ht7e7KiYzSjg==",
       "type": "package",
-      "path": "mailkit/4.13.0",
+      "path": "mailkit/4.16.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -4922,6 +4922,10 @@
         "docs/GMailOAuth2.md",
         "docs/README.md",
         "icons/mailkit-50.png",
+        "lib/net10.0/MailKit.dll",
+        "lib/net10.0/MailKit.dll.config",
+        "lib/net10.0/MailKit.pdb",
+        "lib/net10.0/MailKit.xml",
         "lib/net462/MailKit.dll",
         "lib/net462/MailKit.dll.config",
         "lib/net462/MailKit.pdb",
@@ -4946,7 +4950,7 @@
         "lib/netstandard2.1/MailKit.dll.config",
         "lib/netstandard2.1/MailKit.pdb",
         "lib/netstandard2.1/MailKit.xml",
-        "mailkit.4.13.0.nupkg.sha512",
+        "mailkit.4.16.0.nupkg.sha512",
         "mailkit.nuspec"
       ]
     },
@@ -8437,10 +8441,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "MimeKit/4.15.1": {
-      "sha512": "cxCcQhD0zhboFoG136jJuJtQjNRDJ+BxBm3f2vWn+53bff/CRo+K1mAkWjsW4Wuyy5O22F40MdMG2nRzQu1cJw==",
+    "MimeKit/4.16.0": {
+      "sha512": "X0LFxeM4gPRIhODyY/HYS9b+zRZ7y//v59rFzgS6wLxcPuZThnMtNZHtrr0fjLyRRkg3gqJBtvW36XfUzZ7Djw==",
       "type": "package",
-      "path": "mimekit/4.15.1",
+      "path": "mimekit/4.16.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -8472,7 +8476,7 @@
         "lib/netstandard2.1/MimeKit.dll.config",
         "lib/netstandard2.1/MimeKit.pdb",
         "lib/netstandard2.1/MimeKit.xml",
-        "mimekit.4.15.1.nupkg.sha512",
+        "mimekit.4.16.0.nupkg.sha512",
         "mimekit.nuspec"
       ]
     },
@@ -10565,7 +10569,7 @@
     "net8.0": [
       "Dapper >= 2.1.66",
       "EPPlus >= 7.*",
-      "MailKit >= 4.13.0",
+      "MailKit >= 4.16.0",
       "Microsoft.AspNetCore.Authentication >= 2.3.0",
       "Microsoft.AspNetCore.Authentication.Cookies >= 2.3.0",
       "Microsoft.AspNetCore.Authentication.oAuth >= 2.3.0",
@@ -10582,7 +10586,7 @@
       "Microsoft.Extensions.DependencyInjection >= 8.0.1",
       "Microsoft.Extensions.Logging.Console >= 8.0.*",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 8.0.*",
-      "MimeKit >= 4.15.1",
+      "MimeKit >= 4.16.0",
       "MySql.EntityFrameworkCore >= 8.*",
       "Serilog.AspNetCore >= 8.0.0",
       "Serilog.Sinks.File >= 7.0.0",
@@ -10644,7 +10648,7 @@
           },
           "MailKit": {
             "target": "Package",
-            "version": "[4.13.0, )"
+            "version": "[4.16.0, )"
           },
           "Microsoft.AspNetCore.Authentication": {
             "target": "Package",
@@ -10716,7 +10720,7 @@
           },
           "MimeKit": {
             "target": "Package",
-            "version": "[4.15.1, )"
+            "version": "[4.16.0, )"
           },
           "MySql.EntityFrameworkCore": {
             "target": "Package",
@@ -10761,17 +10765,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.206/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'MailKit' 4.13.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-9j88-vvj5-vhgr",
-      "libraryId": "MailKit",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    }
-  ]
+  }
 }

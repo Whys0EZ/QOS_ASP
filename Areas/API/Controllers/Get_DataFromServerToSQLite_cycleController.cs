@@ -69,7 +69,16 @@ namespace QOS.Areas.API.Controllers
                     Size_List = GetSize_List(),
                     
                     ThongSo_BTP_ItemList = GetThongSo_BTP_ItemList(factoryID),
-                    TRACKING_Module =GetTRACKING_Module(),
+                    TRACKING_Module = GetTRACKING_Module(),
+                    
+                    TRACKING_GroupContactList = GetTRACKING_GroupContactList(),
+                    TRACKING_InforSetup_DataType = GetTRACKING_InforSetup_DataType(),
+                    TRACKING_InforSetup_Index = GetTRACKING_InforSetup_Index(),
+                    TRACKING_InforSetup_Name = GetTRACKING_InforSetup_Name(),
+                    
+                    TRACKINIG_ResultSetup_Name = GetTRACKING_ResultSetup_Name(),
+                    TRACKINIG_ResultSetup_Index = GetTRACKING_ResultSetup_Index(),
+                    TRACKINIG_ResultSetup_DataType = GetTRACKING_ResultSetup_DataType(),
 
                 };
 
@@ -81,33 +90,7 @@ namespace QOS.Areas.API.Controllers
                 return BadRequest(new { error = ex.Message });
             }
         }
-                // ------------------------- Size No List
 
-        private List<object> GetSizeNo_List()
-        {
-            List<object> list = new();
-
-            using (SqlConnection conn = new(_connectionString))
-            using (SqlCommand cmd = new("Select * from SizeNo_List order by SizeNo", conn))
-            {
-                
-
-                conn.Open();
-                using SqlDataReader dr = cmd.ExecuteReader();
-                
-                while (dr.Read())
-                {
-                    list.Add(new
-                    {
-                        SizeNo = dr["SizeNo"]?.ToString() ?? "",
-                        
-                       
-                    });
-                }
-            }
-
-            return list;
-        }
 
         //---------------------------Customer
         private List<object> GetCustomerList(string factoryID)
@@ -245,6 +228,32 @@ namespace QOS.Areas.API.Controllers
             return list;
         }
 
+        // ------------------------- Size No List
+        private List<object> GetSizeNo_List()
+        {
+            List<object> list = new();
+
+            using (SqlConnection conn = new(_connectionString))
+            using (SqlCommand cmd = new("Select * from SizeNo_List order by SizeNo", conn))
+            {
+                
+
+                conn.Open();
+                using SqlDataReader dr = cmd.ExecuteReader();
+                
+                while (dr.Read())
+                {
+                    list.Add(new
+                    {
+                       
+                        SizeNo = dr["SizeNo"]?.ToString() ?? "",
+                       
+                    });
+                }
+            }
+
+            return list;
+        }
 
 
         // ------------------------- ThongSo_BTP_ItemList
@@ -276,6 +285,128 @@ namespace QOS.Areas.API.Controllers
             return list;
         }
 
+        // ------------------------- Option_Value
+        private List<object> GetOption_Value()
+        {
+            List<object> list = new();
+
+            using (SqlConnection conn = new(_connectionString))
+            using (SqlCommand cmd = new("Select * from Option_Value ", conn))
+            {
+                
+
+                conn.Open();
+                using SqlDataReader dr = cmd.ExecuteReader();
+                
+                while (dr.Read())
+                {
+                    list.Add(new
+                    {
+                        FormID = dr["FormID"]?.ToString() ?? "",
+                        ItemID = dr["ItemID"]?.ToString() ?? "",
+                       
+                        ItemName = dr["ItemName"]?.ToString() ?? "",
+                       
+                    });
+                }
+            }
+
+            return list;
+        }
+
+        // ------------------------- AQL
+        private List<object> GetAQL_List()
+        {
+            List<object> list = new();
+
+            using (SqlConnection conn = new(_connectionString))
+            using (SqlCommand cmd = new("Select * from AQL where Active=1", conn))
+            {
+                
+
+                conn.Open();
+                using SqlDataReader dr = cmd.ExecuteReader();
+                
+                while (dr.Read())
+                {
+                    list.Add(new
+                    {
+                       
+                        AQL_Code = dr["AQL_Code"]?.ToString() ?? "",
+                        Qty_From = dr["Qty_From"]?.ToString() ?? "",
+                        Qty_To = dr["Qty_To"]?.ToString() ?? "",
+                        Qty_Check = dr["Qty_Check"]?.ToString() ?? "",
+                        Qty_Fault = dr["Qty_Fault"]?.ToString() ?? "",
+                        typecode = dr["typecode"]?.ToString() ?? ""
+                       
+                    });
+                }
+            }
+
+            return list;
+        }
+
+        // ------------------------- AQL_UQ
+        private List<object> GetAQL_UQ_List()
+        {
+            List<object> list = new();
+
+            using (SqlConnection conn = new(_connectionString))
+            using (SqlCommand cmd = new("Select * from AQL where Active=0", conn))
+            {
+                
+
+                conn.Open();
+                using SqlDataReader dr = cmd.ExecuteReader();
+                
+                while (dr.Read())
+                {
+                    list.Add(new
+                    {
+                       
+                        AQL_Code = dr["AQL_Code"]?.ToString() ?? "",
+                        Qty_From = dr["Qty_From"]?.ToString() ?? "",
+                        Qty_To = dr["Qty_To"]?.ToString() ?? "",
+                        Qty_Check = dr["Qty_Check"]?.ToString() ?? "",
+                        Qty_Fault = dr["Qty_Fault"]?.ToString() ?? "",
+                        typecode = dr["typecode"]?.ToString() ?? ""
+                       
+                    });
+                }
+            }
+
+            return list;
+        }
+
+        // ------------------------- Dung_Sai_inch
+        private List<object> GetDung_Sai_inch()
+        {
+            List<object> list = new();
+
+            using (SqlConnection conn = new(_connectionString))
+            using (SqlCommand cmd = new("Select * from Dung_sai where Don_vi = 'inch' ", conn))
+            {
+                
+
+                conn.Open();
+                using SqlDataReader dr = cmd.ExecuteReader();
+                
+                while (dr.Read())
+                {
+                    list.Add(new
+                    {
+                       
+                        ID = dr["ID"]?.ToString() ?? "",
+                        Thong_so = dr["Thong_so"]?.ToString() ?? "",
+                        Don_vi = dr["Don_vi"]?.ToString() ?? ""
+                       
+                    });
+                }
+            }
+
+            return list;
+        }
+
         // ------------------------- TRACKING_Module
         private List<object> GetTRACKING_Module()
         {
@@ -294,6 +425,258 @@ namespace QOS.Areas.API.Controllers
                     {
                         ModuleName = dr["ModuleName"]?.ToString() ?? "",
                      
+                    });
+                }
+            }
+            return list;
+        }
+
+        // ------------------------- TRACKING_GroupContactList
+        private List<object> GetTRACKING_GroupContactList()
+        {
+            List<object> list = new();
+
+            using (SqlConnection conn = new(_connectionString))
+            using (SqlCommand cmd = new("Select STT,ModuleName,GroupID from TRACKING_GroupContactList ", conn))
+            {
+               
+                conn.Open();
+                using SqlDataReader dr = cmd.ExecuteReader();
+                
+                while (dr.Read())
+                {
+                    list.Add(new
+                    {
+                        STT = dr["STT"]?.ToString() ?? "",
+                        ModuleName = dr["ModuleName"]?.ToString() ?? "",
+                        GroupID = dr["GroupID"]?.ToString() ?? ""
+                    });
+                }
+            }
+            return list;
+        }
+
+        // ------------------------- TRACKING_InforSetup_DataType
+        private List<object> GetTRACKING_InforSetup_DataType()
+        {
+            List<object> list = new();
+
+            using (SqlConnection conn = new(_connectionString))
+            using (SqlCommand cmd = new("Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05,Infor_06,Infor_07,Infor_08,Infor_09,Infor_10,Infor_11,Infor_12,Infor_13,Infor_14,Infor_15 from TRACKING_InforSetup_DataType ", conn))
+            {
+               
+                conn.Open();
+                using SqlDataReader dr = cmd.ExecuteReader();
+                
+                while (dr.Read())
+                {
+                    list.Add(new
+                    {
+                        ModuleName = dr["ModuleName"]?.ToString() ?? "",
+                        Infor_01 = dr["Infor_01"]?.ToString() ?? "",
+                        Infor_02 = dr["Infor_02"]?.ToString() ?? "",
+                        Infor_03 = dr["Infor_03"]?.ToString() ?? "",
+                        Infor_04 = dr["Infor_04"]?.ToString() ?? "",
+                        Infor_05 = dr["Infor_05"]?.ToString() ?? "",
+                        Infor_06 = dr["Infor_06"]?.ToString() ?? "",
+                        Infor_07 = dr["Infor_07"]?.ToString() ?? "",
+                        Infor_08 = dr["Infor_08"]?.ToString() ?? "",
+                        Infor_09 = dr["Infor_09"]?.ToString() ?? "",
+                        Infor_10 = dr["Infor_10"]?.ToString() ?? "",
+                        Infor_11 = dr["Infor_11"]?.ToString() ?? "",
+                        Infor_12 = dr["Infor_12"]?.ToString() ?? "",
+                        Infor_13 = dr["Infor_13"]?.ToString() ?? "",
+                        Infor_14 = dr["Infor_14"]?.ToString() ?? "",
+                        Infor_15 = dr["Infor_15"]?.ToString() ?? ""
+                    });
+                }
+            }
+            return list;
+        }
+
+        // ------------------------- TRACKING_InforSetup_Index
+        private List<object> GetTRACKING_InforSetup_Index()
+        {
+            List<object> list = new();
+
+            using (SqlConnection conn = new(_connectionString))
+            using (SqlCommand cmd = new("Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05,Infor_06,Infor_07,Infor_08,Infor_09,Infor_10,Infor_11,Infor_12,Infor_13,Infor_14,Infor_15 from TRACKING_InforSetup_Index ", conn))
+            {
+               
+                conn.Open();
+                using SqlDataReader dr = cmd.ExecuteReader();
+                
+                while (dr.Read())
+                {
+                    list.Add(new
+                    {
+                        ModuleName = dr["ModuleName"]?.ToString() ?? "",
+                        Infor_01 = dr["Infor_01"]?.ToString() ?? "",
+                        Infor_02 = dr["Infor_02"]?.ToString() ?? "",
+                        Infor_03 = dr["Infor_03"]?.ToString() ?? "",
+                        Infor_04 = dr["Infor_04"]?.ToString() ?? "",
+                        Infor_05 = dr["Infor_05"]?.ToString() ?? "",
+                        Infor_06 = dr["Infor_06"]?.ToString() ?? "",
+                        Infor_07 = dr["Infor_07"]?.ToString() ?? "",
+                        Infor_08 = dr["Infor_08"]?.ToString() ?? "",
+                        Infor_09 = dr["Infor_09"]?.ToString() ?? "",
+                        Infor_10 = dr["Infor_10"]?.ToString() ?? "",
+                        Infor_11 = dr["Infor_11"]?.ToString() ?? "",
+                        Infor_12 = dr["Infor_12"]?.ToString() ?? "",
+                        Infor_13 = dr["Infor_13"]?.ToString() ?? "",
+                        Infor_14 = dr["Infor_14"]?.ToString() ?? "",
+                        Infor_15 = dr["Infor_15"]?.ToString() ?? ""
+
+                    });
+                }
+            }
+            return list;
+        }
+
+        // ------------------------- TRACKING_InforSetup_Name
+        private List<object> GetTRACKING_InforSetup_Name()
+        {
+            List<object> list = new();
+
+            using (SqlConnection conn = new(_connectionString))
+            using (SqlCommand cmd = new("Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05,Infor_06,Infor_07,Infor_08,Infor_09,Infor_10,Infor_11,Infor_12,Infor_13,Infor_14,Infor_15 from TRACKING_InforSetup_Name ", conn))
+            {
+               
+                conn.Open();
+                using SqlDataReader dr = cmd.ExecuteReader();
+                
+                while (dr.Read())
+                {
+                    list.Add(new
+                    {
+                        ModuleName = dr["ModuleName"]?.ToString() ?? "",
+                        Infor_01 = dr["Infor_01"]?.ToString() ?? "",
+                        Infor_02 = dr["Infor_02"]?.ToString() ?? "",
+                        Infor_03 = dr["Infor_03"]?.ToString() ?? "",
+                        Infor_04 = dr["Infor_04"]?.ToString() ?? "",
+                        Infor_05 = dr["Infor_05"]?.ToString() ?? "",
+                        Infor_06 = dr["Infor_06"]?.ToString() ?? "",
+                        Infor_07 = dr["Infor_07"]?.ToString() ?? "",
+                        Infor_08 = dr["Infor_08"]?.ToString() ?? "",
+                        Infor_09 = dr["Infor_09"]?.ToString() ?? "",
+                        Infor_10 = dr["Infor_10"]?.ToString() ?? "",
+                        Infor_11 = dr["Infor_11"]?.ToString() ?? "",
+                        Infor_12 = dr["Infor_12"]?.ToString() ?? "",
+                        Infor_13 = dr["Infor_13"]?.ToString() ?? "",
+                        Infor_14 = dr["Infor_14"]?.ToString() ?? "",
+                        Infor_15 = dr["Infor_15"]?.ToString() ?? ""
+                    });
+                }
+            }
+            return list;
+        }
+
+        // ------------------------- TRACKINIG_ResultSetup_Name
+        private List<object> GetTRACKING_ResultSetup_Name()
+        {
+            List<object> list = new();
+
+            using (SqlConnection conn = new(_connectionString))
+            using (SqlCommand cmd = new("Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05 from TRACKINIG_ResultSetup_Name ", conn))
+            {
+               
+                conn.Open();
+                using SqlDataReader dr = cmd.ExecuteReader();
+                
+                while (dr.Read())
+                {
+                    list.Add(new
+                    {
+                        ModuleName = dr["ModuleName"]?.ToString() ?? "",
+                        Infor_01 = dr["Infor_01"]?.ToString() ?? "",
+                        Infor_02 = dr["Infor_02"]?.ToString() ?? "",
+                        Infor_03 = dr["Infor_03"]?.ToString() ?? "",
+                        Infor_04 = dr["Infor_04"]?.ToString() ?? "",
+                        Infor_05 = dr["Infor_05"]?.ToString() ?? "",
+                    });
+                }
+            }
+            return list;
+        }
+
+        // ------------------------- TRACKINIG_ResultSetup_Index
+        private List<object> GetTRACKING_ResultSetup_Index()
+        {
+            List<object> list = new();
+
+            using (SqlConnection conn = new(_connectionString))
+            using (SqlCommand cmd = new("Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05 from TRACKINIG_ResultSetup_Index ", conn))
+            {
+               
+                conn.Open();
+                using SqlDataReader dr = cmd.ExecuteReader();
+                
+                while (dr.Read())
+                {
+                    list.Add(new
+                    {
+                        ModuleName = dr["ModuleName"]?.ToString() ?? "",
+                        Infor_01 = dr["Infor_01"]?.ToString() ?? "",
+                        Infor_02 = dr["Infor_02"]?.ToString() ?? "",
+                        Infor_03 = dr["Infor_03"]?.ToString() ?? "",
+                        Infor_04 = dr["Infor_04"]?.ToString() ?? "",
+                        Infor_05 = dr["Infor_05"]?.ToString() ?? "",
+                    });
+                }
+            }
+            return list;
+        }
+
+        // ------------------------- TRACKINIG_ResultSetup_SelectionData
+        private List<object> GetTRACKING_ResultSetup_SelectionData()
+        {
+            List<object> list = new();
+
+            using (SqlConnection conn = new(_connectionString))
+            using (SqlCommand cmd = new("Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05 from TRACKINIG_ResultSetup_SelectionData ", conn))
+            {
+               
+                conn.Open();
+                using SqlDataReader dr = cmd.ExecuteReader();
+                
+                while (dr.Read())
+                {
+                    list.Add(new
+                    {
+                        ModuleName = dr["ModuleName"]?.ToString() ?? "",
+                        Infor_01 = dr["Infor_01"]?.ToString() ?? "",
+                        Infor_02 = dr["Infor_02"]?.ToString() ?? "",
+                        Infor_03 = dr["Infor_03"]?.ToString() ?? "",
+                        Infor_04 = dr["Infor_04"]?.ToString() ?? "",
+                        Infor_05 = dr["Infor_05"]?.ToString() ?? "",
+                    });
+                }
+            }
+            return list;
+        }
+
+        // ------------------------- TRACKINIG_ResultSetup_DataType
+        private List<object> GetTRACKING_ResultSetup_DataType()
+        {
+            List<object> list = new();
+
+            using (SqlConnection conn = new(_connectionString))
+            using (SqlCommand cmd = new("Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05 from TRACKINIG_ResultSetup_DataType ", conn))
+            {
+               
+                conn.Open();
+                using SqlDataReader dr = cmd.ExecuteReader();
+                
+                while (dr.Read())
+                {
+                    list.Add(new
+                    {
+                        ModuleName = dr["ModuleName"]?.ToString() ?? "",
+                        Infor_01 = dr["Infor_01"]?.ToString() ?? "",
+                        Infor_02 = dr["Infor_02"]?.ToString() ?? "",
+                        Infor_03 = dr["Infor_03"]?.ToString() ?? "",
+                        Infor_04 = dr["Infor_04"]?.ToString() ?? "",
+                        Infor_05 = dr["Infor_05"]?.ToString() ?? "",
                     });
                 }
             }

@@ -30,7 +30,8 @@ dotnet add package Microsoft.AspNetCore.Authentication.oAuth
 dotnet add package Microsoft.AspNetCore.Authentication.OpenIDConnect
 dotnet add package Microsoft.AspNetCore.Authentication.Twitter
 
-dotnet add package MailKit
+
+dotnet add package MailKit 
 dotnet add package MimeKit
 
 ==========Excel=============

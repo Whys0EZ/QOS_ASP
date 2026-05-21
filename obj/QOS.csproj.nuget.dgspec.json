@@ -55,7 +55,7 @@
             },
             "MailKit": {
               "target": "Package",
-              "version": "[4.13.0, )"
+              "version": "[4.16.0, )"
             },
             "Microsoft.AspNetCore.Authentication": {
               "target": "Package",
@@ -127,7 +127,7 @@
             },
             "MimeKit": {
               "target": "Package",
-              "version": "[4.15.1, )"
+              "version": "[4.16.0, )"
             },
             "MySql.EntityFrameworkCore": {
               "target": "Package",
