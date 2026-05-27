@@ -1,6 +1,114 @@
+@model QOS.Areas.Report.Models.RP_Form7ViewModel
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Report.SharedResource> ReportLocalizer
 @{
 	ViewData["Title"] = "Thông số BTP";
 	Layout = "_MenuReport";
 }
 
-<h1 style="text-align:center;">Pending Development ... </h1>
+<div class="w-100 px-2 my-3">
+	<div class="row align-items-center g-2">
+		<div class="col-12 col-md-5 mb-3 d-flex align-items-end">
+			<h2 class="text-center ms-3 text-primary text-uppercase">Thông Số Bán Thành Phẩm</h2>
+		</div>
+		<div class="col-12 col-md-7 justify-content-md-end">
+			<form method="post" id="formBTP" name="formBTP" asp-Area="Report" asp-Controller="Form7BTP" asp-Action="RP_Form7" class="row g-2 justify-content-end align-items-center ">
+				<!-- Ngày từ -->
+                <div class="col-6 col-md-2">
+                    <input type="date" id="dateFrom" name="dateFrom" class="form-control"
+                        value="@Model.DateFrom.ToString("yyyy-MM-dd")" />
+                </div>
+
+                <!-- Ngày đến -->
+                <div class="col-6 col-md-2">
+                    <input type="date" id="dateEnd" name="dateEnd" class="form-control"
+                        value="@Model.DateEnd.ToString("yyyy-MM-dd")" />
+                </div>
+
+                
+				<div class="col-12 col-sm-6 col-md-2">
+					<select id="Unit" name="Unit" class="form-select" asp-items="@(new SelectList(Model.Unit_List, "Unit", "Unit", Model.Unit))">
+					<option value="ALL">--@Localizer["Unit"]--</option>
+					</select>
+				</div>
+				<div class="col-12 col-sm-6 col-md-3 d-flex flex-column" >
+					<input type="text" id="searchMo" name="searchMo" value="@Model.SearchMo" class="form-control"  placeholder="Nhập Mo ..."  />
+				</div>
+				<!-- Buttons -->
+                <div class="col-12 col-md-3 d-flex flex-wrap gap-2 justify-content-end">
+                    <button class="btn btn-warning flex-fill" type="submit" onclick="return Submit();">@Localizer["Check"]</button>
+                    
+                    <button type="button" class="btn btn-primary flex-fill" id="ExportExcel">@Localizer["ExportExcel"]</button>
+                </div>
+			</form>
+			
+		</div>
+	</div>
+	<!-- Results -->
+	<div class="table-responsive mt-3">
+		@if (Model.ReportUnits.Count == 0)
+		{
+			<div class="alert alert-info text-center" role="alert">
+				@Localizer["Nodata"]
+			</div>
+		}
+		else
+		{
+		
+			<table class="table table-bordered table-striped">
+				<thead class="table-light">
+					<tr>
+						<th>@ReportLocalizer["Mo"]</th>
+						<th>@ReportLocalizer["Item"]</th>
+						<th>@ReportLocalizer["Description"]</th>
+						<th>@ReportLocalizer["Unit"]</th>
+						<th>@ReportLocalizer["Qty"]</th>
+						<th>@ReportLocalizer["Date"]</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					@foreach (var item in Model.ReportUnits)
+					{
+						<tr>
+							
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
+	</div>
+</div>
+
+<script>
+	function Submit() {
+		console.log("Submitting form...");
+		// console.log("Date From:", document.getElementById("dateFrom").value);
+		// console.log("Date End:", document.getElementById("dateEnd").value);
+		// console.log("Unit:", document.getElementById("Unit").value);
+		// console.log("Search Mo:", document.getElementById("searchMo").value);
+		// return false;
+		document.getElementById("formBTP").submit();
+	}
+
+	$(document).ready(function () {
+		$('#ExportExcel').click(function () {
+			// Lấy giá trị từ form
+			var dateFrom = $('#dateFrom').val();
+			var dateEnd = $('#dateEnd').val();
+			var unit = $('#Unit').val();
+			var searchMo = $('#searchMo').val();
+
+			// Tạo URL với query parameters
+			var url = '@Url.Action("ExportExcel", "Form7BTP", new { area = "Report" })' + 
+					  '?dateFrom=' + encodeURIComponent(dateFrom) + 
+					  '&dateEnd=' + encodeURIComponent(dateEnd) + 
+					  '&unit=' + encodeURIComponent(unit) + 
+					  '&searchMo=' + encodeURIComponent(searchMo);
+
+			// Chuyển hướng đến URL để tải file Excel
+			window.location.href = url;
+		});
+	});
+	
+</script>

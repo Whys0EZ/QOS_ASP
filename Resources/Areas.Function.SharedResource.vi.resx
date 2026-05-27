@@ -79,5 +79,8 @@
     <data name="F_Online_Title" xml:space="preserve">
         <value>Tài Liệu Trực Tuyến</value>
     </data>
+    <data name="MeasurementDetail" xml:space="preserve">
+        <value>Chi Tiết Điểm Đo Thông Số TP</value>
+    </data>
 
 </root>

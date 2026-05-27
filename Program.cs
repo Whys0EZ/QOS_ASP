@@ -1,16 +1,17 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using OfficeOpenXml;
 using QOS.Data;
 using QOS.Middlewares;
 using QOS.Services;
 using Serilog;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Options;
-using System.Globalization;
-using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
+
 // Configure Serilog
 // --- Bật/Tắt log dựa theo appsettings.json ---
 var logEnabled = builder.Configuration.GetValue<bool>("Logging:File:Enabled");
@@ -27,7 +28,7 @@ if (logEnabled)
             retainedFileCountLimit: 7, // Giữ log 7 ngày gần nhất
             flushToDiskInterval: TimeSpan.FromSeconds(2), // flush nhẹ, vừa phải
             buffered: true, // vẫn dùng bộ đệm để giảm I/O
-            shared: false,   // cho phép nhiều process đọc log
+            shared: false, // cho phép nhiều process đọc log
             outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"
         )
         .CreateLogger();
@@ -43,23 +44,27 @@ else
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
 
 // đang ki service UserPermission
 builder.Services.AddScoped<IUserPermissionService, UserPermissionService>();
 
-builder.Services.AddControllers()
+builder
+    .Services.AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.PropertyNamingPolicy = null; // giữ nguyên tên property
     });
 
 // Factory Name
-builder.Services.Configure<QOS.Models.AppSettings>(builder.Configuration.GetSection("AppSettings"));  
+builder.Services.Configure<QOS.Models.AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
 // builder.Services.AddSession();
 
-// 
+//
 builder.Services.AddScoped<QOS.Services.CommonDataService>();
+
 // Thêm Session
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
@@ -68,13 +73,14 @@ builder.Services.AddSession(options =>
 });
 
 // Thêm Authentication cookie
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie( options =>
+builder
+    .Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
     {
-        options.LoginPath = "/Account/Auth";  // Nếu chưa login → chuyển về trang login
+        options.LoginPath = "/Account/Auth"; // Nếu chưa login → chuyển về trang login
         options.LogoutPath = "/Account/Logout"; // Đường dẫn logout
         options.AccessDeniedPath = "/Account/AccessDenied";
-        options.ExpireTimeSpan = TimeSpan.FromDays(1);   // Cookie sống 1 ngày
+        options.ExpireTimeSpan = TimeSpan.FromDays(1); // Cookie sống 1 ngày
         options.SlidingExpiration = true; // reset lại thời gian khi user thao tác
     });
 
@@ -82,28 +88,43 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // ExcelPackage.License = new LicenseContext(LicenseType.NonCommercial);
 // ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
+// Swagger Test API: http://localhost:8080/swagger/index.html
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 builder.WebHost.UseUrls("http://0.0.0.0:8080");
 
 // 1. Đăng ký Localization
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
 // 2. Cấu hình MVC hỗ trợ localization
-builder.Services.AddControllersWithViews()
-    .AddViewLocalization()
-    .AddDataAnnotationsLocalization();
+builder.Services.AddControllersWithViews().AddViewLocalization().AddDataAnnotationsLocalization();
 
 // 3. Khai báo ngôn ngữ hỗ trợ
 var supportedCultures = new[] { "en", "vi" };
 
-
 var app = builder.Build();
+
+// if (app.Environment.IsDevelopment())
+// {
+app.UseSwagger();
+
+// app.UseSwaggerUI();
+app.UseSwaggerUI(options =>
+{
+    options.DocumentTitle = "QOS API System";
+    options.RoutePrefix = "docs/api";
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "QOS API V1");
+});
+
+// }
 
 // 4. Middleware xác định ngôn ngữ
 var localizationOptions = new RequestLocalizationOptions
 {
     DefaultRequestCulture = new RequestCulture("vi"),
     SupportedCultures = supportedCultures.Select(c => new CultureInfo(c)).ToList(),
-    SupportedUICultures = supportedCultures.Select(c => new CultureInfo(c)).ToList()
+    SupportedUICultures = supportedCultures.Select(c => new CultureInfo(c)).ToList(),
 };
 
 // Cho phép đổi ngôn ngữ bằng query string, cookie, hoặc header
@@ -111,25 +132,30 @@ localizationOptions.RequestCultureProviders.Insert(0, new QueryStringRequestCult
 localizationOptions.RequestCultureProviders.Insert(1, new CookieRequestCultureProvider());
 
 app.UseRequestLocalization(localizationOptions);
+
 // Detect Device
 app.UseMiddleware<QOS.Middlewares.DeviceDetectionMiddleware>();
 
 app.UseStaticFiles();
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(builder.Environment.ContentRootPath, "..", "QOS", "upload")),
-    RequestPath = "/upload"
-});
+app.UseStaticFiles(
+    new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(
+            Path.Combine(builder.Environment.ContentRootPath, "..", "QOS", "upload")
+        ),
+        RequestPath = "/upload",
+    }
+);
 
 app.UseRouting();
 
-app.UseAuthentication();  // phải trước Authorization
-app.UseAuthorization();   // sau Authentication
+app.UseAuthentication(); // phải trước Authorization
+app.UseAuthorization(); // sau Authentication
 
 app.MapControllers(); // ✅ cho API
 
-app.UseSession(); 
+app.UseSession();
+
 // app.UseClearSessionMiddleware(); // Middleware xóa session khi chưa đăng nhập
 app.MapAreaControllerRoute(
     name: "function",
@@ -158,10 +184,6 @@ app.MapAreaControllerRoute(
 );
 app.MapGet("/health", () => "OK");
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
+app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

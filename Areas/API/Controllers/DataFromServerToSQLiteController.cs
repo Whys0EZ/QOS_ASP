@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace QOS.Areas.API.Controllers
 {
@@ -16,12 +16,16 @@ namespace QOS.Areas.API.Controllers
         private readonly string _connectionString;
         private readonly ILogger<DataFromServerToSQLiteController> _logger;
 
-        public DataFromServerToSQLiteController(IConfiguration config, ILogger<DataFromServerToSQLiteController> logger)
+        public DataFromServerToSQLiteController(
+            IConfiguration config,
+            ILogger<DataFromServerToSQLiteController> logger
+        )
         {
             _config = config;
             _logger = logger;
             _connectionString = _config.GetConnectionString("DefaultConnection")!;
         }
+
         [HttpGet]
         public IActionResult DataFromServerToSQLite(string? Code_G)
         {
@@ -32,7 +36,7 @@ namespace QOS.Areas.API.Controllers
             {
                 // Parse Code_G - Dùng "_____" (5 gạch dưới) giống PHP
                 string[] txt = Code_G.Split("_____");
-                
+
                 string codeGs = txt.Length > 0 ? txt[0] : "";
                 string myDeviceName = txt.Length > 1 ? txt[1] : "";
                 string myMAC = txt.Length > 2 ? txt[2] : "";
@@ -48,7 +52,9 @@ namespace QOS.Areas.API.Controllers
 
                 string facCode = _config.GetValue<string>("AppSettings:FactoryCode") ?? "";
 
-                 _logger.LogInformation($"GetCustomerData - facCode: {facCode}, factoryID: {factoryID}");
+                _logger.LogInformation(
+                    $"GetCustomerData - facCode: {facCode}, factoryID: {factoryID}"
+                );
 
                 // ✅ Validate authentication (Đã XÓA || 2>1)
                 if (tmp1 != MD5Hash(facCode) || tmp3 != MD5Hash(factoryID))
@@ -56,19 +62,21 @@ namespace QOS.Areas.API.Controllers
                     return Unauthorized(new { error = "Invalid factory or authentication failed" });
                 }
 
-                _logger.LogInformation($"GetCustomerData - FactoryID: {factoryID}, Device: {myDeviceName}");
+                _logger.LogInformation(
+                    $"GetCustomerData - FactoryID: {factoryID}, Device: {myDeviceName}"
+                );
 
                 var response = new
                 {
                     CustomerList = GetCustomerList(factoryID),
                     ThongSo_BTP_TypeList = GetTypeList(factoryID),
-                    Unit_Line_List = GetUniLineList(factoryID,loginID),
+                    Unit_Line_List = GetUniLineList(factoryID, loginID),
                     WorkStage_List = WorkStage_List(),
                     Size_List = Size_List(),
-                    SizeNo_List =SizeNo_List(),
+                    SizeNo_List = SizeNo_List(),
                     ThongSo_BTP_ItemList = ThongSo_BTP_ItemList(factoryID),
-                    Option_Value =Option_Value(),
-                    AQL =AQL(),
+                    Option_Value = Option_Value(),
+                    AQL = AQL(),
                     AQL_UQ = AQL_UQ(),
                     Dung_sai_inch = Dung_sai_inch(),
                     TRACKING_Module = TRACKING_Module(),
@@ -80,8 +88,6 @@ namespace QOS.Areas.API.Controllers
                     TRACKINIG_ResultSetup_Index = TRACKINIG_ResultSetup_Index(),
                     TRACKINIG_ResultSetup_SelectionData = TRACKINIG_ResultSetup_SelectionData(),
                     TRACKINIG_ResultSetup_DataType = TRACKINIG_ResultSetup_DataType(),
-                    
-
                 };
 
                 return Ok(response);
@@ -106,13 +112,10 @@ namespace QOS.Areas.API.Controllers
 
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        CustomerName = dr["CustomerName"]?.ToString() ?? ""
-                    });
+                    list.Add(new { CustomerName = dr["CustomerName"]?.ToString() ?? "" });
                 }
             }
 
@@ -132,14 +135,16 @@ namespace QOS.Areas.API.Controllers
 
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        ID = dr["ID"]?.ToString() ?? "",
-                        TypeName = dr["TypeName"]?.ToString() ?? ""
-                    });
+                    list.Add(
+                        new
+                        {
+                            ID = dr["ID"]?.ToString() ?? "",
+                            TypeName = dr["TypeName"]?.ToString() ?? "",
+                        }
+                    );
                 }
             }
 
@@ -147,7 +152,7 @@ namespace QOS.Areas.API.Controllers
         }
 
         // ------------------------- Unit - Line
-        private List<object> GetUniLineList(string factoryID ,string loginID)
+        private List<object> GetUniLineList(string factoryID, string loginID)
         {
             List<object> list = new();
 
@@ -160,17 +165,19 @@ namespace QOS.Areas.API.Controllers
 
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        Unit = dr["Unit"]?.ToString() ?? "",
-                        Line = dr["Line"]?.ToString() ?? "",
-                        Factory = dr["Factory"]?.ToString() ?? "",
-                        NO_Position = dr["NO_Position"]?.ToString() ?? "",
-                        Unit2 = dr["Unit2"]?.ToString() ?? ""
-                    });
+                    list.Add(
+                        new
+                        {
+                            Unit = dr["Unit"]?.ToString() ?? "",
+                            Line = dr["Line"]?.ToString() ?? "",
+                            Factory = dr["Factory"]?.ToString() ?? "",
+                            NO_Position = dr["NO_Position"]?.ToString() ?? "",
+                            Unit2 = dr["Unit2"]?.ToString() ?? "",
+                        }
+                    );
                 }
             }
 
@@ -185,19 +192,19 @@ namespace QOS.Areas.API.Controllers
             using (SqlConnection conn = new(_connectionString))
             using (SqlCommand cmd = new("Select * from WorkStage_List", conn))
             {
-                
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        FormID = dr["FormID"]?.ToString() ?? "",
-                        STT = dr["STT"]?.ToString() ?? "",
-                        WorkstageName = dr["WorkstageName"]?.ToString() ?? ""
-                       
-                    });
+                    list.Add(
+                        new
+                        {
+                            FormID = dr["FormID"]?.ToString() ?? "",
+                            STT = dr["STT"]?.ToString() ?? "",
+                            WorkstageName = dr["WorkstageName"]?.ToString() ?? "",
+                        }
+                    );
                 }
             }
 
@@ -212,19 +219,18 @@ namespace QOS.Areas.API.Controllers
             using (SqlConnection conn = new(_connectionString))
             using (SqlCommand cmd = new("Select * from Size_List order by STT", conn))
             {
-                
-
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        STT = dr["STT"]?.ToString() ?? "",
-                        Size = dr["Size"]?.ToString() ?? "",
-                       
-                    });
+                    list.Add(
+                        new
+                        {
+                            STT = dr["STT"]?.ToString() ?? "",
+                            Size = dr["Size"]?.ToString() ?? "",
+                        }
+                    );
                 }
             }
 
@@ -240,19 +246,12 @@ namespace QOS.Areas.API.Controllers
             using (SqlConnection conn = new(_connectionString))
             using (SqlCommand cmd = new("Select * from SizeNo_List order by SizeNo", conn))
             {
-                
-
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        SizeNo = dr["SizeNo"]?.ToString() ?? "",
-                        
-                       
-                    });
+                    list.Add(new { SizeNo = dr["SizeNo"]?.ToString() ?? "" });
                 }
             }
 
@@ -265,23 +264,29 @@ namespace QOS.Areas.API.Controllers
             List<object> list = new();
 
             using (SqlConnection conn = new(_connectionString))
-            using (SqlCommand cmd = new("Select TypeName,STT,VN_Name + case when EN_Name is NULL then '' else  '/' +  EN_Name end as ItemName,MO from Form7_ThongSo_BTP_ItemList where FactoryID=@FactoryID and Sync_Flag=1 order by TypeName,STT", conn))
+            using (
+                SqlCommand cmd = new(
+                    "Select TypeName,STT,VN_Name + case when EN_Name is NULL then '' else  '/' +  EN_Name end as ItemName,MO from Form7_ThongSo_BTP_ItemList where FactoryID=@FactoryID and Sync_Flag=1 order by TypeName,STT",
+                    conn
+                )
+            )
             {
                 cmd.Parameters.AddWithValue("@FactoryID", FactoryID);
 
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        TypeName = dr["TypeName"]?.ToString() ?? "",
-                        STT = dr["STT"]?.ToString() ?? "",
-                        ItemName = dr["ItemName"]?.ToString() ?? "",
-                        MO = dr["MO"]?.ToString() ?? "",
-                       
-                    });
+                    list.Add(
+                        new
+                        {
+                            TypeName = dr["TypeName"]?.ToString() ?? "",
+                            STT = dr["STT"]?.ToString() ?? "",
+                            ItemName = dr["ItemName"]?.ToString() ?? "",
+                            MO = dr["MO"]?.ToString() ?? "",
+                        }
+                    );
                 }
             }
 
@@ -296,21 +301,19 @@ namespace QOS.Areas.API.Controllers
             using (SqlConnection conn = new(_connectionString))
             using (SqlCommand cmd = new("Select * from Option_Value", conn))
             {
-                
-
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        FormID = dr["FormID"]?.ToString() ?? "",
-                        ItemID = dr["ItemID"]?.ToString() ?? "",
-                        ItemName = dr["ItemName"]?.ToString() ?? "",
-                       
-                       
-                    });
+                    list.Add(
+                        new
+                        {
+                            FormID = dr["FormID"]?.ToString() ?? "",
+                            ItemID = dr["ItemID"]?.ToString() ?? "",
+                            ItemName = dr["ItemName"]?.ToString() ?? "",
+                        }
+                    );
                 }
             }
 
@@ -325,22 +328,22 @@ namespace QOS.Areas.API.Controllers
             using (SqlConnection conn = new(_connectionString))
             using (SqlCommand cmd = new("Select * from AQL where Active=1", conn))
             {
-               
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        AQL_Code = dr["AQL_Code"]?.ToString() ?? "",
-                        Qty_From = dr["Qty_From"]?.ToString() ?? "",
-                        Qty_To = dr["Qty_To"]?.ToString() ?? "",
-                        Qty_Check = dr["Qty_Check"]?.ToString() ?? "",
-                        Qty_Fault = dr["Qty_Fault"]?.ToString() ?? "",
-                        typecode = dr["typecode"]?.ToString() ?? "",
-                       
-                    });
+                    list.Add(
+                        new
+                        {
+                            AQL_Code = dr["AQL_Code"]?.ToString() ?? "",
+                            Qty_From = dr["Qty_From"]?.ToString() ?? "",
+                            Qty_To = dr["Qty_To"]?.ToString() ?? "",
+                            Qty_Check = dr["Qty_Check"]?.ToString() ?? "",
+                            Qty_Fault = dr["Qty_Fault"]?.ToString() ?? "",
+                            typecode = dr["typecode"]?.ToString() ?? "",
+                        }
+                    );
                 }
             }
 
@@ -355,22 +358,22 @@ namespace QOS.Areas.API.Controllers
             using (SqlConnection conn = new(_connectionString))
             using (SqlCommand cmd = new("Select * from AQL where Active=0", conn))
             {
-               
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        AQL_Code = dr["AQL_Code"]?.ToString() ?? "",
-                        Qty_From = dr["Qty_From"]?.ToString() ?? "",
-                        Qty_To = dr["Qty_To"]?.ToString() ?? "",
-                        Qty_Check = dr["Qty_Check"]?.ToString() ?? "",
-                        Qty_Fault = dr["Qty_Fault"]?.ToString() ?? "",
-                        typecode = dr["typecode"]?.ToString() ?? "",
-                       
-                    });
+                    list.Add(
+                        new
+                        {
+                            AQL_Code = dr["AQL_Code"]?.ToString() ?? "",
+                            Qty_From = dr["Qty_From"]?.ToString() ?? "",
+                            Qty_To = dr["Qty_To"]?.ToString() ?? "",
+                            Qty_Check = dr["Qty_Check"]?.ToString() ?? "",
+                            Qty_Fault = dr["Qty_Fault"]?.ToString() ?? "",
+                            typecode = dr["typecode"]?.ToString() ?? "",
+                        }
+                    );
                 }
             }
 
@@ -385,19 +388,19 @@ namespace QOS.Areas.API.Controllers
             using (SqlConnection conn = new(_connectionString))
             using (SqlCommand cmd = new("Select * from Dung_sai where Don_vi = 'inch' ", conn))
             {
-               
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        ID = dr["ID"]?.ToString() ?? "",
-                        Thong_so = dr["Thong_so"]?.ToString()?.Trim() ?? "",
-                        Don_vi = dr["Don_vi"]?.ToString()?.Trim() ?? "",
-                       
-                    });
+                    list.Add(
+                        new
+                        {
+                            ID = dr["ID"]?.ToString() ?? "",
+                            Thong_so = dr["Thong_so"]?.ToString()?.Trim() ?? "",
+                            Don_vi = dr["Don_vi"]?.ToString()?.Trim() ?? "",
+                        }
+                    );
                 }
             }
 
@@ -412,17 +415,12 @@ namespace QOS.Areas.API.Controllers
             using (SqlConnection conn = new(_connectionString))
             using (SqlCommand cmd = new("Select ModuleName from TRACKING_Module ", conn))
             {
-               
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        ModuleName = dr["ModuleName"]?.ToString() ?? "",
-                     
-                    });
+                    list.Add(new { ModuleName = dr["ModuleName"]?.ToString() ?? "" });
                 }
             }
             return list;
@@ -434,21 +432,26 @@ namespace QOS.Areas.API.Controllers
             List<object> list = new();
 
             using (SqlConnection conn = new(_connectionString))
-            using (SqlCommand cmd = new("Select STT,ModuleName,GroupID from TRACKING_GroupContactList ", conn))
+            using (
+                SqlCommand cmd = new(
+                    "Select STT,ModuleName,GroupID from TRACKING_GroupContactList ",
+                    conn
+                )
+            )
             {
-               
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        STT = dr["STT"]?.ToString() ?? "",
-                        ModuleName = dr["ModuleName"]?.ToString() ?? "",
-                        GroupID = dr["GroupID"]?.ToString() ?? "",
-                     
-                    });
+                    list.Add(
+                        new
+                        {
+                            STT = dr["STT"]?.ToString() ?? "",
+                            ModuleName = dr["ModuleName"]?.ToString() ?? "",
+                            GroupID = dr["GroupID"]?.ToString() ?? "",
+                        }
+                    );
                 }
             }
             return list;
@@ -460,35 +463,39 @@ namespace QOS.Areas.API.Controllers
             List<object> list = new();
 
             using (SqlConnection conn = new(_connectionString))
-            using (SqlCommand cmd = new("Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05,Infor_06,Infor_07,Infor_08,Infor_09,Infor_10,Infor_11,Infor_12,Infor_13,Infor_14,Infor_15 from TRACKING_InforSetup_DataType ", conn))
+            using (
+                SqlCommand cmd = new(
+                    "Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05,Infor_06,Infor_07,Infor_08,Infor_09,Infor_10,Infor_11,Infor_12,Infor_13,Infor_14,Infor_15 from TRACKING_InforSetup_DataType ",
+                    conn
+                )
+            )
             {
-               
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        
-                        ModuleName = dr["ModuleName"]?.ToString() ?? "",
-                        Infor_01 = dr["Infor_01"]?.ToString() ?? "",
-                        Infor_02 = dr["Infor_02"]?.ToString() ?? "",
-                        Infor_03 = dr["Infor_03"]?.ToString() ?? "",
-                        Infor_04 = dr["Infor_04"]?.ToString() ?? "",
-                        Infor_05 = dr["Infor_05"]?.ToString() ?? "",
-                        Infor_06 = dr["Infor_06"]?.ToString() ?? "",
-                        Infor_07 = dr["Infor_07"]?.ToString() ?? "",
-                        Infor_08 = dr["Infor_08"]?.ToString() ?? "",
-                        Infor_09 = dr["Infor_09"]?.ToString() ?? "",
-                        Infor_10 = dr["Infor_10"]?.ToString() ?? "",
-                        Infor_11 = dr["Infor_11"]?.ToString() ?? "",
-                        Infor_12 = dr["Infor_12"]?.ToString() ?? "",
-                        Infor_13 = dr["Infor_13"]?.ToString() ?? "",
-                        Infor_14 = dr["Infor_14"]?.ToString() ?? "",
-                        Infor_15 = dr["Infor_15"]?.ToString() ?? "",
-                     
-                    });
+                    list.Add(
+                        new
+                        {
+                            ModuleName = dr["ModuleName"]?.ToString() ?? "",
+                            Infor_01 = dr["Infor_01"]?.ToString() ?? "",
+                            Infor_02 = dr["Infor_02"]?.ToString() ?? "",
+                            Infor_03 = dr["Infor_03"]?.ToString() ?? "",
+                            Infor_04 = dr["Infor_04"]?.ToString() ?? "",
+                            Infor_05 = dr["Infor_05"]?.ToString() ?? "",
+                            Infor_06 = dr["Infor_06"]?.ToString() ?? "",
+                            Infor_07 = dr["Infor_07"]?.ToString() ?? "",
+                            Infor_08 = dr["Infor_08"]?.ToString() ?? "",
+                            Infor_09 = dr["Infor_09"]?.ToString() ?? "",
+                            Infor_10 = dr["Infor_10"]?.ToString() ?? "",
+                            Infor_11 = dr["Infor_11"]?.ToString() ?? "",
+                            Infor_12 = dr["Infor_12"]?.ToString() ?? "",
+                            Infor_13 = dr["Infor_13"]?.ToString() ?? "",
+                            Infor_14 = dr["Infor_14"]?.ToString() ?? "",
+                            Infor_15 = dr["Infor_15"]?.ToString() ?? "",
+                        }
+                    );
                 }
             }
             return list;
@@ -500,35 +507,39 @@ namespace QOS.Areas.API.Controllers
             List<object> list = new();
 
             using (SqlConnection conn = new(_connectionString))
-            using (SqlCommand cmd = new("Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05,Infor_06,Infor_07,Infor_08,Infor_09,Infor_10,Infor_11,Infor_12,Infor_13,Infor_14,Infor_15 from TRACKING_InforSetup_Index ", conn))
+            using (
+                SqlCommand cmd = new(
+                    "Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05,Infor_06,Infor_07,Infor_08,Infor_09,Infor_10,Infor_11,Infor_12,Infor_13,Infor_14,Infor_15 from TRACKING_InforSetup_Index ",
+                    conn
+                )
+            )
             {
-               
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        
-                        ModuleName = dr["ModuleName"]?.ToString() ?? "",
-                        Infor_01 = dr["Infor_01"]?.ToString() ?? "",
-                        Infor_02 = dr["Infor_02"]?.ToString() ?? "",
-                        Infor_03 = dr["Infor_03"]?.ToString() ?? "",
-                        Infor_04 = dr["Infor_04"]?.ToString() ?? "",
-                        Infor_05 = dr["Infor_05"]?.ToString() ?? "",
-                        Infor_06 = dr["Infor_06"]?.ToString() ?? "",
-                        Infor_07 = dr["Infor_07"]?.ToString() ?? "",
-                        Infor_08 = dr["Infor_08"]?.ToString() ?? "",
-                        Infor_09 = dr["Infor_09"]?.ToString() ?? "",
-                        Infor_10 = dr["Infor_10"]?.ToString() ?? "",
-                        Infor_11 = dr["Infor_11"]?.ToString() ?? "",
-                        Infor_12 = dr["Infor_12"]?.ToString() ?? "",
-                        Infor_13 = dr["Infor_13"]?.ToString() ?? "",
-                        Infor_14 = dr["Infor_14"]?.ToString() ?? "",
-                        Infor_15 = dr["Infor_15"]?.ToString() ?? "",
-                     
-                    });
+                    list.Add(
+                        new
+                        {
+                            ModuleName = dr["ModuleName"]?.ToString() ?? "",
+                            Infor_01 = dr["Infor_01"]?.ToString() ?? "",
+                            Infor_02 = dr["Infor_02"]?.ToString() ?? "",
+                            Infor_03 = dr["Infor_03"]?.ToString() ?? "",
+                            Infor_04 = dr["Infor_04"]?.ToString() ?? "",
+                            Infor_05 = dr["Infor_05"]?.ToString() ?? "",
+                            Infor_06 = dr["Infor_06"]?.ToString() ?? "",
+                            Infor_07 = dr["Infor_07"]?.ToString() ?? "",
+                            Infor_08 = dr["Infor_08"]?.ToString() ?? "",
+                            Infor_09 = dr["Infor_09"]?.ToString() ?? "",
+                            Infor_10 = dr["Infor_10"]?.ToString() ?? "",
+                            Infor_11 = dr["Infor_11"]?.ToString() ?? "",
+                            Infor_12 = dr["Infor_12"]?.ToString() ?? "",
+                            Infor_13 = dr["Infor_13"]?.ToString() ?? "",
+                            Infor_14 = dr["Infor_14"]?.ToString() ?? "",
+                            Infor_15 = dr["Infor_15"]?.ToString() ?? "",
+                        }
+                    );
                 }
             }
             return list;
@@ -540,35 +551,39 @@ namespace QOS.Areas.API.Controllers
             List<object> list = new();
 
             using (SqlConnection conn = new(_connectionString))
-            using (SqlCommand cmd = new("Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05,Infor_06,Infor_07,Infor_08,Infor_09,Infor_10,Infor_11,Infor_12,Infor_13,Infor_14,Infor_15 from TRACKING_InforSetup_Name ", conn))
+            using (
+                SqlCommand cmd = new(
+                    "Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05,Infor_06,Infor_07,Infor_08,Infor_09,Infor_10,Infor_11,Infor_12,Infor_13,Infor_14,Infor_15 from TRACKING_InforSetup_Name ",
+                    conn
+                )
+            )
             {
-               
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        
-                        ModuleName = dr["ModuleName"]?.ToString() ?? "",
-                        Infor_01 = dr["Infor_01"]?.ToString() ?? "",
-                        Infor_02 = dr["Infor_02"]?.ToString() ?? "",
-                        Infor_03 = dr["Infor_03"]?.ToString() ?? "",
-                        Infor_04 = dr["Infor_04"]?.ToString() ?? "",
-                        Infor_05 = dr["Infor_05"]?.ToString() ?? "",
-                        Infor_06 = dr["Infor_06"]?.ToString() ?? "",
-                        Infor_07 = dr["Infor_07"]?.ToString() ?? "",
-                        Infor_08 = dr["Infor_08"]?.ToString() ?? "",
-                        Infor_09 = dr["Infor_09"]?.ToString() ?? "",
-                        Infor_10 = dr["Infor_10"]?.ToString() ?? "",
-                        Infor_11 = dr["Infor_11"]?.ToString() ?? "",
-                        Infor_12 = dr["Infor_12"]?.ToString() ?? "",
-                        Infor_13 = dr["Infor_13"]?.ToString() ?? "",
-                        Infor_14 = dr["Infor_14"]?.ToString() ?? "",
-                        Infor_15 = dr["Infor_15"]?.ToString() ?? "",
-                     
-                    });
+                    list.Add(
+                        new
+                        {
+                            ModuleName = dr["ModuleName"]?.ToString() ?? "",
+                            Infor_01 = dr["Infor_01"]?.ToString() ?? "",
+                            Infor_02 = dr["Infor_02"]?.ToString() ?? "",
+                            Infor_03 = dr["Infor_03"]?.ToString() ?? "",
+                            Infor_04 = dr["Infor_04"]?.ToString() ?? "",
+                            Infor_05 = dr["Infor_05"]?.ToString() ?? "",
+                            Infor_06 = dr["Infor_06"]?.ToString() ?? "",
+                            Infor_07 = dr["Infor_07"]?.ToString() ?? "",
+                            Infor_08 = dr["Infor_08"]?.ToString() ?? "",
+                            Infor_09 = dr["Infor_09"]?.ToString() ?? "",
+                            Infor_10 = dr["Infor_10"]?.ToString() ?? "",
+                            Infor_11 = dr["Infor_11"]?.ToString() ?? "",
+                            Infor_12 = dr["Infor_12"]?.ToString() ?? "",
+                            Infor_13 = dr["Infor_13"]?.ToString() ?? "",
+                            Infor_14 = dr["Infor_14"]?.ToString() ?? "",
+                            Infor_15 = dr["Infor_15"]?.ToString() ?? "",
+                        }
+                    );
                 }
             }
             return list;
@@ -580,26 +595,29 @@ namespace QOS.Areas.API.Controllers
             List<object> list = new();
 
             using (SqlConnection conn = new(_connectionString))
-            using (SqlCommand cmd = new("Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05 from TRACKINIG_ResultSetup_Name ", conn))
+            using (
+                SqlCommand cmd = new(
+                    "Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05 from TRACKINIG_ResultSetup_Name ",
+                    conn
+                )
+            )
             {
-               
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        
-                        ModuleName = dr["ModuleName"]?.ToString() ?? "",
-                        Infor_01 = dr["Infor_01"]?.ToString() ?? "",
-                        Infor_02 = dr["Infor_02"]?.ToString() ?? "",
-                        Infor_03 = dr["Infor_03"]?.ToString() ?? "",
-                        Infor_04 = dr["Infor_04"]?.ToString() ?? "",
-                        Infor_05 = dr["Infor_05"]?.ToString() ?? "",
-                        
-                     
-                    });
+                    list.Add(
+                        new
+                        {
+                            ModuleName = dr["ModuleName"]?.ToString() ?? "",
+                            Infor_01 = dr["Infor_01"]?.ToString() ?? "",
+                            Infor_02 = dr["Infor_02"]?.ToString() ?? "",
+                            Infor_03 = dr["Infor_03"]?.ToString() ?? "",
+                            Infor_04 = dr["Infor_04"]?.ToString() ?? "",
+                            Infor_05 = dr["Infor_05"]?.ToString() ?? "",
+                        }
+                    );
                 }
             }
             return list;
@@ -611,26 +629,29 @@ namespace QOS.Areas.API.Controllers
             List<object> list = new();
 
             using (SqlConnection conn = new(_connectionString))
-            using (SqlCommand cmd = new("Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05 from TRACKINIG_ResultSetup_Index ", conn))
+            using (
+                SqlCommand cmd = new(
+                    "Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05 from TRACKINIG_ResultSetup_Index ",
+                    conn
+                )
+            )
             {
-               
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        
-                        ModuleName = dr["ModuleName"]?.ToString() ?? "",
-                        Infor_01 = dr["Infor_01"]?.ToString() ?? "",
-                        Infor_02 = dr["Infor_02"]?.ToString() ?? "",
-                        Infor_03 = dr["Infor_03"]?.ToString() ?? "",
-                        Infor_04 = dr["Infor_04"]?.ToString() ?? "",
-                        Infor_05 = dr["Infor_05"]?.ToString() ?? "",
-                        
-                     
-                    });
+                    list.Add(
+                        new
+                        {
+                            ModuleName = dr["ModuleName"]?.ToString() ?? "",
+                            Infor_01 = dr["Infor_01"]?.ToString() ?? "",
+                            Infor_02 = dr["Infor_02"]?.ToString() ?? "",
+                            Infor_03 = dr["Infor_03"]?.ToString() ?? "",
+                            Infor_04 = dr["Infor_04"]?.ToString() ?? "",
+                            Infor_05 = dr["Infor_05"]?.ToString() ?? "",
+                        }
+                    );
                 }
             }
             return list;
@@ -642,61 +663,67 @@ namespace QOS.Areas.API.Controllers
             List<object> list = new();
 
             using (SqlConnection conn = new(_connectionString))
-            using (SqlCommand cmd = new("Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05 from TRACKINIG_ResultSetup_SelectionData ", conn))
+            using (
+                SqlCommand cmd = new(
+                    "Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05 from TRACKINIG_ResultSetup_SelectionData ",
+                    conn
+                )
+            )
             {
-               
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        
-                        ModuleName = dr["ModuleName"]?.ToString() ?? "",
-                        Infor_01 = dr["Infor_01"]?.ToString() ?? "",
-                        Infor_02 = dr["Infor_02"]?.ToString() ?? "",
-                        Infor_03 = dr["Infor_03"]?.ToString() ?? "",
-                        Infor_04 = dr["Infor_04"]?.ToString() ?? "",
-                        Infor_05 = dr["Infor_05"]?.ToString() ?? "",
-                        
-                     
-                    });
+                    list.Add(
+                        new
+                        {
+                            ModuleName = dr["ModuleName"]?.ToString() ?? "",
+                            Infor_01 = dr["Infor_01"]?.ToString() ?? "",
+                            Infor_02 = dr["Infor_02"]?.ToString() ?? "",
+                            Infor_03 = dr["Infor_03"]?.ToString() ?? "",
+                            Infor_04 = dr["Infor_04"]?.ToString() ?? "",
+                            Infor_05 = dr["Infor_05"]?.ToString() ?? "",
+                        }
+                    );
                 }
             }
             return list;
         }
+
         // ------------------------- TRACKINIG_ResultSetup_DataType
         private List<object> TRACKINIG_ResultSetup_DataType()
         {
             List<object> list = new();
 
             using (SqlConnection conn = new(_connectionString))
-            using (SqlCommand cmd = new("Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05 from TRACKINIG_ResultSetup_DataType ", conn))
+            using (
+                SqlCommand cmd = new(
+                    "Select ModuleName,Infor_01,Infor_02,Infor_03,Infor_04,Infor_05 from TRACKINIG_ResultSetup_DataType ",
+                    conn
+                )
+            )
             {
-               
                 conn.Open();
                 using SqlDataReader dr = cmd.ExecuteReader();
-                
+
                 while (dr.Read())
                 {
-                    list.Add(new
-                    {
-                        
-                        ModuleName = dr["ModuleName"]?.ToString() ?? "",
-                        Infor_01 = dr["Infor_01"]?.ToString() ?? "",
-                        Infor_02 = dr["Infor_02"]?.ToString() ?? "",
-                        Infor_03 = dr["Infor_03"]?.ToString() ?? "",
-                        Infor_04 = dr["Infor_04"]?.ToString() ?? "",
-                        Infor_05 = dr["Infor_05"]?.ToString() ?? "",
-                        
-                     
-                    });
+                    list.Add(
+                        new
+                        {
+                            ModuleName = dr["ModuleName"]?.ToString() ?? "",
+                            Infor_01 = dr["Infor_01"]?.ToString() ?? "",
+                            Infor_02 = dr["Infor_02"]?.ToString() ?? "",
+                            Infor_03 = dr["Infor_03"]?.ToString() ?? "",
+                            Infor_04 = dr["Infor_04"]?.ToString() ?? "",
+                            Infor_05 = dr["Infor_05"]?.ToString() ?? "",
+                        }
+                    );
                 }
             }
             return list;
         }
-
 
         private static string MD5Hash(string input)
         {

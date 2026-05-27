@@ -79,6 +79,8 @@
     <data name="F_Online_Title" xml:space="preserve">
         <value>Online Files</value>
     </data>
-    
+    <data name="MeasurementDetail" xml:space="preserve">
+        <value>Finished Product Parameter Measurement Point Detail</value>
+    </data>
 
 </root>

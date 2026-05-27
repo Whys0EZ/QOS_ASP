@@ -1,9 +1,229 @@
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Function.SharedResource> FuncLocalizer
+@model List<QOS.Models.ThongSoDoViewModel>
+
 @{
-    ViewData["Title"] = "Function Page";
     Layout = "_MenuFunction";
+    ViewData["Title"] = Localizer["Upload"] + " " + Localizer["ThongSoTP"];
+    var message = TempData["MessageStatus"]?.ToString();
+    var currentSize = "";
 }
 
+<div class="container-fluid mt-3">
+
+    <div class="card shadow-sm">
+
+        <div class="card-header">
+
+            <h2 class="text-primary fw-bold mb-0 text-uppercase">
+                 @Localizer["Upload"] @Localizer["ThongSoTP"]
+            </h2>
+
+        </div>
+
+        <div class="card-body">
+
+            @if (!string.IsNullOrEmpty(message))
+            {
+                <div class="alert alert-info text-center">
+                    @message
+                </div>
+            }
+
+            <div id="loading"
+                 style="display:none;"
+                 class="text-center mb-3">
+
+                <div class="spinner-border text-primary"></div>
+
+                <div class="mt-2">
+                    Uploading...
+                </div>
+
+            </div>
+
+            <form method="post"
+                  enctype="multipart/form-data">
+
+                <div class="row">
+
+                    <div class="col-md-3">
+
+                        <label class="form-label fw-bold">
+                            StyleName
+                        </label>
+
+                        <input type="text"
+                               name="StyleName"
+                               id="StyleName"
+                               class="form-control"
+                               autocomplete="on"
+                               value="@ViewBag.StyleName"
+                               required />
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-bold">
+                            Excel File
+                        </label>
+
+                        <input type="file"
+                               name="file"
+                               id="file"
+                               class="form-control"
+                               accept=".xls,.xlsx" />
+
+                    </div>
+
+                    <div class="col-md-3 d-flex align-items-end">
+
+                        <button type="submit"
+                                formaction="/Function/ThongSoDo/Import"
+                                class="btn btn-primary me-2"
+                                onclick="showLoading()">
+
+                            @Localizer["Upload"]
+
+                        </button>
+
+                        <button type="submit"
+                                formaction="/Function/ThongSoDo/ViewData"
+                                class="btn btn-success">
+
+                            @Localizer["Check"]
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    @if (ViewBag.Data != null)
+    {
+        <div class="card mt-4 shadow-sm">
+
+            <div class="card-header fw-bold">
+
+                @FuncLocalizer["MeasurementDetail"]
+
+            </div>
+
+            <div class="card-body table-responsive">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>FactoryID</th>
+                            <th>StyleName</th>
+                            <th>STT</th>
+                            <th>Item Name</th>
+                            <th>Size</th>
+                            <th>Target Value</th>
+                            <th>TOL</th>
+                            <th>Ver</th>
+                            <th style="border-top: solid 1px #666;"> @FuncLocalizer["Result"] </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in ViewBag.Data)
+                        {
+                            if (currentSize != item.Size)
+                            {
+                                currentSize = item.Size;
+
+                                <tr class="table-primary">
+
+                                    <td colspan="9"
+                                        class="fw-bold text-center">
+
+                                        SIZE : @currentSize
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                            <tr>
+
+                                <td>@item.FactoryID</td>
+                                <td>@item.StyleName</td>
+                                <td>@item.STT</td>
+
+                                <td style="text-align:left;padding-left:10px;">
+
+                                    @item.Item_Name
+
+                                </td>
+
+                                <td>@item.Size</td>
+                                <td>@item.Target_Value</td>
+                                <td>@item.TOL</td>
+                                <td>@item.Ver</td>
+                                <td style="border-top: solid 1px #666;">
+
+                                    @if (ViewBag.IsSuccess == true)
+                                    {
+                                        <span class="badge bg-success">
+                                            OK
+                                        </span>
+                                    }
+                                    else if (ViewBag.IsSuccess == false)
+                                    {
+                                        <span class="badge bg-danger">
+                                            NG
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            N/A
+                                        </span>
+                                    }
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center mt-4">
+            No data to display. Please upload an Excel file and click "@Localizer["Check"]".
+        </div>
+    }
+
+</div>
 
 
-<h2>Trang Function</h2>
-<p>Nội dung chính của Function ở đây.</p>
+
+<script>
+
+    function showLoading() {
+
+        document.getElementById("loading").style.display = "block";
+
+    }
+
+</script>
+

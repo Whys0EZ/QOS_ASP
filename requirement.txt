@@ -17,7 +17,7 @@ dotnet add package Microsoft.AspNetCore.Identity.UI --version 8.0.*
 dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design --version 8.0.*
 dotnet add package Microsoft.EntityFrameworkCore.Tools --version 8.0.* 
 dotnet add package MySql.EntityFrameworkCore --version 8.*
-
+dotnet add package Swashbuckle.AspNetCore --version 6.6.2
 
 dotnet add package Microsoft.AspNetCore.Authentication
 dotnet add package Microsoft.AspNetCore.Http.Abstractions

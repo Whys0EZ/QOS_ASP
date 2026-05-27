@@ -1,17 +1,17 @@
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Localization;
 using OfficeOpenXml;
+using OfficeOpenXml.Drawing;
+using QOS;
+using QOS.Areas.Function;
 using QOS.Areas.Function.Models;
 using QOS.Data;
-using System.IO;
-using System.Drawing;
-using OfficeOpenXml.Drawing;
-using QOS.Areas.Function;
-using QOS;
-using Microsoft.Extensions.Localization;
 
 namespace QOS.Areas.Function.Controllers
 {
@@ -26,11 +26,17 @@ namespace QOS.Areas.Function.Controllers
         private readonly IStringLocalizer<QOS.SharedResource> _sharedLocalizer;
         private readonly IStringLocalizer<QOS.Areas.Function.SharedResource> _funcLocalizer;
         private readonly string _factoryName;
-        private string factoryName => User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
+        private string factoryName =>
+            User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
 
-        public ThongSoTPController(ILogger<ThongSoTPController> logger, AppDbContext context, IWebHostEnvironment env, IConfiguration configuration,
-        IStringLocalizer<QOS.SharedResource> sharedLocalizer,
-        IStringLocalizer<QOS.Areas.Function.SharedResource> funcLocalizer)
+        public ThongSoTPController(
+            ILogger<ThongSoTPController> logger,
+            AppDbContext context,
+            IWebHostEnvironment env,
+            IConfiguration configuration,
+            IStringLocalizer<QOS.SharedResource> sharedLocalizer,
+            IStringLocalizer<QOS.Areas.Function.SharedResource> funcLocalizer
+        )
         {
             _logger = logger;
             _context = context;
@@ -40,6 +46,7 @@ namespace QOS.Areas.Function.Controllers
             _funcLocalizer = funcLocalizer;
             _factoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
         }
+
         protected string FactoryName
         {
             get
@@ -52,6 +59,7 @@ namespace QOS.Areas.Function.Controllers
                 return factoryName;
             }
         }
+
         [TempData]
         public string? MessageStatus { get; set; } = "";
 
@@ -60,10 +68,9 @@ namespace QOS.Areas.Function.Controllers
 
         //     return View();
         // }
-        [HttpGet,HttpPost]
+        [HttpGet, HttpPost]
         public IActionResult Index()
         {
-            
             return View();
         }
 
@@ -71,24 +78,26 @@ namespace QOS.Areas.Function.Controllers
         {
             try
             {
-                if(User.Identity?.Name == "admin")
+                if (User.Identity?.Name == "admin")
                 {
                     // Lấy danh sách Unit cho Factory "ALL"
-                    var factorys = _context.Set<QOS.Models.Factory_List>()
+                    var factorys = _context
+                        .Set<QOS.Models.Factory_List>()
                         .OrderBy(u => u.FactoryID)
                         .ToList();
-                    
+
                     // _logger.LogInformation($"Loaded {units.Count} units from database (admin)");
                     return factorys;
-                } else {
-
-                    var factories = _context.Set<QOS.Models.Factory_List>()
+                }
+                else
+                {
+                    var factories = _context
+                        .Set<QOS.Models.Factory_List>()
                         .Where(u => u.FactoryID == FactoryName)
                         .OrderBy(u => u.FactoryID)
                         .ToList();
                     return factories;
                 }
-
             }
             catch (Exception ex)
             {
@@ -97,9 +106,13 @@ namespace QOS.Areas.Function.Controllers
             }
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> Upload(IFormFile Upload_EXCEL, string FormType, string FactoryID, string TypeName)
+        public async Task<IActionResult> Upload(
+            IFormFile Upload_EXCEL,
+            string FormType,
+            string FactoryID,
+            string TypeName
+        )
         {
             if (Upload_EXCEL == null || Upload_EXCEL.Length == 0)
             {
@@ -112,9 +125,11 @@ namespace QOS.Areas.Function.Controllers
             string Search_V = "";
             // 1. Lưu file Excel tạm
             string uploadsFolder = Path.Combine(_env.WebRootPath, "upload/ThongSoThanhPham/EXCEL");
-            if (!Directory.Exists(uploadsFolder)) Directory.CreateDirectory(uploadsFolder);
+            if (!Directory.Exists(uploadsFolder))
+                Directory.CreateDirectory(uploadsFolder);
 
-            string fileName = $"{DateTime.Now:yyyyMMddHHmmss}_{User.Identity?.Name}_{Upload_EXCEL.FileName}";
+            string fileName =
+                $"{DateTime.Now:yyyyMMddHHmmss}_{User.Identity?.Name}_{Upload_EXCEL.FileName}";
             string filePath = Path.Combine(uploadsFolder, fileName);
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
@@ -153,7 +168,9 @@ namespace QOS.Areas.Function.Controllers
                     string? connString = _configuration.GetConnectionString("DefaultConnection");
                     if (string.IsNullOrEmpty(connString))
                     {
-                        throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
+                        throw new InvalidOperationException(
+                            "Connection string 'DefaultConnection' is not configured."
+                        );
                     }
                     using (var conn = new SqlConnection(connString))
                     {
@@ -170,14 +187,23 @@ namespace QOS.Areas.Function.Controllers
                             cmd.Parameters.AddWithValue("@MO", MO);
                             cmd.Parameters.AddWithValue("@SMPL", SMPL);
                             cmd.Parameters.AddWithValue("@Remark", Remark);
-                            cmd.Parameters.AddWithValue("@UserUpdate", User.Identity?.Name ?? "system");
+                            cmd.Parameters.AddWithValue(
+                                "@UserUpdate",
+                                User.Identity?.Name ?? "system"
+                            );
                             await cmd.ExecuteNonQueryAsync();
                         }
 
                         // 4. Insert Title Report
                         // string imgPath = $"/upload/ThongSoThanhPham/IMG/{StyleName}.png"; // TODO: xử lý ảnh nếu có
                         // Folder lưu ảnh
-                        string outputFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "upload", "ThongSoThanhPham", "IMG");
+                        string outputFolder = Path.Combine(
+                            Directory.GetCurrentDirectory(),
+                            "wwwroot",
+                            "upload",
+                            "ThongSoThanhPham",
+                            "IMG"
+                        );
                         if (!Directory.Exists(outputFolder))
                         {
                             Directory.CreateDirectory(outputFolder);
@@ -190,8 +216,8 @@ namespace QOS.Areas.Function.Controllers
                             if (drawing is ExcelPicture pic)
                             {
                                 // Lấy dữ liệu ảnh dạng byte[]
-                                byte[] imageBytes = pic.Image.ImageBytes;    // ảnh dưới dạng byte[]
-                                var pictureType = pic.Image.Type;           // ePictureType? (ví dụ Png, Jpeg)
+                                byte[] imageBytes = pic.Image.ImageBytes; // ảnh dưới dạng byte[]
+                                var pictureType = pic.Image.Type; // ePictureType? (ví dụ Png, Jpeg)
 
                                 // Mapping extension
                                 string extension = pictureType switch
@@ -199,11 +225,14 @@ namespace QOS.Areas.Function.Controllers
                                     OfficeOpenXml.Drawing.ePictureType.Jpg => ".jpg",
                                     OfficeOpenXml.Drawing.ePictureType.Png => ".png",
                                     OfficeOpenXml.Drawing.ePictureType.Gif => ".gif",
-                                    _ => ".png"
+                                    _ => ".png",
                                 };
 
                                 // Ghi file
-                                string filePath_Img = Path.Combine(outputFolder, $"{StyleName}{extension}");
+                                string filePath_Img = Path.Combine(
+                                    outputFolder,
+                                    $"{StyleName}{extension}"
+                                );
                                 // File.WriteAllBytes(filePath_Img, imageBytes);
                                 System.IO.File.WriteAllBytes(filePath_Img, imageBytes);
 
@@ -212,7 +241,8 @@ namespace QOS.Areas.Function.Controllers
                             }
                         }
 
-                        string sqlInsert = @"INSERT INTO Form8_ThongSo_TP_Title_Report
+                        string sqlInsert =
+                            @"INSERT INTO Form8_ThongSo_TP_Title_Report
                                             (Style_No, Customer, Sample_Type, Sample_color, Season, Board, Dev_Style_Name, Category, Development_Size_Range, Fit_Intent, Grade_Rule_Template, Img, UserUpdate, LastUpdate)
                                             VALUES (@Style_No,@Customer,@Sample_Type,@Sample_color,@Season,@Board,@Dev_Style_Name,@Category,@Development_Size_Range,@Fit_Intent,@Grade_Rule_Template,@Img,@UserUpdate,@LastUpdate)";
                         using (var cmd2 = new SqlCommand(sqlInsert, conn))
@@ -225,11 +255,20 @@ namespace QOS.Areas.Function.Controllers
                             cmd2.Parameters.AddWithValue("@Board", Board);
                             cmd2.Parameters.AddWithValue("@Dev_Style_Name", Dev_Style_Name);
                             cmd2.Parameters.AddWithValue("@Category", Category);
-                            cmd2.Parameters.AddWithValue("@Development_Size_Range", Development_Size_Range);
+                            cmd2.Parameters.AddWithValue(
+                                "@Development_Size_Range",
+                                Development_Size_Range
+                            );
                             cmd2.Parameters.AddWithValue("@Fit_Intent", Fit_Intent);
-                            cmd2.Parameters.AddWithValue("@Grade_Rule_Template", Grade_Rule_Template);
+                            cmd2.Parameters.AddWithValue(
+                                "@Grade_Rule_Template",
+                                Grade_Rule_Template
+                            );
                             cmd2.Parameters.AddWithValue("@Img", img_name);
-                            cmd2.Parameters.AddWithValue("@UserUpdate", User.Identity?.Name ?? "system");
+                            cmd2.Parameters.AddWithValue(
+                                "@UserUpdate",
+                                User.Identity?.Name ?? "system"
+                            );
                             cmd2.Parameters.AddWithValue("@LastUpdate", DateTime.Now);
 
                             int affected = await cmd2.ExecuteNonQueryAsync();
@@ -237,7 +276,6 @@ namespace QOS.Areas.Function.Controllers
                             {
                                 UMSS = "OK";
                             }
-
                         }
                         if (!string.IsNullOrEmpty(StyleName) && UMSS == "OK")
                         {
@@ -265,27 +303,50 @@ namespace QOS.Areas.Function.Controllers
                                         int SizeNo = 0;
                                         while (continueCol)
                                         {
-
                                             string Size = ws.Cells[7, col].Text.Trim();
                                             if (!string.IsNullOrEmpty(Size))
                                             {
                                                 SizeNo++;
                                                 Empty_c_Count = 0;
                                                 string Act_Value = ws.Cells[row, col].Text.Trim();
-                                                if (Unit == "cm") Act_Value = Act_Value.Replace("/", "|");
+                                                if (Unit == "cm")
+                                                    Act_Value = Act_Value.Replace("/", "|");
 
-                                                using (var cmd3 = new SqlCommand("Frm8_ThongSo_TP_INSERT_ThongSo_Detail_New", conn))
+                                                using (
+                                                    var cmd3 = new SqlCommand(
+                                                        "Frm8_ThongSo_TP_INSERT_ThongSo_Detail_New",
+                                                        conn
+                                                    )
+                                                )
                                                 {
                                                     cmd3.CommandType = CommandType.StoredProcedure;
-                                                    cmd3.Parameters.AddWithValue("@FactoryID", FactoryID);
-                                                    cmd3.Parameters.AddWithValue("@StyleName", StyleName);
+                                                    cmd3.Parameters.AddWithValue(
+                                                        "@FactoryID",
+                                                        FactoryID
+                                                    );
+                                                    cmd3.Parameters.AddWithValue(
+                                                        "@StyleName",
+                                                        StyleName
+                                                    );
                                                     cmd3.Parameters.AddWithValue("@STT", STT);
-                                                    cmd3.Parameters.AddWithValue("@Item_Name", Item_Name);
+                                                    cmd3.Parameters.AddWithValue(
+                                                        "@Item_Name",
+                                                        Item_Name
+                                                    );
                                                     cmd3.Parameters.AddWithValue("@Size", Size);
-                                                    cmd3.Parameters.AddWithValue("@Act_Value", Act_Value);
-                                                    cmd3.Parameters.AddWithValue("@Size_No", SizeNo);
+                                                    cmd3.Parameters.AddWithValue(
+                                                        "@Act_Value",
+                                                        Act_Value
+                                                    );
+                                                    cmd3.Parameters.AddWithValue(
+                                                        "@Size_No",
+                                                        SizeNo
+                                                    );
                                                     cmd3.Parameters.AddWithValue("@POM", POM);
-                                                    cmd3.Parameters.AddWithValue("@Criticality", Criticality);
+                                                    cmd3.Parameters.AddWithValue(
+                                                        "@Criticality",
+                                                        Criticality
+                                                    );
                                                     await cmd3.ExecuteNonQueryAsync();
                                                 }
                                             }
@@ -319,7 +380,10 @@ namespace QOS.Areas.Function.Controllers
                                         }
                                         else
                                         {
-                                            if (decimal.TryParse(col4, out decimal val4) && val4 > 0)
+                                            if (
+                                                decimal.TryParse(col4, out decimal val4)
+                                                && val4 > 0
+                                            )
                                             {
                                                 tolValue = "+" + col4;
                                             }
@@ -330,18 +394,38 @@ namespace QOS.Areas.Function.Controllers
                                         }
 
                                         // gọi procedure
-                                        using (var cmd = new SqlCommand("Frm8_ThongSo_TP_INSERT_ThongSo_Detail_New", conn))
+                                        using (
+                                            var cmd = new SqlCommand(
+                                                "Frm8_ThongSo_TP_INSERT_ThongSo_Detail_New",
+                                                conn
+                                            )
+                                        )
                                         {
                                             cmd.CommandType = CommandType.StoredProcedure;
-                                            cmd.Parameters.AddWithValue("@FactoryID", FactoryID ?? "");
-                                            cmd.Parameters.AddWithValue("@StyleName", StyleName ?? "");
+                                            cmd.Parameters.AddWithValue(
+                                                "@FactoryID",
+                                                FactoryID ?? ""
+                                            );
+                                            cmd.Parameters.AddWithValue(
+                                                "@StyleName",
+                                                StyleName ?? ""
+                                            );
                                             cmd.Parameters.AddWithValue("@STT", STT);
-                                            cmd.Parameters.AddWithValue("@Item_Name", Item_Name ?? "");
+                                            cmd.Parameters.AddWithValue(
+                                                "@Item_Name",
+                                                Item_Name ?? ""
+                                            );
                                             cmd.Parameters.AddWithValue("@Size", tolSize ?? "");
-                                            cmd.Parameters.AddWithValue("@Act_Value", tolValue ?? "");
+                                            cmd.Parameters.AddWithValue(
+                                                "@Act_Value",
+                                                tolValue ?? ""
+                                            );
                                             cmd.Parameters.AddWithValue("@Size_No", SizeNo);
                                             cmd.Parameters.AddWithValue("@POM", POM ?? "");
-                                            cmd.Parameters.AddWithValue("@Criticality", Criticality ?? "");
+                                            cmd.Parameters.AddWithValue(
+                                                "@Criticality",
+                                                Criticality ?? ""
+                                            );
 
                                             int result = await cmd.ExecuteNonQueryAsync();
                                             UMSS = result > 0 ? "OK" : "NG";
@@ -360,14 +444,16 @@ namespace QOS.Areas.Function.Controllers
                                     row++;
                                 }
                             }
-                            else
-                            {
-
-                            }
+                            else { }
 
                             if (FormType == "SPL" || FormType == "US")
                             {
-                                using (var query_MO = new SqlCommand("Frm8_ThongSo_TP_Update_MOInfor", conn))
+                                using (
+                                    var query_MO = new SqlCommand(
+                                        "Frm8_ThongSo_TP_Update_MOInfor",
+                                        conn
+                                    )
+                                )
                                 {
                                     query_MO.CommandType = CommandType.StoredProcedure;
                                     query_MO.Parameters.AddWithValue("@FactoryID", FactoryID);
@@ -377,7 +463,6 @@ namespace QOS.Areas.Function.Controllers
                                     Console.WriteLine("MO" + query_MO);
                                     await query_MO.ExecuteNonQueryAsync();
                                 }
-
                             }
                             UMSS = "OK";
                             MessageStatus = "Upload success!";
@@ -387,13 +472,11 @@ namespace QOS.Areas.Function.Controllers
                             UMSS = "NG";
                             MessageStatus = "Upload False!";
                         }
-
                     }
                 }
                 UMSS = "OK";
                 MessageStatus = "Upload success!";
                 success = true;
-
             }
             catch (Exception ex)
             {
@@ -409,10 +492,22 @@ namespace QOS.Areas.Function.Controllers
 
             Console.WriteLine("Factory :" + FactoryID + " Search: " + Search_V);
             // return RedirectToAction("Search" ,new {FactoryID =FactoryID, Search_V = Search_V});
-            return Json(new { success , message = MessageStatus , mo = Search_V});
+            return Json(
+                new
+                {
+                    success,
+                    message = MessageStatus,
+                    mo = Search_V,
+                }
+            );
         }
 
-        public IActionResult Search(string FactoryID, string Search_V, int Page_No = 1, int Rows_Page = 20)
+        public IActionResult Search(
+            string FactoryID,
+            string Search_V,
+            int Page_No = 1,
+            int Rows_Page = 20
+        )
         {
             if (string.IsNullOrEmpty(Search_V))
             {
@@ -424,10 +519,11 @@ namespace QOS.Areas.Function.Controllers
             string? connString = _configuration.GetConnectionString("DefaultConnection");
             if (string.IsNullOrEmpty(connString))
             {
-                throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
+                throw new InvalidOperationException(
+                    "Connection string 'DefaultConnection' is not configured."
+                );
             }
             using (var conn = new SqlConnection(connString))
-
             // using (var conn = new SqlConnection(_configuration))
             {
                 conn.Open();
@@ -439,20 +535,26 @@ namespace QOS.Areas.Function.Controllers
 
                     using (var reader = cmd.ExecuteReader())
                     {
-                        int i = 1, tr = 1;
+                        int i = 1,
+                            tr = 1;
                         string[]? clmList = null;
 
                         while (reader.Read())
                         {
                             if (reader["STT"].ToString() == "NG")
                             {
-                                tb_string.AppendLine("<table class='table-fixed table table-bordered table-striped' border='0' width='100%'>");
-                                tb_string.AppendLine("<thead class='table-dark'><tr><td>Empty Data</td></tr></thead>");
+                                tb_string.AppendLine(
+                                    "<table class='table-fixed table table-bordered table-striped' border='0' width='100%'>"
+                                );
+                                tb_string.AppendLine(
+                                    "<thead class='table-dark'><tr><td>Empty Data</td></tr></thead>"
+                                );
                                 tb_string.AppendLine("<tbody>");
                             }
                             else
                             {
-                                if (tr == 4) tr = 1;
+                                if (tr == 4)
+                                    tr = 1;
 
                                 if (i == 1)
                                 {
@@ -461,7 +563,9 @@ namespace QOS.Areas.Function.Controllers
                                         .Replace("]", "")
                                         .Split(',');
 
-                                    tb_string.AppendLine("<table class='table-fixed table table-bordered table-striped' border='0' width='100%'>");
+                                    tb_string.AppendLine(
+                                        "<table class='table-fixed table table-bordered table-striped' border='0' width='100%'>"
+                                    );
                                     tb_string.AppendLine("<thead class='table-dark'><tr>");
                                     tb_string.AppendLine("<td style='width:30px;'>No</td>");
                                     tb_string.AppendLine("<td style='width:60px;'>POM</td>");
@@ -469,19 +573,25 @@ namespace QOS.Areas.Function.Controllers
                                     tb_string.AppendLine("<td style='width:100px;'>StyleName</td>");
                                     tb_string.AppendLine("<td style='width:100px;'>MO</td>");
                                     tb_string.AppendLine("<td>SMPL</td>");
-                                    tb_string.AppendLine("<td style='width:60px;'>Criticality</td>");
+                                    tb_string.AppendLine(
+                                        "<td style='width:60px;'>Criticality</td>"
+                                    );
                                     tb_string.AppendLine("<td>Item Name</td>");
 
                                     foreach (var c in clmList)
                                         tb_string.AppendLine($"<td style='width:50px;'>{c}</td>");
 
                                     tb_string.AppendLine("<td style='width:50px;'>Tol.</td>");
-                                    tb_string.AppendLine("<td style='width:150px;'>Updated by</td>");
+                                    tb_string.AppendLine(
+                                        "<td style='width:150px;'>Updated by</td>"
+                                    );
                                     tb_string.AppendLine("</tr></thead><tbody>");
                                 }
 
                                 tb_string.AppendLine($"<tr class='tr{tr}'>");
-                                tb_string.AppendLine($"<td style='text-align:center;'>{reader["STT"]}</td>");
+                                tb_string.AppendLine(
+                                    $"<td style='text-align:center;'>{reader["STT"]}</td>"
+                                );
                                 tb_string.AppendLine($"<td>{reader["POM"]}</td>");
                                 tb_string.AppendLine($"<td>{reader["Buyer"]}</td>");
                                 tb_string.AppendLine($"<td>{reader["StyleName"]}</td>");
@@ -497,7 +607,9 @@ namespace QOS.Areas.Function.Controllers
                                 }
 
                                 tb_string.AppendLine($"<td>{reader["TOL"]}</td>");
-                                tb_string.AppendLine($"<td>{reader["UserUpdate"]}/{Convert.ToDateTime(reader["LastUpdate"]).ToString("yyyy-MM-dd hh:mm tt")}</td>");
+                                tb_string.AppendLine(
+                                    $"<td>{reader["UserUpdate"]}/{Convert.ToDateTime(reader["LastUpdate"]).ToString("yyyy-MM-dd hh:mm tt")}</td>"
+                                );
                                 tb_string.AppendLine("</tr>");
 
                                 i++;
@@ -519,7 +631,9 @@ namespace QOS.Areas.Function.Controllers
             string? connString = _configuration.GetConnectionString("DefaultConnection");
             if (string.IsNullOrEmpty(connString))
             {
-                throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
+                throw new InvalidOperationException(
+                    "Connection string 'DefaultConnection' is not configured."
+                );
             }
             using (var conn = new SqlConnection(connString))
             {
@@ -543,7 +657,5 @@ namespace QOS.Areas.Function.Controllers
             }
             return Json(new { success = true, message = MessageStatus });
         }
-
-
     }
 }

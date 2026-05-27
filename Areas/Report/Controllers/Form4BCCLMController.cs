@@ -1,15 +1,14 @@
-using Microsoft.Data.SqlClient;
+using System.Data;
+using System.Text.Json;
+using Dapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using QOS.Areas.Report.Models;
 using QOS.Data;
 using QOS.Models;
-using Dapper;
-using OfficeOpenXml;
-using System.Data;
-using System.Text.Json;
-
 
 namespace QOS.Areas.Report.Controllers
 {
@@ -23,17 +22,28 @@ namespace QOS.Areas.Report.Controllers
         private readonly string _connectionString;
         private readonly AppDbContext _context;
         private readonly string _factoryName;
-        private string factoryName => User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
+        private string factoryName =>
+            User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
 
-        public Form4BCCLMController(ILogger<Form4BCCLMController> logger, IWebHostEnvironment env, IConfiguration configuration, AppDbContext context)
+        public Form4BCCLMController(
+            ILogger<Form4BCCLMController> logger,
+            IWebHostEnvironment env,
+            IConfiguration configuration,
+            AppDbContext context
+        )
         {
             _logger = logger;
             _env = env;
-            _connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Missing connection string: DefaultConnection");
-            _configuration =configuration;
+            _connectionString =
+                configuration.GetConnectionString("DefaultConnection")
+                ?? throw new InvalidOperationException(
+                    "Missing connection string: DefaultConnection"
+                );
+            _configuration = configuration;
             _context = context;
             _factoryName = _configuration.GetValue<string>("AppSettings:FactoryName") ?? "";
         }
+
         // private string factoryname => User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
         protected string FactoryName
         {
@@ -53,8 +63,10 @@ namespace QOS.Areas.Report.Controllers
             // return View();
             return RedirectToAction("RP_Form4", "Form4BCCLM");
         }
+
         [TempData]
-        public string? MessageStatus { get; set;}
+        public string? MessageStatus { get; set; }
+
         [HttpGet]
         public IActionResult RP_Form4(string? Unit, DateTime? dateFrom, DateTime? dateEnd)
         {
@@ -68,7 +80,7 @@ namespace QOS.Areas.Report.Controllers
                     Unit_List = GetUnitList(),
                     Unit = Unit ?? "ALL",
                     DateFrom = dateFrom ?? DateTime.Now,
-                    DateEnd = dateEnd ?? DateTime.Now.Date.AddDays(1).AddTicks(-1)
+                    DateEnd = dateEnd ?? DateTime.Now.Date.AddDays(1).AddTicks(-1),
                 };
 
                 // _logger.LogInformation($"Model created - Units available: {model.Unit_List.Count}");
@@ -95,14 +107,16 @@ namespace QOS.Areas.Report.Controllers
         public IActionResult RP_Form4(RP_Form4ViewModel model)
         {
             _logger.LogInformation("=== RP_Form4 POST Request ===");
-            _logger.LogInformation($"Model - Unit: '{model.Unit}', DateFrom: {model.DateFrom:yyyy-MM-dd}, DateEnd: {model.DateEnd:yyyy-MM-dd}");
+            _logger.LogInformation(
+                $"Model - Unit: '{model.Unit}', DateFrom: {model.DateFrom:yyyy-MM-dd}, DateEnd: {model.DateEnd:yyyy-MM-dd}"
+            );
 
             try
             {
                 model.Unit_List = GetUnitList();
                 LoadReportData(model);
                 ViewData["Searched"] = true;
-                
+
                 _logger.LogInformation($"POST completed - Found {model.ReportUnits.Count} units");
                 return View(model);
             }
@@ -114,10 +128,13 @@ namespace QOS.Areas.Report.Controllers
                 return View(model);
             }
         }
+
         [HttpGet]
         public IActionResult RP_Form4_Unit(string? Unit, DateTime? dateFrom, DateTime? dateEnd)
         {
-            _logger.LogInformation($"GET Model - Unit: '{Unit}', DateFrom: {dateFrom:yyyy-MM-dd}, DateEnd: {dateEnd:yyyy-MM-dd}");
+            _logger.LogInformation(
+                $"GET Model - Unit: '{Unit}', DateFrom: {dateFrom:yyyy-MM-dd}, DateEnd: {dateEnd:yyyy-MM-dd}"
+            );
             if (string.IsNullOrEmpty(Unit))
             {
                 MessageStatus = "Unit không được để trống";
@@ -132,7 +149,7 @@ namespace QOS.Areas.Report.Controllers
                     DateFrom = dateFrom ?? DateTime.Now.AddDays(-1),
                     DateEnd = dateEnd ?? DateTime.Now.Date.AddDays(1).AddTicks(-1),
                     ColumnHeaders = new List<string>(), // Initialize to prevent null
-                    LineDetails = new List<LineDetailRow>() // Initialize to prevent null
+                    LineDetails = new List<LineDetailRow>(), // Initialize to prevent null
                 };
 
                 LoadUnitDetailData(model);
@@ -147,6 +164,7 @@ namespace QOS.Areas.Report.Controllers
                 return RedirectToAction("RP_Form4");
             }
         }
+
         // [HttpPost]
         // public IActionResult RP_Form4_Unit(RP_Form4_UnitViewModel model)
         // {
@@ -158,8 +176,7 @@ namespace QOS.Areas.Report.Controllers
         //         model.Unit_List = GetUnitList();
         //         LoadUnitDetailData(model);
         //         ViewData["Searched"] = true;
-                
-                
+
         //         return View(model);
         //     }
         //     catch (Exception ex)
@@ -174,7 +191,9 @@ namespace QOS.Areas.Report.Controllers
         [HttpPost]
         public IActionResult ExportExcel(string? unit, DateTime dateFrom, DateTime dateEnd)
         {
-            _logger.LogInformation($"=== Export Excel - Unit: '{unit}', From: {dateFrom:yyyy-MM-dd}, To: {dateEnd:yyyy-MM-dd} ===");
+            _logger.LogInformation(
+                $"=== Export Excel - Unit: '{unit}', From: {dateFrom:yyyy-MM-dd}, To: {dateEnd:yyyy-MM-dd} ==="
+            );
 
             try
             {
@@ -182,16 +201,18 @@ namespace QOS.Areas.Report.Controllers
                 {
                     Unit = unit ?? "ALL",
                     DateFrom = dateFrom,
-                    DateEnd = dateEnd
+                    DateEnd = dateEnd,
                 };
 
                 LoadReportData(model);
 
                 var excelData = GenerateExcelData(model);
                 var fileName = $"BCCLM_{dateFrom:yyyyMMdd}_{dateEnd:yyyyMMdd}.csv";
-                
-                _logger.LogInformation($"Excel exported successfully - {model.ReportUnits.Count} units, {model.ReportUnits.Sum(u => u.Lines.Count)} lines");
-                
+
+                _logger.LogInformation(
+                    $"Excel exported successfully - {model.ReportUnits.Count} units, {model.ReportUnits.Sum(u => u.Lines.Count)} lines"
+                );
+
                 return File(excelData, "text/csv", fileName);
             }
             catch (Exception ex)
@@ -201,6 +222,7 @@ namespace QOS.Areas.Report.Controllers
                 return RedirectToAction("RP_Form4");
             }
         }
+
         // [HttpPost]
         // public IActionResult ExportExcel_Unit(string? unit, DateTime dateFrom, DateTime dateEnd)
         // {
@@ -222,9 +244,9 @@ namespace QOS.Areas.Report.Controllers
 
         //         var excelData = GenerateExcelData_Unit(model);
         //         var fileName = $"BCCLM_{dateFrom:yyyyMMdd}_{dateEnd:yyyyMMdd}.csv";
-                
+
         //         _logger.LogInformation($"Excel exported successfully - {model.ReportUnits.Count} units, {model.ReportUnits.Sum(u => u.Lines.Count)} lines");
-                
+
         //         return File(excelData, "text/csv", fileName);
         //     }
         //     catch (Exception ex)
@@ -244,8 +266,8 @@ namespace QOS.Areas.Report.Controllers
             {
                 var historyData = GetLineHistoryData(lineCode, dateFrom, dateEnd);
                 // _logger.LogInformation($"Line history loaded - {historyData.Count} records");
-                
-                // _logger.LogInformation("Line history data: {Json}", 
+
+                // _logger.LogInformation("Line history data: {Json}",
                 //     JsonSerializer.Serialize(historyData, new JsonSerializerOptions
                 //     {
                 //         WriteIndented = true // format dễ đọc
@@ -264,17 +286,25 @@ namespace QOS.Areas.Report.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
         [HttpGet]
-        public IActionResult GetSewerLineHistory(string lineCode,string position, DateTime dateFrom, DateTime dateEnd)
+        public IActionResult GetSewerLineHistory(
+            string lineCode,
+            string position,
+            DateTime dateFrom,
+            DateTime dateEnd
+        )
         {
-            _logger.LogInformation($"=== Get GetSewerLineHistory History - Line: '{lineCode}',position: '{position}', From: {dateFrom:yyyy-MM-dd}, To: {dateEnd:yyyy-MM-dd} ===");
+            _logger.LogInformation(
+                $"=== Get GetSewerLineHistory History - Line: '{lineCode}',position: '{position}', From: {dateFrom:yyyy-MM-dd}, To: {dateEnd:yyyy-MM-dd} ==="
+            );
 
             try
             {
-                var historyData = GetSewerLineHistoryData(lineCode,position, dateFrom, dateEnd);
+                var historyData = GetSewerLineHistoryData(lineCode, position, dateFrom, dateEnd);
                 _logger.LogInformation($"Line history loaded - {historyData.Count} records");
-                
-                // _logger.LogInformation("Line history data: {Json}", 
+
+                // _logger.LogInformation("Line history data: {Json}",
                 //     JsonSerializer.Serialize(historyData, new JsonSerializerOptions
                 //     {
                 //         WriteIndented = true // format dễ đọc
@@ -295,7 +325,11 @@ namespace QOS.Areas.Report.Controllers
         }
 
         [HttpGet]
-        public IActionResult TestSQL(DateTime? dateFrom = null, DateTime? dateEnd = null, string? unit = null)
+        public IActionResult TestSQL(
+            DateTime? dateFrom = null,
+            DateTime? dateEnd = null,
+            string? unit = null
+        )
         {
             dateFrom ??= DateTime.Now.AddDays(-7);
             dateEnd ??= DateTime.Now.Date.AddDays(1).AddTicks(-1);
@@ -314,8 +348,8 @@ namespace QOS.Areas.Report.Controllers
                         DateFrom = dateFrom.Value.ToString("yyyy-MM-dd HH:mm:ss"),
                         DateEnd = dateEnd.Value.ToString("yyyy-MM-dd HH:mm:ss"),
                         Unit = unit,
-                        FactoryID = FactoryName
-                    }
+                        FactoryID = FactoryName,
+                    },
                 };
 
                 return Json(new { success = true, result });
@@ -345,24 +379,24 @@ namespace QOS.Areas.Report.Controllers
 
             try
             {
-                if(User.Identity?.Name == "admin")
+                if (User.Identity?.Name == "admin")
                 {
                     // Lấy danh sách Unit cho Factory "ALL"
-                    var units = _context.Set<QOS.Models.Unit_List>()
-                        .OrderBy(u => u.Unit)
-                        .ToList();
-                    
+                    var units = _context.Set<QOS.Models.Unit_List>().OrderBy(u => u.Unit).ToList();
+
                     // _logger.LogInformation($"Loaded {units.Count} units from database (admin)");
                     return units;
-                } else {
+                }
+                else
+                {
                     // string FactoryName = User.Claims.FirstOrDefault(c => c.Type == "FactoryName")?.Value ?? "";
-                    var units = _context.Set<QOS.Models.Unit_List>()
+                    var units = _context
+                        .Set<QOS.Models.Unit_List>()
                         .Where(u => u.Factory == FactoryName)
                         .OrderBy(u => u.Unit)
                         .ToList();
                     return units;
                 }
-
             }
             catch (Exception ex)
             {
@@ -380,7 +414,9 @@ namespace QOS.Areas.Report.Controllers
         private void LoadReportData(RP_Form4ViewModel model)
         {
             _logger.LogInformation("=== Loading Report Data ===");
-            _logger.LogInformation($"Parameters - DateFrom: {model.DateFrom:yyyy-MM-dd HH:mm:ss}, DateEnd: {model.DateEnd:yyyy-MM-dd HH:mm:ss}, Unit: '{model.Unit}'");
+            _logger.LogInformation(
+                $"Parameters - DateFrom: {model.DateFrom:yyyy-MM-dd HH:mm:ss}, DateEnd: {model.DateEnd:yyyy-MM-dd HH:mm:ss}, Unit: '{model.Unit}'"
+            );
 
             try
             {
@@ -394,7 +430,10 @@ namespace QOS.Areas.Report.Controllers
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@Date_From", dateFStr);
                 command.Parameters.AddWithValue("@Date_To", dateTStr);
-                command.Parameters.AddWithValue("@Line_Type", model.Unit == "ALL" ? "" : model.Unit);
+                command.Parameters.AddWithValue(
+                    "@Line_Type",
+                    model.Unit == "ALL" ? "" : model.Unit
+                );
                 command.Parameters.AddWithValue("@Factory", FactoryName);
 
                 using var reader = command.ExecuteReader();
@@ -413,14 +452,16 @@ namespace QOS.Areas.Report.Controllers
                     {
                         Unit = unit,
                         LineLed = lineLed,
-                        Lines = ParseLineData(lineLed)
+                        Lines = ParseLineData(lineLed),
                     };
 
                     reportUnits.Add(reportUnit);
                 }
 
                 model.ReportUnits = reportUnits;
-                _logger.LogInformation($"Data loading completed - {rowCount} units, {reportUnits.Sum(u => u.Lines.Count)} total lines");
+                _logger.LogInformation(
+                    $"Data loading completed - {rowCount} units, {reportUnits.Sum(u => u.Lines.Count)} total lines"
+                );
             }
             catch (Exception ex)
             {
@@ -429,25 +470,35 @@ namespace QOS.Areas.Report.Controllers
                 throw;
             }
         }
-        private void LoadUnitDetailData(RP_Form4_UnitViewModel  model)
+
+        private void LoadUnitDetailData(RP_Form4_UnitViewModel model)
         {
             _logger.LogInformation("=== Loading Report LoadUnitDetailData ===");
-            _logger.LogInformation($"Parameters - DateFrom: {model.DateFrom:yyyy-MM-dd HH:mm:ss}, DateEnd: {model.DateEnd:yyyy-MM-dd HH:mm:ss}, Unit: '{model.Unit}'");
+            _logger.LogInformation(
+                $"Parameters - DateFrom: {model.DateFrom:yyyy-MM-dd HH:mm:ss}, DateEnd: {model.DateEnd:yyyy-MM-dd HH:mm:ss}, Unit: '{model.Unit}'"
+            );
 
             try
             {
                 using var connection = new SqlConnection(_connectionString);
                 connection.Open();
 
-                using var command = new SqlCommand("RP_BaoCaoChatLuongChuyenMay_Unit_Detail", connection)
+                using var command = new SqlCommand(
+                    "RP_BaoCaoChatLuongChuyenMay_Unit_Detail",
+                    connection
+                )
                 {
-                    CommandType = CommandType.StoredProcedure
+                    CommandType = CommandType.StoredProcedure,
                 };
 
                 // IMPORTANT: kiểm tra tên param của SP. Thay đổi @Date_F / @Date_T nếu SP dùng tên khác.
-                command.Parameters.Add("@Date_From", SqlDbType.VarChar).Value = model.DateFrom.ToString("yyyy-MM-dd");
-                command.Parameters.Add("@Date_To",   SqlDbType.VarChar).Value = model.DateEnd.ToString("yyyy-MM-dd");
-                command.Parameters.Add("@Unit",      SqlDbType.VarChar).Value = (model.Unit == "ALL" ? "" : model.Unit);
+                command.Parameters.Add("@Date_From", SqlDbType.VarChar).Value =
+                    model.DateFrom.ToString("yyyy-MM-dd");
+                command.Parameters.Add("@Date_To", SqlDbType.VarChar).Value =
+                    model.DateEnd.ToString("yyyy-MM-dd");
+                command.Parameters.Add("@Unit", SqlDbType.VarChar).Value = (
+                    model.Unit == "ALL" ? "" : model.Unit
+                );
 
                 using var reader = command.ExecuteReader();
 
@@ -463,8 +514,8 @@ namespace QOS.Areas.Report.Controllers
                 var schemaTable = reader.GetSchemaTable();
                 if (schemaTable != null)
                 {
-                    availableColumns = schemaTable.Rows
-                        .Cast<DataRow>()
+                    availableColumns = schemaTable
+                        .Rows.Cast<DataRow>()
                         .Select(r => r["ColumnName"]?.ToString() ?? "")
                         .Where(n => !string.IsNullOrEmpty(n))
                         .ToHashSet(StringComparer.OrdinalIgnoreCase);
@@ -474,10 +525,14 @@ namespace QOS.Areas.Report.Controllers
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
                         var name = reader.GetName(i);
-                        if (!string.IsNullOrEmpty(name)) availableColumns.Add(name);
+                        if (!string.IsNullOrEmpty(name))
+                            availableColumns.Add(name);
                     }
                 }
-                _logger.LogInformation("Available columns from resultset: {Cols}", string.Join(",", availableColumns));
+                _logger.LogInformation(
+                    "Available columns from resultset: {Cols}",
+                    string.Join(",", availableColumns)
+                );
 
                 var lineDetails = new List<LineDetailRow>();
                 bool firstRow = true;
@@ -489,22 +544,35 @@ namespace QOS.Areas.Report.Controllers
                     {
                         if (availableColumns.Contains("CL"))
                         {
-                            var clRaw = reader["CL"] != DBNull.Value ? reader["CL"].ToString()! : "";
+                            var clRaw =
+                                reader["CL"] != DBNull.Value ? reader["CL"].ToString()! : "";
                             model.ColumnHeaders = clRaw
-                                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                                .Split(
+                                    ',',
+                                    StringSplitOptions.RemoveEmptyEntries
+                                        | StringSplitOptions.TrimEntries
+                                )
                                 .ToList();
-                            _logger.LogInformation("ColumnHeaders from CL: {Headers}", string.Join(",", model.ColumnHeaders));
+                            _logger.LogInformation(
+                                "ColumnHeaders from CL: {Headers}",
+                                string.Join(",", model.ColumnHeaders)
+                            );
                         }
                         else
                         {
                             // fallback: lấy các column khả dụng, loại bỏ các cột meta như Line, CL, ...
                             model.ColumnHeaders = availableColumns
-                                .Where(c => !string.Equals(c, "Line", StringComparison.OrdinalIgnoreCase)
-                                        && !string.Equals(c, "CL", StringComparison.OrdinalIgnoreCase))
+                                .Where(c =>
+                                    !string.Equals(c, "Line", StringComparison.OrdinalIgnoreCase)
+                                    && !string.Equals(c, "CL", StringComparison.OrdinalIgnoreCase)
+                                )
                                 .OrderBy(c => c) // hoặc theo thứ tự bạn muốn
                                 .ToList();
 
-                            _logger.LogWarning("CL column not found. Using available columns as headers: {Headers}", string.Join(",", model.ColumnHeaders));
+                            _logger.LogWarning(
+                                "CL column not found. Using available columns as headers: {Headers}",
+                                string.Join(",", model.ColumnHeaders)
+                            );
                         }
 
                         firstRow = false;
@@ -512,7 +580,10 @@ namespace QOS.Areas.Report.Controllers
 
                     var row = new LineDetailRow
                     {
-                        Line = availableColumns.Contains("Line") && reader["Line"] != DBNull.Value ? reader["Line"].ToString()! : ""
+                        Line =
+                            availableColumns.Contains("Line") && reader["Line"] != DBNull.Value
+                                ? reader["Line"].ToString()!
+                                : "",
                     };
 
                     // Gán từng cột an toàn
@@ -523,19 +594,29 @@ namespace QOS.Areas.Report.Controllers
                             if (availableColumns.Contains(col))
                             {
                                 var val = reader[col];
-                                row.StatusByStep[col] = val == DBNull.Value ? null : val?.ToString();
+                                row.StatusByStep[col] =
+                                    val == DBNull.Value ? null : val?.ToString();
                             }
                             else
                             {
                                 // cột không có trong resultset
                                 row.StatusByStep[col] = null;
-                                _logger.LogDebug("Column {Col} is not present for Line {Line}", col, row.Line);
+                                _logger.LogDebug(
+                                    "Column {Col} is not present for Line {Line}",
+                                    col,
+                                    row.Line
+                                );
                             }
                         }
                         catch (Exception ex)
                         {
                             // log cục bộ, tiếp tục đọc cột khác
-                            _logger.LogWarning(ex, "Error reading column {Col} for Line {Line}", col, row.Line);
+                            _logger.LogWarning(
+                                ex,
+                                "Error reading column {Col} for Line {Line}",
+                                col,
+                                row.Line
+                            );
                             row.StatusByStep[col] = null;
                         }
                     }
@@ -547,7 +628,12 @@ namespace QOS.Areas.Report.Controllers
 
                 if (!model.LineDetails.Any())
                 {
-                    _logger.LogWarning("No rows returned for Unit={Unit}, DateFrom={From}, DateEnd={To}", model.Unit, model.DateFrom, model.DateEnd);
+                    _logger.LogWarning(
+                        "No rows returned for Unit={Unit}, DateFrom={From}, DateEnd={To}",
+                        model.Unit,
+                        model.DateFrom,
+                        model.DateEnd
+                    );
                     model.Message = "Không có dữ liệu cho khoảng thời gian/Unit đã chọn.";
                 }
             }
@@ -558,6 +644,7 @@ namespace QOS.Areas.Report.Controllers
                 throw;
             }
         }
+
         private (string circleClass, string statusText) GetDetailStatusInfo(string value)
         {
             return value?.ToLower() switch
@@ -565,7 +652,7 @@ namespace QOS.Areas.Report.Controllers
                 "red" => ("bg-danger Circles_Red", "Lỗi nặng"),
                 "green" => ("bg-success", "Không có lỗi"),
                 "yellow" => ("bg-warning", "Lỗi nhẹ"),
-                _ => ("bg-secondary", "Chưa kiểm tra")
+                _ => ("bg-secondary", "Chưa kiểm tra"),
             };
         }
 
@@ -577,7 +664,7 @@ namespace QOS.Areas.Report.Controllers
                 return lines;
 
             var lineList = lineLed.Split(';', StringSplitOptions.RemoveEmptyEntries);
-            
+
             foreach (var line in lineList)
             {
                 if (line.Length >= 2)
@@ -586,13 +673,15 @@ namespace QOS.Areas.Report.Controllers
                     var colorCode = line.Substring(line.Length - 1);
                     var (circleClass, statusText) = GetStatusInfo(colorCode);
 
-                    lines.Add(new LineData
-                    {
-                        LineCode = lineCode,
-                        ColorCode = colorCode,
-                        CircleClass = circleClass,
-                        StatusText = statusText
-                    });
+                    lines.Add(
+                        new LineData
+                        {
+                            LineCode = lineCode,
+                            ColorCode = colorCode,
+                            CircleClass = circleClass,
+                            StatusText = statusText,
+                        }
+                    );
                 }
             }
 
@@ -606,11 +695,15 @@ namespace QOS.Areas.Report.Controllers
                 "R" => ("bg-danger Circles_Red", "Lỗi nặng"),
                 "G" => ("bg-success Circles_Green", "Không có lỗi"),
                 "Y" => ("bg-warning Circles_Yellow", "Lỗi nhẹ"),
-                _ => ("bg-secondary", "Chưa kiểm tra")
+                _ => ("bg-secondary", "Chưa kiểm tra"),
             };
         }
 
-        private List<LineHistoryData> GetLineHistoryData(string lineCode, DateTime dateFrom, DateTime dateEnd)
+        private List<LineHistoryData> GetLineHistoryData(
+            string lineCode,
+            DateTime dateFrom,
+            DateTime dateEnd
+        )
         {
             var historyList = new List<LineHistoryData>();
 
@@ -619,7 +712,8 @@ namespace QOS.Areas.Report.Controllers
                 using var connection = new SqlConnection(_connectionString);
                 connection.Open();
 
-                var query = @"
+                var query =
+                    @"
                     SELECT  
                         t1.*, t3.Operation_Name_VN, t4.FullName,  
                         ROW_NUMBER() OVER(PARTITION BY t1.Report_ID, t1.Line  
@@ -639,21 +733,31 @@ namespace QOS.Areas.Report.Controllers
                 using var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    historyList.Add(new LineHistoryData
-                    {
-                        ID = reader["ID"]  != DBNull.Value ? Convert.ToInt32(reader["ID"]) : 0,
-                        Report_ID = reader["Report_ID"]?.ToString(),
-                        Operation_Name_VN = reader["Operation_Name_VN"]?.ToString(),
-                        Sewer = reader["Sewer"]?.ToString(),
-                        Total_Fault_QTY = reader["Total_Fault_QTY"] != DBNull.Value ? Convert.ToInt32(reader["Total_Fault_QTY"]) : 0,
-                        QTY = reader["QTY"] != DBNull.Value ? Convert.ToInt32(reader["QTY"]) : 0,
-                        Status = reader["Led"]?.ToString(),
-                        Audit_Time = reader["Audit_Time"]?.ToString(),
-                        UserUpdate = reader["UserUpdate"]?.ToString(),
-                        FullName = reader["FullName"]?.ToString(),
-                        LastUpdate = reader["LastUpdate"] != DBNull.Value ? Convert.ToDateTime(reader["LastUpdate"]) : DateTime.MinValue,
-                        RowNum = reader["rk"] != DBNull.Value ? Convert.ToInt32(reader["rk"]) : 0
-                    });
+                    historyList.Add(
+                        new LineHistoryData
+                        {
+                            ID = reader["ID"] != DBNull.Value ? Convert.ToInt32(reader["ID"]) : 0,
+                            Report_ID = reader["Report_ID"]?.ToString(),
+                            Operation_Name_VN = reader["Operation_Name_VN"]?.ToString(),
+                            Sewer = reader["Sewer"]?.ToString(),
+                            Total_Fault_QTY =
+                                reader["Total_Fault_QTY"] != DBNull.Value
+                                    ? Convert.ToInt32(reader["Total_Fault_QTY"])
+                                    : 0,
+                            QTY =
+                                reader["QTY"] != DBNull.Value ? Convert.ToInt32(reader["QTY"]) : 0,
+                            Status = reader["Led"]?.ToString(),
+                            Audit_Time = reader["Audit_Time"]?.ToString(),
+                            UserUpdate = reader["UserUpdate"]?.ToString(),
+                            FullName = reader["FullName"]?.ToString(),
+                            LastUpdate =
+                                reader["LastUpdate"] != DBNull.Value
+                                    ? Convert.ToDateTime(reader["LastUpdate"])
+                                    : DateTime.MinValue,
+                            RowNum =
+                                reader["rk"] != DBNull.Value ? Convert.ToInt32(reader["rk"]) : 0,
+                        }
+                    );
                 }
             }
             catch (Exception ex)
@@ -664,7 +768,13 @@ namespace QOS.Areas.Report.Controllers
 
             return historyList;
         }
-        private List<LineHistoryData> GetSewerLineHistoryData(string lineCode,string position, DateTime dateFrom, DateTime dateEnd)
+
+        private List<LineHistoryData> GetSewerLineHistoryData(
+            string lineCode,
+            string position,
+            DateTime dateFrom,
+            DateTime dateEnd
+        )
         {
             //  _logger.LogInformation($"=== Get GetSewerLineHistory History - Line: '{lineCode}',position: '{position}', From: {dateFrom}, To: {dateEnd:yyyy-MM-dd} ===");
             var historyList = new List<LineHistoryData>();
@@ -674,7 +784,8 @@ namespace QOS.Areas.Report.Controllers
                 using var connection = new SqlConnection(_connectionString);
                 connection.Open();
 
-                var query = @"
+                var query =
+                    @"
                     SELECT  
                         t1.*, t3.Operation_Name_VN, t4.FullName,  
                         ROW_NUMBER() OVER(PARTITION BY t1.Report_ID, t1.PhysicalLine  
@@ -686,7 +797,7 @@ namespace QOS.Areas.Report.Controllers
                         AND CAST(t1.LastUpdate as DATE) <= CAST(@DateEnd as DATE)
                     
                     ORDER BY t1.LastUpdate DESC";
-                
+
                 using var command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@LineCode", lineCode);
                 command.Parameters.AddWithValue("@Position", position);
@@ -696,21 +807,31 @@ namespace QOS.Areas.Report.Controllers
                 using var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    historyList.Add(new LineHistoryData
-                    {
-                        ID = reader["ID"]  != DBNull.Value ? Convert.ToInt32(reader["ID"]) : 0,
-                        Report_ID = reader["Report_ID"]?.ToString(),
-                        Operation_Name_VN = reader["Operation_Name_VN"]?.ToString(),
-                        Sewer = reader["Sewer"]?.ToString(),
-                        Total_Fault_QTY = reader["Total_Fault_QTY"] != DBNull.Value ? Convert.ToInt32(reader["Total_Fault_QTY"]) : 0,
-                        QTY = reader["QTY"] != DBNull.Value ? Convert.ToInt32(reader["QTY"]) : 0,
-                        Status = reader["Led"]?.ToString(),
-                        Audit_Time = reader["Audit_Time"]?.ToString(),
-                        UserUpdate = reader["UserUpdate"]?.ToString(),
-                        FullName = reader["FullName"]?.ToString(),
-                        LastUpdate = reader["LastUpdate"] != DBNull.Value ? Convert.ToDateTime(reader["LastUpdate"]) : DateTime.MinValue,
-                        RowNum = reader["rk"] != DBNull.Value ? Convert.ToInt32(reader["rk"]) : 0
-                    });
+                    historyList.Add(
+                        new LineHistoryData
+                        {
+                            ID = reader["ID"] != DBNull.Value ? Convert.ToInt32(reader["ID"]) : 0,
+                            Report_ID = reader["Report_ID"]?.ToString(),
+                            Operation_Name_VN = reader["Operation_Name_VN"]?.ToString(),
+                            Sewer = reader["Sewer"]?.ToString(),
+                            Total_Fault_QTY =
+                                reader["Total_Fault_QTY"] != DBNull.Value
+                                    ? Convert.ToInt32(reader["Total_Fault_QTY"])
+                                    : 0,
+                            QTY =
+                                reader["QTY"] != DBNull.Value ? Convert.ToInt32(reader["QTY"]) : 0,
+                            Status = reader["Led"]?.ToString(),
+                            Audit_Time = reader["Audit_Time"]?.ToString(),
+                            UserUpdate = reader["UserUpdate"]?.ToString(),
+                            FullName = reader["FullName"]?.ToString(),
+                            LastUpdate =
+                                reader["LastUpdate"] != DBNull.Value
+                                    ? Convert.ToDateTime(reader["LastUpdate"])
+                                    : DateTime.MinValue,
+                            RowNum =
+                                reader["rk"] != DBNull.Value ? Convert.ToInt32(reader["rk"]) : 0,
+                        }
+                    );
                 }
             }
             catch (Exception ex)
@@ -731,14 +852,18 @@ namespace QOS.Areas.Report.Controllers
             {
                 foreach (var line in unit.Lines)
                 {
-                    csv.AppendLine($"\"{unit.Unit}\",\"{line.LineCode}\",\"{line.ColorCode}\",\"{line.StatusText}\",\"{model.DateFrom:yyyy-MM-dd}\",\"{model.DateEnd:yyyy-MM-dd}\"");
+                    csv.AppendLine(
+                        $"\"{unit.Unit}\",\"{line.LineCode}\",\"{line.ColorCode}\",\"{line.StatusText}\",\"{model.DateFrom:yyyy-MM-dd}\",\"{model.DateEnd:yyyy-MM-dd}\""
+                    );
                 }
             }
 
-            return System.Text.Encoding.UTF8.GetPreamble()
+            return System
+                .Text.Encoding.UTF8.GetPreamble()
                 .Concat(System.Text.Encoding.UTF8.GetBytes(csv.ToString()))
                 .ToArray();
         }
+
         // private byte[] GenerateExcelData_Unit(RP_Form4_UnitViewModel model)
         // {
         //     var csv = new System.Text.StringBuilder();
@@ -811,13 +936,18 @@ namespace QOS.Areas.Report.Controllers
                 connection.Open();
 
                 // Check if stored procedure exists
-                var checkQuery = "SELECT COUNT(*) FROM sys.procedures WHERE name = 'RP_BaoCaoChatLuongChuyenMay_Unit'";
+                var checkQuery =
+                    "SELECT COUNT(*) FROM sys.procedures WHERE name = 'RP_BaoCaoChatLuongChuyenMay_Unit'";
                 using var checkCmd = new SqlCommand(checkQuery, connection);
                 var procExists = (int)checkCmd.ExecuteScalar() > 0;
 
                 if (!procExists)
                 {
-                    return new { Success = false, Error = "Stored procedure 'RP_BaoCaoChatLuongChuyenMay_Unit' does not exist" };
+                    return new
+                    {
+                        Success = false,
+                        Error = "Stored procedure 'RP_BaoCaoChatLuongChuyenMay_Unit' does not exist",
+                    };
                 }
 
                 // Execute stored procedure
@@ -830,7 +960,7 @@ namespace QOS.Areas.Report.Controllers
 
                 var results = new List<object>();
                 using var reader = command.ExecuteReader();
-                
+
                 while (reader.Read())
                 {
                     var result = new Dictionary<string, object>();
@@ -848,8 +978,15 @@ namespace QOS.Areas.Report.Controllers
                     results.Add(result);
                 }
 
-                _logger.LogInformation($"Stored procedure executed successfully, returned {results.Count} rows");
-                return new { Success = true, RowCount = results.Count, SampleData = results.Take(3) };
+                _logger.LogInformation(
+                    $"Stored procedure executed successfully, returned {results.Count} rows"
+                );
+                return new
+                {
+                    Success = true,
+                    RowCount = results.Count,
+                    SampleData = results.Take(3),
+                };
             }
             catch (Exception ex)
             {
@@ -858,10 +995,11 @@ namespace QOS.Areas.Report.Controllers
             }
         }
 
-        public IActionResult DetailForm4(string id) 
+        public IActionResult DetailForm4(string id)
         {
             using var conn = new SqlConnection(_connectionString);
-            string sql = @"
+            string sql =
+                @"
                 SELECT t1.*, t4.FullName 
                 FROM Form4_BCCLM t1
                 LEFT JOIN User_List t4 ON t1.UserUpdate = t4.UserName
@@ -875,7 +1013,8 @@ namespace QOS.Areas.Report.Controllers
                 return NotFound();
             }
             // Lấy danh sách lỗi
-            string sqlFault = @"SELECT Fault_Code AS FaultCode,
+            string sqlFault =
+                @"SELECT Fault_Code AS FaultCode,
                                     Fault_Name_VN AS FaultNameVN,
                                     Fault_Level AS FaultLevel
                                 FROM Fault_Code
@@ -888,32 +1027,38 @@ namespace QOS.Areas.Report.Controllers
             List<SelectedFault> selectedFaults = new();
             if (!string.IsNullOrEmpty(detail.Fault_Detail))
             {
-                var arrFault = detail.Fault_Detail.Split(';', StringSplitOptions.RemoveEmptyEntries);
+                var arrFault = detail.Fault_Detail.Split(
+                    ';',
+                    StringSplitOptions.RemoveEmptyEntries
+                );
                 foreach (var f in arrFault)
                 {
                     var parts = f.Split('-');
                     if (parts.Length >= 3)
                     {
-                        selectedFaults.Add(new SelectedFault
-                        {
-                            FaultCode = parts[0],
-                            FaultQty = int.TryParse(parts[2], out var q) ? q : 0
-                        });
+                        selectedFaults.Add(
+                            new SelectedFault
+                            {
+                                FaultCode = parts[0],
+                                FaultQty = int.TryParse(parts[2], out var q) ? q : 0,
+                            }
+                        );
                     }
                 }
             }
 
             // Lấy công đoạn
             string Operation_Code = detail.Operation ?? "";
-            
-            string sqlOperation = @"SELECT Operation_Code AS Operation_Code,
+
+            string sqlOperation =
+                @"SELECT Operation_Code AS Operation_Code,
                         Operation_Name_VN AS Operation_Name_VN
                     FROM Operation_Code
                     WHERE Operation_Code = @Operation_Code
                     ";
 
-            var operations = conn.Query<OperationCode>(sqlOperation, new { Operation_Code }).ToList();
-
+            var operations = conn.Query<OperationCode>(sqlOperation, new { Operation_Code })
+                .ToList();
 
             // Gom vào ViewModel
             var vm = new Form4DetailViewModel
@@ -921,7 +1066,7 @@ namespace QOS.Areas.Report.Controllers
                 Detail = detail,
                 Faults = faults,
                 SelectedFaults = selectedFaults,
-                Operations = operations
+                Operations = operations,
             };
 
             return PartialView("_tableRP_Form4", vm);
@@ -930,12 +1075,14 @@ namespace QOS.Areas.Report.Controllers
         public IActionResult DeleteReport(int reportId)
         {
             var userName = User.Identity?.Name;
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var conn = new SqlConnection(
+                _configuration.GetConnectionString("DefaultConnection")
+            );
             using var command = new SqlCommand("Delet_BC_Form4_BCCLM", conn);
             command.CommandType = CommandType.StoredProcedure;
             command.Parameters.AddWithValue("@Report_ID", reportId);
             command.Parameters.AddWithValue("@UserUpdate", userName);
-            
+
             Console.WriteLine("report ID: " + reportId + "User : " + userName);
             using var reader = command.ExecuteReader();
             if (reader.Read())
@@ -947,7 +1094,8 @@ namespace QOS.Areas.Report.Controllers
                 }
                 else
                 {
-                    var errorMessage = reader["ErrorMessage"]?.ToString() ?? "Không thể xóa báo cáo.";
+                    var errorMessage =
+                        reader["ErrorMessage"]?.ToString() ?? "Không thể xóa báo cáo.";
                     return Json(new { success = false, message = errorMessage });
                 }
             }
@@ -987,6 +1135,5 @@ namespace QOS.Areas.Report.Controllers
 
             return sql;
         }
-    
     }
 }

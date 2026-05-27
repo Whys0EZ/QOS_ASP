@@ -1,9 +1,213 @@
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.SharedResource> Localizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<QOS.Areas.Function.SharedResource> FuncLocalizer
+@model List<QOS.Models.ThongSoBTPViewModel>
+
 @{
     ViewData["Title"] = "Function Page";
     Layout = "_MenuFunction";
+    var message = TempData["MessageStatus"]?.ToString();
 }
 
 
+<div class="container-fluid mt-3">
+    @if (!string.IsNullOrEmpty(message))
+    {
+        <div class="alert alert-info text-center">
+            @message
+        </div>
+    }
+    <div class = "row ">
+        <div class="mt-3 col-md-5">
+            <h3 class="text-primary fw-bold">Thông số BTP</h3>
+        </div>
+        <div class="mt-3 col-md-7 d-flex justify-content-end">
+            <form method="post" id="SearchForm" asp-area="Function" asp-controller="ThongSoBTP" asp-action="GetThongSoBTPList" enctype="multipart/form-data">
+                <input type="text" name ="Act" id ="Act" value ="0" style="display:none;">
+                <input type="text" name ="ID" id ="ID" value ="" style="display:none;">
+                <input type="text" id="NewName" name="NewName" value="" style="display:none;" />
+                <div class="row align-items-center mb-3">
+                    <div class="col mb-3">
+                        <label for="FactoryID" class="form-label">Factory ID</label>
+                        <select class="form-select" id="FactoryID" name="FactoryID">
+                            <option value="">-- Factory --</option>
+                            @if (ViewBag.Factorys != null)
+                            {
+                                foreach (var item in ViewBag.Factorys)
+                                {
+                                    <option value="@item.FactoryID"
+                                        selected="@(ViewBag.FactoryID == item.FactoryID ? "selected" : null)">
+                                        @item.FactoryID
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
 
-<h2>Trang Function</h2>
-<p>Nội dung chính của Function ở đây.</p>
+                    <div class="col mb-3">
+                        <label for="typeName" class="form-label fw-bold">
+                            Style Name
+                        </label>
+                        <select class="form-select" id="typeName" name="typeName">
+                            <option value="">-- Style --</option>
+                            @if (ViewBag.TypeNames != null)
+                            {
+                                foreach (var item in ViewBag.TypeNames)
+                                {
+                                    <option value="@item"
+                                            selected="@(ViewBag.TypeName == item ? "selected" : null)">
+                                        @item
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col mt-3 d-flex align-items-end">
+                        <input type="text" id="search_Mo" name="search_Mo" class="form-control" value="@ViewBag.Search_Mo" placeholder="Search..." />
+                    </div>
+                    <div class="col-auto mt-3 d-flex align-items-end">
+                        <button type="button" class="btn btn-primary" onclick="SubmitForm()">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Item Name</th>
+                        <th>Updated by</th>
+                        <th>Updated time</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                   
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td class="text-center">
+                                    @item.STT
+                                </td>
+
+                                <td>
+                                    @item.VN_Name
+                                </td>
+
+                                @if (item.MO == "ALL")
+                                {
+                                    <td>
+                                        System (Apply for All MO)
+                                    </td>
+
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @item.UserUpdate / @item.FullName
+                                    </td>
+
+                                    <td>
+                                        @item.LastUpdate
+                                    </td>
+
+                                    <td class="text-center">
+
+                                        <button type="button"
+                                                class="btn btn-warning btn-sm"
+                                                onclick="EditClick('@item.ID','@item.VN_Name','@item.STT')">
+
+                                            Edit
+
+                                        </button>
+
+                                    </td>
+
+                                    <td class="text-center">
+
+                                        <button type="button"
+                                                class="btn btn-danger btn-sm"
+                                                onclick="DelClick('@item.ID','@item.STT. @item.VN_Name')">
+
+                                            Delete
+
+                                        </button>
+
+                                    </td>
+                                }
+
+                            </tr>
+                        }
+                        <tr>
+                            <td colspan="6" class="text-right">
+                                <button type="button" class="btn btn-success" onclick="AddNew_Click()">
+                                    Add New
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center">No data available.</td>
+                         </tr>
+                     }
+                 </tbody>
+            </table>
+
+             
+        </div>
+    </div>
+</div>
+
+<script>
+    function SubmitForm() {
+        console.log("CLICK");
+
+        console.log($('#FactoryID').val());
+        console.log($('#typeName').val());
+        console.log($('#search_Mo').val());
+        // return false;
+
+        document.getElementById("SearchForm").submit();
+    }
+
+    function EditClick(id, name, stt) {
+        
+        $('#ID').val(id);
+        var person = prompt("Edit: " + stt + '. ' + name, name);
+				if (person != null) {
+					document.getElementById("NewName").value = person;
+
+					$('#Act').val('Update_Item');
+                    document.getElementById("SearchForm").submit();
+				}
+    }
+
+    function DelClick(id, name) {
+        if (confirm('Are you sure you want to delete: ' + name + '?')) {
+            $('#Act').val('Delete_Item');
+            $('#ID').val(id);
+            $('#SearchForm').submit();
+        }
+    }
+    function AddNew_Click() {
+        document.getElementById("ID").value = "";
+				var person = prompt("Add new item ", "");
+				if (person != null) {
+					document.getElementById("NewName").value = person;
+					$('#Act').val('Add_Item');
+                    document.getElementById("SearchForm").submit();
+				}
+    }
+
+</script>
